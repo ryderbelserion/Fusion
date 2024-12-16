@@ -1,7 +1,8 @@
-package com.ryderbelserion.paper.scheduler;
+package com.ryderbelserion.paper.util.scheduler;
 
 import com.ryderbelserion.FusionSettings;
 import com.ryderbelserion.api.exception.FusionException;
+import com.ryderbelserion.paper.enums.Scheduler;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.Location;
 import org.bukkit.Server;
@@ -17,19 +18,19 @@ public abstract class FoliaScheduler implements Runnable {
 
     private final Plugin plugin = FusionSettings.get().getPlugin();
 
-    private final SchedulerType type;
+    private final Scheduler type;
     private final Server server;
     private final TimeUnit timeUnit;
 
     private ScheduledTask task;
 
-    public FoliaScheduler(@NotNull final SchedulerType type, @NotNull final TimeUnit timeUnit) {
+    public FoliaScheduler(@NotNull final Scheduler type, @NotNull final TimeUnit timeUnit) {
         this.server = plugin.getServer();
         this.timeUnit = timeUnit;
         this.type = type;
     }
 
-    public FoliaScheduler(@NotNull final SchedulerType type) {
+    public FoliaScheduler(@NotNull final Scheduler type) {
         this(type, TimeUnit.SECONDS);
     }
 
@@ -38,7 +39,7 @@ public abstract class FoliaScheduler implements Runnable {
     private int z;
 
     public FoliaScheduler(@NotNull final World world, final int x, final int z) {
-        this(SchedulerType.region_scheduler, TimeUnit.SECONDS);
+        this(Scheduler.region_scheduler, TimeUnit.SECONDS);
 
         this.world = world;
         this.x = x;
@@ -53,7 +54,7 @@ public abstract class FoliaScheduler implements Runnable {
     private Entity entity;
 
     public FoliaScheduler(@Nullable final Runnable retired, @NotNull final Entity entity) {
-        this(SchedulerType.entity_scheduler);
+        this(Scheduler.entity_scheduler);
 
         this.retired = retired;
         this.entity = entity;
@@ -203,7 +204,7 @@ public abstract class FoliaScheduler implements Runnable {
         return this.task.hashCode();
     }
 
-    public final SchedulerType getType() {
+    public final Scheduler getType() {
         return this.type;
     }
 

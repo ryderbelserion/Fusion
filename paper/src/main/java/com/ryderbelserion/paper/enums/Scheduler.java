@@ -1,6 +1,6 @@
-package com.ryderbelserion.paper.scheduler;
+package com.ryderbelserion.paper.enums;
 
-public enum SchedulerType {
+public enum Scheduler {
 
     global_scheduler,
 

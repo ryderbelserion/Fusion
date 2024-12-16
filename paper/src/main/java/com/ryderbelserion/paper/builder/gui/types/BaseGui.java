@@ -8,8 +8,8 @@ import com.ryderbelserion.paper.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiType;
 import com.ryderbelserion.paper.builder.gui.interfaces.types.IBaseGui;
 import com.ryderbelserion.paper.builder.gui.objects.components.InteractionComponent;
-import com.ryderbelserion.paper.scheduler.FoliaScheduler;
-import com.ryderbelserion.paper.scheduler.SchedulerType;
+import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
+import com.ryderbelserion.paper.enums.Scheduler;
 import com.ryderbelserion.paper.util.PaperMethods;
 import com.ryderbelserion.util.Methods;
 import net.kyori.adventure.text.Component;
@@ -301,7 +301,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     @Override
     public void close(final Player player, final InventoryCloseEvent.Reason reason, final boolean isDelayed) {
         if (isDelayed) {
-            new FoliaScheduler(SchedulerType.global_scheduler) {
+            new FoliaScheduler(Scheduler.global_scheduler) {
                 @Override
                 public void run() {
                     player.closeInventory(reason != null ? reason : InventoryCloseEvent.Reason.PLUGIN);
