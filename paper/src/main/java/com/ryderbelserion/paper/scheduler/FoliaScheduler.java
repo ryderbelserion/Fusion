@@ -1,7 +1,7 @@
 package com.ryderbelserion.paper.scheduler;
 
 import com.ryderbelserion.FusionSettings;
-import com.ryderbelserion.exception.FusionException;
+import com.ryderbelserion.api.exception.FusionException;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.Location;
 import org.bukkit.Server;
