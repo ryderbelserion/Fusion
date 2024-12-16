@@ -3,7 +3,7 @@ package com.ryderbelserion.paper.builder.items;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.nexomc.nexo.api.NexoItems;
-import com.ryderbelserion.FusionSettings;
+import com.ryderbelserion.FusionApi;
 import com.ryderbelserion.api.exception.FusionException;
 import com.ryderbelserion.paper.builder.PlayerBuilder;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiAction;
@@ -72,7 +72,7 @@ import java.util.function.Consumer;
 
 public class ItemBuilder<T extends ItemBuilder<T>> {
 
-    private final FusionSettings api = FusionSettings.get();
+    private final FusionApi api = FusionApi.get();
 
     private final Plugin plugin = this.api.getPlugin();
 

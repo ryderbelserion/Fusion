@@ -1,6 +1,6 @@
 package com.ryderbelserion.paper.builder;
 
-import com.ryderbelserion.FusionSettings;
+import com.ryderbelserion.FusionApi;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 
 public record PlayerBuilder(String name) {
 
-    private static final @NotNull Plugin plugin = FusionSettings.get().getPlugin();
+    private static final @NotNull Plugin plugin = FusionApi.get().getPlugin();
 
     private static final @NotNull Server server = plugin.getServer();
 

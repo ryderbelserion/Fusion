@@ -1,6 +1,6 @@
 package com.ryderbelserion.paper.files;
 
-import com.ryderbelserion.FusionSettings;
+import com.ryderbelserion.FusionApi;
 import com.ryderbelserion.api.enums.FileType;
 import com.ryderbelserion.api.exception.FusionException;
 import com.ryderbelserion.paper.Fusion;
@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class FileManager {
 
-    protected final Fusion api = FusionSettings.get().getFusion();
+    protected final Fusion api = FusionApi.get().getFusion();
     protected final ComponentLogger logger = this.api.getLogger();
     protected final File dataFolder = this.api.getDataFolder();
     protected final boolean isVerbose = this.api.isVerbose();

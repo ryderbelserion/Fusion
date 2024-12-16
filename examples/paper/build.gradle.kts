@@ -6,17 +6,17 @@ plugins {
 }
 
 repositories {
-    maven("https://repo.papermc.io/repository/maven-public")
+    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
-
     implementation(projects.fusionPaper)
+
+    compileOnly(libs.paper)
 }
 
 tasks {
     runServer {
-        minecraftVersion("1.21.4")
+        minecraftVersion(libs.versions.minecraft.get())
     }
 }

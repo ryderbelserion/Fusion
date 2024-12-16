@@ -1,7 +1,7 @@
 package com.ryderbelserion.paper;
 
 import com.ryderbelserion.FusionLayout;
-import com.ryderbelserion.FusionSettings;
+import com.ryderbelserion.FusionApi;
 import com.ryderbelserion.paper.enums.Support;
 import com.ryderbelserion.util.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class Fusion extends FusionLayout {
 
-    private final FusionSettings settings = FusionSettings.get();
+    private final FusionApi settings = FusionApi.get();
 
     private final Plugin plugin = this.settings.getPlugin();
 

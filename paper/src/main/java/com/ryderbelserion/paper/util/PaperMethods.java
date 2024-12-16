@@ -1,6 +1,6 @@
 package com.ryderbelserion.paper.util;
 
-import com.ryderbelserion.FusionSettings;
+import com.ryderbelserion.FusionApi;
 import com.ryderbelserion.paper.Fusion;
 import com.ryderbelserion.util.Methods;
 import io.papermc.paper.registry.RegistryAccess;
@@ -35,7 +35,7 @@ import java.util.Base64;
 
 public class PaperMethods {
 
-    private static final Fusion api = FusionSettings.get().getFusion();
+    private static final Fusion api = FusionApi.get().getFusion();
     private static final ComponentLogger logger = api.getLogger();
     private static final boolean isVerbose = api.isVerbose();
 

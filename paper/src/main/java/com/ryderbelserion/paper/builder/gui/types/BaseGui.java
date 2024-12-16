@@ -1,6 +1,6 @@
 package com.ryderbelserion.paper.builder.gui.types;
 
-import com.ryderbelserion.FusionSettings;
+import com.ryderbelserion.FusionApi;
 import com.ryderbelserion.api.exception.FusionException;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiAction;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiFiller;
@@ -37,7 +37,7 @@ import java.util.Set;
 
 public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
-    private final @NotNull Plugin plugin = FusionSettings.get().getPlugin();
+    private final @NotNull Plugin plugin = FusionApi.get().getPlugin();
 
     // Gui filler.
     private final GuiFiller filler = new GuiFiller(this);

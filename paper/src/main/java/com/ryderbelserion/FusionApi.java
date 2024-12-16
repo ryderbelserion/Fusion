@@ -12,28 +12,28 @@ import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FusionSettings {
+public class FusionApi {
 
-    private static final FusionSettings instance = new FusionSettings();
+    private static final FusionApi instance = new FusionApi();
 
-    public static FusionSettings get() {
+    public static FusionApi get() {
         return instance;
     }
 
     private HeadDatabaseAPI headDatabaseAPI = null;
     private FileManager fileManager = null;
-    private boolean isRegistered;
+    private boolean isRegistered = false;
     private Plugin plugin = null;
     private Fusion fusion = null;
 
-    public void onEnable(@NotNull Plugin plugin) {
+    public void enable(@NotNull Plugin plugin) {
         if (this.isRegistered) return;
 
         this.isRegistered = true;
         this.plugin = plugin;
 
         this.fusion = new Fusion();
-        this.fusion.onEnable();
+        this.fusion.enable();
 
         this.fileManager = new FileManager();
 
@@ -47,12 +47,12 @@ public class FusionSettings {
         manager.registerEvents(new GuiListener(), this.plugin);
     }
 
-    public void onReload() {
-        this.fusion.onReload();
+    public void reload() {
+        this.fusion.reload();
     }
 
-    public void onDisable() {
-        this.fusion.onDisable();
+    public void disable() {
+        this.fusion.disable();
     }
 
     public @NotNull Plugin getPlugin() {

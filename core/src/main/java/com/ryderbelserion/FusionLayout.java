@@ -53,7 +53,7 @@ public abstract class FusionLayout {
         return this.config.node("settings", "is_verbose").getBoolean(false);
     }
 
-    public void onEnable() {
+    public void enable() {
         FusionProvider.register(this);
 
         final File vital = new File(getDataFolder(), "vital.yml");
@@ -65,13 +65,15 @@ public abstract class FusionLayout {
         }
 
         this.loader = YamlConfigurationLoader.builder().indent(2).file(fusion).build();
+
+        reload();
     }
 
-    public void onDisable() {
+    public void disable() {
 
     }
 
-    public void onReload() {
+    public void reload() {
         this.config = CompletableFuture.supplyAsync(() -> {
             try {
                 return this.loader.load();

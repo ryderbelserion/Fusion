@@ -1,6 +1,6 @@
 package com.ryderbelserion.paper.builder.gui.types;
 
-import com.ryderbelserion.FusionSettings;
+import com.ryderbelserion.FusionApi;
 import io.papermc.paper.persistence.PersistentDataContainerView;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class GuiKeys {
 
-    private static final Plugin plugin = FusionSettings.get().getPlugin();
+    private static final Plugin plugin = FusionApi.get().getPlugin();
 
     public GuiKeys() {
         throw new AssertionError();

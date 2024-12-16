@@ -1,6 +1,6 @@
 package com.ryderbelserion.paper.util.scheduler;
 
-import com.ryderbelserion.FusionSettings;
+import com.ryderbelserion.FusionApi;
 import com.ryderbelserion.api.exception.FusionException;
 import com.ryderbelserion.paper.enums.Scheduler;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 public abstract class FoliaScheduler implements Runnable {
 
-    private final Plugin plugin = FusionSettings.get().getPlugin();
+    private final Plugin plugin = FusionApi.get().getPlugin();
 
     private final Scheduler type;
     private final Server server;

@@ -1,24 +1,24 @@
 package com.ryderbelserion.fusion;
 
-import com.ryderbelserion.FusionSettings;
+import com.ryderbelserion.FusionApi;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public class FusionPlugin extends JavaPlugin {
 
-    private final FusionSettings fusionSettings = FusionSettings.get();
+    private final FusionApi fusionApi = FusionApi.get();
 
     @Override
     public void onEnable() {
-        this.fusionSettings.onEnable(this);
+        this.fusionApi.enable(this);
     }
 
     @Override
     public void onDisable() {
-        this.fusionSettings.onDisable();
+        this.fusionApi.disable();
     }
 
-    public @NotNull FusionSettings getFusionSettings() {
-        return this.fusionSettings;
+    public @NotNull FusionApi getFusionSettings() {
+        return this.fusionApi;
     }
 }

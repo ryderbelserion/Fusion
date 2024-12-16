@@ -1,6 +1,6 @@
 package com.ryderbelserion.paper.enums;
 
-import com.ryderbelserion.FusionSettings;
+import com.ryderbelserion.FusionApi;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,7 +12,7 @@ public enum Support {
     head_database("HeadDatabase"),
     placeholder_api("PlaceholderAPI");
 
-    private final Plugin plugin = FusionSettings.get().getPlugin();
+    private final Plugin plugin = FusionApi.get().getPlugin();
 
     private final String name;
 
