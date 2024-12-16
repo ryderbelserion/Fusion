@@ -8,6 +8,6 @@ public enum SchedulerType {
 
     entity_scheduler,
 
-    async_scheduler;
+    async_scheduler
 
 }
