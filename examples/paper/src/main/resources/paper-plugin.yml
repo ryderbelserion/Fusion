@@ -1,0 +1,8 @@
+name: 'Fusion'
+main: 'com.ryderbelserion.fusion.FusionPlugin'
+
+description: 'I would like nuclear fusion to become a practical power source.'
+api-version: '1.21.4'
+version: '1.0.0'
+
+folia-supported: true
