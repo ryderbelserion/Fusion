@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.runPaper)
+    alias(libs.plugins.shadow)
 
     id("fusion.base")
 }
