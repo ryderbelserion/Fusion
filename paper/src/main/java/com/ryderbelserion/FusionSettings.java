@@ -4,6 +4,7 @@ import com.ryderbelserion.api.exception.FusionException;
 import com.ryderbelserion.paper.Fusion;
 import com.ryderbelserion.paper.builder.gui.listeners.GuiListener;
 import com.ryderbelserion.paper.enums.Support;
+import com.ryderbelserion.paper.files.FileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
@@ -20,6 +21,7 @@ public class FusionSettings {
     }
 
     private HeadDatabaseAPI headDatabaseAPI = null;
+    private FileManager fileManager = null;
     private boolean isRegistered;
     private Plugin plugin = null;
     private Fusion fusion = null;
@@ -32,6 +34,8 @@ public class FusionSettings {
 
         this.fusion = new Fusion();
         this.fusion.onEnable();
+
+        this.fileManager = new FileManager();
 
         if (Support.head_database.isEnabled()) {
             this.headDatabaseAPI = new HeadDatabaseAPI();
@@ -65,6 +69,14 @@ public class FusionSettings {
         }
 
         return this.fusion;
+    }
+
+    public @NotNull FileManager getFileManager() {
+        if (this.fileManager == null) {
+            throw new FusionException("An error occurred while trying to get the file manager instance.");
+        }
+
+        return this.fileManager;
     }
 
     public @Nullable HeadDatabaseAPI getDatabaseAPI() {
