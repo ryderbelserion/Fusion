@@ -103,7 +103,7 @@ public class FileManager {
                 this.logger.warn("Successfully extracted file {} to {}", fileName, file.getPath());
             }
 
-            FileMethods.saveResource(folder == null ? fileName : folder + File.separator + fileName, false);
+            FileMethods.saveResource(folder == null ? fileName : folder + File.separator + fileName, false, this.isVerbose);
         }
 
         switch (fileType) {

@@ -65,7 +65,7 @@ public abstract class FusionLayout {
             getLogger().warn("Detected old vital.yml, Renaming to fusion.yml");
         }
 
-        FileMethods.saveResource(fusion.getName(), false);
+        FileMethods.saveResource(fusion.getName(), false, false);
 
         this.loader = YamlConfigurationLoader.builder().indent(2).file(fusion).build();
 

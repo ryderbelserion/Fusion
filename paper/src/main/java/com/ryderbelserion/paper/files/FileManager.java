@@ -116,7 +116,7 @@ public final class FileManager {
                 this.logger.warn("Successfully extracted file {} to {}", fileName, file.getPath());
             }
 
-            FileMethods.saveResource(resourcePath, false);
+            FileMethods.saveResource(resourcePath, false, this.isVerbose);
         }
 
         switch (fileType) {

@@ -51,8 +51,6 @@ public class FileMethods {
 
     private static final File dataFolder = api.getDataFolder();
 
-    private static final boolean isVerbose = api.isVerbose();
-
     public static void download(@NotNull final String link, @NotNull final File directory) {
         CompletableFuture.runAsync(() -> {
             URL url;
@@ -243,7 +241,7 @@ public class FileMethods {
     }
 
     public static void extract(@NotNull final String input, final boolean overwrite) {
-        saveResource(input, overwrite);
+        saveResource(input, overwrite, false);
     }
 
     public static void extract(@NotNull final String input) {
@@ -312,7 +310,7 @@ public class FileMethods {
         return Collections.unmodifiableList(files);
     }
 
-    public static void saveResource(String resourcePath, final boolean replace) {
+    public static void saveResource(String resourcePath, final boolean replace, final boolean isVerbose) {
         if (resourcePath == null || resourcePath.isEmpty()) {
             throw new FusionException("ResourcePath cannot be null or empty");
         }
