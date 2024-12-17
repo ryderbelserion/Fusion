@@ -1,5 +1,7 @@
 plugins {
     id("fusion.parent")
+
+    `maven-publish`
 }
 
 repositories {
@@ -14,6 +16,19 @@ java {
 }
 
 tasks {
+    publishing {
+        repositories {
+            maven {
+                url = uri("https://repo.ryderbelserion.com/releases")
+
+                credentials {
+                    this.username = System.getenv("gradle_username")
+                    this.password = System.getenv("gradle_password")
+                }
+            }
+        }
+    }
+
     compileJava {
         options.encoding = "UTf-8"
         options.compilerArgs.add("-parameters")
