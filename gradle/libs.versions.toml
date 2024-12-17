@@ -7,9 +7,6 @@ shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 # Paper API
 paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 
-cloud-annotations = { module = "org.incendo:cloud-annotations", version.ref = "cloud" }
-cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-paper" }
-
 # Kyori API
 kyori-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "adventure" }
 kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }
