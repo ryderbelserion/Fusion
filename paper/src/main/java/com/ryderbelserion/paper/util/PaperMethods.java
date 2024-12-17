@@ -33,15 +33,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Base64;
 
-public class PaperMethods {
+public final class PaperMethods {
 
     private static final Fusion api = FusionApi.get().getFusion();
     private static final ComponentLogger logger = api.getLogger();
     private static final boolean isVerbose = api.isVerbose();
-
-    private PaperMethods() {
-        throw new AssertionError();
-    }
 
     public static void updateTitle(@NotNull final Player player, @NotNull final String title) {
         final ServerPlayer entityPlayer = (ServerPlayer) ((CraftHumanEntity) player).getHandle();

@@ -10,11 +10,11 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.concurrent.CompletableFuture;
 
-public class CustomFile {
+public final class CustomFile {
 
-    protected final Fusion api = FusionApi.get().getFusion();
-    protected final ComponentLogger logger = this.api.getLogger();
-    protected final boolean isVerbose = this.api.isVerbose();
+    private final Fusion api = FusionApi.get().getFusion();
+    private final ComponentLogger logger = this.api.getLogger();
+    private final boolean isVerbose = this.api.isVerbose();
 
     private final String effectiveName;
     private final FileType fileType;

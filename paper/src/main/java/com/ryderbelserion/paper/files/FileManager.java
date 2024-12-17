@@ -15,12 +15,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FileManager {
+public final class FileManager {
 
-    protected final Fusion api = FusionApi.get().getFusion();
-    protected final ComponentLogger logger = this.api.getLogger();
-    protected final File dataFolder = this.api.getDataFolder();
-    protected final boolean isVerbose = this.api.isVerbose();
+    private final Fusion api = FusionApi.get().getFusion();
+    private final ComponentLogger logger = this.api.getLogger();
+    private final File dataFolder = this.api.getDataFolder();
+    private final boolean isVerbose = this.api.isVerbose();
 
     private final Map<String, CustomFile> files = new HashMap<>();
 

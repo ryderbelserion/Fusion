@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Fusion extends FusionLayout {
+public final class Fusion extends FusionLayout {
 
     private final FusionApi settings = FusionApi.get();
 

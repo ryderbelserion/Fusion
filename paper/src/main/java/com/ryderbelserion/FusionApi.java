@@ -12,7 +12,7 @@ import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class FusionApi {
+public final class FusionApi {
 
     private static final FusionApi instance = new FusionApi();
 
