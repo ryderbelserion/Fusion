@@ -4,7 +4,7 @@ import com.ryderbelserion.paper.builder.gui.interfaces.GuiAction;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiFiller;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiType;
-import com.ryderbelserion.paper.builder.gui.objects.components.InteractionComponent;
+import com.ryderbelserion.paper.builder.gui.enums.InteractionComponent;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -87,11 +87,7 @@ public interface IBaseGui {
 
     void addItem(final boolean expandIfFull, @NotNull final GuiItem... items);
 
-    void removeItem(final ItemStack itemStack);
-
     void removeItem(final int row, final int col);
-
-    void removeItem(final GuiItem guiItem);
 
     void removeItem(final int slot);
 

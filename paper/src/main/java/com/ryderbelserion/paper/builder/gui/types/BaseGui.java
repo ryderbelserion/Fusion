@@ -7,7 +7,7 @@ import com.ryderbelserion.paper.builder.gui.interfaces.GuiFiller;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiType;
 import com.ryderbelserion.paper.builder.gui.interfaces.types.IBaseGui;
-import com.ryderbelserion.paper.builder.gui.objects.components.InteractionComponent;
+import com.ryderbelserion.paper.builder.gui.enums.InteractionComponent;
 import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
 import com.ryderbelserion.paper.enums.Scheduler;
 import com.ryderbelserion.paper.util.PaperMethods;
@@ -32,35 +32,25 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     private final @NotNull Plugin plugin = FusionApi.get().getPlugin();
 
-    // Gui filler.
     private final GuiFiller filler = new GuiFiller(this);
-    // Actions for specific slots.
+
     private final Map<Integer, GuiAction<InventoryClickEvent>> slotActions;
-    // Contains all items the GUI will have.
     private final Map<Integer, GuiItem> guiItems;
 
     private final Set<InteractionComponent> interactionComponents;
 
-    // Action to execute when clicking on the top part of the GUI only.
     private GuiAction<InventoryClickEvent> defaultTopClickAction;
-    // Action to execute when clicking on the player Inventory.
     private GuiAction<InventoryClickEvent> playerInventoryAction;
-    // Action to execute when clicked outside the GUI.
     private GuiAction<InventoryClickEvent> outsideClickAction;
-    // Action to execute when clicking on any item.
     private GuiAction<InventoryClickEvent> defaultClickAction;
-    // Action to execute when GUI closes.
     private GuiAction<InventoryCloseEvent> closeGuiAction;
-    // Action to execute when GUI opens.
     private GuiAction<InventoryOpenEvent> openGuiAction;
-    // Action to execute when dragging the item on the GUI.
     private GuiAction<InventoryDragEvent> dragAction;
 
     private GuiType guiType = GuiType.CHEST;
@@ -184,7 +174,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     @Override
     public void giveItem(final Player player, final ItemStack itemStack) {
-        player.getInventory().addItem(GuiKeys.strip(itemStack));
+        player.getInventory().addItem(itemStack);
     }
 
     @Override
@@ -249,32 +239,8 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void removeItem(final ItemStack itemStack) {
-        final String key = GuiKeys.getUUID(itemStack);
-
-        final Optional<Map.Entry<Integer, GuiItem>> entry = guiItems.entrySet()
-                .stream()
-                .filter(it -> {
-                    final String pair = it.getValue().getUuid().toString();
-
-                    return key.equalsIgnoreCase(pair);
-                })
-                .findFirst();
-
-        entry.ifPresent(it -> {
-            this.guiItems.remove(it.getKey());
-            this.inventory.remove(it.getValue().getItemStack());
-        });
-    }
-
-    @Override
     public void removeItem(final int row, final int col) {
         removeItem(getSlotFromRowColumn(row, col));
-    }
-
-    @Override
-    public void removeItem(final GuiItem guiItem) {
-        removeItem(guiItem.getItemStack());
     }
 
     @Override

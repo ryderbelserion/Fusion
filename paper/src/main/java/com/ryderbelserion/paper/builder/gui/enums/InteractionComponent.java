@@ -1,4 +1,4 @@
-package com.ryderbelserion.paper.builder.gui.objects.components;
+package com.ryderbelserion.paper.builder.gui.enums;
 
 import java.util.Collections;
 import java.util.EnumSet;

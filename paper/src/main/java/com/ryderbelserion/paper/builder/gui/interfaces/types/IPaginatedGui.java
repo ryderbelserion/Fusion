@@ -16,9 +16,7 @@ public interface IPaginatedGui {
 
     void addItem(@NotNull final GuiItem guiItem);
 
-    void removePageItem(@NotNull final GuiItem guiItem);
-
-    void removePageItem(@NotNull final ItemStack itemStack);
+    void removePageItem(final int slot);
 
     void updatePageItem(final int slot, @NotNull final ItemStack itemStack);
 

@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiAction;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.paper.builder.gui.types.BaseGui;
-import com.ryderbelserion.paper.builder.gui.types.GuiKeys;
 import com.ryderbelserion.paper.builder.gui.types.PaginatedGui;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -16,15 +15,11 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
-public class GuiListener implements Listener {
-
-    public GuiListener() {}
+public final class GuiListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
@@ -83,10 +78,10 @@ public class GuiListener implements Listener {
             guiItem = gui.getGuiItem(event.getSlot());
         }
 
-        if (!isGuiItem(event.getCurrentItem(), guiItem)) return;
+        if (guiItem == null) return;
 
-        // Executes the action of the item
         final GuiAction<InventoryClickEvent> itemAction = guiItem.getAction();
+
         if (itemAction != null) itemAction.execute(event);
     }
 
@@ -123,20 +118,6 @@ public class GuiListener implements Listener {
         final GuiAction<InventoryOpenEvent> openAction = gui.getOpenGuiAction();
 
         if (openAction != null && !gui.isUpdating()) openAction.execute(event);
-    }
-
-    private boolean isGuiItem(@Nullable final ItemStack currentItem, @Nullable final GuiItem guiItem) {
-        if (currentItem == null || guiItem == null) {
-            return false;
-        }
-
-        final String nbt = GuiKeys.getUUID(currentItem);
-
-        if (nbt.isBlank()) {
-            return false;
-        }
-
-        return nbt.equalsIgnoreCase(guiItem.getUuid().toString());
     }
 
     private boolean isTakeItemEvent(final InventoryClickEvent event) {

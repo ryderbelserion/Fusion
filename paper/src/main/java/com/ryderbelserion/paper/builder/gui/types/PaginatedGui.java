@@ -2,7 +2,7 @@ package com.ryderbelserion.paper.builder.gui.types;
 
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.paper.builder.gui.interfaces.types.IPaginatedGui;
-import com.ryderbelserion.paper.builder.gui.objects.components.InteractionComponent;
+import com.ryderbelserion.paper.builder.gui.enums.InteractionComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -57,23 +56,14 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public void removePageItem(@NotNull final GuiItem guiItem) {
+    public void removePageItem(final int slot) {
+        if (!this.currentPage.containsKey(slot)) return;
+
+        final GuiItem guiItem = this.currentPage.remove(slot);
+
         this.pageItems.remove(guiItem);
 
         updatePage();
-    }
-
-    @Override
-    public void removePageItem(@NotNull final ItemStack itemStack) {
-        final String key = GuiKeys.getUUID(itemStack);
-
-        final Optional<GuiItem> guiItem = this.pageItems.stream().filter(it -> {
-            final String pair = it.getUuid().toString();
-
-            return key.equalsIgnoreCase(pair);
-        }).findFirst();
-
-        guiItem.ifPresent(this::removePageItem);
     }
 
     @Override

@@ -2,12 +2,12 @@ package com.ryderbelserion.paper.builder.gui.interfaces;
 
 import com.ryderbelserion.paper.builder.gui.PaginatedBuilder;
 import com.ryderbelserion.paper.builder.gui.SimpleBuilder;
-import com.ryderbelserion.paper.builder.gui.objects.components.InteractionComponent;
+import com.ryderbelserion.paper.builder.gui.enums.InteractionComponent;
 import com.ryderbelserion.paper.builder.gui.types.BaseGui;
 import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
-public class Gui extends BaseGui {
+public final class Gui extends BaseGui {
 
     public Gui(final String title, final int rows, final Set<InteractionComponent> components) {
         super(title, rows, components);
