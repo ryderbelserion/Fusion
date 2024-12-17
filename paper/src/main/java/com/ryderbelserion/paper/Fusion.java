@@ -91,7 +91,7 @@ public final class Fusion extends FusionLayout {
 
     @Override
     public void sendMessage(@NotNull final Audience audience, @NotNull final List<String> lines, @NotNull final Map<String, String> placeholders) {
-        sendMessage(audience, StringUtils.chomp(Methods.toString(lines)), placeholders);
+        sendMessage(audience, Methods.toString(lines), placeholders);
     }
 
     @Override

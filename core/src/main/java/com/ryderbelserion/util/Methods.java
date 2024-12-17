@@ -31,18 +31,6 @@ public class Methods {
         return NumberFormat.getNumberInstance(Locale.US).format(number);
     }
 
-    public static String toString(final List<String> list) {
-        if (list.isEmpty()) return "";
-
-        StringBuilder message = new StringBuilder();
-
-        for (String line : list) {
-            message.append(line).append("\n");
-        }
-
-        return message.toString();
-    }
-
     public static @NotNull Component parse(@NotNull final String message) {
         if (message.isEmpty()) return Component.empty();
 
@@ -111,7 +99,9 @@ public class Methods {
         }
     }
 
-    public static String convertList(final List<String> list) {
+    public static String toString(final List<String> list) {
+        if (list.isEmpty()) return "";
+
         final StringBuilder message = new StringBuilder();
 
         for (final String line : list) {
