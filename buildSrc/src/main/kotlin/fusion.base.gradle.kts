@@ -30,16 +30,16 @@ tasks {
     }
 
     compileJava {
-        options.encoding = "UTf-8"
+        options.encoding = Charsets.UTF_8.name()
         options.compilerArgs.add("-parameters")
         options.release.set(21)
     }
 
     javadoc {
-        options.encoding = "UTf-8"
+        options.encoding = Charsets.UTF_8.name()
     }
 
     processResources {
-        filteringCharset = "UTf-8"
+        filteringCharset = Charsets.UTF_8.name()
     }
 }
