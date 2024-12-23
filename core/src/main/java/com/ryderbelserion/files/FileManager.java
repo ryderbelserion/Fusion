@@ -4,6 +4,7 @@ import com.ryderbelserion.FusionLayout;
 import com.ryderbelserion.FusionProvider;
 import com.ryderbelserion.api.enums.FileType;
 import com.ryderbelserion.api.exception.FusionException;
+import com.ryderbelserion.files.types.NbtCustomFile;
 import com.ryderbelserion.files.types.YamlCustomFile;
 import com.ryderbelserion.util.FileMethods;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -119,6 +120,14 @@ public class FileManager {
 
             case JSON -> throw new FusionException("The file type with extension " + extension + " is not currently supported.");
 
+            case NBT -> {
+                if (this.files.containsKey(strippedName)) {
+                    throw new FusionException("The file '" + strippedName + "' already exists.");
+                }
+
+                this.files.put(strippedName, new NbtCustomFile(file, isDynamic));
+            }
+
             case NONE -> {} // do nothing
         }
 
@@ -171,15 +180,7 @@ public class FileManager {
         final CustomFile<? extends CustomFile<?>> customFile = this.files.remove(fileName);
 
         if (purge) {
-            final File file = customFile.getFile();
-
-            if (file == null) return this;
-
-            if (file.delete()) {
-                if (this.isVerbose) {
-                    this.logger.warn("Successfully deleted {}", fileName);
-                }
-            }
+            customFile.deleteConfiguration();
 
             return this;
         }

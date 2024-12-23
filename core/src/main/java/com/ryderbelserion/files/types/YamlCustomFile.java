@@ -18,7 +18,7 @@ public class YamlCustomFile extends CustomFile<YamlCustomFile> {
     private final YamlConfigurationLoader loader;
 
     public YamlCustomFile(final File file, final boolean isDynamic) {
-        super(file, isDynamic);
+        super(file, isDynamic, ".yml");
 
         this.loader = YamlConfigurationLoader.builder().indent(2).file(file).build();
     }

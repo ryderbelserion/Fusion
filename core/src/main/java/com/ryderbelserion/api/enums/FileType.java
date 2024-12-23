@@ -6,7 +6,9 @@ public enum FileType {
 
     JSON("json"),
 
-    NONE("none");
+    NONE("none"),
+
+    NBT("nbt");
 
     private final String extension;
 
