@@ -30,7 +30,11 @@ public final class CustomFile {
 
     private YamlConfiguration configuration;
 
-    public final CustomFile load() {
+    public CustomFile load() {
+        if (this.fileType != FileType.YAML) {
+            throw new FusionException("Only yaml files are supported by the load function.");
+        }
+
         if (getFile().isDirectory()) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot load configuration, as {} is a directory.", getFileName());
@@ -50,7 +54,11 @@ public final class CustomFile {
         return this;
     }
 
-    public final CustomFile save() {
+    public CustomFile save() {
+        if (this.fileType != FileType.YAML) {
+            throw new FusionException("Only yaml files are supported by the save function.");
+        }
+
         if (getFile().isDirectory()) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot save configuration, as {} is a directory.", getFileName());
@@ -78,36 +86,54 @@ public final class CustomFile {
         return this;
     }
 
-    public final @Nullable YamlConfiguration getConfiguration() {
+    public void delete() {
+        final File file = getFile();
+
+        if (file != null && file.exists() && file.delete()) {
+            if (this.isVerbose) {
+                this.logger.warn("Successfully deleted {}", getFileName());
+            }
+        }
+    }
+
+    public @Nullable YamlConfiguration getConfiguration() {
+        if (this.fileType != FileType.YAML) {
+            throw new FusionException("Only yaml files are supported by the getConfiguration function.");
+        }
+
         return this.configuration;
     }
 
-    public final boolean isConfigurationLoaded() {
+    public boolean isConfigurationLoaded() {
+        if (this.fileType != FileType.YAML) {
+            throw new FusionException("Only yaml files are supported by the isConfigurationLoaded function.");
+        }
+
         return getConfiguration() != null;
-    }
-
-    public boolean isDynamic() {
-        return this.isDynamic;
-    }
-
-    public CustomFile getInstance() {
-        return this;
     }
 
     public String getEffectiveName() {
         return this.effectiveName;
     }
 
-    public String getFileName() {
-        return this.file.getName();
-    }
-
-    public boolean isFileLoaded() {
-        return this.file.exists();
+    public CustomFile getInstance() {
+        return this;
     }
 
     public FileType getFileType() {
         return this.fileType;
+    }
+
+    public String getFileName() {
+        return this.file.getName();
+    }
+
+    public boolean isDynamic() {
+        return this.isDynamic;
+    }
+
+    public boolean exists() {
+        return this.file.exists();
     }
 
     public File getFile() {

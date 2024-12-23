@@ -4,6 +4,7 @@ import com.ryderbelserion.core.FusionLayout;
 import com.ryderbelserion.core.FusionProvider;
 import com.ryderbelserion.core.api.enums.FileType;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.io.File;
 import java.util.List;
@@ -20,41 +21,81 @@ public abstract class CustomFile<T extends CustomFile<T>> {
     private final boolean isDynamic;
     private final File file;
 
-    public CustomFile(final File file, final boolean isDynamic) {
-        this.effectiveName = file.getName().replace(".yml", "");
+    public CustomFile(final File file, final boolean isDynamic, final String extension) {
+        this.effectiveName = file.getName().replace(extension, "");
         this.isDynamic = isDynamic;
         this.file = file;
     }
 
-    public abstract String getStringValueWithDefault(final String defaultValue, final Object... path);
+    public String getStringValueWithDefault(final String defaultValue, final Object... path) {
+        return null;
+    }
 
-    public abstract String getStringValue(final Object... path);
+    public String getStringValue(final Object... path) {
+        return null;
+    }
 
-    public abstract boolean getBooleanValueWithDefault(final boolean defaultValue, final Object... path);
+    public boolean getBooleanValueWithDefault(final boolean defaultValue, final Object... path) {
+        return false;
+    }
 
-    public abstract boolean getBooleanValue(final Object... path);
+    public boolean getBooleanValue(final Object... path) {
+        return false;
+    }
 
-    public abstract double getDoubleValueWithDefault(final double defaultValue, final Object... path);
+    public double getDoubleValueWithDefault(final double defaultValue, final Object... path) {
+        return 0;
+    }
 
-    public abstract double getDoubleValue(final Object... path);
+    public double getDoubleValue(final Object... path) {
+        return 0;
+    }
 
-    public abstract long getLongValueWithDefault(final long defaultValue, final Object... path);
+    public long getLongValueWithDefault(final long defaultValue, final Object... path) {
+        return 0;
+    }
 
-    public abstract long getLongValue(final Object... path);
+    public long getLongValue(final Object... path) {
+        return 0;
+    }
 
-    public abstract int getIntValueWithDefault(final int defaultValue, final Object... path);
+    public int getIntValueWithDefault(final int defaultValue, final Object... path) {
+        return 0;
+    }
 
-    public abstract int getIntValue(final Object... path);
+    public int getIntValue(final Object... path) {
+        return 0;
+    }
 
-    public abstract List<String> getStringList(final Object... path);
+    public List<String> getStringList(final Object... path) {
+        return null;
+    }
 
     public abstract CustomFile<T> loadConfiguration();
 
     public abstract CustomFile<T> saveConfiguration();
 
+    public CustomFile<T> deleteConfiguration() {
+        final File file = getFile();
+
+        if (file != null && file.exists() && file.delete()) {
+            if (this.isVerbose) {
+                this.logger.warn("Successfully deleted {}", getFileName());
+            }
+        }
+
+        return this;
+    }
+
     public abstract FileType getFileType();
 
-    public abstract CommentedConfigurationNode getConfigurationNode();
+    public CommentedConfigurationNode getConfigurationNode() {
+        return null;
+    }
+
+    public BasicConfigurationNode getBasicConfigurationNode() {
+        return null;
+    }
 
     public boolean isDynamic() {
         return this.isDynamic;

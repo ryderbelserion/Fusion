@@ -4,6 +4,8 @@ import com.ryderbelserion.core.FusionLayout;
 import com.ryderbelserion.core.FusionProvider;
 import com.ryderbelserion.core.api.enums.FileType;
 import com.ryderbelserion.core.api.exception.FusionException;
+import com.ryderbelserion.core.files.types.JsonCustomFile;
+import com.ryderbelserion.core.files.types.NbtCustomFile;
 import com.ryderbelserion.core.files.types.YamlCustomFile;
 import com.ryderbelserion.core.util.FileMethods;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -117,7 +119,23 @@ public class FileManager {
                 this.files.put(strippedName, new YamlCustomFile(file, isDynamic).loadConfiguration());
             }
 
-            case JSON -> throw new FusionException("The file type with extension " + extension + " is not currently supported.");
+            case JSON -> {
+                if (this.files.containsKey(strippedName)) {
+                    this.files.get(strippedName).loadConfiguration();
+
+                    return this;
+                }
+
+                this.files.put(strippedName, new JsonCustomFile(file, isDynamic).loadConfiguration());
+            }
+
+            case NBT -> {
+                if (this.files.containsKey(strippedName)) {
+                    throw new FusionException("The file '" + strippedName + "' already exists.");
+                }
+
+                this.files.put(strippedName, new NbtCustomFile(file, isDynamic));
+            }
 
             case NONE -> {} // do nothing
         }
@@ -171,15 +189,7 @@ public class FileManager {
         final CustomFile<? extends CustomFile<?>> customFile = this.files.remove(fileName);
 
         if (purge) {
-            final File file = customFile.getFile();
-
-            if (file == null) return this;
-
-            if (file.delete()) {
-                if (this.isVerbose) {
-                    this.logger.warn("Successfully deleted {}", fileName);
-                }
-            }
+            customFile.deleteConfiguration();
 
             return this;
         }

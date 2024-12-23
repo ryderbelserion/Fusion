@@ -122,6 +122,14 @@ public final class FileManager {
         }
 
         switch (fileType) {
+            case NBT -> {
+                if (this.files.containsKey(strippedName)) {
+                    throw new FusionException("The file '" + strippedName + "' already exists.");
+                }
+
+                this.files.put(strippedName, new CustomFile(fileType, file, isDynamic));
+            }
+
             case YAML -> {
                 if (this.files.containsKey(strippedName)) {
                     this.files.get(strippedName).load();
@@ -181,25 +189,33 @@ public final class FileManager {
 
         final String strippedName = strip(fileName, fileType.getExtension());
 
-        if (!this.files.containsKey(strippedName)) return this;
+        switch (fileType) {
+            case YAML -> {
+                if (!this.files.containsKey(strippedName)) return this;
 
-        final CustomFile customFile = this.files.remove(fileName);
+                final CustomFile customFile = this.files.remove(fileName);
 
-        if (purge) {
-            final File file = customFile.getFile();
+                if (purge) {
+                    customFile.delete();
 
-            if (file == null) return this;
-
-            if (file.delete()) {
-                if (this.isVerbose) {
-                    this.logger.warn("Successfully deleted {}", fileName);
+                    return this;
                 }
+
+                customFile.save();
             }
 
-            return this;
-        }
+            case NBT -> {
+                if (!this.files.containsKey(strippedName)) return this;
 
-        customFile.save();
+                final CustomFile customFile = this.files.remove(fileName);
+
+                if (purge) {
+                    customFile.delete();
+
+                    return this;
+                }
+            }
+        }
 
         return this;
     }
@@ -209,7 +225,7 @@ public final class FileManager {
 
         this.files.forEach((name, file) -> {
             if (file.getFile().exists()) {
-                file.load();
+                if (file.getFileType() == FileType.YAML) file.load();
             } else {
                 forRemoval.add(name);
             }
