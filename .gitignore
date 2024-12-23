@@ -1,0 +1,8 @@
+### Intellij
+.kotlin
+.idea
+
+### Gradle
+.gradle
+build/
+run/
