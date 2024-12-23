@@ -1,0 +1,56 @@
+[plugins]
+paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
+runPaper = { id = "xyz.jpenilla.run-paper", version.ref = "runPaper" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+
+[libraries]
+# Paper API
+paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+
+# Kyori API
+kyori-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "adventure" }
+kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }
+kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
+kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
+
+# Configurate API
+configurate-yaml = { module = "org.spongepowered:configurate-yaml", version.ref = "configurate" }
+
+# Plugin API
+headdatabaseapi = { module = "com.arcaniax:HeadDatabase-API", version.ref = "headdatabaseapi" }
+placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
+oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
+nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
+
+[versions]
+# Gradle Plugins
+shadow = "9.0.0-beta4"
+paperweight = "2.0.0-beta.8"
+runPaper = "2.3.1"
+
+# Paper API
+paper = "1.21.4-R0.1-SNAPSHOT"
+minecraft = "1.21.4"
+
+# Cloud API
+cloud-paper = "2.0.0-beta.10"
+cloud = "2.0.0"
+
+# Kyori API
+adventure = "4.17.0"
+
+# Configurate API
+configurate = "4.1.2"
+
+# Plugin API
+headdatabaseapi = "1.3.1"
+placeholderapi = "2.11.6"
+oraxen = "1.171.0"
+nexo = "0.1.0-dev.0"
+
+[bundles]
+# Adventure API
+adventure = ["kyori-api", "kyori-text", "kyori-logger", "kyori-legacy"]
+
+# Shared API
+shared = ["headdatabaseapi", "placeholderapi", "oraxen", "nexo"]
