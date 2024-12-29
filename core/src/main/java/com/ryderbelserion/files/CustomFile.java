@@ -4,6 +4,7 @@ import com.ryderbelserion.FusionLayout;
 import com.ryderbelserion.FusionProvider;
 import com.ryderbelserion.api.enums.FileType;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.io.File;
 import java.util.List;
@@ -89,6 +90,10 @@ public abstract class CustomFile<T extends CustomFile<T>> {
     public abstract FileType getFileType();
 
     public CommentedConfigurationNode getConfigurationNode() {
+        return null;
+    }
+
+    public BasicConfigurationNode getBasicConfigurationNode() {
         return null;
     }
 

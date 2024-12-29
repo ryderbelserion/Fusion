@@ -14,6 +14,7 @@ kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "a
 kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 
 # Configurate API
+configurate-jackson = { module = "org.spongepowered:configurate-jackson", version.ref = "configurate" }
 configurate-yaml = { module = "org.spongepowered:configurate-yaml", version.ref = "configurate" }
 
 # Plugin API

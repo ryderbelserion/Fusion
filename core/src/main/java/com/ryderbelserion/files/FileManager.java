@@ -4,6 +4,7 @@ import com.ryderbelserion.FusionLayout;
 import com.ryderbelserion.FusionProvider;
 import com.ryderbelserion.api.enums.FileType;
 import com.ryderbelserion.api.exception.FusionException;
+import com.ryderbelserion.files.types.JsonCustomFile;
 import com.ryderbelserion.files.types.NbtCustomFile;
 import com.ryderbelserion.files.types.YamlCustomFile;
 import com.ryderbelserion.util.FileMethods;
@@ -118,7 +119,15 @@ public class FileManager {
                 this.files.put(strippedName, new YamlCustomFile(file, isDynamic).loadConfiguration());
             }
 
-            case JSON -> throw new FusionException("The file type with extension " + extension + " is not currently supported.");
+            case JSON -> {
+                if (this.files.containsKey(strippedName)) {
+                    this.files.get(strippedName).loadConfiguration();
+
+                    return this;
+                }
+
+                this.files.put(strippedName, new JsonCustomFile(file, isDynamic).loadConfiguration());
+            }
 
             case NBT -> {
                 if (this.files.containsKey(strippedName)) {
