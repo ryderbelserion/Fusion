@@ -27,7 +27,8 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
     }
 
     public FireworkBuilder addEffect(final boolean flicker, final boolean trail, final FireworkEffect.Type type, @Nullable final List<Color> colors, @Nullable final List<Color> fadeColors) {
-        final FireworkEffect.Builder builder = FireworkEffect.builder();
+        final FireworkStarBuilder builder = new FireworkStarBuilder(getItem());
+
 
         builder.flicker(flicker);
         builder.trail(trail);
@@ -41,7 +42,7 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
             builder.withFade(fadeColors);
         }
 
-        return addEffect(builder.build());
+        return addEffect(builder.getBuilder().build());
     }
 
     public FireworkBuilder withDuration(final int duration) {
