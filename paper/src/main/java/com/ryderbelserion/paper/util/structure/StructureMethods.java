@@ -1,7 +1,7 @@
 package com.ryderbelserion.paper.util.structure;
 
 import com.ryderbelserion.FusionApi;
-import com.ryderbelserion.api.exception.FusionException;
+import com.ryderbelserion.core.api.exception.FusionException;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;

@@ -1,13 +1,13 @@
-package com.ryderbelserion.files;
+package com.ryderbelserion.core.files;
 
-import com.ryderbelserion.FusionLayout;
-import com.ryderbelserion.FusionProvider;
-import com.ryderbelserion.api.enums.FileType;
-import com.ryderbelserion.api.exception.FusionException;
-import com.ryderbelserion.files.types.JsonCustomFile;
-import com.ryderbelserion.files.types.NbtCustomFile;
-import com.ryderbelserion.files.types.YamlCustomFile;
-import com.ryderbelserion.util.FileMethods;
+import com.ryderbelserion.core.FusionLayout;
+import com.ryderbelserion.core.FusionProvider;
+import com.ryderbelserion.core.api.enums.FileType;
+import com.ryderbelserion.core.api.exception.FusionException;
+import com.ryderbelserion.core.files.types.JsonCustomFile;
+import com.ryderbelserion.core.files.types.NbtCustomFile;
+import com.ryderbelserion.core.files.types.YamlCustomFile;
+import com.ryderbelserion.core.util.FileMethods;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

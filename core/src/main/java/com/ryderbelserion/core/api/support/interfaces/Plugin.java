@@ -1,4 +1,4 @@
-package com.ryderbelserion.api.support.interfaces;
+package com.ryderbelserion.core.api.support.interfaces;
 
 import org.jetbrains.annotations.NotNull;
 import java.util.UUID;

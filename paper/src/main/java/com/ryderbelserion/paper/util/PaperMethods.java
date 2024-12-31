@@ -2,7 +2,7 @@ package com.ryderbelserion.paper.util;
 
 import com.ryderbelserion.FusionApi;
 import com.ryderbelserion.paper.Fusion;
-import com.ryderbelserion.util.Methods;
+import com.ryderbelserion.core.util.Methods;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -32,7 +32,6 @@ import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Base64;
-import java.util.Objects;
 
 public final class PaperMethods {
 

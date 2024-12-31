@@ -1,8 +1,8 @@
-package com.ryderbelserion.files.types;
+package com.ryderbelserion.core.files.types;
 
-import com.ryderbelserion.api.enums.FileType;
-import com.ryderbelserion.api.exception.FusionException;
-import com.ryderbelserion.files.CustomFile;
+import com.ryderbelserion.core.api.enums.FileType;
+import com.ryderbelserion.core.api.exception.FusionException;
+import com.ryderbelserion.core.files.CustomFile;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.serialize.SerializationException;

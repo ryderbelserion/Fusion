@@ -1,4 +1,4 @@
-package com.ryderbelserion.api.enums;
+package com.ryderbelserion.core.api.enums;
 
 public enum FileType {
 

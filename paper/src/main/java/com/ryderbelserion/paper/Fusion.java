@@ -1,9 +1,9 @@
 package com.ryderbelserion.paper;
 
-import com.ryderbelserion.FusionLayout;
+import com.ryderbelserion.core.FusionLayout;
 import com.ryderbelserion.FusionApi;
 import com.ryderbelserion.paper.enums.Support;
-import com.ryderbelserion.util.Methods;
+import com.ryderbelserion.core.util.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;

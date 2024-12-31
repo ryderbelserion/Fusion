@@ -1,10 +1,10 @@
 package com.ryderbelserion.paper.files;
 
 import com.ryderbelserion.FusionApi;
-import com.ryderbelserion.api.enums.FileType;
-import com.ryderbelserion.api.exception.FusionException;
+import com.ryderbelserion.core.api.enums.FileType;
+import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.paper.Fusion;
-import com.ryderbelserion.util.FileMethods;
+import com.ryderbelserion.core.util.FileMethods;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

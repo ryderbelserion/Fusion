@@ -1,8 +1,8 @@
-package com.ryderbelserion.api.support;
+package com.ryderbelserion.core.api.support;
 
-import com.ryderbelserion.FusionLayout;
-import com.ryderbelserion.FusionProvider;
-import com.ryderbelserion.api.support.interfaces.Plugin;
+import com.ryderbelserion.core.FusionLayout;
+import com.ryderbelserion.core.FusionProvider;
+import com.ryderbelserion.core.api.support.interfaces.Plugin;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

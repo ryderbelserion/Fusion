@@ -1,6 +1,6 @@
 package com.ryderbelserion;
 
-import com.ryderbelserion.api.exception.FusionException;
+import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.paper.Fusion;
 import com.ryderbelserion.paper.builder.gui.listeners.GuiListener;
 import com.ryderbelserion.paper.enums.Support;

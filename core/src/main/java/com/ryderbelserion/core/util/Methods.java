@@ -1,7 +1,7 @@
-package com.ryderbelserion.util;
+package com.ryderbelserion.core.util;
 
-import com.ryderbelserion.FusionLayout;
-import com.ryderbelserion.FusionProvider;
+import com.ryderbelserion.core.FusionLayout;
+import com.ryderbelserion.core.FusionProvider;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;

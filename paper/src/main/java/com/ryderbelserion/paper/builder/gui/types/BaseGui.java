@@ -1,7 +1,7 @@
 package com.ryderbelserion.paper.builder.gui.types;
 
 import com.ryderbelserion.FusionApi;
-import com.ryderbelserion.api.exception.FusionException;
+import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiAction;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiFiller;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiItem;
@@ -11,7 +11,7 @@ import com.ryderbelserion.paper.builder.gui.enums.InteractionComponent;
 import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
 import com.ryderbelserion.paper.enums.Scheduler;
 import com.ryderbelserion.paper.util.PaperMethods;
-import com.ryderbelserion.util.Methods;
+import com.ryderbelserion.core.util.Methods;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;

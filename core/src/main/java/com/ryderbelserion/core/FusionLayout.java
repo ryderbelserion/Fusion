@@ -1,7 +1,7 @@
-package com.ryderbelserion;
+package com.ryderbelserion.core;
 
-import com.ryderbelserion.api.exception.FusionException;
-import com.ryderbelserion.util.FileMethods;
+import com.ryderbelserion.core.api.exception.FusionException;
+import com.ryderbelserion.core.util.FileMethods;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;

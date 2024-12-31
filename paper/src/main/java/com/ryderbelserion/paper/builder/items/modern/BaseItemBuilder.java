@@ -3,7 +3,7 @@ package com.ryderbelserion.paper.builder.items.modern;
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
 import com.ryderbelserion.FusionApi;
-import com.ryderbelserion.api.exception.FusionException;
+import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.paper.Fusion;
 import com.ryderbelserion.paper.builder.items.modern.types.PotionBuilder;
 import com.ryderbelserion.paper.builder.items.modern.types.PatternBuilder;
