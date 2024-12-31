@@ -32,6 +32,7 @@ import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Base64;
+import java.util.Objects;
 
 public final class PaperMethods {
 
@@ -276,51 +277,51 @@ public final class PaperMethods {
     public static @NotNull DyeColor getDyeColor(@NotNull final String value) {
         if (value.isEmpty()) return DyeColor.WHITE;
 
-        return switch (value.toUpperCase()) {
-            case "ORANGE" -> DyeColor.ORANGE;
-            case "MAGENTA" -> DyeColor.MAGENTA;
-            case "LIGHT_BLUE" -> DyeColor.LIGHT_BLUE;
-            case "YELLOW" -> DyeColor.YELLOW;
-            case "LIME" -> DyeColor.LIME;
-            case "PINK" -> DyeColor.PINK;
-            case "GRAY" -> DyeColor.GRAY;
-            case "LIGHT_GRAY" -> DyeColor.LIGHT_GRAY;
-            case "CYAN" -> DyeColor.CYAN;
-            case "PURPLE" -> DyeColor.PURPLE;
-            case "BLUE" -> DyeColor.BLUE;
-            case "BROWN" -> DyeColor.BROWN;
-            case "GREEN" -> DyeColor.GREEN;
-            case "RED" -> DyeColor.RED;
-            case "BLACK" -> DyeColor.BLACK;
+        return switch (value.toLowerCase()) {
+            case "orange" -> DyeColor.ORANGE;
+            case "magenta", "fuchsia" -> DyeColor.MAGENTA;
+            case "light_blue", "aqua" -> DyeColor.LIGHT_BLUE;
+            case "yellow" -> DyeColor.YELLOW;
+            case "lime" -> DyeColor.LIME;
+            case "pink" -> DyeColor.PINK;
+            case "gray" -> DyeColor.GRAY;
+            case "light_gray", "silver" -> DyeColor.LIGHT_GRAY;
+            case "cyan", "teal" -> DyeColor.CYAN;
+            case "purple" -> DyeColor.PURPLE;
+            case "blue", "navy" -> DyeColor.BLUE;
+            case "brown" -> DyeColor.BROWN;
+            case "green", "olive" -> DyeColor.GREEN;
+            case "red", "maroon" -> DyeColor.RED;
+            case "black" -> DyeColor.BLACK;
             default -> DyeColor.WHITE;
         };
     }
 
-    public static @NotNull Color getDefaultColor(@NotNull final String color) {
-        if (color.isEmpty()) return Color.WHITE;
+    public static @NotNull Color getColor(@NotNull final String value) {
+        if (value.isEmpty()) return Color.WHITE;
 
-        return switch (color.toUpperCase()) {
-            case "AQUA" -> Color.AQUA;
-            case "BLACK" -> Color.BLACK;
-            case "BLUE" -> Color.BLUE;
-            case "FUCHSIA" -> Color.FUCHSIA;
-            case "GRAY" -> Color.GRAY;
-            case "GREEN" -> Color.GREEN;
-            case "LIME" -> Color.LIME;
-            case "MAROON" -> Color.MAROON;
-            case "NAVY" -> Color.NAVY;
-            case "OLIVE" -> Color.OLIVE;
-            case "ORANGE" -> Color.ORANGE;
-            case "PURPLE" -> Color.PURPLE;
-            case "RED" -> Color.RED;
-            case "SILVER" -> Color.SILVER;
-            case "TEAL" -> Color.TEAL;
-            case "YELLOW" -> Color.YELLOW;
+        return switch (value.toLowerCase()) {
+            case "aqua" -> Color.AQUA;
+            case "black" -> Color.BLACK;
+            case "blue" -> Color.BLUE;
+            case "fuchsia" -> Color.FUCHSIA;
+            case "gray" -> Color.GRAY;
+            case "green" -> Color.GREEN;
+            case "lime" -> Color.LIME;
+            case "maroon" -> Color.MAROON;
+            case "navy" -> Color.NAVY;
+            case "olive" -> Color.OLIVE;
+            case "orange" -> Color.ORANGE;
+            case "purple" -> Color.PURPLE;
+            case "red" -> Color.RED;
+            case "silver" -> Color.SILVER;
+            case "teal" -> Color.TEAL;
+            case "yellow" -> Color.YELLOW;
             default -> Color.WHITE;
         };
     }
 
-    public static @Nullable Color getColor(@NotNull final String color) {
+    public static @Nullable Color getRGB(@NotNull final String color) {
         if (color.isEmpty()) return null;
 
         final String[] rgb = color.split(",");

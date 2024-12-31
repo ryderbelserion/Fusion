@@ -54,6 +54,10 @@ public abstract class FusionLayout {
         return this.config.node("settings", "is_verbose").getBoolean(false);
     }
 
+    public String getItemPlugin() {
+        return this.config.node("settings", "custom-items-plugin").getString("none");
+    }
+
     public void enable() {
         FusionProvider.register(this);
 

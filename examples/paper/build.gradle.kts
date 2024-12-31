@@ -7,10 +7,24 @@ plugins {
 
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
+
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+
+    maven("https://repo.triumphteam.dev/snapshots/")
+
+    maven("https://repo.nexomc.com/snapshots/")
+
+    maven("https://repo.oraxen.com/releases/")
 }
 
 dependencies {
     implementation(projects.fusionPaper)
+
+    implementation(libs.triumph.cmds)
+
+    compileOnly(libs.bundles.shared) {
+        exclude("org.bukkit", "*")
+    }
 
     compileOnly(libs.paper)
 }
