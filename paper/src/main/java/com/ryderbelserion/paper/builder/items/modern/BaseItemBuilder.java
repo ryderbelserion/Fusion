@@ -9,6 +9,7 @@ import com.ryderbelserion.paper.builder.items.modern.types.PotionBuilder;
 import com.ryderbelserion.paper.builder.items.modern.types.PatternBuilder;
 import com.ryderbelserion.paper.builder.items.modern.types.SkullBuilder;
 import com.ryderbelserion.paper.builder.items.modern.types.SpawnerBuilder;
+import com.ryderbelserion.paper.builder.items.modern.types.fireworks.FireworkBuilder;
 import com.ryderbelserion.paper.enums.Support;
 import com.ryderbelserion.paper.util.PaperMethods;
 import dev.lone.itemsadder.api.CustomStack;
@@ -456,6 +457,14 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         this.placeholders.remove(placeholder);
 
         return (B) this;
+    }
+
+    public FireworkBuilder asFireworkBuilder() {
+        if (isFirework() || isFireworkStar()) {
+            return new FireworkBuilder(this.item);
+        }
+
+        throw new FusionException("This item type is not a firework rocket or firework star");
     }
 
     public PatternBuilder asPatternBuilder() {

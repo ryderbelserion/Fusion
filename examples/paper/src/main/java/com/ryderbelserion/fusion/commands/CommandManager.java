@@ -3,6 +3,7 @@ package com.ryderbelserion.fusion.commands;
 import com.nexomc.nexo.api.NexoItems;
 import com.ryderbelserion.fusion.FusionPlugin;
 import com.ryderbelserion.fusion.commands.types.item.ItemCommand;
+import com.ryderbelserion.fusion.commands.types.item.TestCommand;
 import com.ryderbelserion.paper.enums.Support;
 import com.ryderbelserion.paper.util.PaperMethods;
 import dev.lone.itemsadder.api.CustomStack;
@@ -70,7 +71,8 @@ public class CommandManager {
         }});
 
         List.of(
-                new ItemCommand()
+                new ItemCommand(),
+                new TestCommand()
         ).forEach(manager::registerCommand);
     }
 }

@@ -8,7 +8,6 @@ import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.CommandFlags;
 import dev.triumphteam.cmd.core.annotations.Flag;
 import dev.triumphteam.cmd.core.argument.keyed.Flags;
-import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;

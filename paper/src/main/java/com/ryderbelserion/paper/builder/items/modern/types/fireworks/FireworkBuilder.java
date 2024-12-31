@@ -1,13 +1,13 @@
 package com.ryderbelserion.paper.builder.items.modern.types.fireworks;
 
 import com.ryderbelserion.paper.builder.items.modern.BaseItemBuilder;
-import com.ryderbelserion.util.Methods;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Fireworks;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
@@ -20,42 +20,34 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
         this.builder = Fireworks.fireworks();
     }
 
-    public void addEffect(@NotNull final FireworkEffect effect) {
+    public FireworkBuilder addEffect(@NotNull final FireworkEffect effect) {
         this.builder.addEffect(effect);
+
+        return this;
     }
 
-    public void addEffect(final String effect) {
-        final String[] split = effect.split(":");
+    public FireworkBuilder addEffect(final boolean flicker, final boolean trail, final FireworkEffect.Type type, @Nullable final List<Color> colors, @Nullable final List<Color> fadeColors) {
+        final FireworkEffect.Builder builder = FireworkEffect.builder();
 
-        this.logger.warn("{}", split[0]);
+        builder.flicker(flicker);
+        builder.trail(trail);
+        builder.with(type);
 
-        switch (split[0]) {
-            case "flicker" -> {
-
-            }
-
-            case "trail" -> {
-
-            }
-
-            case "fade" -> {
-
-            }
-
-            case "color" -> {
-
-            }
+        if (colors != null) {
+            builder.withColor(colors);
         }
 
-        //final boolean withFlicker, final boolean withTrail, final List<Color> colors, final List<Color> fadeColors
+        if (fadeColors != null) {
+            builder.withFade(fadeColors);
+        }
 
-        //final FireworkEffectBuilder builder = new FireworkEffectBuilder();
-
-        //addEffect(builder.withFlicker(withFlicker).withTrail(withTrail).withColor(colors).withFade(fadeColors).build());
+        return addEffect(builder.build());
     }
 
-    public void addEffects(@NotNull final List<String> effects) {
-        effects.forEach(this::addEffect);
+    public FireworkBuilder withDuration(final int duration) {
+        this.builder.flightDuration(duration);
+
+        return this;
     }
 
     @Override
