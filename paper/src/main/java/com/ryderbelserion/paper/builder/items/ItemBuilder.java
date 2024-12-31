@@ -502,7 +502,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
                 this.potionType = PaperMethods.getPotionType(data);
 
-                this.color = data.contains(",") ? PaperMethods.getColor(data) : PaperMethods.getDefaultColor(data);
+                this.color = data.contains(",") ? PaperMethods.getRGB(data) : PaperMethods.getColor(data);
             } else {
                 this.damage = damage.get().intValue();
             }

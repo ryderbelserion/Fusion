@@ -9,3 +9,12 @@ settings:
   #
   # Available types: up, down, ceiling, floor, half_up, half_down, half_even, unnecessary
   rounding: half_even
+  # A list of available custom item plugins:
+  #  -> ItemsAdder
+  #  -> Oraxen
+  #  -> Nexo
+  #  -> None
+  #
+  # If the option is set to blank, it'll pick whatever plugin it feels like picking.
+  # Set the value to None if you do not want any.
+  custom-items-plugin: ""
