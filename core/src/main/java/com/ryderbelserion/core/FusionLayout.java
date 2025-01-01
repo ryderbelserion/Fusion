@@ -20,12 +20,11 @@ public abstract class FusionLayout {
 
     private CommentedConfigurationNode config;
     private YamlConfigurationLoader loader;
+    private FileManager fileManager;
 
     public abstract File getDataFolder();
 
     public abstract ComponentLogger getLogger();
-
-    public abstract FileManager getFileManager();
 
     public abstract @NotNull String placeholders(@NotNull final String line);
 
@@ -77,6 +76,8 @@ public abstract class FusionLayout {
         this.loader = YamlConfigurationLoader.builder().indent(2).file(fusion).build();
 
         reload();
+
+        this.fileManager = new FileManager();
     }
 
     public void disable() {
@@ -91,5 +92,9 @@ public abstract class FusionLayout {
                 throw new FusionException("Failed to load fusion.yml", exception);
             }
         }).join();
+    }
+
+    public FileManager getFileManager() {
+        return this.fileManager;
     }
 }
