@@ -1,6 +1,6 @@
 package com.ryderbelserion.paper.builder.gui.types;
 
-import com.ryderbelserion.FusionApi;
+import com.ryderbelserion.paper.FusionApi;
 import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiAction;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiFiller;

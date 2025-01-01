@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion;
 
-import com.ryderbelserion.FusionApi;
+import com.ryderbelserion.paper.FusionApi;
 import com.ryderbelserion.fusion.commands.CommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
 

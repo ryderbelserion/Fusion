@@ -1,6 +1,6 @@
 package com.ryderbelserion.paper.files;
 
-import com.ryderbelserion.FusionApi;
+import com.ryderbelserion.paper.FusionApi;
 import com.ryderbelserion.core.api.enums.FileType;
 import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.paper.Fusion;

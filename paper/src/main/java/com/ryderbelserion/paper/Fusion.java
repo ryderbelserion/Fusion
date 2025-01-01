@@ -1,7 +1,6 @@
 package com.ryderbelserion.paper;
 
 import com.ryderbelserion.core.FusionLayout;
-import com.ryderbelserion.FusionApi;
 import com.ryderbelserion.paper.enums.Support;
 import com.ryderbelserion.core.util.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;

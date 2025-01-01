@@ -1,6 +1,6 @@
 package com.ryderbelserion.paper.enums;
 
-import com.ryderbelserion.FusionApi;
+import com.ryderbelserion.paper.FusionApi;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 

@@ -1,6 +1,6 @@
 package com.ryderbelserion.paper.util;
 
-import com.ryderbelserion.FusionApi;
+import com.ryderbelserion.paper.FusionApi;
 import com.ryderbelserion.paper.Fusion;
 import com.ryderbelserion.core.util.Methods;
 import io.papermc.paper.registry.RegistryAccess;
