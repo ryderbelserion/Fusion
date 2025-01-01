@@ -3,24 +3,37 @@ package com.ryderbelserion.core.files.types;
 import com.ryderbelserion.core.api.enums.FileType;
 import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.core.files.CustomFile;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.jackson.JacksonConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.UnaryOperator;
 
 public class JsonCustomFile extends CustomFile<JsonCustomFile> {
 
     private BasicConfigurationNode configurationNode;
     private final JacksonConfigurationLoader loader;
 
-    public JsonCustomFile(final File file, final boolean isDynamic) {
+    public JsonCustomFile(final File file, final boolean isDynamic, @Nullable final UnaryOperator<ConfigurationOptions> defaultOptions) {
         super(file, isDynamic, ".json");
 
-        this.loader = JacksonConfigurationLoader.builder().indent(2).file(file).build();
+        final JacksonConfigurationLoader.Builder builder = JacksonConfigurationLoader.builder();
+
+        if (defaultOptions != null) {
+            builder.defaultOptions(defaultOptions);
+        }
+
+        this.loader = builder.indent(2).file(file).build();
+    }
+
+    public JsonCustomFile(final File file, final boolean isDynamic) {
+        this(file, isDynamic, null);
     }
 
     @Override

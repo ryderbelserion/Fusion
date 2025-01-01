@@ -3,24 +3,37 @@ package com.ryderbelserion.core.files.types;
 import com.ryderbelserion.core.api.enums.FileType;
 import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.core.files.CustomFile;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.UnaryOperator;
 
 public class YamlCustomFile extends CustomFile<YamlCustomFile> {
 
     private CommentedConfigurationNode configurationNode;
     private final YamlConfigurationLoader loader;
 
-    public YamlCustomFile(final File file, final boolean isDynamic) {
+    public YamlCustomFile(final File file, final boolean isDynamic, @Nullable final UnaryOperator<ConfigurationOptions> defaultOptions) {
         super(file, isDynamic, ".yml");
 
-        this.loader = YamlConfigurationLoader.builder().indent(2).file(file).build();
+        final YamlConfigurationLoader.Builder builder = YamlConfigurationLoader.builder();
+
+        if (defaultOptions != null) {
+            builder.defaultOptions(defaultOptions);
+        }
+
+        this.loader = builder.indent(2).file(file).build();
+    }
+
+    public YamlCustomFile(final File file, final boolean isDynamic) {
+        this(file, isDynamic, null);
     }
 
     @Override
