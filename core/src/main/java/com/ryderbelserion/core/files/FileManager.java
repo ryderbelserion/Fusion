@@ -11,11 +11,13 @@ import com.ryderbelserion.core.util.FileMethods;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.configurate.ConfigurationOptions;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 public class FileManager {
 
@@ -31,7 +33,7 @@ public class FileManager {
 
     public FileManager() {}
 
-    public final FileManager addFolder(@NotNull final String folder, @NotNull final FileType fileType) {
+    public final FileManager addFolder(@NotNull final String folder, @NotNull final FileType fileType, @Nullable final UnaryOperator<ConfigurationOptions> defaultOptions) {
         if (folder.isBlank()) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot add the folder as the folder is empty.");
@@ -61,7 +63,7 @@ public class FileManager {
                 for (final String fileName : files) {
                     if (!fileName.endsWith("." + extension)) continue; // just in case people are weird
 
-                    addFile(fileName, folder + File.separator + file.getName(), true, fileType);
+                    addFile(fileName, folder + File.separator + file.getName(), true, fileType, defaultOptions);
                 }
 
                 continue;
@@ -71,21 +73,17 @@ public class FileManager {
 
             if (!fileName.endsWith("." + extension)) continue; // just in case people are weird
 
-            addFile(fileName, folder, true, fileType);
+            addFile(fileName, folder, true, fileType, defaultOptions);
         }
 
         return this;
     }
 
-    public final FileManager addFile(@NotNull final String fileName) {
-        return addFile(fileName, null, false, FileType.NONE);
+    public final FileManager addFolder(@NotNull final String folder, @NotNull final FileType fileType) {
+        return addFolder(folder, fileType, null);
     }
 
-    public final FileManager addFile(@NotNull final String fileName, @NotNull final FileType fileType) {
-        return addFile(fileName, null, false, fileType);
-    }
-
-    public final FileManager addFile(@NotNull final String fileName, @Nullable final String folder, final boolean isDynamic, @NotNull final FileType fileType) {
+    public final FileManager addFile(@NotNull final String fileName, @Nullable final String folder, final boolean isDynamic, @NotNull final FileType fileType, @Nullable final UnaryOperator<ConfigurationOptions> defaultOptions) {
         if (fileName.isBlank()) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot add the file as the file is null or empty.");
@@ -116,7 +114,7 @@ public class FileManager {
                     return this;
                 }
 
-                this.files.put(strippedName, new YamlCustomFile(file, isDynamic).loadConfiguration());
+                this.files.put(strippedName, new YamlCustomFile(file, isDynamic, defaultOptions).loadConfiguration());
             }
 
             case JSON -> {
@@ -126,7 +124,7 @@ public class FileManager {
                     return this;
                 }
 
-                this.files.put(strippedName, new JsonCustomFile(file, isDynamic).loadConfiguration());
+                this.files.put(strippedName, new JsonCustomFile(file, isDynamic, defaultOptions).loadConfiguration());
             }
 
             case NBT -> {
@@ -141,6 +139,18 @@ public class FileManager {
         }
 
         return this;
+    }
+
+    public final FileManager addFile(@NotNull final String fileName, @NotNull final FileType fileType, @Nullable final UnaryOperator<ConfigurationOptions> defaultOptions) {
+        return addFile(fileName, null, false, fileType, defaultOptions);
+    }
+
+    public final FileManager addFile(@NotNull final String fileName, @NotNull final FileType fileType) {
+        return addFile(fileName, fileType, null);
+    }
+
+    public final FileManager addFile(@NotNull final String fileName) {
+        return addFile(fileName, null, false, FileType.NONE, null);
     }
 
     public final FileManager saveFile(@NotNull final String fileName, @NotNull final FileType fileType) {
@@ -169,10 +179,6 @@ public class FileManager {
         return this;
     }
 
-    public final FileManager removeFile(final CustomFile<? extends CustomFile<?>> customFile, final boolean purge) {
-        return removeFile(customFile.getFileName(), customFile.getFileType(), purge);
-    }
-
     public final FileManager removeFile(@NotNull final String fileName, @NotNull final FileType fileType, final boolean purge) {
         if (fileName.isBlank()) {
             if (this.isVerbose) {
@@ -197,6 +203,10 @@ public class FileManager {
         customFile.saveConfiguration();
 
         return this;
+    }
+
+    public final FileManager removeFile(final CustomFile<? extends CustomFile<?>> customFile, final boolean purge) {
+        return removeFile(customFile.getFileName(), customFile.getFileType(), purge);
     }
 
     public FileManager reloadFiles() {
