@@ -1,6 +1,7 @@
 package com.ryderbelserion.core;
 
 import com.ryderbelserion.core.api.exception.FusionException;
+import com.ryderbelserion.core.files.FileManager;
 import com.ryderbelserion.core.util.FileMethods;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -23,6 +24,8 @@ public abstract class FusionLayout {
     public abstract File getDataFolder();
 
     public abstract ComponentLogger getLogger();
+
+    public abstract FileManager getFileManager();
 
     public abstract @NotNull String placeholders(@NotNull final String line);
 
