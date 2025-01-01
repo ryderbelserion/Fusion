@@ -1,6 +1,7 @@
 package com.ryderbelserion.paper;
 
 import com.ryderbelserion.core.FusionLayout;
+import com.ryderbelserion.core.files.FileManager;
 import com.ryderbelserion.paper.enums.Support;
 import com.ryderbelserion.core.util.Methods;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -23,6 +24,12 @@ public final class Fusion extends FusionLayout {
 
     private final Plugin plugin = this.settings.getPlugin();
 
+    private final FileManager fileManager;
+
+    public Fusion() {
+        this.fileManager = new FileManager();
+    }
+
     @Override
     public File getDataFolder() {
         return this.plugin.getDataFolder();
@@ -31,6 +38,11 @@ public final class Fusion extends FusionLayout {
     @Override
     public ComponentLogger getLogger() {
         return this.plugin.getComponentLogger();
+    }
+
+    @Override
+    public FileManager getFileManager() {
+        return this.fileManager;
     }
 
     @Override
