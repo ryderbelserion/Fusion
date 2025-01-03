@@ -6,7 +6,8 @@ listOf(
     "core" to "core",
     "paper" to "paper",
 
-    "examples/paper" to "example-paper"
+    "examples/paper" to "example-paper",
+    "examples/command" to "example-command",
 ).forEach(::includeProject)
 
 fun includeProject(pair: Pair<String, String>): Unit = includeProject(pair.first, pair.second)
