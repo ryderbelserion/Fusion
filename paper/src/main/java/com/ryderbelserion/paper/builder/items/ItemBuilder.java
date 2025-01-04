@@ -11,6 +11,8 @@ import com.ryderbelserion.paper.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.paper.enums.Support;
 import com.ryderbelserion.paper.util.PaperMethods;
 import com.ryderbelserion.core.util.Methods;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.ItemAttributeModifiers;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.text.Component;
@@ -130,7 +132,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
         this.fireworkPower = itemBuilder.fireworkPower;
 
-        this.itemFlags = itemBuilder.itemFlags;
         this.patterns = itemBuilder.patterns;
 
         this.player = itemBuilder.player;
@@ -305,8 +306,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
     private int fireworkPower = 1;
 
-    private @NotNull List<ItemFlag> itemFlags = new ArrayList<>(); //todo() itemflags are dead
-
     private @NotNull List<Pattern> patterns = new ArrayList<>();
 
     private @Nullable UUID player = null;
@@ -398,19 +397,31 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
                 itemMeta.setCustomModelData(number.intValue());
             });
 
-            if (this.isHidingItemFlags) { //todo() itemflags are dead
-                itemMeta.addItemFlags(ItemFlag.values());
-            } else {
-                this.itemFlags.forEach(itemMeta::addItemFlags);
-            }
-
-            itemMeta.setEnchantmentGlintOverride(this.isGlowing);
-
             this.damageTags.forEach(itemMeta::setDamageResistant);
 
             itemMeta.setHideTooltip(this.isHidingToolTips);
             itemMeta.setUnbreakable(this.isUnbreakable);
         });
+
+        if (this.isHidingItemFlags) {
+            final List<ItemAttributeModifiers.Entry> values = new ArrayList<>();
+
+            if (this.itemStack.hasData(DataComponentTypes.ATTRIBUTE_MODIFIERS)) {
+                final ItemAttributeModifiers modifier = this.itemStack.getData(DataComponentTypes.ATTRIBUTE_MODIFIERS);
+
+                if (modifier != null) {
+                    values.addAll(modifier.modifiers());
+                }
+            }
+
+            final ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.itemAttributes();
+
+            values.forEach(modifier -> builder.addModifier(modifier.attribute(), modifier.modifier()));
+
+            this.itemStack.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, builder.showInTooltip(false));
+        }
+
+        this.itemStack.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, this.isGlowing);
 
         return this.itemStack;
     }
@@ -694,26 +705,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T addItemFlag(@NotNull final ItemFlag itemFlag) {
-        this.itemFlags.add(itemFlag);
-
-        return (T) this;
-    }
-
-    public @NotNull T setItemFlags(@NotNull final List<String> itemFlags) { //todo() itemflags are dead
-        if (itemFlags.isEmpty()) return (T) this;
-
-        itemFlags.forEach(flag -> addItemFlag(ItemFlag.valueOf(flag)));
-
-        return (T) this;
-    }
-
-    public @NotNull T removeItemFlag(@NotNull final ItemFlag itemFlag) { //todo() itemflags are dead
-        this.itemFlags.remove(itemFlag);
-
-        return (T) this;
-    }
-
     public @NotNull T setEntityType(@NotNull final EntityType entityType) {
         this.entityType = entityType;
 
@@ -900,16 +891,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         if (enchantments.isEmpty()) return (T) this;
 
         enchantments.forEach(this::removeEnchantment);
-
-        return (T) this;
-    }
-
-    public @NotNull T applyHiddenItemFlags() { //todo() itemflags are dead
-        if (this.isCustom) return (T) this;
-
-        this.itemStack.editMeta(itemMeta -> {
-            if (this.isHidingItemFlags) itemMeta.addItemFlags(ItemFlag.values()); else this.itemFlags.forEach(itemMeta::addItemFlags);
-        });
 
         return (T) this;
     }
@@ -1151,10 +1132,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         this.displayComponentLore.forEach(line -> lore.add(PlainTextComponentSerializer.plainText().serialize(line)));
 
         return lore;
-    }
-
-    public @NotNull final List<ItemFlag> getItemFlags() { //todo() itemflags are dead
-        return this.itemFlags;
     }
 
     public @NotNull final List<String> getDisplayLore() {
