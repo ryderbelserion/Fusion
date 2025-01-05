@@ -335,7 +335,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
     private boolean isUnbreakable = false;
 
-    private Boolean isGlowing = null;
+    private boolean isGlowing = false;
 
     private TrimMaterial trimMaterial;
 
@@ -635,7 +635,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T setGlowing(@Nullable final Boolean isGlowing) {
+    public @NotNull T setGlowing(final boolean isGlowing) {
         this.isGlowing = isGlowing;
 
         return (T) this;
