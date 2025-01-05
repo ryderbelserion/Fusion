@@ -13,6 +13,7 @@ import com.ryderbelserion.paper.util.PaperMethods;
 import com.ryderbelserion.core.util.Methods;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemAttributeModifiers;
+import io.papermc.paper.datacomponent.item.Unbreakable;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.text.Component;
@@ -252,10 +253,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
                 if (itemMeta instanceof final MapMeta map) this.color = map.getColor();
             }
 
-            setHidingToolTips(itemMeta.isHideTooltip())
-                    .setHidingItemFlags(itemMeta.getItemFlags().contains(ItemFlag.HIDE_ATTRIBUTES)) //todo() itemflags are dead
-                    .setUnbreakable(itemMeta.isUnbreakable());
-
             if (itemMeta.hasDamageResistant()) {
                 final Tag<DamageType> tag = itemMeta.getDamageResistant();
 
@@ -265,9 +262,23 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
                     }};
                 }
             }
-
-            if (itemMeta.hasEnchantmentGlintOverride()) setGlowing(itemMeta.getEnchantmentGlintOverride());
         }
+
+        setGlowing(itemStack.hasData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE));
+
+        if (itemStack.hasData(DataComponentTypes.ATTRIBUTE_MODIFIERS)) {
+            final ItemAttributeModifiers attributeModifiers = itemStack.getData(DataComponentTypes.ATTRIBUTE_MODIFIERS);
+
+            if (attributeModifiers != null) {
+                final boolean tooltip = attributeModifiers.showInTooltip();
+
+                setHidingItemFlags(tooltip).setHidingToolTips(tooltip);
+            }
+        }
+
+        setHidingToolTips(itemStack.hasData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP));
+
+        setUnbreakable(itemStack.hasData(DataComponentTypes.UNBREAKABLE));
     }
 
     private boolean isCustom = false;
@@ -400,7 +411,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             this.damageTags.forEach(itemMeta::setDamageResistant);
 
             itemMeta.setHideTooltip(this.isHidingToolTips);
-            itemMeta.setUnbreakable(this.isUnbreakable);
         });
 
         if (this.isHidingItemFlags) {
@@ -421,7 +431,17 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             this.itemStack.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, builder.showInTooltip(false));
         }
 
-        this.itemStack.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, this.isGlowing);
+        if (this.isGlowing) {
+            this.itemStack.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true);
+        }
+
+        if (this.isHidingToolTips) {
+            this.itemStack.setData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
+        }
+
+        if (this.isUnbreakable) {
+            this.itemStack.setData(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable().build().showInTooltip(true));
+        }
 
         return this.itemStack;
     }
@@ -1028,14 +1048,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
                 }
             });
         }
-
-        return (T) this;
-    }
-
-    public @NotNull T applyGlowing() {
-        if (this.isCustom) return (T) this;
-
-        this.itemStack.editMeta(itemMeta -> itemMeta.setEnchantmentGlintOverride(!itemMeta.hasEnchants() && this.isGlowing));
 
         return (T) this;
     }
