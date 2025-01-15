@@ -1,5 +1,3 @@
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
 rootProject.name = "fusion"
 
 listOf(
@@ -27,8 +25,4 @@ fun includeProject(name: String) {
     includeProject(name) {
         this.name = "${rootProject.name}-$name"
     }
-}
-
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.9.0"
 }

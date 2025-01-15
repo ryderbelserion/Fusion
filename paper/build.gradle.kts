@@ -1,18 +1,22 @@
 plugins {
-    id("fusion.base")
+    id("paper-plugin")
 
     alias(libs.plugins.paperweight)
     alias(libs.plugins.shadow)
 }
 
-repositories {
-    maven("https://repo.papermc.io/repository/maven-public/")
+project.group = "${rootProject.group}.paper"
+project.version = rootProject.version
+project.description = "A version of Fusion for Paper based servers!"
 
+repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 
     maven("https://repo.nexomc.com/snapshots/")
 
     maven("https://repo.oraxen.com/releases/")
+
+    maven("https://maven.devs.beer/")
 }
 
 dependencies {
@@ -22,5 +26,5 @@ dependencies {
         exclude("org.bukkit", "*")
     }
 
-    api(projects.fusionCore)
+    api(project(":fusion-core"))
 }

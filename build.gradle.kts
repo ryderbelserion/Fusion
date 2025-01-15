@@ -1,5 +1,5 @@
 plugins {
-    id("fusion.parent")
+    id("root-plugin")
 }
 
 rootProject.group = "com.ryderbelserion.fusion"

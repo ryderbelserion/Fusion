@@ -93,7 +93,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public BaseItemBuilder(final String item) {
-        switch (this.api.getFusion().getItemPlugin()) {
+        switch (this.api.getFusion().getItemPlugin().toLowerCase()) {
             case "nexo" -> {
                 if (Support.nexo.isEnabled()) {
                     getNexo(item);
@@ -123,6 +123,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
                 this.item = PaperMethods.fromBase64(item);
             }
+
+            case "none" -> this.item = PaperMethods.fromBase64(item);
 
             default -> {
                 if (Support.nexo.isEnabled() && NexoItems.exists(item)) {

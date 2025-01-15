@@ -1,6 +1,10 @@
 plugins {
-    id("fusion.base")
+    id("root-plugin")
 }
+
+project.group = "${rootProject.group}.core"
+project.version = rootProject.version
+project.description = "A platform independent version of Fusion!"
 
 dependencies {
     compileOnly(libs.bundles.adventure)

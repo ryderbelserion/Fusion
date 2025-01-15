@@ -2,12 +2,14 @@ plugins {
     alias(libs.plugins.runPaper)
     alias(libs.plugins.shadow)
 
-    id("fusion.base")
+    id("paper-plugin")
 }
 
-repositories {
-    maven("https://repo.papermc.io/repository/maven-public/")
+project.group = "${rootProject.group}.paper"
+project.version = rootProject.version
+project.description = "An example usage of Fusion for Paper based servers!"
 
+repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 
     maven("https://repo.triumphteam.dev/snapshots/")
@@ -18,15 +20,13 @@ repositories {
 }
 
 dependencies {
-    implementation(projects.fusionPaper)
+    implementation(project(":fusion-paper"))
 
     implementation(libs.triumph.cmds)
 
     compileOnly(libs.bundles.shared) {
         exclude("org.bukkit", "*")
     }
-
-    compileOnly(libs.paper)
 }
 
 tasks {

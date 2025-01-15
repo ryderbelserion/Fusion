@@ -36,7 +36,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.meta.ArmorMeta;
@@ -820,17 +819,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             return (T) this;
         }
 
-        @NotNull final PlayerBuilder builder = new PlayerBuilder(player);
-        // More extensive but we only call methods once, and we avoid NPE.
-        @Nullable final Player target = builder.getPlayer();
-
-        if (target != null) {
-            this.uuid = target.getUniqueId();
-        } else {
-            @Nullable final OfflinePlayer offlineTarget = builder.getOfflinePlayer();
-
-            if (offlineTarget != null) this.uuid = offlineTarget.getUniqueId();
-        }
+        this.uuid = new PlayerBuilder(player).getUniqueId();
 
         return (T) this;
     }

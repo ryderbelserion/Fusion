@@ -7,12 +7,6 @@ shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 # Paper API
 paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 
-# Cloud API
-cloud-extras = { module = "org.incendo:cloud-minecraft-extras", version.ref = "cloud-paper" }
-cloud-annotations = { module = "org.incendo:cloud-annotations", version.ref = "cloud-api"}
-cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-paper" }
-cloud-api = { module = "org.incendo:cloud-core", version.ref = "cloud-api" }
-
 # Kyori API
 kyori-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "adventure" }
 kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }
@@ -27,7 +21,7 @@ triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "t
 
 # Plugin API
 headdatabaseapi = { module = "com.arcaniax:HeadDatabase-API", version.ref = "headdatabaseapi" }
-itemsadder = { module = "com.github.LoneDev6:api-itemsadder", version.ref = "itemsadder" }
+itemsadder = { module = "dev.lone:api-itemsadder", version.ref = "itemsadder" }
 placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
 oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
 nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
@@ -35,30 +29,27 @@ nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
 [versions]
 # Gradle Plugins
 shadow = "9.0.0-beta4"
-paperweight = "2.0.0-beta.10"
+paperweight = "2.0.0-beta.13"
 runPaper = "2.3.1"
 
 # Paper API
 paper = "1.21.4-R0.1-SNAPSHOT"
 minecraft = "1.21.4"
 
-# Cloud API
-cloud-paper = "2.0.0-beta.10"
-cloud-api = "2.0.0"
-
 # Kyori API
-adventure = "4.17.0"
+adventure = "4.18.0"
 
 # Configurate API
 configurate = "4.1.2"
 
+# Triumph API
 triumph-cmd = "2.0.0-ALPHA-10"
 
 # Plugin API
 headdatabaseapi = "1.3.1"
 placeholderapi = "2.11.6"
 oraxen = "1.171.0"
-itemsadder = "3.6.1"
+itemsadder = "4.0.2-beta-release-11"
 nexo = "0.5.0-dev.14"
 
 [bundles]
@@ -67,6 +58,3 @@ adventure = ["kyori-api", "kyori-text", "kyori-logger", "kyori-legacy"]
 
 # Shared API
 shared = ["headdatabaseapi", "placeholderapi", "itemsadder", "oraxen", "nexo"]
-
-# Cloud API
-cloud-api = ["cloud-annotations", "cloud-extras", "cloud-paper", "cloud-api"]
