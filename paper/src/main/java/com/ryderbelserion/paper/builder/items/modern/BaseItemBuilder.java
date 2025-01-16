@@ -5,6 +5,7 @@ import com.nexomc.nexo.items.ItemBuilder;
 import com.ryderbelserion.paper.FusionApi;
 import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.paper.Fusion;
+import com.ryderbelserion.paper.builder.api.ComponentBuilder;
 import com.ryderbelserion.paper.builder.items.modern.types.PotionBuilder;
 import com.ryderbelserion.paper.builder.items.modern.types.PatternBuilder;
 import com.ryderbelserion.paper.builder.items.modern.types.SkullBuilder;
@@ -23,6 +24,7 @@ import io.papermc.paper.datacomponent.item.ItemLore;
 import io.papermc.paper.datacomponent.item.MapItemColor;
 import io.papermc.paper.datacomponent.item.Unbreakable;
 import io.th0rgal.oraxen.api.OraxenItems;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -152,24 +154,26 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         }
     }
 
-    public ItemStack asItemStack() {
+    public ItemStack asItemStack(@Nullable final Audience audience) {
         if (this.displayName != null) {
-            this.item.setData(this.isStatic ? DataComponentTypes.ITEM_NAME : DataComponentTypes.CUSTOM_NAME, this.fusion.color(displayName, this.placeholders));
+            final ComponentBuilder builder = new ComponentBuilder(this.displayName);
+
+            this.item.setData(this.isStatic ? DataComponentTypes.ITEM_NAME : DataComponentTypes.CUSTOM_NAME, builder.asComponent(audience, this.placeholders));
         }
 
         if (!this.displayLore.isEmpty()) {
-            final List<Component> components = new ArrayList<>();
+            final ComponentBuilder builder = new ComponentBuilder(this.displayLore);
 
-            this.displayLore.forEach(line -> components.add(this.fusion.color(line, this.placeholders)));
-
-            final ItemLore lore = ItemLore.lore(components);
-
-            this.item.setData(DataComponentTypes.LORE, lore);
+            this.item.setData(DataComponentTypes.LORE, ItemLore.lore(builder.asComponents(audience, this.placeholders)));
         }
 
         build();
 
         return this.item;
+    }
+
+    public ItemStack asItemStack() {
+        return asItemStack(null);
     }
 
     public B build() {
@@ -510,12 +514,20 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return new SpawnerBuilder(this.item);
     }
 
+    public void setItemToInventory(final Audience audience, final Inventory inventory, final int slot) {
+        inventory.setItem(slot, asItemStack(audience));
+    }
+
+    public void addItemToInventory(final Audience audience, final Inventory inventory) {
+        inventory.addItem(asItemStack(audience));
+    }
+
     public void setItemToInventory(final Inventory inventory, final int slot) {
-        inventory.setItem(slot, asItemStack());
+        setItemToInventory(null, inventory, slot);
     }
 
     public void addItemToInventory(final Inventory inventory) {
-        inventory.addItem(asItemStack());
+        addItemToInventory(null, inventory);
     }
 
     public final boolean isDyeable() {

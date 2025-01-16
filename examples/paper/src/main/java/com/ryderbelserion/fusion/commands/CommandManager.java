@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.commands;
 
 import com.nexomc.nexo.api.NexoItems;
 import com.ryderbelserion.fusion.FusionPlugin;
+import com.ryderbelserion.fusion.commands.types.adventure.ComponentExample;
 import com.ryderbelserion.fusion.commands.types.item.ItemCommand;
 import com.ryderbelserion.fusion.commands.types.item.TestCommand;
 import com.ryderbelserion.paper.enums.Support;
@@ -71,6 +72,8 @@ public class CommandManager {
         }});
 
         List.of(
+                new ComponentExample(),
+
                 new ItemCommand(),
                 new TestCommand()
         ).forEach(manager::registerCommand);

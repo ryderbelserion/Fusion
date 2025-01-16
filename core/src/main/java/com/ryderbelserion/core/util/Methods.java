@@ -5,6 +5,7 @@ import com.ryderbelserion.core.FusionProvider;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 import java.math.RoundingMode;
@@ -31,10 +32,14 @@ public class Methods {
         return NumberFormat.getNumberInstance(Locale.US).format(number);
     }
 
-    public static @NotNull Component parse(@NotNull final String message) {
+    public static @NotNull Component parse(@NotNull final String message, @NotNull final TagResolver... tags) {
         if (message.isEmpty()) return Component.empty();
 
-        return MiniMessage.miniMessage().deserialize(message).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+        return MiniMessage.miniMessage().deserialize(message, tags).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+    }
+
+    public static @NotNull Component parse(@NotNull final String message) {
+        return parse(message, TagResolver.empty());
     }
 
     public static @NotNull Component toComponent(@NotNull final String component) {

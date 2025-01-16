@@ -76,14 +76,20 @@ public class ItemCommand extends BaseCommand {
             if (color.isPresent() && pattern.isPresent()) {
                 final PatternBuilder builder = itemBuilder.asPatternBuilder();
 
-                builder.addPattern(pattern.get() + ":" + color.get());
+                builder.addPattern(pattern.get(), color.get());
 
                 builder.build();
             }
         }
 
-        //itemBuilder.setDisplayName("<red>This is an item").addDisplayLore("<green>This is a line.").addDisplayLore("<yellow>This is another line.");
+        itemBuilder.addPlaceholder("{name}", player.getName())
+                .addPlaceholder("experience", String.valueOf(player.getLevel()))
+                .addPlaceholder("uuid", player.getUniqueId().toString())
+                .addPlaceholder("{uuid}", player.getUniqueId().toString())
+                .setDisplayName("<red>This is an item with {name} and <experience>".replaceAll("\\{", "<").replaceAll("}", ">"))
+                .addDisplayLore("<green>This is a line with <uuid>.")
+                .addDisplayLore("<yellow>This is another line or {uuid}.".replaceAll("\\{", "<").replaceAll("}", ">"));
 
-        itemBuilder.addItemToInventory(player.getInventory());
+        itemBuilder.addItemToInventory(player, player.getInventory());
     }
 }

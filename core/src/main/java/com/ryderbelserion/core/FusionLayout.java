@@ -6,6 +6,7 @@ import com.ryderbelserion.core.util.FileMethods;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -26,11 +27,13 @@ public abstract class FusionLayout {
 
     public abstract ComponentLogger getLogger();
 
-    public abstract @NotNull String placeholders(@NotNull final String line);
+    public abstract @NotNull Component placeholders(@NotNull final String line);
 
-    public abstract @NotNull String placeholders(@NotNull final String line, @NotNull final Map<String, String> placeholders);
+    public abstract @NotNull Component placeholders(@NotNull final String line, @NotNull final Map<String, String> placeholders);
 
-    public abstract @NotNull String placeholders(@Nullable final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders);
+    public abstract @NotNull Component placeholders(@Nullable final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders, @Nullable final List<TagResolver> tags);
+
+    public abstract @NotNull Component placeholders(@Nullable final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders);
 
     public abstract @NotNull Component color(@NotNull final String line);
 

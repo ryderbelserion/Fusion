@@ -7,12 +7,15 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,38 +37,41 @@ public final class Fusion extends FusionLayout {
     }
 
     @Override
-    public @NotNull String placeholders(@NotNull String line) {
+    public @NotNull Component placeholders(@NotNull String line) {
         return placeholders(null, line, new HashMap<>());
     }
 
     @Override
-    public @NotNull String placeholders(@NotNull String line, @NotNull Map<String, String> placeholders) {
+    public @NotNull Component placeholders(@NotNull String line, @NotNull Map<String, String> placeholders) {
         return placeholders(null, line, placeholders);
     }
 
     @Override
-    public @NotNull String placeholders(@Nullable final Audience audience, @NotNull String line, @NotNull final Map<String, String> placeholders) {
-        if (audience != null && Support.placeholder_api.isEnabled()) {
-            if (audience instanceof Player player) {
-                line = PlaceholderAPI.setPlaceholders(player, line);
-            }
+    public @NotNull Component placeholders(@Nullable final Audience audience, @NotNull String line, @NotNull final Map<String, String> placeholders) {
+        return placeholders(null, line, placeholders, null);
+    }
+
+    @Override
+    public @NotNull Component placeholders(@Nullable final Audience audience, @NotNull String line, @NotNull final Map<String, String> placeholders, @Nullable final List<TagResolver> tags) {
+        final List<TagResolver> resolvers = new ArrayList<>();
+
+        if (tags != null) {
+            resolvers.addAll(tags);
         }
 
-        if (!placeholders.isEmpty()) {
-            for (final Map.Entry<String, String> placeholder : placeholders.entrySet()) {
+        placeholders.forEach((placeholder, value) -> {
+            final TagResolver tag = Placeholder.parsed(placeholder.replaceAll("\\{", "").replaceAll("}", "").toLowerCase(), value);
 
-                if (placeholder != null) {
-                    final String key = placeholder.getKey();
-                    final String value = placeholder.getValue();
+            resolvers.add(tag);
+        });
 
-                    if (key != null && value != null) {
-                        line = line.replace(key, value).replace(key.toLowerCase(), value);
-                    }
-                }
-            }
+        String clonedLine = line;
+
+        if (audience instanceof Player player && Support.placeholder_api.isEnabled()) {
+            clonedLine = PlaceholderAPI.setPlaceholders(player, clonedLine);
         }
 
-        return line;
+        return Methods.parse(clonedLine, TagResolver.resolver(resolvers));
     }
 
     @Override
@@ -80,7 +86,7 @@ public final class Fusion extends FusionLayout {
 
     @Override
     public @NotNull Component color(@Nullable final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders) {
-        return Methods.parse(placeholders(audience, line, placeholders));
+        return placeholders(audience, line, placeholders);
     }
 
     @Override
