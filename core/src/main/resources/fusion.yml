@@ -17,4 +17,4 @@ settings:
   #
   # If the option is set to blank, it'll pick whatever plugin it feels like picking.
   # Set the value to None if you do not want any.
-  custom-items-plugin: ""
+  custom-items-plugin: "None"
