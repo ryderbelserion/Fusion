@@ -10,7 +10,7 @@ import com.ryderbelserion.paper.builder.gui.interfaces.GuiAction;
 import com.ryderbelserion.paper.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.paper.enums.Support;
 import com.ryderbelserion.paper.util.PaperMethods;
-import com.ryderbelserion.core.util.Methods;
+import com.ryderbelserion.core.util.StringUtils;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ItemAttributeModifiers;
 import io.papermc.paper.datacomponent.item.Unbreakable;
@@ -377,7 +377,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
                     }
                 }
 
-                itemMeta.displayName(this.displayComponent = Methods.parse(displayName));
+                itemMeta.displayName(this.displayComponent = StringUtils.parse(displayName));
             }
 
             if (!this.displayLore.isEmpty()) {
@@ -395,7 +395,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
                         }
                     }
 
-                    components.add(Methods.parse(line));
+                    components.add(StringUtils.parse(line));
                 }
 
                 itemMeta.lore(this.displayComponentLore = components);
@@ -516,12 +516,12 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             if (data.contains("#")) {
                 final String model = data.split("#")[1];
 
-                this.customModelData = Methods.tryParseInt(model);
+                this.customModelData = StringUtils.tryParseInt(model);
 
                 if (this.customModelData.isPresent()) data = data.replace("#" + this.customModelData.get(), "");
             }
 
-            final Optional<Number> damage = Methods.tryParseInt(data);
+            final Optional<Number> damage = StringUtils.tryParseInt(data);
 
             if (damage.isEmpty()) {
                 @Nullable final PotionEffectType potionEffect = PaperMethods.getPotionEffect(data);
@@ -541,7 +541,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             type = sections[0];
             final String model = sections[1];
 
-            this.customModelData = Methods.tryParseInt(model);
+            this.customModelData = StringUtils.tryParseInt(model);
         }
 
         @Nullable final ItemType itemType = PaperMethods.getItemType(type);

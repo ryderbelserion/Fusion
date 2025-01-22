@@ -11,7 +11,7 @@ import com.ryderbelserion.paper.builder.gui.enums.InteractionComponent;
 import com.ryderbelserion.paper.util.scheduler.FoliaScheduler;
 import com.ryderbelserion.paper.enums.Scheduler;
 import com.ryderbelserion.paper.util.PaperMethods;
-import com.ryderbelserion.core.util.Methods;
+import com.ryderbelserion.core.util.StringUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
@@ -104,7 +104,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     @Override
     public @NotNull final Component title() {
-        return Methods.parse(this.title);
+        return StringUtils.parse(this.title);
     }
 
     @Override

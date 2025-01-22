@@ -2,7 +2,7 @@ package com.ryderbelserion.paper.util;
 
 import com.ryderbelserion.paper.FusionApi;
 import com.ryderbelserion.paper.Fusion;
-import com.ryderbelserion.core.util.Methods;
+import com.ryderbelserion.core.util.StringUtils;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -46,7 +46,7 @@ public final class PaperMethods {
 
         final MenuType<?> windowType = CraftContainer.getNotchInventoryType(player.getOpenInventory().getTopInventory());
 
-        entityPlayer.connection.send(new ClientboundOpenScreenPacket(containerId, windowType, CraftChatMessage.fromJSON(JSONComponentSerializer.json().serialize(Methods.parse(title)))));
+        entityPlayer.connection.send(new ClientboundOpenScreenPacket(containerId, windowType, CraftChatMessage.fromJSON(JSONComponentSerializer.json().serialize(StringUtils.parse(title)))));
 
         player.updateInventory();
     }

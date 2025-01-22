@@ -43,7 +43,7 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public class FileMethods {
+public class FileUtils {
 
     private static final FusionLayout api = FusionProvider.get();
 
@@ -155,7 +155,7 @@ public class FileMethods {
     public static void extracts(@NotNull String input, @Nullable final Path output, final boolean replaceExisting) {
         if (output == null || input.isEmpty()) return;
 
-        try (JarFile jarFile = new JarFile(Path.of(FileMethods.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
+        try (JarFile jarFile = new JarFile(Path.of(FileUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
             final String path = input.substring(1);
             final Enumeration<JarEntry> entries = jarFile.entries();
 
@@ -249,7 +249,7 @@ public class FileMethods {
     }
 
     public static void visit(@NotNull final Consumer<Path> consumer, @NotNull final String input) throws IOException {
-        final URL resource = FileMethods.class.getClassLoader().getResource("config.yml");
+        final URL resource = FileUtils.class.getClassLoader().getResource("config.yml");
 
         if (resource == null) {
             throw new FusionException("We are lacking awareness of the files in src/main/resources/" + input);
@@ -352,7 +352,7 @@ public class FileMethods {
 
     public static InputStream getResource(@NotNull final String path) {
         try {
-            final URL url = FileMethods.class.getClassLoader().getResource(path);
+            final URL url = FileUtils.class.getClassLoader().getResource(path);
 
             if (url == null) {
                 return null;

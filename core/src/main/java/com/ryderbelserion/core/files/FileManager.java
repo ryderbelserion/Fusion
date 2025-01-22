@@ -7,7 +7,7 @@ import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.core.files.types.JsonCustomFile;
 import com.ryderbelserion.core.files.types.NbtCustomFile;
 import com.ryderbelserion.core.files.types.YamlCustomFile;
-import com.ryderbelserion.core.util.FileMethods;
+import com.ryderbelserion.core.util.FileUtils;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +45,7 @@ public class FileManager {
         final File directory = new File(this.dataFolder, folder);
 
         if (directory.mkdirs()) {
-            FileMethods.extracts(String.format("/%s/", directory.getName()), directory.toPath(), false);
+            FileUtils.extracts(String.format("/%s/", directory.getName()), directory.toPath(), false);
         }
 
         final File[] contents = directory.listFiles();
@@ -103,7 +103,7 @@ public class FileManager {
                 this.logger.warn("Successfully extracted file {} to {}", fileName, file.getPath());
             }
 
-            FileMethods.saveResource(folder == null ? fileName : folder + File.separator + fileName, false, this.isVerbose);
+            FileUtils.saveResource(folder == null ? fileName : folder + File.separator + fileName, false, this.isVerbose);
         }
 
         switch (fileType) {

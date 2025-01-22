@@ -2,7 +2,7 @@ package com.ryderbelserion.core.api.builder;
 
 import com.ryderbelserion.core.FusionLayout;
 import com.ryderbelserion.core.FusionProvider;
-import com.ryderbelserion.core.util.Methods;
+import com.ryderbelserion.core.util.StringUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -32,7 +32,7 @@ public class ComponentBuilder {
 
     public @NotNull ComponentBuilder addHoverEvent(@NotNull final String text) {
         if (!text.isEmpty()) {
-            this.builder.hoverEvent(HoverEvent.showText(Methods.parse(text)));
+            this.builder.hoverEvent(HoverEvent.showText(StringUtils.parse(text)));
         }
 
         return this;

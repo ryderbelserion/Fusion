@@ -2,7 +2,7 @@ package com.ryderbelserion.core;
 
 import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.core.files.FileManager;
-import com.ryderbelserion.core.util.FileMethods;
+import com.ryderbelserion.core.util.FileUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -74,7 +74,7 @@ public abstract class FusionLayout {
             getLogger().warn("Detected old vital.yml, Renaming to fusion.yml");
         }
 
-        FileMethods.saveResource(fusion.getName(), false, false);
+        FileUtils.saveResource(fusion.getName(), false, false);
 
         this.loader = YamlConfigurationLoader.builder().indent(2).file(fusion).build();
 

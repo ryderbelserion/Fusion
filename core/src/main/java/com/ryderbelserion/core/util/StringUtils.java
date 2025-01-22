@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-public class Methods {
+public class StringUtils {
 
     private static final FusionLayout api = FusionProvider.get();
 
-    public Methods() {
+    public StringUtils() {
         throw new AssertionError();
     }
 

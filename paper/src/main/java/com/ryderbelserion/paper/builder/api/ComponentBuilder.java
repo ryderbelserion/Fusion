@@ -1,7 +1,7 @@
 package com.ryderbelserion.paper.builder.api;
 
 import com.ryderbelserion.core.api.exception.FusionException;
-import com.ryderbelserion.core.util.Methods;
+import com.ryderbelserion.core.util.StringUtils;
 import com.ryderbelserion.paper.Fusion;
 import com.ryderbelserion.paper.FusionApi;
 import com.ryderbelserion.paper.util.PaperMethods;
@@ -108,7 +108,7 @@ public class ComponentBuilder {
             }
 
             case HOVER_EVENT -> {
-                final @NotNull HoverEvent<Component> event = HoverEvent.showText(Methods.parse(value));
+                final @NotNull HoverEvent<Component> event = HoverEvent.showText(StringUtils.parse(value));
 
                 final TagResolver.@NotNull Single placeholder = Placeholder.styling(key, event);
 

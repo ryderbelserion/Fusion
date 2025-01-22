@@ -4,7 +4,7 @@ import com.ryderbelserion.paper.FusionApi;
 import com.ryderbelserion.core.api.enums.FileType;
 import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.paper.Fusion;
-import com.ryderbelserion.core.util.FileMethods;
+import com.ryderbelserion.core.util.FileUtils;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,7 +48,7 @@ public final class FileManager {
         if (!directory.exists()) {
             directory.mkdirs();
 
-            FileMethods.extracts(String.format("/%s/", directory.getName()), directory.toPath(), false);
+            FileUtils.extracts(String.format("/%s/", directory.getName()), directory.toPath(), false);
         }
 
         final File[] contents = directory.listFiles();
@@ -118,7 +118,7 @@ public final class FileManager {
                 this.logger.warn("Successfully extracted file {} to {}", fileName, file.getPath());
             }
 
-            FileMethods.saveResource(resourcePath, false, this.isVerbose);
+            FileUtils.saveResource(resourcePath, false, this.isVerbose);
         }
 
         switch (fileType) {
