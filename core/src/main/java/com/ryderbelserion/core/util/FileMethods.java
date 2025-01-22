@@ -152,49 +152,10 @@ public class FileMethods {
         }
     }
 
-    public static void extract(@NotNull final String input, @NotNull final String output, final boolean replaceExisting) {
-        try {
-            visit(path -> {
-                final Path directory = dataFolder.toPath().resolve(output);
+    public static void extracts(@NotNull String input, @Nullable final Path output, final boolean replaceExisting) {
+        if (output == null || input.isEmpty()) return;
 
-                try {
-                    // Delete and re-create directory if true
-                    if (replaceExisting) {
-                        directory.toFile().delete();
-                    }
-
-                    if (!Files.exists(directory)) {
-                        directory.toFile().mkdirs();
-
-                        try (final Stream<Path> files = Files.walk(path)) {
-                            files.filter(Files::isRegularFile).forEach(file -> {
-                                try {
-                                    final Path langFile = directory.resolve(file.getFileName().toString());
-
-                                    if (!Files.exists(langFile)) {
-                                        try (final InputStream stream = Files.newInputStream(file)) {
-                                            Files.copy(stream, langFile);
-                                        }
-                                    }
-                                } catch (IOException exception) {
-                                    throw new FusionException("Failed to extract " + file.getFileName() + " from " + path, exception);
-                                }
-                            });
-                        }
-                    }
-                } catch (IOException exception) {
-                    throw new FusionException("Failed to extract " + input + " to " + output, exception);
-                }
-            }, input);
-        } catch (IOException exception) {
-            throw new FusionException("Failed to extract " + input + " to " + output, exception);
-        }
-    }
-
-    public static void extracts(@Nullable final Class<?> object, @NotNull String input, @Nullable final Path output, final boolean replaceExisting) {
-        if (object == null || output == null || input.isEmpty()) return;
-
-        try (JarFile jarFile = new JarFile(Path.of(object.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
+        try (JarFile jarFile = new JarFile(Path.of(FileMethods.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
             final String path = input.substring(1);
             final Enumeration<JarEntry> entries = jarFile.entries();
 
@@ -242,6 +203,45 @@ public class FileMethods {
 
     public static void extract(@NotNull final String input, final boolean overwrite) {
         saveResource(input, overwrite, false);
+    }
+
+    public static void extract(@NotNull final String input, @NotNull final String output, final boolean replaceExisting) {
+        try {
+            visit(path -> {
+                final Path directory = dataFolder.toPath().resolve(output);
+
+                try {
+                    // Delete and re-create directory if true
+                    if (replaceExisting) {
+                        directory.toFile().delete();
+                    }
+
+                    if (!Files.exists(directory)) {
+                        directory.toFile().mkdirs();
+
+                        try (final Stream<Path> files = Files.walk(path)) {
+                            files.filter(Files::isRegularFile).forEach(file -> {
+                                try {
+                                    final Path langFile = directory.resolve(file.getFileName().toString());
+
+                                    if (!Files.exists(langFile)) {
+                                        try (final InputStream stream = Files.newInputStream(file)) {
+                                            Files.copy(stream, langFile);
+                                        }
+                                    }
+                                } catch (IOException exception) {
+                                    throw new FusionException("Failed to extract " + file.getFileName() + " from " + path, exception);
+                                }
+                            });
+                        }
+                    }
+                } catch (IOException exception) {
+                    throw new FusionException("Failed to extract " + input + " to " + output, exception);
+                }
+            }, input);
+        } catch (IOException exception) {
+            throw new FusionException("Failed to extract " + input + " to " + output, exception);
+        }
     }
 
     public static void extract(@NotNull final String input) {

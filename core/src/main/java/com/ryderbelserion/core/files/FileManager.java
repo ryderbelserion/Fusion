@@ -45,7 +45,7 @@ public class FileManager {
         final File directory = new File(this.dataFolder, folder);
 
         if (directory.mkdirs()) {
-            FileMethods.extracts(FileManager.class, String.format("/%s/", directory.getName()), directory.toPath(), false);
+            FileMethods.extracts(String.format("/%s/", directory.getName()), directory.toPath(), false);
         }
 
         final File[] contents = directory.listFiles();
