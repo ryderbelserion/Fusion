@@ -20,60 +20,6 @@ java {
 
 tasks {
     publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = rootProject.group as String
-                artifactId = project.name
-
-                from(components["java"])
-
-                //artifact(sourcesJar)
-                //artifact(javadocJar)
-
-                versionMapping {
-                    usage("java-api") {
-                        fromResolutionOf("runtimeClasspath")
-                    }
-
-                    usage("java-runtime") {
-                        fromResolutionResult()
-                    }
-                }
-
-                pom {
-                    name.set(rootProject.name)
-
-                    description.set(rootProject.description)
-
-                    url.set("https://github.com/ryderbelserion/Fusion")
-
-                    licenses {
-                        license {
-                            name.set("MIT License")
-                            url.set("https://opensource.org/licenses/MIT")
-                            distribution.set("https://github.com/ryderbelserion/Fusion")
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id.set("ryderbelserion")
-                            name.set("Ryder Belserion")
-                            email.set("contact@ryderbelserion.com")
-                            url.set("https://github.com/ryderbelserion")
-                            timezone.set("America/New_York")
-                        }
-                    }
-
-                    scm {
-                        url.set("https://github.com/ryderbelserion/Fusion")
-                        connection.set("scm:git:git://github.com/ryderbelserion/Fusion.git")
-                        developerConnection.set("scm:git:ssh://git@github.com/ryderbelserion/Fusion.git")
-                    }
-                }
-            }
-        }
-
         repositories {
             maven {
                 url = uri("https://repo.crazycrew.us/releases")
@@ -84,10 +30,6 @@ tasks {
                 }
             }
         }
-    }
-
-    signing {
-        sign(publishing.publications["maven"])
     }
 
     compileJava {
