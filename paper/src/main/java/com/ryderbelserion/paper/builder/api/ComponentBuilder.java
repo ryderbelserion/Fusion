@@ -36,7 +36,7 @@ public class ComponentBuilder {
     }
 
     public ComponentBuilder(final List<String> lines) {
-        this.lines.addAll(lines);
+        lines.forEach(line -> this.lines.add(line.replaceAll("\\{", "<").replaceAll("}", ">")));
     }
 
     public List<Component> asComponents(@Nullable final Audience audience, @NotNull final Map<String, String> placeholders) {
@@ -91,7 +91,7 @@ public class ComponentBuilder {
         final List<TagResolver> resolvers = this.resolvers.getOrDefault(type, new ArrayList<>());
 
         switch (type) {
-            case PLACEHOLDER -> resolvers.add(Placeholder.parsed(key.replaceAll("\\{", "").replaceAll("}", ""), value));
+            case PLACEHOLDER -> resolvers.add(Placeholder.parsed(key.replaceAll("\\{", "").replaceAll("}", "").replaceAll("<", "").replaceAll(">", ""), value));
 
             case TEXT_COLOR -> {
                 final @NotNull Color color = PaperMethods.getColor(value);

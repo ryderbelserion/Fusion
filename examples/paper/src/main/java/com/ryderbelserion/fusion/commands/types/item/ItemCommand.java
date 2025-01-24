@@ -86,9 +86,9 @@ public class ItemCommand extends BaseCommand {
                 .addPlaceholder("experience", String.valueOf(player.getLevel()))
                 .addPlaceholder("uuid", player.getUniqueId().toString())
                 .addPlaceholder("{uuid}", player.getUniqueId().toString())
-                .setDisplayName("<red>This is an item with {name} and <experience>".replaceAll("\\{", "<").replaceAll("}", ">"))
+                .setDisplayName("<red>This is an item with {name} and <experience>")
                 .addDisplayLore("<green>This is a line with <uuid>.")
-                .addDisplayLore("<yellow>This is another line or {uuid}.".replaceAll("\\{", "<").replaceAll("}", ">"));
+                .addDisplayLore("<yellow>This is another line or {uuid}.");
 
         itemBuilder.addItemToInventory(player, player.getInventory());
     }

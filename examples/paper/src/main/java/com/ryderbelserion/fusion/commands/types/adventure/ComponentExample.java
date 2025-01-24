@@ -10,7 +10,7 @@ public class ComponentExample extends BaseCommand {
 
     @Command("component")
     public void component(final Player player) {
-        final ComponentBuilder builder = new ComponentBuilder("<red>This is a placeholder test using {name} with <experience> levels.</red> <anilist_link><gold>Please check out my anime:</gold></anilist_link>".replaceAll("\\{", "<").replaceAll("}", ">"));
+        final ComponentBuilder builder = new ComponentBuilder("<red>This is a placeholder test using {name} with <experience> levels.</red> <anilist_link><gold>Please check out my anime:</gold></anilist_link>");
 
         builder.addPlaceholderResolver("{name}", player.getName());
         builder.addPlaceholderResolver("experience", String.valueOf(player.getLevel()));

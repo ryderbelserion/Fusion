@@ -58,13 +58,24 @@ public final class Fusion extends FusionLayout {
             resolvers.addAll(tags);
         }
 
+        String clonedLine = line.replaceAll("\\{", "<").replaceAll("}", ">");
+
+        /*for (final Map.Entry<String, String> placeholder : placeholders.entrySet()) {
+            if (placeholder != null) {
+                final String key = placeholder.getKey();
+                final String value = placeholder.getValue();
+
+                if (key != null && value != null) {
+                    clonedLine = clonedLine.replace(key, value).replace(key.toLowerCase(), value);
+                }
+            }
+        }*/
+
         placeholders.forEach((placeholder, value) -> {
-            final TagResolver tag = Placeholder.parsed(placeholder.replaceAll("\\{", "").replaceAll("}", "").toLowerCase(), value);
+            final TagResolver tag = Placeholder.parsed(placeholder.replaceAll("\\{", "").replaceAll("}", "").replaceAll("<", "").replaceAll(">", "").toLowerCase(), value);
 
             resolvers.add(tag);
         });
-
-        String clonedLine = line;
 
         if (audience instanceof Player player && Support.placeholder_api.isEnabled()) {
             clonedLine = PlaceholderAPI.setPlaceholders(player, clonedLine);
