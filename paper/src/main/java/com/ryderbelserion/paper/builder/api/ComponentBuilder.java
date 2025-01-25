@@ -42,11 +42,9 @@ public class ComponentBuilder {
     public List<Component> asComponents(@Nullable final Audience audience, @NotNull final Map<String, String> placeholders) {
         final List<Component> components = new ArrayList<>(this.lines.size());
 
-        this.lines.forEach(line -> {
-            final List<TagResolver> resolvers = this.resolvers.values().stream().flatMap(List::stream).toList();
+        final List<TagResolver> resolvers = this.resolvers.values().stream().flatMap(List::stream).toList();
 
-            components.add(this.fusion.placeholders(audience, line, placeholders, resolvers));
-        });
+        this.lines.forEach(line -> components.add(this.fusion.placeholders(audience, line, placeholders, resolvers)));
 
         return components;
     }
