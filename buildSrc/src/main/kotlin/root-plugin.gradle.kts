@@ -70,9 +70,6 @@ tasks {
                         connection.set("scm:git:git://github.com/ryderbelserion/Fusion.git")
                         developerConnection.set("scm:git:ssh://git@github.com/ryderbelserion/Fusion.git")
                     }
-
-                    artifact(sourceSets.main.get().allJava)
-                    artifact(javadoc)
                 }
             }
         }
