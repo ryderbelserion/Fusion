@@ -4,6 +4,8 @@ import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.paper.builder.gui.listeners.GuiListener;
 import com.ryderbelserion.paper.enums.Support;
 import com.ryderbelserion.paper.files.FileManager;
+import com.ryderbelserion.paper.modules.EventRegistry;
+import com.ryderbelserion.paper.modules.ModuleLoader;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
@@ -25,6 +27,8 @@ public final class FusionApi {
     private Plugin plugin = null;
     private Fusion fusion = null;
 
+    private ModuleLoader loader;
+
     public void enable(@NotNull Plugin plugin) {
         if (this.isRegistered) return;
 
@@ -42,6 +46,8 @@ public final class FusionApi {
 
         final Server server = this.plugin.getServer();
         final PluginManager manager = server.getPluginManager();
+
+        this.loader = new ModuleLoader(new EventRegistry(this.plugin, server));
 
         manager.registerEvents(new GuiListener(), this.plugin);
     }
@@ -80,5 +86,9 @@ public final class FusionApi {
 
     public @Nullable HeadDatabaseAPI getDatabaseAPI() {
         return this.headDatabaseAPI;
+    }
+
+    public @NotNull ModuleLoader getLoader() {
+        return this.loader;
     }
 }
