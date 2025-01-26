@@ -15,15 +15,15 @@ import java.util.concurrent.CompletableFuture;
  * @param <I> the command info
  *
  * @author Ryder Belserion
- * @version 0.1.0
- * @since 0.1.0
+ * @version 0.9.0
+ * @since 0.9.0
  */
 public abstract class Command<S, I extends CommandInfo<S>> {
 
     /**
      * An empty constructor that does nothing.
      *
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public Command() {}
 
@@ -31,7 +31,7 @@ public abstract class Command<S, I extends CommandInfo<S>> {
      * Executes the command with the given info.
      *
      * @param info the command info
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public abstract void execute(I info);
 
@@ -39,7 +39,7 @@ public abstract class Command<S, I extends CommandInfo<S>> {
      * Gets the required permission to execute the command.
      *
      * @return the permission node
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public abstract @NotNull String getPermission();
 
@@ -47,7 +47,7 @@ public abstract class Command<S, I extends CommandInfo<S>> {
      * Gets the command literal.
      *
      * @return the command literal
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public abstract @NotNull LiteralCommandNode<S> literal();
 
@@ -55,7 +55,7 @@ public abstract class Command<S, I extends CommandInfo<S>> {
      * Registers the command permission.
      *
      * @return the command instance
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public abstract @NotNull Command<S, I> registerPermission();
 
@@ -67,7 +67,7 @@ public abstract class Command<S, I extends CommandInfo<S>> {
      * @param max the maximum number of suggestions
      * @param tooltip the tooltip
      * @return a list of suggestions
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public abstract @NotNull CompletableFuture<Suggestions> suggestStringArgument(final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip);
 
@@ -77,7 +77,7 @@ public abstract class Command<S, I extends CommandInfo<S>> {
      * @param builder the suggestions builder
      * @param tooltip the tooltip
      * @return a list of suggestions
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public abstract @NotNull CompletableFuture<Suggestions> suggestStringArgument(final SuggestionsBuilder builder, @NotNull final String tooltip);
 
@@ -86,7 +86,7 @@ public abstract class Command<S, I extends CommandInfo<S>> {
      *
      * @param builder the suggestions builder
      * @return a list of suggestions
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public abstract @NotNull CompletableFuture<Suggestions> suggestStringArgument(final SuggestionsBuilder builder);
 
@@ -98,7 +98,7 @@ public abstract class Command<S, I extends CommandInfo<S>> {
      * @param max the maximum number of suggestions
      * @param tooltip the tooltip
      * @return a list of suggestions
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public abstract @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip);
 
@@ -108,7 +108,7 @@ public abstract class Command<S, I extends CommandInfo<S>> {
      * @param builder the suggestions builder
      * @param tooltip the tooltip
      * @return a list of suggestions
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public abstract @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(final SuggestionsBuilder builder, @NotNull final String tooltip);
 
@@ -117,7 +117,7 @@ public abstract class Command<S, I extends CommandInfo<S>> {
      *
      * @param builder the suggestions builder
      * @return a list of suggestions
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public abstract @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(final SuggestionsBuilder builder);
 
@@ -129,7 +129,7 @@ public abstract class Command<S, I extends CommandInfo<S>> {
      * @param max the maximum number of suggestions
      * @param tooltip the tooltip
      * @return a list of suggestions
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public abstract @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip);
 
@@ -139,7 +139,7 @@ public abstract class Command<S, I extends CommandInfo<S>> {
      * @param builder the suggestions builder
      * @param tooltip the tooltip
      * @return a list of suggestions
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public abstract @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(final SuggestionsBuilder builder, @NotNull final String tooltip);
 
@@ -148,7 +148,7 @@ public abstract class Command<S, I extends CommandInfo<S>> {
      *
      * @param builder the suggestions builder
      * @return a list of suggestions
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public abstract @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(final SuggestionsBuilder builder);
 }

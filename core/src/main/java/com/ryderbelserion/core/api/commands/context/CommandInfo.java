@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
  * @param <S> the command source stack
  *
  * @author Ryder Belserion
- * @version 0.1.0
- * @since 0.1.0
+ * @version 0.9.0
+ * @since 0.9.0
  */
 public abstract class CommandInfo<S> {
 
@@ -21,7 +21,7 @@ public abstract class CommandInfo<S> {
      * Constructs a CommandInfo with the specified context.
      *
      * @param context the command context
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public CommandInfo(@NotNull final CommandContext<S> context) {
         this.context = context;
@@ -31,7 +31,7 @@ public abstract class CommandInfo<S> {
      * Gets the command source stack.
      *
      * @return the command source stack
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public @NotNull final S getSource() {
         return this.context.getSource();
@@ -42,7 +42,7 @@ public abstract class CommandInfo<S> {
      *
      * @param key the argument name
      * @return the argument value as a String
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public @NotNull final String getStringArgument(@NotNull final String key) {
         return this.context.getArgument(key, String.class);
@@ -53,7 +53,7 @@ public abstract class CommandInfo<S> {
      *
      * @param key the argument name
      * @return the argument value as an Integer
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public final int getIntegerArgument(@NotNull final String key) {
         return this.context.getArgument(key, Integer.class);
@@ -64,7 +64,7 @@ public abstract class CommandInfo<S> {
      *
      * @param key the argument name
      * @return the argument value as a Float
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public final float getFloatArgument(@NotNull final String key) {
         return this.context.getArgument(key, Float.class);
@@ -75,7 +75,7 @@ public abstract class CommandInfo<S> {
      *
      * @param key the argument name
      * @return the argument value as a Double
-     * @since 0.1.0
+     * @since 0.9.0
      */
     public final double getDoubleArgument(@NotNull final String key) {
         return this.context.getArgument(key, Double.class);
