@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
  * An event registry to register events
  *
  * @author ryderbelserion
- * @version 0.9.0
- * @since 0.9.0
+ * @version 0.10.0
+ * @since 0.10.0
  */
 public class EventRegistry {
 
@@ -21,7 +21,7 @@ public class EventRegistry {
      * Builds the event registry
      * 
      * @param server {@link Server}
-     * @since 0.9.0
+     * @since 0.10.0
      */
     public EventRegistry(@NotNull final Plugin plugin, @NotNull final Server server) {
         this.plugin = plugin;
@@ -32,7 +32,7 @@ public class EventRegistry {
      * Add a listener to the server
      *
      * @param event {@link com.ryderbelserion.core.api.interfaces.IModule}
-     * @since 0.9.0
+     * @since 0.10.0
      */
     public void addEvent(@NotNull final IPaperModule event) {
         this.server.getPluginManager().registerEvents(event, this.plugin);
