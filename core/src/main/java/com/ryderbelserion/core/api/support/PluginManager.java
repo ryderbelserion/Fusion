@@ -2,7 +2,7 @@ package com.ryderbelserion.core.api.support;
 
 import com.ryderbelserion.core.FusionLayout;
 import com.ryderbelserion.core.FusionProvider;
-import com.ryderbelserion.core.api.support.interfaces.Plugin;
+import com.ryderbelserion.core.api.support.interfaces.IPlugin;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,25 +16,25 @@ public class PluginManager {
     private static final ComponentLogger logger = api.getLogger();
     private static final boolean isVerbose = api.isVerbose();
 
-    private static final Map<String, Plugin> plugins = new HashMap<>();
+    private static final Map<String, IPlugin> plugins = new HashMap<>();
 
     public PluginManager() {}
 
-    public static void registerPlugin(@NotNull final Plugin plugin) {
+    public static void registerPlugin(@NotNull final IPlugin plugin) {
         plugins.put(plugin.getName(), plugin.init());
     }
 
-    public static @Nullable Plugin getPlugin(@NotNull final String name) {
+    public static @Nullable IPlugin getPlugin(@NotNull final String name) {
         return plugins.get(name);
     }
 
     public static boolean isEnabled(@NotNull final String name) {
-        final Plugin plugin = getPlugin(name);
+        final IPlugin plugin = getPlugin(name);
 
         return plugin != null && plugin.isEnabled();
     }
 
-    public static void unregisterPlugin(@NotNull final Plugin plugin) {
+    public static void unregisterPlugin(@NotNull final IPlugin plugin) {
         plugins.remove(plugin.getName());
 
         plugin.stop();
@@ -52,7 +52,7 @@ public class PluginManager {
         }
     }
 
-    public static @NotNull Map<String, Plugin> getPlugins() {
+    public static @NotNull Map<String, IPlugin> getPlugins() {
         return Collections.unmodifiableMap(plugins);
     }
 }

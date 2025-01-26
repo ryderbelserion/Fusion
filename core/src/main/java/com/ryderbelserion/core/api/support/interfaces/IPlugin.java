@@ -3,7 +3,7 @@ package com.ryderbelserion.core.api.support.interfaces;
 import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
-public interface Plugin {
+public interface IPlugin {
 
     default boolean isEnabled() {
         return false;
@@ -13,7 +13,7 @@ public interface Plugin {
         return "";
     }
 
-    default Plugin init() {
+    default IPlugin init() {
         return this;
     }
 
