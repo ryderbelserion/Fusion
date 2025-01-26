@@ -205,67 +205,6 @@ public class FileUtils {
         saveResource(input, overwrite, false);
     }
 
-    public static void extract(@NotNull final String input, @NotNull final String output, final boolean replaceExisting) {
-        try {
-            visit(path -> {
-                final Path directory = dataFolder.toPath().resolve(output);
-
-                try {
-                    // Delete and re-create directory if true
-                    if (replaceExisting) {
-                        directory.toFile().delete();
-                    }
-
-                    if (!Files.exists(directory)) {
-                        directory.toFile().mkdirs();
-
-                        try (final Stream<Path> files = Files.walk(path)) {
-                            files.filter(Files::isRegularFile).forEach(file -> {
-                                try {
-                                    final Path langFile = directory.resolve(file.getFileName().toString());
-
-                                    if (!Files.exists(langFile)) {
-                                        try (final InputStream stream = Files.newInputStream(file)) {
-                                            Files.copy(stream, langFile);
-                                        }
-                                    }
-                                } catch (IOException exception) {
-                                    throw new FusionException("Failed to extract " + file.getFileName() + " from " + path, exception);
-                                }
-                            });
-                        }
-                    }
-                } catch (IOException exception) {
-                    throw new FusionException("Failed to extract " + input + " to " + output, exception);
-                }
-            }, input);
-        } catch (IOException exception) {
-            throw new FusionException("Failed to extract " + input + " to " + output, exception);
-        }
-    }
-
-    public static void extract(@NotNull final String input) {
-        extract(input, input, false);
-    }
-
-    public static void visit(@NotNull final Consumer<Path> consumer, @NotNull final String input) throws IOException {
-        final URL resource = FileUtils.class.getClassLoader().getResource("config.yml");
-
-        if (resource == null) {
-            throw new FusionException("We are lacking awareness of the files in src/main/resources/" + input);
-        }
-
-        final URI path = URI.create(resource.toString().split("!")[0] + "!/");
-
-        try (final FileSystem fileSystem = FileSystems.newFileSystem(path, Map.of("create", "true"))) {
-            final Path toVisit = fileSystem.getPath(input);
-
-            if (Files.exists(toVisit)) {
-                consumer.accept(toVisit);
-            }
-        }
-    }
-
     public static List<String> getNames(@NotNull final File directory, @NotNull final String folder, @NotNull final String extension, final boolean keepExtension) {
         return getFiles(directory, folder, extension, keepExtension).stream().map(File::getName).collect(Collectors.toList());
     }
