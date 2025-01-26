@@ -10,8 +10,8 @@ import java.util.List;
  * A class handling the loading of modules.
  *
  * @author ryderbelserion
- * @version 0.10.0
- * @since 0.10.0
+ * @version 0.11.0
+ * @since 0.11.0
  */
 public class ModuleLoader {
 
@@ -23,7 +23,7 @@ public class ModuleLoader {
      * Creates the module loader
      *
      * @param registry {@link EventRegistry}
-     * @since 0.10.0
+     * @since 0.11.0
      */
     public ModuleLoader(@NotNull final EventRegistry registry) {
         this.registry = registry;
@@ -31,7 +31,7 @@ public class ModuleLoader {
 
     /**
      * Loads modules onto the server.
-     * @since 0.10.0
+     * @since 0.11.0
      */
     public void load() {
         this.modules.forEach(module -> {
@@ -49,7 +49,7 @@ public class ModuleLoader {
 
     /**
      * Reload modules if enabled.
-     * @since 0.10.0
+     * @since 0.11.0
      */
     public void reload() {
         this.modules.forEach(module -> {
@@ -67,7 +67,7 @@ public class ModuleLoader {
      * Unregister modules if enabled.
      *
      * @param purge clears all modules
-     * @since 0.10.0
+     * @since 0.11.0
      */
     public void unload(final boolean purge) {
         this.modules.forEach(module -> {
@@ -83,7 +83,7 @@ public class ModuleLoader {
 
     /**
      * Unregister modules if enabled.
-     * @since 0.10.0
+     * @since 0.11.0
      */
     public void unload() {
         unload(false);
@@ -93,7 +93,7 @@ public class ModuleLoader {
      * Add a module to the map.
      *
      * @param module the {@link com.ryderbelserion.core.api.interfaces.IModule}
-     * @since 0.10.0
+     * @since 0.11.0
      */
     public void addModule(@NotNull final IPaperModule module) {
         if (hasModule(module)) return;
@@ -105,7 +105,7 @@ public class ModuleLoader {
      * Remove a module from the map.
      *
      * @param module {@link com.ryderbelserion.core.api.interfaces.IModule}
-     * @since 0.10.0
+     * @since 0.11.0
      */
     public void removeModule(@NotNull final IPaperModule module) {
         if (!hasModule(module)) return;
@@ -117,7 +117,7 @@ public class ModuleLoader {
      * Grab an unmodifiable list of active modules.
      *
      * @return the list of active modules.
-     * @since 0.10.0
+     * @since 0.11.0
      */
     public @NotNull final List<IPaperModule> getModules() {
         return Collections.unmodifiableList(this.modules);
@@ -127,7 +127,7 @@ public class ModuleLoader {
      * Get the event registry instance.
      *
      * @return {@link EventRegistry}
-     * @since 0.10.0
+     * @since 0.11.0
      */
     public @NotNull final EventRegistry getRegistry() {
         return this.registry;
@@ -138,7 +138,7 @@ public class ModuleLoader {
      *
      * @param module {@link com.ryderbelserion.core.api.interfaces.IModule}
      * @return true or false
-     * @since 0.10.0
+     * @since 0.11.0
      */
     private boolean hasModule(@NotNull final IPaperModule module) {
         final String name = module.getName();

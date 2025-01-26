@@ -10,7 +10,8 @@ public enum Support {
     nexo("Nexo"),
     items_adder("ItemsAdder"),
     head_database("HeadDatabase"),
-    placeholder_api("PlaceholderAPI");
+    placeholder_api("PlaceholderAPI"),
+    yard_watch("YardWatch");
 
     private final Plugin plugin = FusionApi.get().getPlugin();
 
