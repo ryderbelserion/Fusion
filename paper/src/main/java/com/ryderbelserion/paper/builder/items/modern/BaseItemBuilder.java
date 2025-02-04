@@ -2,6 +2,7 @@ package com.ryderbelserion.paper.builder.items.modern;
 
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
+import com.ryderbelserion.core.util.StringUtils;
 import com.ryderbelserion.paper.FusionApi;
 import com.ryderbelserion.core.api.exception.FusionException;
 import com.ryderbelserion.paper.Fusion;
@@ -26,7 +27,6 @@ import io.papermc.paper.datacomponent.item.Unbreakable;
 import io.th0rgal.oraxen.api.OraxenItems;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -40,6 +40,7 @@ import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
@@ -79,8 +81,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     protected final Plugin plugin = this.api.getPlugin();
 
-    protected final ComponentLogger logger = this.plugin.getComponentLogger();
-
     private Map<String, String> placeholders = new HashMap<>();
 
     private List<String> displayLore = new ArrayList<>();
@@ -95,76 +95,60 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public BaseItemBuilder(final String item) {
-        switch (this.api.getFusion().getItemPlugin().toLowerCase()) {
-            case "nexo" -> {
-                if (Support.nexo.isEnabled()) {
-                    getNexo(item);
-
-                    return;
-                }
-
-                this.item = PaperMethods.fromBase64(item);
-            }
-
-            case "oraxen" -> {
-                if (Support.oraxen.isEnabled()) {
-                    getOraxen(item);
-
-                    return;
-                }
-
-                this.item = PaperMethods.fromBase64(item);
-            }
-
-            case "itemsadder" -> {
-                if (Support.items_adder.isEnabled()) {
-                    getItemsAdder(item);
-
-                    return;
-                }
-
-                this.item = PaperMethods.fromBase64(item);
-            }
-
-            case "none" -> this.item = PaperMethods.fromBase64(item);
-
-            default -> {
-                if (Support.nexo.isEnabled() && NexoItems.exists(item)) {
-                    getNexo(item);
-
-                    return;
-                }
-
-                if (Support.items_adder.isEnabled()) {
-                    if (CustomStack.isInRegistry(item)) {
-                        getItemsAdder(item);
-                    }
-
-                    return;
-                }
-
-                if (Support.oraxen.isEnabled() && OraxenItems.exists(item)) {
-                    getOraxen(item);
-
-                    return;
-                }
-
-                this.item = PaperMethods.fromBase64(item);
-            }
-        }
+        withCustomItem(item);
     }
 
-    public ItemStack asItemStack(@Nullable final Audience audience) {
+    public ItemStack asItemStack(@Nullable final Audience audience, final boolean isLegacy) {
         if (this.displayName != null) {
-            final ComponentBuilder builder = new ComponentBuilder(this.displayName);
+            if (isLegacy) { // legacy support for other plugins, only here temporarily
+                this.item.editMeta(itemMeta -> {
+                    String line = this.displayName;
 
-            this.item.setData(this.isStatic ? DataComponentTypes.ITEM_NAME : DataComponentTypes.CUSTOM_NAME, builder.asComponent(audience, this.placeholders));
+                    for (final Map.Entry<String, String> placeholder : this.placeholders.entrySet()) {
+                        if (placeholder != null) {
+                            final String key = placeholder.getKey();
+                            final String value = placeholder.getValue();
+
+                            if (value != null) {
+                                line = line.replace(key, value).replace(key.toLowerCase(), value);
+                            }
+                        }
+                    }
+
+                    itemMeta.setDisplayName(PaperMethods.color(line));
+                });
+            } else {
+                final ComponentBuilder builder = new ComponentBuilder(this.displayName);
+
+                this.item.setData(this.isStatic ? DataComponentTypes.ITEM_NAME : DataComponentTypes.CUSTOM_NAME, builder.asComponent(audience, this.placeholders));
+            }
         }
 
         if (!this.displayLore.isEmpty()) {
-            final ComponentBuilder builder = new ComponentBuilder(this.displayLore);
+            if (isLegacy) { // legacy support for other plugins, only here temporarily
+                final List<String> lines = new ArrayList<>();
 
-            this.item.setData(DataComponentTypes.LORE, ItemLore.lore(builder.asComponents(audience, this.placeholders)));
+                for (String line : this.displayLore) {
+                    for (final Map.Entry<String, String> placeholder : this.placeholders.entrySet()) {
+                        if (placeholder != null) {
+                            final String key = placeholder.getKey();
+                            final String value = placeholder.getValue();
+
+                            if (value != null) {
+                                line = line.replace(key, value).replace(key.toLowerCase(), value);
+                            }
+                        }
+                    }
+
+                    lines.add(PaperMethods.color(line));
+                }
+
+                this.item.editMeta(itemMeta -> itemMeta.setLore(lines));
+            } else {
+                final ComponentBuilder builder = new ComponentBuilder(this.displayLore);
+
+                this.item.setData(DataComponentTypes.LORE, ItemLore.lore(builder.asComponents(audience, this.placeholders)));
+            }
         }
 
         build();
@@ -172,8 +156,12 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.item;
     }
 
+    public ItemStack asItemStack(boolean isLegacy) {
+        return asItemStack(null, isLegacy);
+    }
+
     public ItemStack asItemStack() {
-        return asItemStack(null);
+        return asItemStack(false);
     }
 
     public B build() {
@@ -185,13 +173,175 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             throw new FusionException("The item type cannot be null!");
         }
 
-        this.item = type.createItemStack(Math.max(amount, 1));
+        if (this.item == null) {
+            this.item = type.createItemStack(Math.max(amount, 1));
+        }
 
         return (B) this;
     }
 
     public B withType(@Nullable final ItemType type) {
         return withType(type, 1);
+    }
+
+    public B withCustomItem(final String item) {
+        switch (this.api.getFusion().getItemPlugin().toLowerCase()) {
+            case "nexo" -> {
+                if (Support.nexo.isEnabled()) {
+                    getNexo(item);
+
+                    return (B) this;
+                }
+
+                final ItemType itemType = PaperMethods.getItemType(item);
+
+                if (itemType != null) {
+                    this.item = itemType.createItemStack(1);
+                } else {
+                    try {
+                        this.item = PaperMethods.fromBase64(item);
+                    } catch (Exception exception) {
+                        this.item = ItemType.STONE.createItemStack(1);
+                    }
+                }
+            }
+
+            case "oraxen" -> {
+                if (Support.oraxen.isEnabled()) {
+                    getOraxen(item);
+
+                    return (B) this;
+                }
+
+                final ItemType itemType = PaperMethods.getItemType(item);
+
+                if (itemType != null) {
+                    this.item = itemType.createItemStack(1);
+                } else {
+                    try {
+                        this.item = PaperMethods.fromBase64(item);
+                    } catch (Exception exception) {
+                        this.item = ItemType.STONE.createItemStack(1);
+                    }
+                }
+            }
+
+            case "itemsadder" -> {
+                if (Support.items_adder.isEnabled()) {
+                    getItemsAdder(item);
+
+                    return (B) this;
+                }
+
+                final ItemType itemType = PaperMethods.getItemType(item);
+
+                if (itemType != null) {
+                    this.item = itemType.createItemStack(1);
+                } else {
+                    try {
+                        this.item = PaperMethods.fromBase64(item);
+                    } catch (Exception exception) {
+                        this.item = ItemType.STONE.createItemStack(1);
+                    }
+                }
+            }
+
+            case "none" -> {
+                final ItemType itemType = PaperMethods.getItemType(item);
+
+                if (itemType != null) {
+                    this.item = itemType.createItemStack(1);
+                } else {
+                    try {
+                        this.item = PaperMethods.fromBase64(item);
+                    } catch (Exception exception) {
+                        this.item = ItemType.STONE.createItemStack(1);
+                    }
+                }
+            }
+
+            default -> {
+                if (Support.nexo.isEnabled() && NexoItems.exists(item)) {
+                    getNexo(item);
+
+                    return (B) this;
+                }
+
+                if (Support.items_adder.isEnabled()) {
+                    if (CustomStack.isInRegistry(item)) {
+                        getItemsAdder(item);
+                    }
+
+                    return (B) this;
+                }
+
+                if (Support.oraxen.isEnabled() && OraxenItems.exists(item)) {
+                    getOraxen(item);
+
+                    return (B) this;
+                }
+
+                final ItemType itemType = PaperMethods.getItemType(item);
+
+                if (itemType != null) {
+                    this.item = itemType.createItemStack(1);
+                } else {
+                    try {
+                        this.item = PaperMethods.fromBase64(item);
+                    } catch (Exception exception) {
+                        this.item = ItemType.STONE.createItemStack(1);
+                    }
+                }
+            }
+        }
+
+        return (B) this;
+    }
+
+    @Deprecated(forRemoval = true)
+    public B withType(@NotNull final String key) {
+        if (key.isEmpty()) return (B) this;
+
+        withCustomItem(key);
+
+        if (key.contains(":")) {
+            final String[] sections = key.split(":");
+
+            String data = sections[1];
+
+            if (data.contains("#")) {
+                final String model = data.split("#")[1];
+
+                final Optional<Number> customModelData = StringUtils.tryParseInt(model);
+
+                if (customModelData.isPresent()) {
+                    final Number number = customModelData.get();
+
+                    data = data.replace("#" + number.intValue(), "");
+                }
+            }
+
+            final Optional<Number> damage = StringUtils.tryParseInt(data);
+
+            if (damage.isEmpty()) {
+                @org.jetbrains.annotations.Nullable final PotionEffectType potionEffect = PaperMethods.getPotionEffect(data);
+
+                final PotionBuilder potionBuilder = asPotionBuilder();
+
+                potionBuilder.setColor(data).withPotionType(PaperMethods.getPotionType(data)).withPotionEffect(potionEffect, 1, 1);
+            } else {
+                setItemDamage(damage.get().intValue());
+            }
+        } else if (key.contains("#")) {
+            final String[] sections = key.split("#");
+            final String model = sections[1];
+
+            final Optional<Number> customModelData = StringUtils.tryParseInt(model);
+
+            customModelData.ifPresent(number -> setCustomModelData(number.intValue()));
+        }
+
+        return (B) this;
     }
 
     public B addEnchantment(@NotNull final String enchant, final int level) {
@@ -514,12 +664,20 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return new SpawnerBuilder(this.item);
     }
 
+    public void setItemToInventory(final Audience audience, final Inventory inventory, final int slot, final boolean isLegacy) {
+        inventory.setItem(slot, asItemStack(audience, isLegacy));
+    }
+
+    public void addItemToInventory(final Audience audience, final Inventory inventory, final boolean isLegacy) {
+        inventory.addItem(asItemStack(audience, isLegacy));
+    }
+
     public void setItemToInventory(final Audience audience, final Inventory inventory, final int slot) {
-        inventory.setItem(slot, asItemStack(audience));
+        inventory.setItem(slot, asItemStack(audience, false));
     }
 
     public void addItemToInventory(final Audience audience, final Inventory inventory) {
-        inventory.addItem(asItemStack(audience));
+        inventory.addItem(asItemStack(audience, false));
     }
 
     public void setItemToInventory(final Inventory inventory, final int slot) {

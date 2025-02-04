@@ -4,8 +4,8 @@ package com.ryderbelserion.core.api.interfaces;
  * An abstract class to define what a module can do.
  *
  * @author ryderbelserion
- * @version 0.0.4
- * @since 0.11.0
+ * @version 0.12.0
+ * @since 0.0.4
  */
 public interface IModule {
 
@@ -13,7 +13,7 @@ public interface IModule {
      * Check if the module is enabled.
      *
      * @return true or false
-     * @since 0.11.0
+     * @since 0.0.4
      */
     default boolean isEnabled() {
         return false;
@@ -22,21 +22,21 @@ public interface IModule {
     /**
      * Enables the module.
      *
-     * @since 0.11.0
+     * @since 0.0.4
      */
     default void enable() {}
 
     /**
      * Reload the module.
      *
-     * @since 0.11.0
+     * @since 0.0.4
      */
     default void reload() {}
 
     /**
      * Disables the module.
      *
-     * @since 0.11.0
+     * @since 0.0.4
      */
     default void disable() {}
 
@@ -44,7 +44,7 @@ public interface IModule {
      * Get the name of the module.
      *
      * @return the name of the module
-     * @since 0.11.0
+     * @since 0.0.4
      */
     String getName();
 
