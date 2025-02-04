@@ -150,7 +150,31 @@ public class FileManager {
     }
 
     public final FileManager addFile(@NotNull final String fileName) {
-        return addFile(fileName, null, false, FileType.NONE, null);
+        FileType type = FileType.NONE;
+
+        if (fileName.endsWith(".yml")) {
+            type = FileType.YAML;
+        } else if (fileName.endsWith(".json")) {
+            type = FileType.JSON;
+        } else if (fileName.endsWith(".nbt")) {
+            type = FileType.NBT;
+        }
+
+        return addFile(fileName, null, false, type, null);
+    }
+
+    public final FileManager saveFile(@NotNull final String fileName) {
+        FileType type = FileType.NONE;
+
+        if (fileName.endsWith(".yml")) {
+            type = FileType.YAML;
+        } else if (fileName.endsWith(".json")) {
+            type = FileType.JSON;
+        } else if (fileName.endsWith(".nbt")) {
+            type = FileType.NBT;
+        }
+
+        return saveFile(fileName, type);
     }
 
     public final FileManager saveFile(@NotNull final String fileName, @NotNull final FileType fileType) {

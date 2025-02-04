@@ -89,7 +89,17 @@ public final class FileManager {
     }
 
     public FileManager addFile(@NotNull final String fileName) {
-        return addFile(fileName, null, false, FileType.NONE);
+        FileType type = FileType.NONE;
+
+        if (fileName.endsWith(".yml")) {
+            type = FileType.YAML;
+        } else if (fileName.endsWith(".json")) {
+            type = FileType.JSON;
+        } else if (fileName.endsWith(".nbt")) {
+            type = FileType.NBT;
+        }
+
+        return addFile(fileName, null, false, type);
     }
 
     public FileManager addFile(@NotNull final String fileName, @NotNull final FileType fileType) {
