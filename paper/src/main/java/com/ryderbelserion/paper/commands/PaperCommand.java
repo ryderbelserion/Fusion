@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
  * Defines the structure for creating commands specific to the Paper server.
  *
  * @author Ryder Belserion
- * @version 0.12.0
+ * @version 0.14.0
  * @since 0.9.0
  */
 public abstract class PaperCommand extends Command<CommandSourceStack, PaperCommandInfo> {

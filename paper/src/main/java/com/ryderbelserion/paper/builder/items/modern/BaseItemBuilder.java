@@ -25,6 +25,7 @@ import io.papermc.paper.datacomponent.item.ItemLore;
 import io.papermc.paper.datacomponent.item.MapItemColor;
 import io.papermc.paper.datacomponent.item.Unbreakable;
 import io.th0rgal.oraxen.api.OraxenItems;
+import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -612,6 +613,16 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     public B removePlaceholder(final String placeholder) {
         this.placeholders.remove(placeholder);
+
+        return (B) this;
+    }
+
+    public B withSkull(final String skull) {
+        @org.jetbrains.annotations.Nullable final HeadDatabaseAPI hdb = this.api.getDatabaseAPI();
+
+        if (skull.isEmpty() || hdb == null) return (B) this;
+
+        this.item = hdb.isHead(skull) ? hdb.getItemHead(skull) : ItemType.PLAYER_HEAD.createItemStack();
 
         return (B) this;
     }
