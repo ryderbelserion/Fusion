@@ -4,7 +4,7 @@ package com.ryderbelserion.core.api.interfaces;
  * An abstract class to define what a module can do.
  *
  * @author ryderbelserion
- * @version 0.14.0
+ * @version 0.15.0
  * @since 0.0.4
  */
 public interface IModule {
