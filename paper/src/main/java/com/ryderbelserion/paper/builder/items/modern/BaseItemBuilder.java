@@ -727,6 +727,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return getType().equals(Material.SHIELD);
     }
 
+    public final boolean isEdible() {
+        return getType().isEdible();
+    }
+
     public final boolean isLeather() {
         return LEATHER_ARMOR.contains(getType());
     }
