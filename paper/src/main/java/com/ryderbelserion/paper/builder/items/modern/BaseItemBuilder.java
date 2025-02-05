@@ -26,6 +26,7 @@ import io.papermc.paper.datacomponent.item.MapItemColor;
 import io.papermc.paper.datacomponent.item.Unbreakable;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -34,6 +35,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
@@ -116,6 +118,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                         }
                     }
 
+                    if (audience instanceof Player player && Support.placeholder_api.isEnabled()) {
+                        line = PlaceholderAPI.setPlaceholders(player, line);
+                    }
+
                     itemMeta.setDisplayName(PaperMethods.color(line));
                 });
             } else {
@@ -139,6 +145,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                                 line = line.replace(key, value).replace(key.toLowerCase(), value);
                             }
                         }
+                    }
+
+                    if (audience instanceof Player player && Support.placeholder_api.isEnabled()) {
+                        line = PlaceholderAPI.setPlaceholders(player, line);
                     }
 
                     lines.add(PaperMethods.color(line));

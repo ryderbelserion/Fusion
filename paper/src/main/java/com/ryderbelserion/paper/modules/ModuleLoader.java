@@ -10,7 +10,7 @@ import java.util.List;
  * A class handling the loading of modules.
  *
  * @author ryderbelserion
- * @version 0.15.0
+ * @version 0.16.0
  * @since 0.0.4
  */
 public class ModuleLoader {
