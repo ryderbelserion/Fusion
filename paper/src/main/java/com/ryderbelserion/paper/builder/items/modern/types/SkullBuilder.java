@@ -43,13 +43,17 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
 
         final PlayerProfile profile = this.plugin.getServer().createProfile(UUID.randomUUID(), null);
 
+        profile.setProperty(new ProfileProperty("", ""));
+
         final PlayerTextures textures = profile.getTextures();
 
         try {
-            textures.setSkin(URI.create(newUrl).toURL());
+            textures.setSkin(URI.create(newUrl).toURL(), PlayerTextures.SkinModel.CLASSIC);
         } catch (MalformedURLException exception) {
             throw new FusionException("Skull URL is malformed", exception);
         }
+
+        profile.setTextures(textures);
 
         this.builder.addProperties(profile.getProperties());
 
