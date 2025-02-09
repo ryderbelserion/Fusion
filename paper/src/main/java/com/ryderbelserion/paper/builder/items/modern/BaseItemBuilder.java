@@ -86,6 +86,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     protected final Plugin plugin = this.api.getPlugin();
 
+    private final List<ItemFlag> itemflags = new ArrayList<>();
+
     private Map<String, String> placeholders = new HashMap<>();
 
     private List<String> displayLore = new ArrayList<>();
@@ -155,22 +157,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     public B build() {
         return (B) this;
-    }
-
-    public B withType(@Nullable final ItemType type, final int amount) {
-        if (type == null) {
-            throw new FusionException("The item type cannot be null!");
-        }
-
-        if (this.item == null) {
-            this.item = type.createItemStack(Math.max(amount, 1));
-        }
-
-        return (B) this;
-    }
-
-    public B withType(@Nullable final ItemType type) {
-        return withType(type, 1);
     }
 
     public B withCustomItem(final String item) {
@@ -285,6 +271,22 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         }
 
         return (B) this;
+    }
+
+    public B withType(@Nullable final ItemType type, final int amount) {
+        if (type == null) {
+            throw new FusionException("The item type cannot be null!");
+        }
+
+        if (this.item == null) {
+            this.item = type.createItemStack(Math.max(amount, 1));
+        }
+
+        return (B) this;
+    }
+
+    public B withType(@Nullable final ItemType type) {
+        return withType(type, 1);
     }
 
     @Deprecated(since = "0.16.0", forRemoval = true)
@@ -504,8 +506,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         return (B) this;
     }
-
-    private final List<ItemFlag> itemflags = new ArrayList<>();
 
     public B addItemFlag(final ItemFlag itemFlag) {
         this.itemflags.add(itemFlag);
