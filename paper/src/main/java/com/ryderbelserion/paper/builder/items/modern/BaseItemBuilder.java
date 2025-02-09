@@ -1,5 +1,6 @@
 package com.ryderbelserion.paper.builder.items.modern;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
 import com.ryderbelserion.core.util.StringUtils;
@@ -37,6 +38,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
@@ -104,26 +106,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public ItemStack asItemStack(@Nullable final Audience audience, final boolean isLegacy) {
         if (this.displayName != null) {
             if (isLegacy) { // legacy support for other plugins, only here temporarily
-                this.item.editMeta(itemMeta -> {
-                    String line = this.displayName;
-
-                    for (final Map.Entry<String, String> placeholder : this.placeholders.entrySet()) {
-                        if (placeholder != null) {
-                            final String key = placeholder.getKey();
-                            final String value = placeholder.getValue();
-
-                            if (value != null) {
-                                line = line.replace(key, value).replace(key.toLowerCase(), value);
-                            }
-                        }
-                    }
-
-                    if (audience instanceof Player player && Support.placeholder_api.isEnabled()) {
-                        line = PlaceholderAPI.setPlaceholders(player, line);
-                    }
-
-                    itemMeta.setDisplayName(PaperMethods.color(line));
-                });
+                this.item.editMeta(itemMeta -> itemMeta.setDisplayName(PaperMethods.color(withPlaceholders(audience, this.displayName))));
             } else {
                 final ComponentBuilder builder = new ComponentBuilder(this.displayName);
 
@@ -136,22 +119,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                 final List<String> lines = new ArrayList<>();
 
                 for (String line : this.displayLore) {
-                    for (final Map.Entry<String, String> placeholder : this.placeholders.entrySet()) {
-                        if (placeholder != null) {
-                            final String key = placeholder.getKey();
-                            final String value = placeholder.getValue();
-
-                            if (value != null) {
-                                line = line.replace(key, value).replace(key.toLowerCase(), value);
-                            }
-                        }
-                    }
-
-                    if (audience instanceof Player player && Support.placeholder_api.isEnabled()) {
-                        line = PlaceholderAPI.setPlaceholders(player, line);
-                    }
-
-                    lines.add(PaperMethods.color(line));
+                    lines.add(PaperMethods.color(withPlaceholders(audience, line)));
                 }
 
                 this.item.editMeta(itemMeta -> itemMeta.setLore(lines));
@@ -160,6 +128,16 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
                 this.item.setData(DataComponentTypes.LORE, ItemLore.lore(builder.asComponents(audience, this.placeholders)));
             }
+        }
+
+        if (!this.itemflags.isEmpty()) { // temporary for now.
+            this.item.editMeta(itemMeta -> this.itemflags.forEach(flag -> {
+                itemMeta.addItemFlags(flag);
+
+                if (flag == ItemFlag.HIDE_ATTRIBUTES) {
+                    itemMeta.setAttributeModifiers(ImmutableMultimap.of());
+                }
+            }));
         }
 
         build();
@@ -309,7 +287,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    @Deprecated(forRemoval = true)
+    @Deprecated(since = "0.16.0", forRemoval = true)
     public B withType(@NotNull final String key) {
         if (key.isEmpty()) return (B) this;
 
@@ -523,6 +501,51 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         }
 
         this.item.unsetData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
+
+        return (B) this;
+    }
+
+    private final List<ItemFlag> itemflags = new ArrayList<>();
+
+    public B addItemFlag(final ItemFlag itemFlag) {
+        this.itemflags.add(itemFlag);
+
+        return (B) this;
+    }
+
+    public B addItemFlags(final List<String> flags) {
+        flags.forEach(this::addItemFlag);
+
+        return (B) this;
+    }
+
+    public B removeItemFlags(final List<String> flags) {
+        flags.forEach(this::removeItemFlag);
+
+        return (B) this;
+    }
+
+    public B addItemFlag(final String flag) {
+        final ItemFlag itemFlag = getFlag(flag);
+
+        if (itemFlag == null) {
+            throw new FusionException("Flag " + flag + " is not a valid flag");
+        }
+
+        addItemFlag(itemFlag);
+
+        return (B) this;
+    }
+
+    public B removeItemFlag(final String flag) {
+        final ItemFlag itemFlag = getFlag(flag);
+
+        if (itemFlag == null) {
+            throw new FusionException("Flag " + flag + " is not a valid flag");
+        }
+
+        this.item.editMeta(itemMeta -> itemMeta.removeItemFlags(itemFlag));
+        this.itemflags.remove(itemFlag);
 
         return (B) this;
     }
@@ -801,5 +824,40 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         }
 
         this.item = builder.build();
+    }
+
+    private String withPlaceholders(@Nullable final Audience audience, final String line) {
+        String clonedLine = line;
+
+        for (final Map.Entry<String, String> placeholder : this.placeholders.entrySet()) {
+            if (placeholder != null) {
+                final String key = placeholder.getKey();
+                final String value = placeholder.getValue();
+
+                if (value != null) {
+                    clonedLine = clonedLine.replace(key, value).replace(key.toLowerCase(), value);
+                }
+            }
+        }
+
+        if (audience instanceof Player player && Support.placeholder_api.isEnabled()) {
+            clonedLine = PlaceholderAPI.setPlaceholders(player, clonedLine);
+        }
+
+        return clonedLine;
+    }
+
+    private @Nullable ItemFlag getFlag(final String name) {
+        ItemFlag flag = null;
+
+        for (final ItemFlag value : ItemFlag.values()) {
+            if (value.name().equalsIgnoreCase(name)) {
+                flag = value;
+
+                break;
+            }
+        }
+
+        return flag;
     }
 }
