@@ -2,6 +2,7 @@ package com.ryderbelserion.paper.builder;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.ryderbelserion.paper.FusionApi;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -16,10 +17,16 @@ public record PlayerBuilder(String name) {
 
     private static final @NotNull Server server = plugin.getServer();
 
-    public @Nullable PlayerProfile getOfflinePlayer() {
+    public @Nullable PlayerProfile getOfflineProfile() {
         if (this.name.isEmpty()) return null;
 
         return CompletableFuture.supplyAsync(() -> server.createProfile(this.name)).join();
+    }
+
+    public @Nullable OfflinePlayer getOfflinePlayer() {
+        if (this.name.isEmpty()) return null;
+
+        return CompletableFuture.supplyAsync(() -> server.getOfflinePlayer(this.name)).join();
     }
 
     public @Nullable Player getPlayer() {
@@ -34,10 +41,16 @@ public record PlayerBuilder(String name) {
         final Player player = getPlayer();
 
         if (player == null) {
-            final PlayerProfile profile = getOfflinePlayer();
+            final PlayerProfile profile = getOfflineProfile();
 
             if (profile != null) {
                 return profile.getId();
+            }
+
+            final OfflinePlayer offlinePlayer = getOfflinePlayer();
+
+            if (offlinePlayer != null) {
+                return offlinePlayer.getUniqueId();
             }
 
             return null;
