@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * An event registry to register events
  *
  * @author ryderbelserion
- * @version 0.16.2
+ * @version 0.17.0
  * @since 0.11.0
  */
 public class EventRegistry {

@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
  * @param <I> the command info
  *
  * @author Ryder Belserion
- * @version 0.16.2
+ * @version 0.17.0
  * @since 0.9.0
  */
 public abstract class Command<S, I extends CommandInfo<S>> {
