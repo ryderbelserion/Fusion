@@ -17,8 +17,8 @@ public class RootCommand extends PaperCommand {
     protected final FusionPlugin plugin = FusionPlugin.getPlugin();
 
     @Override
-    public int execute(final PaperCommandContext info) {
-        return Command.SINGLE_SUCCESS;
+    public void execute(final PaperCommandContext info) {
+
     }
 
     @Override
@@ -35,7 +35,11 @@ public class RootCommand extends PaperCommand {
     public @NotNull LiteralCommandNode<CommandSourceStack> literal() {
         return Commands.literal("redstonepvp")
                 .requires(this::requirement)
-                .executes(context -> execute(new PaperCommandContext(context))).build();
+                .executes(context -> {
+                    execute(new PaperCommandContext(context));
+
+                    return Command.SINGLE_SUCCESS;
+                }).build();
     }
 
     @Override

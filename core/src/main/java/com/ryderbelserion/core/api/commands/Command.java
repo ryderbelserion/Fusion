@@ -11,7 +11,7 @@ public abstract class Command<S, I extends CommandContext<S>> {
 
     public Command() {}
 
-    public abstract int execute(I info);
+    public abstract void execute(I info);
 
     public abstract boolean requirement(S context);
 
