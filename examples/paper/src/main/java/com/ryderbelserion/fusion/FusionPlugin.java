@@ -1,11 +1,8 @@
 package com.ryderbelserion.fusion;
 
-import com.ryderbelserion.core.util.FileUtils;
+import com.ryderbelserion.fusion.commands.brigadier.FeatureManager;
 import com.ryderbelserion.paper.FusionApi;
-import com.ryderbelserion.fusion.commands.CommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
 
 public class FusionPlugin extends JavaPlugin {
 
@@ -19,9 +16,7 @@ public class FusionPlugin extends JavaPlugin {
     public void onEnable() {
         this.api.enable(this);
 
-        FileUtils.extracts("/locale/", new File(getDataFolder(), "locale").toPath(), false);
-
-        CommandManager.load();
+        new FeatureManager();
     }
 
     @Override
