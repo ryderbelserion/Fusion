@@ -1,15 +1,11 @@
 package com.ryderbelserion.fusion.commands.types.item;
 
 import com.ryderbelserion.fusion.commands.types.BaseCommand;
-import com.ryderbelserion.paper.builder.items.modern.ItemBuilder;
-import com.ryderbelserion.paper.builder.items.modern.types.SkullBuilder;
-import com.ryderbelserion.paper.builder.items.modern.types.fireworks.FireworkBuilder;
+import com.ryderbelserion.paper.fusion.builder.items.modern.ItemBuilder;
+import com.ryderbelserion.paper.fusion.builder.items.modern.types.SkullBuilder;
 import dev.triumphteam.cmd.core.annotations.Command;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
-import java.util.List;
 
 public class TestCommand extends BaseCommand {
 

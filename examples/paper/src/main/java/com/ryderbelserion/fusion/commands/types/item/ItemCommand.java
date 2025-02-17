@@ -1,9 +1,9 @@
 package com.ryderbelserion.fusion.commands.types.item;
 
 import com.ryderbelserion.fusion.commands.types.BaseCommand;
-import com.ryderbelserion.paper.builder.items.modern.ItemBuilder;
-import com.ryderbelserion.paper.builder.items.modern.types.PatternBuilder;
-import com.ryderbelserion.paper.util.PaperMethods;
+import com.ryderbelserion.paper.fusion.builder.items.modern.ItemBuilder;
+import com.ryderbelserion.paper.fusion.builder.items.modern.types.PatternBuilder;
+import com.ryderbelserion.paper.fusion.util.PaperMethods;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.CommandFlags;
 import dev.triumphteam.cmd.core.annotations.Flag;

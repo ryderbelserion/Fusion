@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.commands.types.adventure;
 
 import com.ryderbelserion.fusion.commands.types.BaseCommand;
-import com.ryderbelserion.paper.builder.api.ComponentBuilder;
+import com.ryderbelserion.paper.fusion.builder.api.ComponentBuilder;
 import dev.triumphteam.cmd.core.annotations.Command;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.entity.Player;
