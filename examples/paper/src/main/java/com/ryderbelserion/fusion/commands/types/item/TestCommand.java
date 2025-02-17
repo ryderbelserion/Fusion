@@ -1,8 +1,8 @@
 package com.ryderbelserion.fusion.commands.types.item;
 
 import com.ryderbelserion.fusion.commands.types.BaseCommand;
-import com.ryderbelserion.paper.fusion.builder.items.modern.ItemBuilder;
-import com.ryderbelserion.paper.fusion.builder.items.modern.types.SkullBuilder;
+import com.ryderbelserion.fusion.paper.builder.items.modern.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builder.items.modern.types.SkullBuilder;
 import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;

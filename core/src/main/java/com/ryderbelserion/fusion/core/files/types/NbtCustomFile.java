@@ -1,7 +1,7 @@
-package com.ryderbelserion.core.files.types;
+package com.ryderbelserion.fusion.core.files.types;
 
-import com.ryderbelserion.core.api.enums.FileType;
-import com.ryderbelserion.core.files.CustomFile;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.files.CustomFile;
 import java.io.File;
 
 public class NbtCustomFile extends CustomFile<NbtCustomFile> {

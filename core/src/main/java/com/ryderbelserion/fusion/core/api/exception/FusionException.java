@@ -1,4 +1,4 @@
-package com.ryderbelserion.core.api.exception;
+package com.ryderbelserion.fusion.core.api.exception;
 
 public final class FusionException extends IllegalStateException {
 

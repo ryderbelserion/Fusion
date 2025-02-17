@@ -1,8 +1,8 @@
-package com.ryderbelserion.core.api.builder;
+package com.ryderbelserion.fusion.core.api.builder;
 
-import com.ryderbelserion.core.FusionLayout;
-import com.ryderbelserion.core.FusionProvider;
-import com.ryderbelserion.core.util.StringUtils;
+import com.ryderbelserion.fusion.core.FusionLayout;
+import com.ryderbelserion.fusion.core.FusionProvider;
+import com.ryderbelserion.fusion.core.util.StringUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;

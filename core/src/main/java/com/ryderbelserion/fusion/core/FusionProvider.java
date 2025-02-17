@@ -1,4 +1,4 @@
-package com.ryderbelserion.core;
+package com.ryderbelserion.fusion.core;
 
 public class FusionProvider {
 

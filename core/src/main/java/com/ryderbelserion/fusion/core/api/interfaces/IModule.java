@@ -1,4 +1,4 @@
-package com.ryderbelserion.core.api.interfaces;
+package com.ryderbelserion.fusion.core.api.interfaces;
 
 public interface IModule {
 

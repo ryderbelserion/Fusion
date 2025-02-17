@@ -1,8 +1,8 @@
-package com.ryderbelserion.core.files;
+package com.ryderbelserion.fusion.core.files;
 
-import com.ryderbelserion.core.FusionLayout;
-import com.ryderbelserion.core.FusionProvider;
-import com.ryderbelserion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.FusionLayout;
+import com.ryderbelserion.fusion.core.FusionProvider;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;

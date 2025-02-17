@@ -1,4 +1,4 @@
-package com.ryderbelserion.core.api.commands.context;
+package com.ryderbelserion.fusion.core.api.commands.context;
 
 import org.jetbrains.annotations.NotNull;
 

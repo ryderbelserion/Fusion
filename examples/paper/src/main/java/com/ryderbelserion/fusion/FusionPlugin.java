@@ -1,10 +1,9 @@
 package com.ryderbelserion.fusion;
 
-import com.ryderbelserion.core.util.FileUtils;
-import com.ryderbelserion.paper.fusion.FusionApi;
+import com.ryderbelserion.fusion.core.util.FileUtils;
+import com.ryderbelserion.fusion.paper.FusionApi;
 import com.ryderbelserion.fusion.commands.CommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.io.File;
 
 public class FusionPlugin extends JavaPlugin {
