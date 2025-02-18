@@ -583,6 +583,20 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
+    public @NotNull T setItemModel(@NotNull final String itemModel) {
+        if (itemModel.isEmpty()) return (T) this;
+
+        this.itemStack.setData(DataComponentTypes.ITEM_MODEL, NamespacedKey.minecraft(itemModel));
+
+        return (T) this;
+    }
+
+    public @NotNull T setItemModel(@NotNull final String namespace, @NotNull final String key) {
+        this.itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(namespace, key));
+
+        return (T) this;
+    }
+
     public @NotNull T setHidingItemFlags(final boolean isHidingItemFlags) { //todo() itemflags are dead
         this.isHidingItemFlags = isHidingItemFlags;
 

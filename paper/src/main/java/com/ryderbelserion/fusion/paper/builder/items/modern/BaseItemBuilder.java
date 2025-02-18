@@ -580,6 +580,14 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
+    public B setItemModel(@NotNull final String namespace, @NotNull final String itemModel) {
+        if (itemModel.isEmpty()) return (B) this;
+
+        this.item.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(namespace, itemModel));
+
+        return (B) this;
+    }
+
     public B setTrim(@NotNull final String pattern, @NotNull final String material, final boolean hideToolTip) {
         if (pattern.isEmpty() || material.isEmpty()) return (B) this;
 
