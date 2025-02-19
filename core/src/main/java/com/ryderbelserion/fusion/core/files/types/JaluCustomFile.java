@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.core.files.v2.types;
+package com.ryderbelserion.fusion.core.files.types;
 
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.SettingsManager;
@@ -7,11 +7,11 @@ import ch.jalu.configme.migration.MigrationService;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.api.enums.FileType;
 import com.ryderbelserion.fusion.core.api.exception.FusionException;
-import com.ryderbelserion.fusion.core.files.v2.BaseCustomFile;
+import com.ryderbelserion.fusion.core.files.CustomFile;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 
-public class JaluCustomFile extends BaseCustomFile<JaluCustomFile> {
+public class JaluCustomFile extends CustomFile<JaluCustomFile> {
 
     private final @NotNull Class<? extends SettingsHolder>[] holders;
 
@@ -63,6 +63,11 @@ public class JaluCustomFile extends BaseCustomFile<JaluCustomFile> {
         this.settingsManager.save();
 
         return this;
+    }
+
+    @Override
+    public final boolean isLoaded() {
+        return this.settingsManager != null;
     }
 
     @Override

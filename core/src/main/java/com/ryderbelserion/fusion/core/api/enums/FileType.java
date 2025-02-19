@@ -4,13 +4,15 @@ public enum FileType {
 
     YAML(".yml"),
 
-    JALU("jalu"),
+    JALU(".jalu"),
 
     JSON(".json"),
 
     NONE("none"),
 
-    NBT(".nbt");
+    NBT(".nbt"),
+
+    LOG(".log");
 
     private final String extension;
 
