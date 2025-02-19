@@ -2,13 +2,15 @@ package com.ryderbelserion.fusion.core.api.enums;
 
 public enum FileType {
 
-    YAML("yml"),
+    YAML(".yml"),
 
-    JSON("json"),
+    JALU("jalu"),
+
+    JSON(".json"),
 
     NONE("none"),
 
-    NBT("nbt");
+    NBT(".nbt");
 
     private final String extension;
 
