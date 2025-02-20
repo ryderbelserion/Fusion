@@ -89,10 +89,56 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         return this;
     }
 
+    // extraction is required, but this sets up configme for folders
+    @SafeVarargs
+    public final FileManager addFolder(@NotNull final String folder, @Nullable final MigrationService service, @Nullable final YamlFileResourceOptions options, @NotNull final Class<? extends SettingsHolder>... holders) {
+        if (folder.isBlank()) {
+            if (this.isVerbose) {
+                this.logger.warn("Cannot add the folder as the folder is empty.");
+            }
+
+            return this;
+        }
+
+        final File directory = new File(this.dataFolder, folder);
+
+        if (directory.mkdirs()) {
+            FileUtils.extracts(String.format("/%s/", directory.getName()), directory.toPath(), false);
+        }
+
+        final File[] contents = directory.listFiles();
+
+        if (contents == null) return this;
+
+        for (final File file : contents) {
+            if (file.isDirectory()) {
+                final String[] layers = file.list();
+
+                if (layers == null) continue;
+
+                for (final String layer : layers) {
+                    if (!layer.endsWith(".yml")) continue; // just in case people are weird
+
+                    addFile(layer, folder, service, options, holders);
+                }
+
+                continue;
+            }
+
+            final String fileName = file.getName();
+
+            if (!fileName.endsWith(".yml")) continue; // just in case people are weird
+
+            addFile(fileName, folder, service, options, holders);
+        }
+
+        return this;
+    }
+
     // no extraction required as this is only for ConfigMe
     @SafeVarargs
-    public final FileManager addFile(@NotNull final String fileName, @Nullable final MigrationService service, @Nullable final YamlFileResourceOptions options, @NotNull final Class<? extends SettingsHolder>... holders) {
-        final File file = new File(this.dataFolder, fileName);
+    public final FileManager addFile(@NotNull final String fileName, @Nullable final String folder, @Nullable final MigrationService service, @Nullable final YamlFileResourceOptions options, @NotNull final Class<? extends SettingsHolder>... holders) {
+        final File file = new File(this.dataFolder, folder != null ? folder + File.separator + fileName : fileName);
 
         final JaluCustomFile jalu = new JaluCustomFile(file, holders);
 
@@ -107,6 +153,11 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         this.files.put(fileName, jalu.build());
 
         return this;
+    }
+
+    @SafeVarargs
+    public final FileManager addFile(@NotNull final String fileName, @Nullable final MigrationService service, @Nullable final YamlFileResourceOptions options, @NotNull final Class<? extends SettingsHolder>... holders) {
+        return addFile(fileName, null, service, options, holders);
     }
 
     public final FileManager addFile(@NotNull final String fileName, @Nullable final String folder, @NotNull final FileType fileType, @Nullable final UnaryOperator<ConfigurationOptions> defaultOptions, final boolean isDynamic) {
