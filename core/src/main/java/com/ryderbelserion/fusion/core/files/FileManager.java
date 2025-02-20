@@ -138,6 +138,12 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     // no extraction required as this is only for ConfigMe
     @SafeVarargs
     public final FileManager addFile(@NotNull final String fileName, @Nullable final String folder, @Nullable final MigrationService service, @Nullable final YamlFileResourceOptions options, @NotNull final Class<? extends SettingsHolder>... holders) {
+        if (this.files.containsKey(fileName)) { // if found don't add it as we already reloaded.
+            //this.files.get(fileName).load();
+
+            return this;
+        }
+
         final File file = new File(this.dataFolder, folder != null ? folder + File.separator + fileName : fileName);
 
         final JaluCustomFile jalu = new JaluCustomFile(file, holders);
