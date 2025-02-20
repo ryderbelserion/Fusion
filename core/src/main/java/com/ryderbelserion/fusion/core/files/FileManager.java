@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.UnaryOperator;
 
-public class FileManager {
+public class FileManager { // note: no longer strip file names, so it's stored as config.yml or crates.log
 
     private final FusionLayout api = FusionProvider.get();
 
@@ -66,14 +66,14 @@ public class FileManager {
 
         for (final File file : contents) {
             if (file.isDirectory()) {
-                final String[] files = file.list();
+                final String[] layers = file.list();
 
-                if (files == null) continue;
+                if (layers == null) continue;
 
-                for (final String fileName : files) {
-                    if (fileType != FileType.NONE && !fileName.endsWith("." + extension)) continue; // just in case people are weird
+                for (final String layer : layers) {
+                    if (fileType != FileType.NONE && !layer.endsWith(extension)) continue; // just in case people are weird
 
-                    addFile(fileName, folder + File.separator + file.getName(), fileType, options, true);
+                    addFile(layer, folder + File.separator + file.getName(), fileType, options, true);
                 }
 
                 continue;
@@ -81,7 +81,7 @@ public class FileManager {
 
             final String fileName = file.getName();
 
-            if (fileType != FileType.NONE && !fileName.endsWith("." + extension)) continue; // just in case people are weird
+            if (fileType != FileType.NONE && !fileName.endsWith(extension)) continue; // if file type is not FileType.None and fileName does not end with .extension
 
             addFile(fileName, folder, fileType, options, true);
         }
@@ -104,7 +104,7 @@ public class FileManager {
             jalu.setOptions(options);
         }
 
-        this.files.put(strip(fileName, ".yml"), jalu.build());
+        this.files.put(fileName, jalu.build());
 
         return this;
     }
@@ -125,47 +125,46 @@ public class FileManager {
         }
 
         final String extension = fileType.getExtension();
-        final String strippedName = strip(fileName, extension);
 
         switch (fileType) {
             case YAML -> {
-                if (this.files.containsKey(strippedName)) {
-                    this.files.get(strippedName).load();
+                if (this.files.containsKey(fileName)) {
+                    this.files.get(fileName).load();
 
                     return this;
                 }
 
-                this.files.put(strippedName, new YamlCustomFile(file, isDynamic, defaultOptions).load());
+                this.files.put(fileName, new YamlCustomFile(file, isDynamic, defaultOptions).load());
             }
 
             case JSON -> {
-                if (this.files.containsKey(strippedName)) {
-                    this.files.get(strippedName).load();
+                if (this.files.containsKey(fileName)) {
+                    this.files.get(fileName).load();
 
                     return this;
                 }
 
-                this.files.put(strippedName, new JsonCustomFile(file, isDynamic, defaultOptions).load());
+                this.files.put(fileName, new JsonCustomFile(file, isDynamic, defaultOptions).load());
             }
 
             case NBT -> {
-                if (this.files.containsKey(strippedName)) {
-                    throw new FusionException("The file '" + strippedName + "' already exists.");
+                if (this.files.containsKey(fileName)) {
+                    throw new FusionException("The file " + fileName + " already exists.");
                 }
 
-                this.files.put(strippedName, new NbtCustomFile(file, isDynamic));
+                this.files.put(fileName, new NbtCustomFile(file, isDynamic));
             }
 
             case LOG -> {
-                if (this.files.containsKey(strippedName)) {
-                    throw new FusionException("The file '" + strippedName + "' already exists.");
+                if (this.files.containsKey(fileName)) {
+                    throw new FusionException("The file " + fileName + " already exists.");
                 }
 
                 if (folder == null) {
                     throw new FusionException("You must specify a folder for the " + extension + " file.");
                 }
 
-                this.files.put(strippedName, new LogCustomFile(file, new File(this.dataFolder, folder), isDynamic));
+                this.files.put(fileName, new LogCustomFile(file, new File(this.dataFolder, folder), isDynamic));
             }
 
             case NONE -> {}
@@ -191,6 +190,8 @@ public class FileManager {
             fileType = FileType.JSON;
         } else if (fileName.endsWith(".nbt")) {
             fileType = FileType.NBT;
+        } else if (fileName.endsWith(".log")) {
+            fileType = FileType.LOG;
         }
 
         return addFile(fileName, null, fileType, null, false);
@@ -205,6 +206,8 @@ public class FileManager {
             fileType = FileType.JSON;
         } else if (fileName.endsWith(".nbt")) {
             fileType = FileType.NBT;
+        } else if (fileName.endsWith(".log")) {
+            fileType = FileType.LOG;
         }
 
         return saveFile(fileName, fileType);
@@ -219,11 +222,7 @@ public class FileManager {
             return this;
         }
 
-        final String extension = fileType.getExtension();
-
-        final String strippedName = strip(fileName, extension);
-
-        if (!this.files.containsKey(strippedName)) {
+        if (!this.files.containsKey(fileName)) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot save the file as the file does not exist.");
             }
@@ -231,7 +230,11 @@ public class FileManager {
             return this;
         }
 
-        this.files.get(strippedName).save();
+        if (fileType == FileType.LOG) {
+            throw new FusionException("You must use FileManager#writeFile since the FileType is set to LOG");
+        }
+
+        this.files.get(fileName).save();
 
         return this;
     }
@@ -239,7 +242,7 @@ public class FileManager {
     // write to the log file
     public final FileManager writeFile(@NotNull final String fileName, @NotNull final FileType fileType, @NotNull final String content) {
         if (fileType != FileType.LOG) {
-            throw new FusionException("The file '" + fileName + "' is not a log file.");
+            throw new FusionException("The file " + fileName + " is not a log file.");
         }
 
         if (fileName.isBlank()) {
@@ -250,11 +253,7 @@ public class FileManager {
             return this;
         }
 
-        final String extension = fileType.getExtension();
-
-        final String strippedName = strip(fileName, extension);
-
-        if (!this.files.containsKey(strippedName)) {
+        if (!this.files.containsKey(fileName)) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot write to file as the file does not exist.");
             }
@@ -262,13 +261,13 @@ public class FileManager {
             return this;
         }
 
-        this.files.get(strippedName).write(content);
+        this.files.get(fileName).write(content);
 
         return this;
     }
 
     // removes a file with an option to delete
-    public final FileManager removeFile(@NotNull final String fileName, @NotNull final FileType fileType, final boolean purge) {
+    public final FileManager removeFile(@NotNull final String fileName, final boolean purge) {
         if (fileName.isBlank()) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot remove the file as the file is null or empty.");
@@ -277,11 +276,9 @@ public class FileManager {
             return this;
         }
 
-        final String strippedName = strip(fileName, fileType.getExtension());
+        if (!this.files.containsKey(fileName)) return this;
 
-        if (!this.files.containsKey(strippedName)) return this;
-
-        final CustomFile<? extends CustomFile<?>> file = this.files.remove(strippedName);
+        final CustomFile<? extends CustomFile<?>> file = this.files.remove(fileName);
 
         if (purge) {
             file.delete();
@@ -295,7 +292,7 @@ public class FileManager {
     }
 
     public final FileManager removeFile(final CustomFile<? extends CustomFile<?>> customFile, final boolean purge) {
-        return removeFile(customFile.getFileName(), customFile.getType(), purge);
+        return removeFile(customFile.getFileName(), purge);
     }
 
     public final FileManager reload() { // reloads all files
@@ -377,16 +374,24 @@ public class FileManager {
         return this;
     }
 
-    public @Nullable CustomFile<? extends CustomFile<?>> getFile(final String fileName, final FileType fileType) {
-        return this.files.getOrDefault(strip(fileName, fileType.getExtension()), null);
+    public @Nullable CustomFile<? extends CustomFile<?>> getFile(final String fileName) {
+        return this.files.getOrDefault(fileName, null);
+    }
+
+    public @Nullable YamlCustomFile getYamlFile(final String fileName) {
+        return (YamlCustomFile) this.files.getOrDefault(fileName, null);
+    }
+
+    public @Nullable JsonCustomFile getJsonFile(final String fileName) {
+        return (JsonCustomFile) this.files.getOrDefault(fileName, null);
     }
 
     public @Nullable JaluCustomFile getJaluFile(final String fileName) {
-        return (JaluCustomFile) this.files.getOrDefault(strip(fileName, FileType.JALU.getExtension()), null);
+        return (JaluCustomFile) this.files.getOrDefault(fileName, null);
     }
 
-    public final String strip(final String fileName, final String extension) {
-        return fileName.replace(extension, "");
+    public @Nullable LogCustomFile getLogFile(final String fileName) {
+        return (LogCustomFile) this.files.getOrDefault(fileName, null);
     }
 
     public Map<String, CustomFile<? extends CustomFile<?>>> getFiles() {
