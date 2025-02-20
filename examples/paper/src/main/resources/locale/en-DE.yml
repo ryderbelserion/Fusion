@@ -5,4 +5,4 @@
 # Features: https://github.com/Crazy-Crew/ChatManager/issues
 root:
   # The message sent when /chatmanager reload is ran.
-  reload-plugins: "<prefix><green>Config has been reloaded."
+  reload-plugin: "<prefix><green>Config has been reloaded."

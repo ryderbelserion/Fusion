@@ -11,6 +11,8 @@ plugins {
 }
 
 repositories {
+    maven("https://repo.crazycrew.us/releases/")
+
     mavenCentral()
 }
 

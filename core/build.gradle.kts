@@ -18,4 +18,6 @@ dependencies {
     compileOnly(libs.brigadier)
 
     api(libs.configurate.jackson)
+
+    api(libs.jalu)
 }
