@@ -50,6 +50,14 @@ public class FusionPlugin extends JavaPlugin {
             getComponentLogger().warn("String: {}", german.getStringValue("root", "reload-plugin"));
         }
 
+        fileManager.getCustomFiles().forEach((key, value) -> {
+            getComponentLogger().warn("File: {}", key);
+
+            value.forEach((name, custom) -> {
+                getComponentLogger().warn("Custom Key: {}", name);
+            });
+        });
+
         CommandManager.load();
     }
 

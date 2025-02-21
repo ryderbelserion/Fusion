@@ -34,14 +34,16 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
     private final File dataFolder = this.api.getDataFolder();
 
-    private final String path = this.dataFolder.getPath();
-
     // folder -> file name -> associated custom file
     // this can also be used to replace files above, which means we use getFile#getPath()
     private final Map<String, Map<String, CustomFile<? extends CustomFile<?>>>> customFiles = new HashMap<>();
     private final Map<String, FileType> folders = new HashMap<>(); // stores the folder and it's file type
 
-    public FileManager() {}
+    private final String path; // i.e. CrazyCrates being the root folder
+
+    public FileManager(final String path) {
+        this.path = path;
+    }
 
     public final FileManager init(final boolean isReload) {
         this.dataFolder.mkdirs(); // create directory
@@ -507,7 +509,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
         if (!brokenFiles.isEmpty()) {
             brokenFiles.forEach((folder, file) -> {
-                final Map<String, CustomFile<? extends CustomFile<?>>> files = this.customFiles.getOrDefault(folder, new HashMap<>());
+                final Map<String, CustomFile<? extends CustomFile<?>>> files = this.customFiles.get(folder);
 
                 final String fileName = file.getName();
 
@@ -519,7 +521,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     }
 
     public String getPath(final String folder) {
-        return folder != null ? this.path + File.separator + folder + File.separator : this.path + File.separator;
+        return folder != null ? this.path + File.separator + folder : this.path;
     }
 
     public @NotNull final Map<String, CustomFile<? extends CustomFile<?>>> getCustomFiles(@Nullable final String folder) {

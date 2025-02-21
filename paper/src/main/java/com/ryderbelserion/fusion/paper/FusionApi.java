@@ -36,7 +36,7 @@ public final class FusionApi {
         this.plugin = plugin;
 
         this.fusion = new Fusion();
-        this.fusion.enable();
+        this.fusion.enable(plugin.getName());
 
         this.fileManager = new FileManager();
 

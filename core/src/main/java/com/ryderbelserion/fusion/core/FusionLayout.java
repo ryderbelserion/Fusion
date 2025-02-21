@@ -63,7 +63,7 @@ public abstract class FusionLayout {
         return this.config.node("settings", "custom-items-plugin").getString("none");
     }
 
-    public void enable() {
+    public void enable(final String path) {
         FusionProvider.register(this);
 
         final File vital = new File(getDataFolder(), "vital.yml");
@@ -80,7 +80,7 @@ public abstract class FusionLayout {
 
         reload();
 
-        this.fileManager = new FileManager();
+        this.fileManager = new FileManager(path);
     }
 
     public void disable() {
