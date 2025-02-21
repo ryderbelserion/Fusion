@@ -19,9 +19,8 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationOptions;
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.UnaryOperator;
 
@@ -35,15 +34,21 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
     private final File dataFolder = this.api.getDataFolder();
 
-    private final Map<String, CustomFile<? extends CustomFile<?>>> files = new HashMap<>();
-    private final Map<String, FileType> folders = new HashMap<>();
+    private final String path = this.dataFolder.getPath();
+
+    // folder -> file name -> associated custom file
+    // this can also be used to replace files above, which means we use getFile#getPath()
+    private final Map<String, Map<String, CustomFile<? extends CustomFile<?>>>> customFiles = new HashMap<>();
+    private final Map<String, FileType> folders = new HashMap<>(); // stores the folder and it's file type
 
     public FileManager() {}
 
     public final FileManager init(final boolean isReload) {
-        this.dataFolder.mkdirs();
+        this.dataFolder.mkdirs(); // create directory
 
-        this.folders.forEach((folder, type) -> addFolder(folder, type, null, isReload));
+        this.customFiles.putIfAbsent(this.path, new HashMap<>()); // add new hashmap
+
+        this.folders.forEach((folder, type) -> addFolder(folder, type, null, isReload)); // add new files
 
         return this;
     }
@@ -147,8 +152,12 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     // no extraction required as this is only for ConfigMe
     @SafeVarargs
     public final FileManager addFile(@NotNull final String fileName, @Nullable final String folder, @Nullable final MigrationService service, @Nullable final YamlFileResourceOptions options, final boolean isReload, @NotNull final Class<? extends SettingsHolder>... holders) {
-        if (this.files.containsKey(fileName) && !isReload) { // if the file already exists, do not add it instead reload it.
-            this.files.get(fileName).load();
+        final String path = getPath(folder);
+
+        final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+
+        if (customFiles.containsKey(fileName) && !isReload) { // if the file already exists, do not add it instead reload it.
+            customFiles.get(fileName).load();
 
             return this;
         }
@@ -165,7 +174,11 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             jalu.setOptions(options);
         }
 
-        this.files.put(fileName, jalu.build());
+        // only add to map if absent
+        customFiles.putIfAbsent(fileName, jalu.build());
+
+        // only add to map if absent since the above method already updates the internal data meaning this is pointless to set again
+        this.customFiles.putIfAbsent(path, customFiles);
 
         return this;
     }
@@ -194,35 +207,69 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
         switch (fileType) {
             case YAML -> {
-                if (this.files.containsKey(fileName) && !isReload) {
-                    this.files.get(fileName).load();
+                final String path = getPath(folder);
+
+                final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+
+                if (customFiles.containsKey(fileName) && !isReload) {
+                    customFiles.get(fileName).load();
 
                     return this;
                 }
 
-                this.files.put(fileName, new YamlCustomFile(file, isDynamic, defaultOptions).load());
+                // folder -> file name -> associated custom file
+
+                // only add to map if absent
+                customFiles.putIfAbsent(fileName, new YamlCustomFile(file, isDynamic, defaultOptions).load());
+
+                // only add to map if absent since the above method already updates the internal data meaning this is pointless to set again
+                this.customFiles.putIfAbsent(path, customFiles);
             }
 
             case JSON -> {
-                if (this.files.containsKey(fileName) && !isReload) {
-                    this.files.get(fileName).load();
+                final String path = getPath(folder);
+
+                final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+
+                if (customFiles.containsKey(fileName) && !isReload) {
+                    customFiles.get(fileName).load();
 
                     return this;
                 }
 
-                this.files.put(fileName, new JsonCustomFile(file, isDynamic, defaultOptions).load());
+                // folder -> file name -> associated custom file
+
+                // only add to map if absent
+                customFiles.putIfAbsent(fileName, new JsonCustomFile(file, isDynamic, defaultOptions).load());
+
+                // only add to map if absent since the above method already updates the internal data meaning this is pointless to set again
+                this.customFiles.putIfAbsent(path, customFiles);
             }
 
             case NBT -> {
-                if (this.files.containsKey(fileName)) {
+                final String path = getPath(folder);
+
+                final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+
+                if (customFiles.containsKey(fileName)) {
                     throw new FusionException("The file " + fileName + " already exists.");
                 }
 
-                this.files.put(fileName, new NbtCustomFile(file, isDynamic));
+                // folder -> file name -> associated custom file
+
+                // only add to map if absent
+                customFiles.putIfAbsent(fileName, new NbtCustomFile(file, isDynamic));
+
+                // only add to map if absent since the above method already updates the internal data meaning this is pointless to set again
+                this.customFiles.putIfAbsent(path, customFiles);
             }
 
             case LOG -> {
-                if (this.files.containsKey(fileName)) {
+                final String path = getPath(folder);
+
+                final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+
+                if (customFiles.containsKey(fileName)) {
                     throw new FusionException("The file " + fileName + " already exists.");
                 }
 
@@ -230,7 +277,13 @@ public class FileManager { // note: no longer strip file names, so it's stored a
                     throw new FusionException("You must specify a folder for the " + extension + " file.");
                 }
 
-                this.files.put(fileName, new LogCustomFile(file, new File(this.dataFolder, folder), isDynamic));
+                // folder -> file name -> associated custom file
+
+                // only add to map if absent
+                customFiles.putIfAbsent(fileName, new NbtCustomFile(file, isDynamic));
+
+                // only add to map if absent since the above method already updates the internal data meaning this is pointless to set again
+                this.customFiles.putIfAbsent(path, customFiles);
             }
 
             case NONE -> {}
@@ -263,7 +316,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         return addFile(fileName, null, fileType, null, false, false);
     }
 
-    public final FileManager saveFile(@NotNull final String fileName) {
+    public final FileManager saveFile(@NotNull final String folder, @NotNull final String fileName) {
         FileType fileType = FileType.NONE;
 
         if (fileName.endsWith(".yml")) {
@@ -276,10 +329,14 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             fileType = FileType.LOG;
         }
 
-        return saveFile(fileName, fileType);
+        return saveFile(folder, fileName, fileType);
     }
 
-    public final FileManager saveFile(@NotNull final String fileName, @NotNull final FileType fileType) {
+    public final FileManager saveFile(@NotNull final String fileName) {
+        return saveFile("", fileName);
+    }
+
+    public final FileManager saveFile(@NotNull final String folder, @NotNull final String fileName, @NotNull final FileType fileType) {
         if (fileName.isBlank()) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot save the file as the file is null or empty.");
@@ -288,9 +345,13 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             return this;
         }
 
-        if (!this.files.containsKey(fileName)) {
+        final String path = getPath(folder.isBlank() ? null : folder);
+
+        final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+
+        if (!customFiles.containsKey(fileName)) {
             if (this.isVerbose) {
-                this.logger.warn("Cannot save the file as the file does not exist.");
+                this.logger.warn("Cannot write to file as the file does not exist.");
             }
 
             return this;
@@ -300,13 +361,13 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             throw new FusionException("You must use FileManager#writeFile since the FileType is set to LOG");
         }
 
-        this.files.get(fileName).save();
+        customFiles.get(fileName).save();
 
         return this;
     }
 
     // write to the log file
-    public final FileManager writeFile(@NotNull final String fileName, @NotNull final FileType fileType, @NotNull final String content) {
+    public final FileManager writeFile(@NotNull final String folder, @NotNull final String fileName, @NotNull final FileType fileType, @NotNull final String content) {
         if (fileType != FileType.LOG) {
             throw new FusionException("The file " + fileName + " is not a log file.");
         }
@@ -319,7 +380,11 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             return this;
         }
 
-        if (!this.files.containsKey(fileName)) {
+        final String path = getPath(folder.isBlank() ? null : folder);
+
+        final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+
+        if (!customFiles.containsKey(fileName)) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot write to file as the file does not exist.");
             }
@@ -327,13 +392,13 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             return this;
         }
 
-        this.files.get(fileName).write(content);
+        customFiles.get(fileName).write(content);
 
         return this;
     }
 
     // removes a file with an option to delete
-    public final FileManager removeFile(@NotNull final String fileName, final boolean purge) {
+    public final FileManager removeFile(@NotNull final String folder, @NotNull final String fileName, final boolean purge) {
         if (fileName.isBlank()) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot remove the file as the file is null or empty.");
@@ -342,9 +407,13 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             return this;
         }
 
-        if (!this.files.containsKey(fileName)) return this;
+        final String path = getPath(folder.isBlank() ? null : folder);
 
-        final CustomFile<? extends CustomFile<?>> file = this.files.remove(fileName);
+        final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+
+        if (!customFiles.containsKey(fileName)) return this;
+
+        final CustomFile<? extends CustomFile<?>> file = customFiles.remove(fileName);
 
         if (purge) {
             file.delete();
@@ -358,7 +427,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     }
 
     public final FileManager removeFile(final CustomFile<? extends CustomFile<?>> customFile, final boolean purge) {
-        return removeFile(customFile.getFileName(), purge);
+        return removeFile(customFile.getFile().getPath() + File.separator, customFile.getFileName(), purge);
     }
 
     public final FileManager reload() { // reloads all files
@@ -370,7 +439,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     }
 
     public final FileManager purge() {
-        this.files.clear();
+        this.customFiles.clear();
 
         return this;
     }
@@ -407,60 +476,81 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     }
 
     private FileManager handle(boolean toggle) { // save or reload all files
-        if (this.files.isEmpty()) return this;
+        if (this.customFiles.isEmpty()) return this;
 
-        final List<File> brokenFiles = new ArrayList<>();
+        // folder -> file object
+        // we search hashmap by the folder, fetch hashmap of folder, remove file from hashmap of folder and then re-set the hashmap
+        final Map<String, File> brokenFiles = new HashMap<>();
 
-        for (final Map.Entry<String, CustomFile<? extends CustomFile<?>>> entry : this.files.entrySet()) {
-            final CustomFile<? extends CustomFile<?>> customFile = entry.getValue();
+        for (Map.Entry<String, Map<String, CustomFile<? extends CustomFile<?>>>> outer : this.customFiles.entrySet()) {
+            final String folder = outer.getKey();
+            final Map<String, CustomFile<? extends CustomFile<?>>> files = outer.getValue();
 
-            final File file = customFile.getFile();
+            for (Map.Entry<String, CustomFile<? extends CustomFile<?>>> inner : files.entrySet()) {
+                final CustomFile<? extends CustomFile<?>> customFile = inner.getValue();
 
-            if (!file.exists()) {
-                brokenFiles.add(file);
+                final File file = customFile.getFile();
 
-                continue;
-            }
+                if (!file.exists()) {
+                    brokenFiles.put(folder, file);
 
-            if (toggle) {
-                customFile.save(); // save the config
-            } else {
-                customFile.load(); // load the config
+                    continue;
+                }
+
+                if (toggle) {
+                    customFile.save(); // save the config
+                } else {
+                    customFile.load(); // load the config
+                }
             }
         }
 
-        if (!brokenFiles.isEmpty()) { // remove broken files
-            brokenFiles.forEach(file -> {
+        if (!brokenFiles.isEmpty()) {
+            brokenFiles.forEach((folder, file) -> {
+                final Map<String, CustomFile<? extends CustomFile<?>>> files = this.customFiles.getOrDefault(folder, Collections.emptyMap());
+
                 final String fileName = file.getName();
 
-                this.files.remove(fileName);
+                files.remove(fileName);
             });
         }
 
         return this;
     }
 
-    public @Nullable CustomFile<? extends CustomFile<?>> getFile(final String fileName) {
-        return this.files.getOrDefault(fileName, null);
+    public String getPath(final String folder) {
+        return folder != null ? this.path + File.separator + folder + File.separator : this.path + File.separator;
+    }
+
+    public @NotNull final Map<String, CustomFile<? extends CustomFile<?>>> getCustomFiles(@Nullable final String folder) {
+        return getCustomFiles().getOrDefault(getPath(folder), Collections.emptyMap());
+    }
+
+    public @Nullable final CustomFile<? extends CustomFile<?>> getCustomFile(final String folder, final String file) {
+        return getCustomFiles(folder).getOrDefault(file, null);
+    }
+
+    public @Nullable final CustomFile<? extends CustomFile<?>> getCustomFile(final String file) {
+        return getCustomFiles(null).getOrDefault(file, null);
     }
 
     public @Nullable YamlCustomFile getYamlFile(final String fileName) {
-        return (YamlCustomFile) this.files.getOrDefault(fileName, null);
+        return (YamlCustomFile) getCustomFile(fileName);
     }
 
     public @Nullable JsonCustomFile getJsonFile(final String fileName) {
-        return (JsonCustomFile) this.files.getOrDefault(fileName, null);
+        return (JsonCustomFile) getCustomFile(fileName);
     }
 
     public @Nullable JaluCustomFile getJaluFile(final String fileName) {
-        return (JaluCustomFile) this.files.getOrDefault(fileName, null);
+        return (JaluCustomFile) getCustomFile(fileName);
     }
 
     public @Nullable LogCustomFile getLogFile(final String fileName) {
-        return (LogCustomFile) this.files.getOrDefault(fileName, null);
+        return (LogCustomFile) getCustomFile(fileName);
     }
 
-    public Map<String, CustomFile<? extends CustomFile<?>>> getFiles() {
-        return this.files;
+    public Map<String, Map<String, CustomFile<? extends CustomFile<?>>>> getCustomFiles() {
+        return Collections.unmodifiableMap(this.customFiles);
     }
 }

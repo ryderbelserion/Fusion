@@ -38,13 +38,13 @@ public class FusionPlugin extends JavaPlugin {
             getComponentLogger().warn("Second Key: {}", manager.getProperty(SecondKeys.second_key));
         }
 
-        @Nullable final YamlCustomFile english = (YamlCustomFile) fileManager.getFile("en-US.yml");
+        @Nullable final YamlCustomFile english = (YamlCustomFile) fileManager.getCustomFile("locale", "en-US.yml");
 
         if (english != null) {
             getComponentLogger().warn("String: {}", english.getStringValue("root", "reload-plugin"));
         }
 
-        @Nullable final YamlCustomFile german = (YamlCustomFile) fileManager.getFile("en-DE.yml");
+        @Nullable final YamlCustomFile german = (YamlCustomFile) fileManager.getCustomFile("locale", "en-DE.yml");
 
         if (german != null) {
             getComponentLogger().warn("String: {}", german.getStringValue("root", "reload-plugin"));
