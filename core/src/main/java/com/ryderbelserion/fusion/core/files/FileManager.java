@@ -47,7 +47,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         this.dataFolder.mkdirs(); // create directory
 
         this.customFiles.putIfAbsent(this.path, new HashMap<>()); // add new hashmap
-
+        
         this.folders.forEach((folder, type) -> addFolder(folder, type, null, isReload)); // add new files
 
         return this;
@@ -154,7 +154,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     public final FileManager addFile(@NotNull final String fileName, @Nullable final String folder, @Nullable final MigrationService service, @Nullable final YamlFileResourceOptions options, final boolean isReload, @NotNull final Class<? extends SettingsHolder>... holders) {
         final String path = getPath(folder);
 
-        final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+        final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, new HashMap<>());
 
         if (customFiles.containsKey(fileName) && !isReload) { // if the file already exists, do not add it instead reload it.
             customFiles.get(fileName).load();
@@ -209,7 +209,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             case YAML -> {
                 final String path = getPath(folder);
 
-                final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+                final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, new HashMap<>());
 
                 if (customFiles.containsKey(fileName) && !isReload) {
                     customFiles.get(fileName).load();
@@ -229,7 +229,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             case JSON -> {
                 final String path = getPath(folder);
 
-                final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+                final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, new HashMap<>());
 
                 if (customFiles.containsKey(fileName) && !isReload) {
                     customFiles.get(fileName).load();
@@ -249,7 +249,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             case NBT -> {
                 final String path = getPath(folder);
 
-                final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+                final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, new HashMap<>());
 
                 if (customFiles.containsKey(fileName)) {
                     throw new FusionException("The file " + fileName + " already exists.");
@@ -267,7 +267,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             case LOG -> {
                 final String path = getPath(folder);
 
-                final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+                final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, new HashMap<>());
 
                 if (customFiles.containsKey(fileName)) {
                     throw new FusionException("The file " + fileName + " already exists.");
@@ -347,7 +347,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
         final String path = getPath(folder.isBlank() ? null : folder);
 
-        final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+        final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, new HashMap<>());
 
         if (!customFiles.containsKey(fileName)) {
             if (this.isVerbose) {
@@ -382,7 +382,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
         final String path = getPath(folder.isBlank() ? null : folder);
 
-        final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+        final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, new HashMap<>());
 
         if (!customFiles.containsKey(fileName)) {
             if (this.isVerbose) {
@@ -409,7 +409,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
         final String path = getPath(folder.isBlank() ? null : folder);
 
-        final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, Collections.emptyMap());
+        final Map<String, CustomFile<? extends CustomFile<?>>> customFiles = this.customFiles.getOrDefault(path, new HashMap<>());
 
         if (!customFiles.containsKey(fileName)) return this;
 
@@ -507,7 +507,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
         if (!brokenFiles.isEmpty()) {
             brokenFiles.forEach((folder, file) -> {
-                final Map<String, CustomFile<? extends CustomFile<?>>> files = this.customFiles.getOrDefault(folder, Collections.emptyMap());
+                final Map<String, CustomFile<? extends CustomFile<?>>> files = this.customFiles.getOrDefault(folder, new HashMap<>());
 
                 final String fileName = file.getName();
 
@@ -523,7 +523,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     }
 
     public @NotNull final Map<String, CustomFile<? extends CustomFile<?>>> getCustomFiles(@Nullable final String folder) {
-        return getCustomFiles().getOrDefault(getPath(folder), Collections.emptyMap());
+        return getCustomFiles().getOrDefault(getPath(folder), new HashMap<>());
     }
 
     public @Nullable final CustomFile<? extends CustomFile<?>> getCustomFile(final String folder, final String file) {
