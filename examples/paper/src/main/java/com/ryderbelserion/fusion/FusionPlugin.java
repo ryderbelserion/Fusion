@@ -26,8 +26,8 @@ public class FusionPlugin extends JavaPlugin {
 
         final FileManager fileManager = this.api.getFusion().getFileManager();
 
-        fileManager.addFolder("locale", FileType.YAML, null)
-                .addFile("config.yml", null, null, ConfigKeys.class, SecondKeys.class).init();
+        fileManager.addFolder("locale", FileType.YAML, null, false)
+                .addFile("config.yml", null, null, ConfigKeys.class, SecondKeys.class).init(false);
 
         @Nullable final JaluCustomFile customFile = fileManager.getJaluFile("config.yml");
 

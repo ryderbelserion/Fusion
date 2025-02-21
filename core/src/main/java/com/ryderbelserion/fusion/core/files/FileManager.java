@@ -36,20 +36,29 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     private final File dataFolder = this.api.getDataFolder();
 
     private final Map<String, CustomFile<? extends CustomFile<?>>> files = new HashMap<>();
+    private final Map<String, FileType> folders = new HashMap<>();
 
     public FileManager() {}
 
-    public final FileManager init() { // only initialize once
+    public final FileManager init(final boolean isReload) {
+        this.dataFolder.mkdirs();
+
+        this.folders.forEach((folder, type) -> addFolder(folder, type, null, isReload));
+
         return this;
     }
 
-    public final FileManager addFolder(@NotNull final String folder, @NotNull final FileType fileType, @Nullable final UnaryOperator<ConfigurationOptions> options) {
+    public final FileManager addFolder(@NotNull final String folder, @NotNull final FileType fileType, @Nullable final UnaryOperator<ConfigurationOptions> options, final boolean isReload) {
         if (folder.isBlank()) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot add the folder as the folder is empty.");
             }
 
             return this;
+        }
+
+        if (!this.folders.containsKey(folder)) {
+            this.folders.put(folder, fileType);
         }
 
         final File directory = new File(this.dataFolder, folder);
@@ -73,7 +82,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
                 for (final String layer : layers) {
                     if (fileType != FileType.NONE && !layer.endsWith(extension)) continue; // just in case people are weird
 
-                    addFile(layer, folder + File.separator + file.getName(), fileType, options, true);
+                    addFile(layer, folder + File.separator + file.getName(), fileType, options, true, isReload);
                 }
 
                 continue;
@@ -83,7 +92,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
             if (fileType != FileType.NONE && !fileName.endsWith(extension)) continue; // if file type is not FileType.None and fileName does not end with .extension
 
-            addFile(fileName, folder, fileType, options, true);
+            addFile(fileName, folder, fileType, options, true, isReload);
         }
 
         return this;
@@ -91,7 +100,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
     // extraction is required, but this sets up configme for folders
     @SafeVarargs
-    public final FileManager addFolder(@NotNull final String folder, @Nullable final MigrationService service, @Nullable final YamlFileResourceOptions options, @NotNull final Class<? extends SettingsHolder>... holders) {
+    public final FileManager addFolder(@NotNull final String folder, @Nullable final MigrationService service, @Nullable final YamlFileResourceOptions options, final boolean isReload, @NotNull final Class<? extends SettingsHolder>... holders) {
         if (folder.isBlank()) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot add the folder as the folder is empty.");
@@ -119,7 +128,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
                 for (final String layer : layers) {
                     if (!layer.endsWith(".yml")) continue; // just in case people are weird
 
-                    addFile(layer, folder, service, options, holders);
+                    addFile(layer, folder, service, options, isReload, holders);
                 }
 
                 continue;
@@ -129,7 +138,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
             if (!fileName.endsWith(".yml")) continue; // just in case people are weird
 
-            addFile(fileName, folder, service, options, holders);
+            addFile(fileName, folder, service, options, isReload, holders);
         }
 
         return this;
@@ -137,9 +146,9 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
     // no extraction required as this is only for ConfigMe
     @SafeVarargs
-    public final FileManager addFile(@NotNull final String fileName, @Nullable final String folder, @Nullable final MigrationService service, @Nullable final YamlFileResourceOptions options, @NotNull final Class<? extends SettingsHolder>... holders) {
-        if (this.files.containsKey(fileName)) { // if found don't add it as we already reloaded.
-            //this.files.get(fileName).load();
+    public final FileManager addFile(@NotNull final String fileName, @Nullable final String folder, @Nullable final MigrationService service, @Nullable final YamlFileResourceOptions options, final boolean isReload, @NotNull final Class<? extends SettingsHolder>... holders) {
+        if (this.files.containsKey(fileName) && !isReload) { // if the file already exists, do not add it instead reload it.
+            this.files.get(fileName).load();
 
             return this;
         }
@@ -163,10 +172,10 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
     @SafeVarargs
     public final FileManager addFile(@NotNull final String fileName, @Nullable final MigrationService service, @Nullable final YamlFileResourceOptions options, @NotNull final Class<? extends SettingsHolder>... holders) {
-        return addFile(fileName, null, service, options, holders);
+        return addFile(fileName, null, service, options, false, holders);
     }
 
-    public final FileManager addFile(@NotNull final String fileName, @Nullable final String folder, @NotNull final FileType fileType, @Nullable final UnaryOperator<ConfigurationOptions> defaultOptions, final boolean isDynamic) {
+    public final FileManager addFile(@NotNull final String fileName, @Nullable final String folder, @NotNull final FileType fileType, @Nullable final UnaryOperator<ConfigurationOptions> defaultOptions, final boolean isDynamic, final boolean isReload) {
         if (fileName.isBlank()) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot add the file as the file is null or empty.");
@@ -185,7 +194,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
         switch (fileType) {
             case YAML -> {
-                if (this.files.containsKey(fileName)) {
+                if (this.files.containsKey(fileName) && !isReload) {
                     this.files.get(fileName).load();
 
                     return this;
@@ -195,7 +204,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             }
 
             case JSON -> {
-                if (this.files.containsKey(fileName)) {
+                if (this.files.containsKey(fileName) && !isReload) {
                     this.files.get(fileName).load();
 
                     return this;
@@ -231,7 +240,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     }
 
     public final FileManager addFile(@NotNull final String fileName, @NotNull final FileType fileType, @Nullable final UnaryOperator<ConfigurationOptions> options) {
-        return addFile(fileName, null, fileType, options, false);
+        return addFile(fileName, null, fileType, options, false, false);
     }
 
     public final FileManager addFile(@NotNull final String fileName, @NotNull final FileType fileType) {
@@ -251,7 +260,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             fileType = FileType.LOG;
         }
 
-        return addFile(fileName, null, fileType, null, false);
+        return addFile(fileName, null, fileType, null, false, false);
     }
 
     public final FileManager saveFile(@NotNull final String fileName) {
