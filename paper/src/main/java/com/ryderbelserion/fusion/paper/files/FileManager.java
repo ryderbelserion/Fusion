@@ -64,7 +64,7 @@ public final class FileManager {
                 if (files == null) continue;
 
                 for (final String fileName : files) {
-                    if (!fileName.endsWith("." + extension)) continue; // just in case people are weird
+                    if (!fileName.endsWith(extension)) continue; // just in case people are weird
 
                     addFile(fileName, folder + File.separator + file.getName(), true, fileType);
                 }
@@ -74,7 +74,7 @@ public final class FileManager {
 
             final String fileName = file.getName();
 
-            if (!fileName.endsWith("." + extension)) continue; // just in case people are weird
+            if (!fileName.endsWith(extension)) continue; // just in case people are weird
 
             addFile(fileName, folder, true, fileType);
         }
