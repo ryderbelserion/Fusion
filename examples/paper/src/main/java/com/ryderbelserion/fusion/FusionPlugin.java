@@ -9,6 +9,7 @@ import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.paper.FusionApi;
 import com.ryderbelserion.fusion.commands.CommandManager;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,6 +25,10 @@ public class FusionPlugin extends JavaPlugin {
     public void onEnable() {
         this.api.enable(this);
 
+        final ComponentLogger logger = getComponentLogger();
+
+        logger.warn("==== PLATFORM INDEPENDENT FILEMANAGER START ====");
+
         final FileManager fileManager = this.api.getFusion().getFileManager();
 
         fileManager.addFolder("locale", FileType.YAML, null, false)
@@ -34,29 +39,37 @@ public class FusionPlugin extends JavaPlugin {
         if (customFile != null) {
             final SettingsManager manager = customFile.getSettingsManager();
 
-            getComponentLogger().warn("Key: {}", manager.getProperty(ConfigKeys.root_key));
-            getComponentLogger().warn("Second Key: {}", manager.getProperty(SecondKeys.second_key));
+            logger.warn("Key: {}", manager.getProperty(ConfigKeys.root_key));
+            logger.warn("Second Key: {}", manager.getProperty(SecondKeys.second_key));
         }
 
         @Nullable final YamlCustomFile english = (YamlCustomFile) fileManager.getCustomFile("locale", "en-US.yml");
 
         if (english != null) {
-            getComponentLogger().warn("String: {}", english.getStringValue("root", "reload-plugin"));
+            logger.warn("String: {}", english.getStringValue("root", "reload-plugin"));
         }
 
         @Nullable final YamlCustomFile german = (YamlCustomFile) fileManager.getCustomFile("locale", "en-DE.yml");
 
         if (german != null) {
-            getComponentLogger().warn("String: {}", german.getStringValue("root", "reload-plugin"));
+            logger.warn("String: {}", german.getStringValue("root", "reload-plugin"));
         }
 
         fileManager.getCustomFiles().forEach((key, value) -> {
-            getComponentLogger().warn("File: {}", key);
+            logger.warn("File: {}", key);
 
-            value.forEach((name, custom) -> {
-                getComponentLogger().warn("Custom Key: {}", name);
-            });
+            value.forEach((name, custom) -> logger.warn("Custom Key: {}", name));
         });
+
+        logger.warn("==== PLATFORM INDEPENDENT FILEMANAGER END ====");
+
+        logger.warn("==== PAPER FILEMANAGER START ====");
+
+        final com.ryderbelserion.fusion.paper.files.FileManager paper = this.api.getFileManager();
+
+        paper.addFolder("codes", FileType.YAML).addFolder("vouchers", FileType.YAML);
+
+        logger.warn("==== PAPER FILEMANAGER END ====");
 
         CommandManager.load();
     }
