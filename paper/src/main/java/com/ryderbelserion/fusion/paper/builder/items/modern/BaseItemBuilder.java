@@ -613,14 +613,20 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public B setColor(@NotNull final String value) {
+        if (value.isEmpty()) return (B) this;
+
         if (isMap()) {
-            final Color color = PaperMethods.getColor(value);
+            final Color color = value.contains(",") ? PaperMethods.getRGB(value) : PaperMethods.getColor(value);
 
-            this.item.setData(DataComponentTypes.MAP_COLOR, MapItemColor.mapItemColor().color(color).build());
+            if (color != null) {
+                this.item.setData(DataComponentTypes.MAP_COLOR, MapItemColor.mapItemColor().color(color).build());
+            }
         } else if (isLeather() || isPotion()) {
-            final Color color = PaperMethods.getColor(value);
+            final Color color = value.contains(",") ? PaperMethods.getRGB(value) : PaperMethods.getColor(value);
 
-            this.item.setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor().color(color).build());
+            if (color != null) {
+                this.item.setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor().color(color).build());
+            }
         } else if (isShield()) {
             final DyeColor color = PaperMethods.getDyeColor(value);
 

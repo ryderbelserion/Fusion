@@ -5,6 +5,7 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class SpawnerBuilder extends BaseItemBuilder<SpawnerBuilder> {
 
@@ -17,8 +18,10 @@ public class SpawnerBuilder extends BaseItemBuilder<SpawnerBuilder> {
     private int delay = 3;
     private int range = 0;
 
-    public void withEntityType(final EntityType entityType) {
+    public SpawnerBuilder withEntityType(@Nullable final EntityType entityType) {
         this.entityType = entityType;
+
+        return this;
     }
 
     public SpawnerBuilder withSpawnCount(final int count) {
@@ -41,6 +44,8 @@ public class SpawnerBuilder extends BaseItemBuilder<SpawnerBuilder> {
 
     @Override
     public SpawnerBuilder build() {
+        if (this.entityType == null) return this;
+
         getItem().editMeta(itemMeta -> {
             if (itemMeta instanceof CreatureSpawner spawner) {
                 if (count > 0) {

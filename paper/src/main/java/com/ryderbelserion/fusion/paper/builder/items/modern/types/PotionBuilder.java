@@ -43,7 +43,7 @@ public class PotionBuilder extends BaseItemBuilder<PotionBuilder> {
     }
 
     @Override
-    public PotionBuilder setColor(final @NotNull String value) {
+    public PotionBuilder setColor(@NotNull final String value) {
         this.builder.customColor(PaperMethods.getColor(value));
 
         return this;
