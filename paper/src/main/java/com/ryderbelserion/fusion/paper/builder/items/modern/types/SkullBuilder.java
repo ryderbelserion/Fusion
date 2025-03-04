@@ -10,7 +10,6 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.profile.PlayerTextures;
-import org.intellij.lang.annotations.Subst;
 import org.jetbrains.annotations.NotNull;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -60,6 +59,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         return this;
     }
 
+    @Override
     public SkullBuilder withBase64(@NotNull final String base64) {
         if (base64.isEmpty()) return this;
 
@@ -68,7 +68,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         return this;
     }
 
-    public SkullBuilder withName(@Subst("player") @NotNull final String playerName) {
+    public SkullBuilder withName(@NotNull final String playerName) {
         if (playerName.isEmpty()) return this;
 
         if (playerName.length() > 16) {

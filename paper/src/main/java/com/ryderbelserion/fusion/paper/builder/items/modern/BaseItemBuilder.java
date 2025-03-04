@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.paper.builder.items.modern;
 
+import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.common.collect.ImmutableMultimap;
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
@@ -269,6 +270,14 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                 }
             }
         }
+
+        return (B) this;
+    }
+
+    public B withBase64(@NotNull final String base64) {
+        if (base64.isEmpty()) return (B) this;
+
+        this.item = PaperMethods.fromBase64(base64);
 
         return (B) this;
     }
