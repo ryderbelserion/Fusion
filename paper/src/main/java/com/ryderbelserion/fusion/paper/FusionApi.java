@@ -6,6 +6,8 @@ import com.ryderbelserion.fusion.paper.enums.Support;
 import com.ryderbelserion.fusion.paper.files.FileManager;
 import com.ryderbelserion.fusion.paper.modules.EventRegistry;
 import com.ryderbelserion.fusion.paper.modules.ModuleLoader;
+import io.papermc.paper.plugin.bootstrap.BootstrapContext;
+import io.papermc.paper.plugin.configuration.PluginMeta;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.Server;
 import org.bukkit.plugin.Plugin;
@@ -29,16 +31,20 @@ public final class FusionApi {
 
     private ModuleLoader loader;
 
-    public void enable(@NotNull Plugin plugin) {
+    public void enable(@NotNull final Plugin plugin) {
         if (this.isRegistered) return;
 
         this.isRegistered = true;
         this.plugin = plugin;
 
-        this.fusion = new Fusion();
-        this.fusion.enable(plugin.getName());
+        if (this.fusion != null) {
+            this.fusion = new Fusion();
+            this.fusion.enable(plugin.getName());
+        }
 
-        this.fileManager = new FileManager();
+        if (this.fileManager != null) {
+            this.fileManager = new FileManager();
+        }
 
         if (Support.head_database.isEnabled()) {
             this.headDatabaseAPI = new HeadDatabaseAPI();
@@ -50,6 +56,17 @@ public final class FusionApi {
         this.loader = new ModuleLoader(new EventRegistry(this.plugin, server));
 
         manager.registerEvents(new GuiListener(), this.plugin);
+    }
+
+    public void bootstrap(@NotNull final BootstrapContext context) {
+        if (this.isRegistered) return;
+
+        final PluginMeta pluginMeta = context.getPluginMeta();
+
+        this.fusion = new Fusion();
+        this.fusion.enable(pluginMeta.getName());
+
+        this.fileManager = new FileManager();
     }
 
     public void reload() {
