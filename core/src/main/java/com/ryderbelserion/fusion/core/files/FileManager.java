@@ -190,6 +190,14 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         return addFile(fileName, null, service, options, false, holders);
     }
 
+    public final FileManager addFile(@NotNull final String fileName, @NotNull final String folder, @NotNull final FileType fileType, final boolean isReload) {
+        return addFile(fileName, folder, fileType, null, isReload, false);
+    }
+
+    public final FileManager addFile(@NotNull final String fileName, @NotNull final String folder, @NotNull final FileType fileType) {
+        return addFile(fileName, folder, fileType, null, false, false);
+    }
+
     public final FileManager addFile(@NotNull final String fileName, @Nullable final String folder, @NotNull final FileType fileType, @Nullable final UnaryOperator<ConfigurationOptions> defaultOptions, final boolean isDynamic, final boolean isReload) {
         if (fileName.isBlank()) {
             if (this.isVerbose) {
