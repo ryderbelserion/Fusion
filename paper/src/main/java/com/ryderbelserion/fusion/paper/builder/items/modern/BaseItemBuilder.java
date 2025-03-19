@@ -1,6 +1,5 @@
 package com.ryderbelserion.fusion.paper.builder.items.modern;
 
-import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.common.collect.ImmutableMultimap;
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
