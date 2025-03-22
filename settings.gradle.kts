@@ -3,6 +3,8 @@ rootProject.name = "fusion"
 listOf(
     "core" to "core",
     "paper" to "paper",
+    "fabric" to "fabric",
+    "discord" to "discord",
 
     "examples/paper" to "example-paper"
 ).forEach(::includeProject)
