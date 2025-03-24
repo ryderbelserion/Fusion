@@ -681,11 +681,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public PotionBuilder asPotionBuilder() {
-        if (!isPotion() || !isTippedArrow()) {
-            throw new FusionException("This item type is not a potion / tipped arrow.");
+        if (isPotion() || isTippedArrow()) {
+            return new PotionBuilder(this.item);
         }
 
-        return new PotionBuilder(this.item);
+        throw new FusionException("This item type is not a potion / tipped arrow.");
     }
 
     public SpawnerBuilder asSpawnerBuilder() {
