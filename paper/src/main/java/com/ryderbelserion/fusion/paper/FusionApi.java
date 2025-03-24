@@ -34,15 +34,14 @@ public final class FusionApi {
     public void enable(@NotNull final Plugin plugin) {
         if (this.isRegistered) return;
 
-        this.isRegistered = true;
         this.plugin = plugin;
 
-        if (this.fusion != null) {
+        if (this.fusion == null) {
             this.fusion = new Fusion();
             this.fusion.enable(plugin.getName());
         }
 
-        if (this.fileManager != null) {
+        if (this.fileManager == null) {
             this.fileManager = new FileManager();
         }
 
@@ -56,6 +55,8 @@ public final class FusionApi {
         this.loader = new ModuleLoader(new EventRegistry(this.plugin, server));
 
         manager.registerEvents(new GuiListener(), this.plugin);
+
+        this.isRegistered = true;
     }
 
     public void bootstrap(@NotNull final BootstrapContext context) {

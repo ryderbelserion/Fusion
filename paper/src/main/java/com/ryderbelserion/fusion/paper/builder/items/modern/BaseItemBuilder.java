@@ -29,11 +29,11 @@ import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -49,36 +49,12 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
-
-    private static final EnumSet<Material> BANNERS = EnumSet.of(
-            Material.WHITE_BANNER, Material.ORANGE_BANNER, Material.MAGENTA_BANNER, Material.LIGHT_BLUE_BANNER, Material.YELLOW_BANNER,
-            Material.LIME_BANNER, Material.PINK_BANNER, Material.GRAY_BANNER, Material.LIGHT_GRAY_BANNER, Material.CYAN_BANNER,
-            Material.PURPLE_BANNER, Material.BLUE_BANNER, Material.BROWN_BANNER, Material.GREEN_BANNER, Material.RED_BANNER,
-            Material.BLACK_BANNER,
-            Material.WHITE_WALL_BANNER, Material.ORANGE_WALL_BANNER, Material.MAGENTA_WALL_BANNER, Material.LIGHT_BLUE_WALL_BANNER, Material.YELLOW_WALL_BANNER,
-            Material.LIME_WALL_BANNER, Material.PINK_WALL_BANNER, Material.GRAY_WALL_BANNER, Material.LIGHT_GRAY_WALL_BANNER, Material.CYAN_WALL_BANNER,
-            Material.PURPLE_WALL_BANNER, Material.BLUE_WALL_BANNER, Material.BROWN_WALL_BANNER, Material.GREEN_WALL_BANNER, Material.RED_WALL_BANNER,
-            Material.BLACK_WALL_BANNER
-    );
-
-    private static final EnumSet<Material> LEATHER_ARMOR = EnumSet.of(
-            Material.LEATHER_HELMET,
-            Material.LEATHER_CHESTPLATE,
-            Material.LEATHER_LEGGINGS,
-            Material.LEATHER_BOOTS,
-            Material.LEATHER_HORSE_ARMOR
-    );
-
-    private static final EnumSet<Material> POTIONS = EnumSet.of(
-            Material.POTION, Material.SPLASH_POTION, Material.LINGERING_POTION
-    );
 
     protected final FusionApi api = FusionApi.get();
 
@@ -95,9 +71,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     private boolean isStatic = false;
 
+    private ItemType itemType;
     private ItemStack item;
 
     public BaseItemBuilder(final ItemStack item) {
+        this.itemType = item.getType().asItemType();
         this.item = item;
     }
 
@@ -171,13 +149,9 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                 final ItemType itemType = PaperMethods.getItemType(item);
 
                 if (itemType != null) {
-                    this.item = itemType.createItemStack(1);
+                    withType(itemType);
                 } else {
-                    try {
-                        this.item = PaperMethods.fromBase64(item);
-                    } catch (Exception exception) {
-                        this.item = ItemType.STONE.createItemStack(1);
-                    }
+                    withBase64(item);
                 }
             }
 
@@ -191,13 +165,9 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                 final ItemType itemType = PaperMethods.getItemType(item);
 
                 if (itemType != null) {
-                    this.item = itemType.createItemStack(1);
+                    withType(itemType);
                 } else {
-                    try {
-                        this.item = PaperMethods.fromBase64(item);
-                    } catch (Exception exception) {
-                        this.item = ItemType.STONE.createItemStack(1);
-                    }
+                    withBase64(item);
                 }
             }
 
@@ -211,13 +181,9 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                 final ItemType itemType = PaperMethods.getItemType(item);
 
                 if (itemType != null) {
-                    this.item = itemType.createItemStack(1);
+                    withType(itemType);
                 } else {
-                    try {
-                        this.item = PaperMethods.fromBase64(item);
-                    } catch (Exception exception) {
-                        this.item = ItemType.STONE.createItemStack(1);
-                    }
+                    withBase64(item);
                 }
             }
 
@@ -225,13 +191,9 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                 final ItemType itemType = PaperMethods.getItemType(item);
 
                 if (itemType != null) {
-                    this.item = itemType.createItemStack(1);
+                    withType(itemType);
                 } else {
-                    try {
-                        this.item = PaperMethods.fromBase64(item);
-                    } catch (Exception exception) {
-                        this.item = ItemType.STONE.createItemStack(1);
-                    }
+                    withBase64(item);
                 }
             }
 
@@ -259,13 +221,9 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                 final ItemType itemType = PaperMethods.getItemType(item);
 
                 if (itemType != null) {
-                    this.item = itemType.createItemStack(1);
+                    withType(itemType);
                 } else {
-                    try {
-                        this.item = PaperMethods.fromBase64(item);
-                    } catch (Exception exception) {
-                        this.item = ItemType.STONE.createItemStack(1);
-                    }
+                    withBase64(item);
                 }
             }
         }
@@ -276,7 +234,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public B withBase64(@NotNull final String base64) {
         if (base64.isEmpty()) return (B) this;
 
-        this.item = PaperMethods.fromBase64(base64);
+        try {
+            this.item = PaperMethods.fromBase64(base64);
+        } catch (Exception exception) {
+            this.item = ItemType.STONE.createItemStack(1);
+        }
+
+        this.itemType = this.item.getType().asItemType();
 
         return (B) this;
     }
@@ -289,6 +253,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         if (this.item == null) {
             this.item = type.createItemStack(Math.max(amount, 1));
         }
+
+        this.itemType = this.item.getType().asItemType();
 
         return (B) this;
     }
@@ -496,7 +462,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public B hideAdditionalToolTip() {
-        if (this.item.hasData(DataComponentTypes.HIDE_TOOLTIP)) {
+        if (this.item.hasData(DataComponentTypes.HIDE_TOOLTIP) || this.item.hasData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)) {
             return (B) this;
         }
 
@@ -715,11 +681,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public PotionBuilder asPotionBuilder() {
-        if (!isPotion()) {
-            throw new FusionException("This item type is not a potion.");
+        if (isPotion() || isTippedArrow()) {
+            return new PotionBuilder(this.item);
         }
 
-        return new PotionBuilder(this.item);
+        throw new FusionException("This item type is not a potion / tipped arrow.");
     }
 
     public SpawnerBuilder asSpawnerBuilder() {
@@ -759,63 +725,86 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public final boolean isPlayerHead() {
-        return getType().equals(Material.PLAYER_HEAD);
+        return asString().equalsIgnoreCase(ItemType.PLAYER_HEAD.key().asString());
     }
 
     public final boolean isFireworkStar() {
-        return getType().equals(Material.FIREWORK_STAR);
+        return asString().equalsIgnoreCase(ItemType.FIREWORK_STAR.key().asString());
     }
 
     public final boolean isTippedArrow() {
-        return getType().equals(Material.TIPPED_ARROW);
+        return asString().equalsIgnoreCase(ItemType.TIPPED_ARROW.key().asString());
     }
 
     public final boolean isFirework() {
-        return getType().equals(Material.FIREWORK_ROCKET);
+        return asString().equalsIgnoreCase(ItemType.FIREWORK_ROCKET.key().asString());
     }
 
     public final boolean isSpawner() {
-        return getType().equals(Material.SPAWNER);
+        return asString().equalsIgnoreCase(ItemType.SPAWNER.key().asString());
     }
 
     public final boolean isShield() {
-        return getType().equals(Material.SHIELD);
+        return asString().equalsIgnoreCase(ItemType.SHIELD.key().asString());
     }
 
     public final boolean isEdible() {
-        return getType().isEdible();
+        return this.itemType.isEdible();
     }
 
     public final boolean isLeather() {
-        return LEATHER_ARMOR.contains(getType());
+        final String id = asString();
+
+        return id.equalsIgnoreCase(ItemType.LEATHER_HELMET.key().asString()) || id.equalsIgnoreCase(ItemType.LEATHER_CHESTPLATE.key().asString())
+                || id.equalsIgnoreCase(ItemType.LEATHER_LEGGINGS.key().asString()) || id.equalsIgnoreCase(ItemType.LEATHER_BOOTS.key().asString())
+                || id.equalsIgnoreCase(ItemType.LEATHER_HORSE_ARMOR.key().asString());
     }
 
     public final boolean isPotion() {
-        return POTIONS.contains(getType());
+        final String id = asString();
+
+        return id.equalsIgnoreCase(ItemType.POTION.key().asString()) || id.equalsIgnoreCase(ItemType.SPLASH_POTION.key().asString()) || id.equalsIgnoreCase(ItemType.LINGERING_POTION.key().asString());
     }
 
     public final boolean isBanner() {
-        return BANNERS.contains(getType());
+        return getId().endsWith("_banner");
     }
 
     public final boolean isBook() {
-        return getType().equals(Material.ENCHANTED_BOOK);
+        return asString().equalsIgnoreCase(ItemType.ENCHANTED_BOOK.key().asString());
     }
 
     public final boolean isMap() {
-        return getType().equals(Material.FILLED_MAP);
+        return asString().equalsIgnoreCase(ItemType.FILLED_MAP.key().asString());
+    }
+
+    public final String getNamespace() {
+        return getKey().namespace();
+    }
+
+    public final String asString() {
+        return getKey().asString();
+    }
+
+    public final String getId() {
+        return getKey().value();
+    }
+
+    public final Key getKey() {
+        return this.itemType.key();
     }
 
     protected final void setItemStack(final ItemStack item) {
         this.item = item;
+        this.itemType = this.item.getType().asItemType();
     }
 
     protected final ItemStack getItem() {
         return this.item;
     }
 
-    protected final Material getType() {
-        return this.item.getType();
+    protected final ItemType getType() {
+        return this.itemType;
     }
 
     private void getItemsAdder(final String item) {
@@ -826,6 +815,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         }
 
         this.item = builder.getItemStack();
+        this.itemType = this.item.getType().asItemType();
     }
 
     private void getOraxen(final String item) {
@@ -836,6 +826,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         }
 
         this.item = builder.build();
+        this.itemType = this.item.getType().asItemType();
     }
 
     private void getNexo(final String item) {
@@ -846,6 +837,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         }
 
         this.item = builder.build();
+        this.itemType = this.item.getType().asItemType();
     }
 
     private String withPlaceholders(@Nullable final Audience audience, final String line) {
