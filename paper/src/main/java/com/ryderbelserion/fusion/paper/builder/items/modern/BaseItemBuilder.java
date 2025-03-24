@@ -496,7 +496,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public B hideAdditionalToolTip() {
-        if (this.item.hasData(DataComponentTypes.HIDE_TOOLTIP)) {
+        if (this.item.hasData(DataComponentTypes.HIDE_TOOLTIP) || this.item.hasData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)) {
             return (B) this;
         }
 
@@ -715,8 +715,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public PotionBuilder asPotionBuilder() {
-        if (!isPotion()) {
-            throw new FusionException("This item type is not a potion.");
+        if (!isPotion() || !isTippedArrow()) {
+            throw new FusionException("This item type is not a potion / tipped arrow.");
         }
 
         return new PotionBuilder(this.item);
