@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.builder.gui.interfaces;
 
-import com.ryderbelserion.fusion.api.exception.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.BaseGui;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.PaginatedGui;
 import org.jetbrains.annotations.NotNull;

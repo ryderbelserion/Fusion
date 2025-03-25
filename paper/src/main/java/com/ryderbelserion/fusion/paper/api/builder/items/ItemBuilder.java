@@ -3,7 +3,7 @@ package com.ryderbelserion.fusion.paper.api.builder.items;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.nexomc.nexo.api.NexoItems;
-import com.ryderbelserion.fusion.api.exception.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.api.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;

@@ -3,7 +3,7 @@ package com.ryderbelserion.fusion.paper.api.builder.items.modern;
 import com.google.common.collect.ImmutableMultimap;
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
-import com.ryderbelserion.fusion.api.exception.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.api.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.paper.api.builder.ComponentBuilder;

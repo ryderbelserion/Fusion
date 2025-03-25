@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.api.files;
 
 import com.ryderbelserion.fusion.api.FusionApi;
 import com.ryderbelserion.fusion.api.enums.FileType;
-import com.ryderbelserion.fusion.api.exception.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.api.interfaces.ILogger;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.BasicConfigurationNode;

@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.api.files.types.misc;
 
 import com.ryderbelserion.fusion.api.enums.FileType;
-import com.ryderbelserion.fusion.api.exception.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.api.files.CustomFile;
 import com.ryderbelserion.fusion.api.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;

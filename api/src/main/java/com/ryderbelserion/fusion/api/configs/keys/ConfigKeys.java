@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.api.config.keys;
+package com.ryderbelserion.fusion.api.configs.keys;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;

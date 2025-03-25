@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.scheduler;
 
-import com.ryderbelserion.fusion.api.exception.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;

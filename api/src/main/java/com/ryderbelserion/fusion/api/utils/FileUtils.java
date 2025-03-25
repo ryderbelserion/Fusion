@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.api.utils;
 
 import com.ryderbelserion.fusion.api.FusionApi;
-import com.ryderbelserion.fusion.api.exception.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.api.interfaces.ILogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

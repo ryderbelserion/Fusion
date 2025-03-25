@@ -4,7 +4,7 @@ public interface ILogger {
 
     void info(final String message);
 
-    void info(final String message, final Object arg);
+    void info(final String message, final Object argument);
 
     void info(final String message, final Throwable throwable);
 

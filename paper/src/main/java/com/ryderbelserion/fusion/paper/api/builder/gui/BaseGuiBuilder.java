@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.builder.gui;
 
-import com.ryderbelserion.fusion.api.exception.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.api.builder.gui.enums.InteractionComponent;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.BaseGui;
 import org.jetbrains.annotations.NotNull;

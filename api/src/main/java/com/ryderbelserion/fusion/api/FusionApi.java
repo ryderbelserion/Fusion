@@ -2,8 +2,8 @@ package com.ryderbelserion.fusion.api;
 
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.SettingsManager;
-import com.ryderbelserion.fusion.api.config.ConfigManager;
-import com.ryderbelserion.fusion.api.config.keys.ConfigKeys;
+import com.ryderbelserion.fusion.api.configs.ConfigManager;
+import com.ryderbelserion.fusion.api.configs.keys.ConfigKeys;
 import com.ryderbelserion.fusion.api.files.FileManager;
 import com.ryderbelserion.fusion.api.interfaces.ILogger;
 import java.io.File;

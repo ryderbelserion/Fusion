@@ -1,10 +1,10 @@
-package com.ryderbelserion.fusion.api.config;
+package com.ryderbelserion.fusion.api.configs;
 
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
-import com.ryderbelserion.fusion.api.exception.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import java.io.File;
 
 public class ConfigManager {

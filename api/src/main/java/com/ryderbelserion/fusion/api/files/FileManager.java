@@ -5,7 +5,7 @@ import ch.jalu.configme.migration.MigrationService;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.api.FusionApi;
 import com.ryderbelserion.fusion.api.enums.FileType;
-import com.ryderbelserion.fusion.api.exception.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.api.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.api.files.types.JsonCustomFile;

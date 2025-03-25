@@ -6,7 +6,7 @@ import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.migration.MigrationService;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.api.enums.FileType;
-import com.ryderbelserion.fusion.api.exception.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.api.files.CustomFile;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;

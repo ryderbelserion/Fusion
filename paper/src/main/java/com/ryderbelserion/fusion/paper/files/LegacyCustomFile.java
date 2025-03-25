@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.paper.files;
 
 import com.ryderbelserion.fusion.api.enums.FileType;
-import com.ryderbelserion.fusion.api.exception.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.LoggerImpl;
 import org.bukkit.configuration.file.YamlConfiguration;
