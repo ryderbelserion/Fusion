@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.paper.api.builder;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import com.ryderbelserion.fusion.paper.FusionApi;
+import com.ryderbelserion.fusion.paper.FusionPlugin;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -13,9 +13,9 @@ import java.util.concurrent.CompletableFuture;
 
 public record PlayerBuilder(String name) {
 
-    private static final @NotNull Plugin plugin = FusionApi.get().getPlugin();
+    private static @NotNull final Plugin plugin = FusionPlugin.getPlugin();
 
-    private static final @NotNull Server server = plugin.getServer();
+    private static @NotNull final Server server = plugin.getServer();
 
     public @Nullable PlayerProfile getOfflineProfile() {
         if (this.name.isEmpty()) return null;
