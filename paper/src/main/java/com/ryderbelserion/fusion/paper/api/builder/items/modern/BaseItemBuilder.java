@@ -44,7 +44,6 @@ import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
@@ -134,7 +133,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public B withCustomItem(final String item) {
-        switch (this.api.getItemPlugin().toLowerCase()) {
+        switch (this.api.getItemsPlugin().toLowerCase()) {
             case "nexo" -> {
                 if (Support.nexo.isEnabled()) {
                     getNexo(item);
@@ -635,7 +634,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public B withSkull(final String skull) {
-        @Nullable final HeadDatabaseAPI hdb = this.api.getHeadDatabaseAPI();
+        final HeadDatabaseAPI hdb = this.api.getHeadDatabaseAPI();
 
         if (skull.isEmpty() || hdb == null) return (B) this;
 
