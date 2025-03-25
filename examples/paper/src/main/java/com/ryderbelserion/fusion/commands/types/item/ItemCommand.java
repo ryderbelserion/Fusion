@@ -1,9 +1,9 @@
 package com.ryderbelserion.fusion.commands.types.item;
 
 import com.ryderbelserion.fusion.commands.types.BaseCommand;
-import com.ryderbelserion.fusion.paper.builder.items.modern.ItemBuilder;
-import com.ryderbelserion.fusion.paper.builder.items.modern.types.PatternBuilder;
-import com.ryderbelserion.fusion.paper.util.PaperMethods;
+import com.ryderbelserion.fusion.paper.api.builder.items.modern.ItemBuilder;
+import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PatternBuilder;
+import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import dev.triumphteam.cmd.core.annotations.Command;
 import dev.triumphteam.cmd.core.annotations.CommandFlags;
 import dev.triumphteam.cmd.core.annotations.Flag;
@@ -47,7 +47,7 @@ public class ItemCommand extends BaseCommand {
             final @NotNull Optional<String> item = flag.getFlagValue("i");
 
             if (item.isPresent()) {
-                final ItemType itemType = PaperMethods.getItemType(item.get());
+                final ItemType itemType = ItemUtils.getItemType(item.get());
 
                 itemBuilder = ItemBuilder.from(itemType != null ? itemType : ItemType.STONE);
             }

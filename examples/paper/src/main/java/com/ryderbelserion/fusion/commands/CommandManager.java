@@ -5,8 +5,8 @@ import com.ryderbelserion.fusion.FusionPlugin;
 import com.ryderbelserion.fusion.commands.types.adventure.ComponentExample;
 import com.ryderbelserion.fusion.commands.types.item.ItemCommand;
 import com.ryderbelserion.fusion.commands.types.item.TestCommand;
-import com.ryderbelserion.fusion.paper.enums.Support;
-import com.ryderbelserion.fusion.paper.util.PaperMethods;
+import com.ryderbelserion.fusion.paper.api.enums.Support;
+import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import dev.lone.itemsadder.api.CustomStack;
 import dev.triumphteam.cmd.bukkit.BukkitCommandManager;
 import dev.triumphteam.cmd.core.suggestion.SuggestionKey;
@@ -38,13 +38,13 @@ public class CommandManager {
         }});
 
         manager.registerSuggestion(SuggestionKey.of("items"), (sender, context) -> new ArrayList<>() {{
-            PaperMethods.getRegistryAccess().getRegistry(RegistryKey.ITEM).stream().forEach(registry -> {
+            ItemUtils.getRegistryAccess().getRegistry(RegistryKey.ITEM).stream().forEach(registry -> {
                 add(registry.key().value());
             });
         }});
 
         manager.registerSuggestion(SuggestionKey.of("patterns"), (sender, context) -> new ArrayList<>() {{
-            PaperMethods.getRegistryAccess().getRegistry(RegistryKey.BANNER_PATTERN).stream().forEach(registry -> {
+            ItemUtils.getRegistryAccess().getRegistry(RegistryKey.BANNER_PATTERN).stream().forEach(registry -> {
                 add(registry.key().value());
             });
         }});

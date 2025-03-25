@@ -7,7 +7,6 @@ plugins {
 
 project.group = "${rootProject.group}.paper"
 project.version = rootProject.version
-project.description = "A version of Fusion for Paper based servers!"
 
 repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
