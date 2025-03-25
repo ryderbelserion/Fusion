@@ -1,8 +1,7 @@
 package com.ryderbelserion.fusion.core.api.builder;
 
-import com.ryderbelserion.fusion.core.FusionLayout;
-import com.ryderbelserion.fusion.core.FusionProvider;
-import com.ryderbelserion.fusion.core.util.StringUtils;
+import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -14,7 +13,7 @@ import java.util.HashMap;
 
 public class ComponentBuilder {
 
-    private final FusionLayout api = FusionProvider.get();
+    private final FusionCore api = FusionCore.FusionProvider.get();
 
     private final TextComponent.@NotNull Builder builder = Component.text();
     private final Audience target;
@@ -32,7 +31,7 @@ public class ComponentBuilder {
 
     public @NotNull ComponentBuilder addHoverEvent(@NotNull final String text) {
         if (!text.isEmpty()) {
-            this.builder.hoverEvent(HoverEvent.showText(StringUtils.parse(text)));
+            this.builder.hoverEvent(HoverEvent.showText(AdvUtils.parse(text)));
         }
 
         return this;

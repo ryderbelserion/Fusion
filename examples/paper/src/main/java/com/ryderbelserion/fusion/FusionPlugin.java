@@ -1,14 +1,16 @@
 package com.ryderbelserion.fusion;
 
 import ch.jalu.configme.SettingsManager;
+import com.ryderbelserion.fusion.api.enums.FileType;
+import com.ryderbelserion.fusion.api.files.FileManager;
+import com.ryderbelserion.fusion.api.files.types.JaluCustomFile;
+import com.ryderbelserion.fusion.api.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.config.ConfigKeys;
 import com.ryderbelserion.fusion.config.SecondKeys;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
-import com.ryderbelserion.fusion.core.files.FileManager;
-import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
-import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
-import com.ryderbelserion.fusion.paper.FusionApi;
 import com.ryderbelserion.fusion.commands.CommandManager;
+import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
@@ -19,7 +21,7 @@ public class FusionPlugin extends JavaPlugin {
         return JavaPlugin.getPlugin(FusionPlugin.class);
     }
 
-    private final FusionApi api = FusionApi.get();
+    private final FusionPaper api = (FusionPaper) FusionCore.FusionProvider.get();
 
     @Override
     public void onEnable() {
@@ -29,7 +31,7 @@ public class FusionPlugin extends JavaPlugin {
 
         logger.warn("==== PLATFORM INDEPENDENT FILEMANAGER START ====");
 
-        final FileManager fileManager = this.api.getFusion().getFileManager();
+        final FileManager fileManager = this.api.getFileManager();
 
         fileManager.addFolder("locale", FileType.YAML, null, false)
                 .addFile("config.yml", null, null, ConfigKeys.class, SecondKeys.class).init(false);
@@ -65,7 +67,7 @@ public class FusionPlugin extends JavaPlugin {
 
         logger.warn("==== PAPER FILEMANAGER START ====");
 
-        final com.ryderbelserion.fusion.paper.files.FileManager paper = this.api.getFileManager();
+        final LegacyFileManager paper = this.api.getLegacyFileManager();
 
         paper.addFolder("codes", FileType.YAML).addFolder("vouchers", FileType.YAML);
 
@@ -76,10 +78,10 @@ public class FusionPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.api.disable();
+        this.api.save();
     }
 
-    public FusionApi getApi() {
+    public FusionPaper getApi() {
         return this.api;
     }
 }

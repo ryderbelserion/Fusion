@@ -3,8 +3,8 @@ package com.ryderbelserion.fusion.commands.brigadier;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.FusionPlugin;
-import com.ryderbelserion.fusion.paper.commands.PaperCommand;
-import com.ryderbelserion.fusion.paper.commands.context.PaperCommandContext;
+import com.ryderbelserion.fusion.paper.api.commands.PaperCommand;
+import com.ryderbelserion.fusion.paper.api.commands.context.PaperCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.permissions.Permission;
@@ -17,7 +17,7 @@ public class RootCommand extends PaperCommand {
     protected final FusionPlugin plugin = FusionPlugin.getPlugin();
 
     @Override
-    public void execute(final PaperCommandContext info) {
+    public void execute(final PaperCommandContext context) {
 
     }
 

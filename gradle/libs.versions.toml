@@ -19,6 +19,9 @@ configurate = "4.1.2"
 # Config API
 jalu = "1.4.3"
 
+# Common API
+jetbrains = "24.1.0"
+
 # Minecraft API
 ## Paper API
 paper = "1.21.4-R0.1-SNAPSHOT"
@@ -45,6 +48,9 @@ configurate-yaml = { module = "org.spongepowered:configurate-yaml", version.ref 
 
 # Config API
 jalu = { module = "ch.jalu:configme", version.ref = "jalu" }
+
+# Common API
+jetbrains = { module = "org.jetbrains:annotations", version.ref = "jetbrains" }
 
 # Discord API
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
