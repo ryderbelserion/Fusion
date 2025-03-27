@@ -621,7 +621,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         final Optional<Number> integer = StringUtils.tryParseInt(model);
 
         if (integer.isPresent()) {
-            return setCustomModelData(integer.get().intValue());
+            return setCustomModelData(integer.orElse(-1).intValue());
         }
 
         final CustomModelData.Builder data = CustomModelData.customModelData();
