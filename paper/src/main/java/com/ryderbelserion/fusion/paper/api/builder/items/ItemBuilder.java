@@ -598,15 +598,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     }
 
     public @NotNull T setCustomModelData(final int model) {
-        return setCustomModelData(model, false);
-    }
-
-    public @NotNull T setCustomModelData(final int model, final boolean isString) {
         if (model == -1) return (T) this;
-
-        if (isString) {
-            return setCustomModelData(String.valueOf(model));
-        }
 
         final CustomModelData.Builder data = CustomModelData.customModelData();
 
@@ -625,6 +617,12 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
     public @NotNull T setCustomModelData(@NotNull final String model) {
         if (model.isEmpty()) return (T) this;
+
+        final Optional<Number> integer = StringUtils.tryParseInt(model);
+
+        if (integer.isPresent()) {
+            return setCustomModelData(integer.get().intValue());
+        }
 
         final CustomModelData.Builder data = CustomModelData.customModelData();
 
