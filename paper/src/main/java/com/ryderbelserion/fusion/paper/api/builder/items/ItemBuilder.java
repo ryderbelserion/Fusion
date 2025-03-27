@@ -553,7 +553,22 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
         @Nullable final ItemType itemType = ItemUtils.getItemType(type);
 
-        if (itemType == null) return (T) this;
+        if (itemType == null) {
+            return (T) this;
+        }
+
+        if (key.contains(":")) {
+            final String[] sections = key.split(":");
+
+            if (sections.length == 2) {
+                final String namespace = sections[0];
+                final String id = sections[1];
+
+                if (namespace != null && id != null) {
+                    setItemModel(namespace, id);
+                }
+            }
+        }
 
         return withType(itemType);
     }
@@ -634,8 +649,10 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T setItemModel(@NotNull final String namespace, @NotNull final String key) {
-        this.itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(namespace, key));
+    public @NotNull T setItemModel(@NotNull final String namespace, @NotNull final String itemModel) {
+        if (namespace.isEmpty() || itemModel.isEmpty()) return (T) this;
+
+        this.itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(namespace, itemModel));
 
         return (T) this;
     }

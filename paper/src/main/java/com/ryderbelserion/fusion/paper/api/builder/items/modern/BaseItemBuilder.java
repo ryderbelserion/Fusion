@@ -553,7 +553,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public B setItemModel(@NotNull final String namespace, @NotNull final String itemModel) {
-        if (itemModel.isEmpty()) return (B) this;
+        if (namespace.isEmpty() || itemModel.isEmpty()) return (B) this;
 
         this.item.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(namespace, itemModel));
 

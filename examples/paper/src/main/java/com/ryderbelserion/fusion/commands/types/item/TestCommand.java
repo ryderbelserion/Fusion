@@ -4,6 +4,7 @@ import com.ryderbelserion.fusion.commands.types.BaseCommand;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.ItemBuilder;
 import dev.triumphteam.cmd.core.annotations.Command;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemType;
 
 public class TestCommand extends BaseCommand {
 
@@ -18,7 +19,7 @@ public class TestCommand extends BaseCommand {
 
         builder.addItemToInventory(player.getInventory());*/
 
-        final ItemBuilder builder = ItemBuilder.from("minecraft:diamond_axe");
+        final ItemBuilder builder = ItemBuilder.from(ItemType.DIAMOND_HELMET).setItemModel("minecraft", "diamond_axe");
 
         builder.addItemToInventory(player.getInventory());
     }
