@@ -807,7 +807,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     private void getItemsAdder(final String item) {
         if (!CustomStack.isInRegistry(item)) {
-            throw new FusionException("The id " + item + " is not a valid ItemsAdder item!");
+            return;
         }
 
         final CustomStack builder = CustomStack.getInstance(item);
@@ -822,7 +822,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     private void getOraxen(final String item) {
         if (!OraxenItems.exists(item)) {
-            throw new FusionException("The id " + item + " is not a valid Oraxen item!");
+            return;
         }
 
         final io.th0rgal.oraxen.items.ItemBuilder builder = OraxenItems.getItemById(item);
@@ -837,7 +837,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     private void getNexo(final String item) {
         if (!NexoItems.exists(item)) {
-            throw new FusionException("The id " + item + " is not a valid Nexo item!");
+            return;
         }
 
         final ItemBuilder builder = NexoItems.itemFromId(item);

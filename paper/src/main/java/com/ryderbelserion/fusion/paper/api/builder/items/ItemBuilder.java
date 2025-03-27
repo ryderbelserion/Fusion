@@ -1297,7 +1297,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
     private void getItemsAdder(final String item) {
         if (!CustomStack.isInRegistry(item)) {
-            throw new FusionException("The id " + item + " is not a valid ItemsAdder item!");
+            return;
         }
 
         final CustomStack builder = CustomStack.getInstance(item);
@@ -1311,7 +1311,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
     private void getOraxen(final String item) {
         if (!OraxenItems.exists(item)) {
-            throw new FusionException("The id " + item + " is not a valid Oraxen item!");
+            return;
         }
 
         final io.th0rgal.oraxen.items.ItemBuilder builder = OraxenItems.getItemById(item);
@@ -1325,7 +1325,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
     private void getNexo(final String item) {
         if (!NexoItems.exists(item)) {
-            throw new FusionException("The id " + item + " is not a valid Nexo item!");
+            return;
         }
 
         final com.nexomc.nexo.items.ItemBuilder builder = NexoItems.itemFromId(item);
