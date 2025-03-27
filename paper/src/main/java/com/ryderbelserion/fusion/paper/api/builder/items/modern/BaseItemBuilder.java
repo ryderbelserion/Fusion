@@ -176,21 +176,19 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             case "none" -> setItem(item);
 
             default -> {
-                if (Support.nexo.isEnabled() && NexoItems.exists(item)) {
+                if (Support.nexo.isEnabled()) {
                     getNexo(item);
 
                     return (B) this;
                 }
 
                 if (Support.items_adder.isEnabled()) {
-                    if (CustomStack.isInRegistry(item)) {
-                        getItemsAdder(item);
-                    }
+                    getItemsAdder(item);
 
                     return (B) this;
                 }
 
-                if (Support.oraxen.isEnabled() && OraxenItems.exists(item)) {
+                if (Support.oraxen.isEnabled()) {
                     getOraxen(item);
 
                     return (B) this;
@@ -513,7 +511,35 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public B setCustomModelData(final int customModelData) {
         if (customModelData == -1) return (B) this;
 
-        this.item.setData(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelData.customModelData().addFloat(customModelData).build());
+        final CustomModelData.Builder data = CustomModelData.customModelData();
+
+        if (this.item.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
+            final CustomModelData component = this.item.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
+
+            if (component != null) {
+                data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
+            }
+        }
+
+        this.item.setData(DataComponentTypes.CUSTOM_MODEL_DATA, data.addFloat(customModelData).build());
+
+        return (B) this;
+    }
+
+    public B setCustomModelData(final String customModelData) {
+        if (customModelData.isEmpty()) return (B) this;
+
+        final CustomModelData.Builder data = CustomModelData.customModelData();
+
+        if (this.item.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
+            final CustomModelData component = this.item.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
+
+            if (component != null) {
+                data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
+            }
+        }
+
+        this.item.setData(DataComponentTypes.CUSTOM_MODEL_DATA, data.addString(customModelData).build());
 
         return (B) this;
     }
@@ -780,6 +806,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     private void getItemsAdder(final String item) {
+        if (!CustomStack.isInRegistry(item)) {
+            throw new FusionException("The id " + item + " is not a valid ItemsAdder item!");
+        }
+
         final CustomStack builder = CustomStack.getInstance(item);
 
         if (builder == null) {
@@ -791,6 +821,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     private void getOraxen(final String item) {
+        if (!OraxenItems.exists(item)) {
+            throw new FusionException("The id " + item + " is not a valid Oraxen item!");
+        }
+
         final io.th0rgal.oraxen.items.ItemBuilder builder = OraxenItems.getItemById(item);
 
         if (builder == null) {
@@ -802,6 +836,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     private void getNexo(final String item) {
+        if (!NexoItems.exists(item)) {
+            throw new FusionException("The id " + item + " is not a valid Nexo item!");
+        }
+
         final ItemBuilder builder = NexoItems.itemFromId(item);
 
         if (builder == null) {

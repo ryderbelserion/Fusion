@@ -14,7 +14,9 @@ import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.api.enums.Support;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
+import dev.lone.itemsadder.api.CustomStack;
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.CustomModelData;
 import io.papermc.paper.datacomponent.item.ItemAttributeModifiers;
 import io.papermc.paper.datacomponent.item.Unbreakable;
 import io.th0rgal.oraxen.api.OraxenItems;
@@ -111,7 +113,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         this.itemStack = createNewStack ? itemBuilder.itemStack.clone() : itemBuilder.itemStack;
         this.isCustom = itemBuilder.isCustom;
 
-        this.customModelData = itemBuilder.customModelData;
         this.damage = itemBuilder.damage;
         this.color = itemBuilder.color;
 
@@ -206,9 +207,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
                 this.displayComponentLore = itemMeta.lore();
             }
 
-            // Populates the custom model data
-            if (itemMeta.hasCustomModelData()) this.customModelData = Optional.of(itemMeta.getCustomModelData());
-
             // Populates the damage
             this.damage = itemMeta instanceof final Damageable damageable ? damageable.getDamage() : 1;
 
@@ -286,8 +284,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     private boolean isCustom = false;
 
     private @Nullable Color color = null;
-
-    private @NotNull Optional<Number> customModelData = Optional.empty();
 
     private int damage = 0;
 
@@ -404,12 +400,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
                 itemMeta.lore(this.displayComponentLore = components);
             }
 
-            this.customModelData.ifPresent(number -> {
-                if (number.intValue() == -1) return;
-
-                itemMeta.setCustomModelData(number.intValue());
-            });
-
             this.damageTags.forEach(itemMeta::setDamageResistant);
 
             itemMeta.setHideTooltip(this.isHidingToolTips);
@@ -485,24 +475,32 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     public @NotNull T withType(@NotNull final String key) {
         if (key.isEmpty()) return (T) this;
 
-        if (Support.nexo.isEnabled()) {
-            if (NexoItems.exists(key)) {
-                com.nexomc.nexo.items.ItemBuilder item = NexoItems.itemFromId(key);
-
-                if (item != null) {
-                    this.itemStack = item.build();
-                } else {
-                    throw new FusionException("The id " + key + " is not a valid Nexo item!");
+        switch (this.api.getItemsPlugin().toLowerCase()) {
+            case "nexo" -> {
+                if (Support.nexo.isEnabled()) {
+                    getNexo(key);
                 }
             }
-        } else if (Support.oraxen.isEnabled()) {
-            if (OraxenItems.exists(key)) {
-                io.th0rgal.oraxen.items.ItemBuilder item = OraxenItems.getItemById(key);
 
-                if (item != null) {
-                    this.itemStack = item.build();
-                } else {
-                    throw new FusionException("The id " + key + " is not a valid Oraxen item!");
+            case "oraxen" -> {
+                if (Support.oraxen.isEnabled()) {
+                    getOraxen(key);
+                }
+            }
+
+            case "itemsadder" -> {
+                if (Support.items_adder.isEnabled()) {
+                    getItemsAdder(key);
+                }
+            }
+
+            default -> {
+                if (Support.nexo.isEnabled()) {
+                    getNexo(key);
+                } else if (Support.items_adder.isEnabled()) {
+                    getItemsAdder(key);
+                } else if (Support.oraxen.isEnabled()) {
+                    getOraxen(key);
                 }
             }
         }
@@ -519,9 +517,13 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             if (data.contains("#")) {
                 final String model = data.split("#")[1];
 
-                this.customModelData = StringUtils.tryParseInt(model);
+                final Optional<Number> customModelData = StringUtils.tryParseInt(model);
 
-                if (this.customModelData.isPresent()) data = data.replace("#" + this.customModelData.get(), "");
+                if (customModelData.isPresent()) {
+                    data = data.replace("#" + customModelData.get(), "");
+
+                    setCustomModelData(customModelData.get().intValue());
+                }
             }
 
             final Optional<Number> damage = StringUtils.tryParseInt(data);
@@ -544,7 +546,9 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             type = sections[0];
             final String model = sections[1];
 
-            this.customModelData = StringUtils.tryParseInt(model);
+            final Optional<Number> customModelData = StringUtils.tryParseInt(model);
+
+            customModelData.ifPresent(number -> setCustomModelData(number.intValue()));
         }
 
         @Nullable final ItemType itemType = ItemUtils.getItemType(type);
@@ -581,7 +585,35 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     public @NotNull T setCustomModelData(final int model) {
         if (model == -1) return (T) this;
 
-        this.customModelData = Optional.of(model);
+        final CustomModelData.Builder data = CustomModelData.customModelData();
+
+        if (this.itemStack.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
+            @Nullable final CustomModelData component = this.itemStack.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
+
+            if (component != null) {
+                data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
+            }
+        }
+
+        this.itemStack.setData(DataComponentTypes.CUSTOM_MODEL_DATA, data.addFloat(model).build());
+
+        return (T) this;
+    }
+
+    public @NotNull T setCustomModelData(@NotNull final String model) {
+        if (model.isEmpty()) return (T) this;
+
+        final CustomModelData.Builder data = CustomModelData.customModelData();
+
+        if (this.itemStack.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
+            @Nullable final CustomModelData component = this.itemStack.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
+
+            if (component != null) {
+                data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
+            }
+        }
+
+        this.itemStack.setData(DataComponentTypes.CUSTOM_MODEL_DATA, data.addString(model).build());
 
         return (T) this;
     }
@@ -922,15 +954,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T applyCustomModelData() {
-        if (this.isCustom) return (T) this;
-        if (this.customModelData.isEmpty()) return (T) this;
-
-        this.itemStack.editMeta(itemMeta -> itemMeta.setCustomModelData(this.customModelData.get().intValue()));
-
-        return (T) this;
-    }
-
     public @NotNull T applyUnbreakable() {
         if (this.isCustom) return (T) this;
 
@@ -1247,5 +1270,47 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
     private @Nullable Player getPlayer(@NotNull final UUID uuid) {
         return this.server.getPlayer(uuid);
+    }
+
+    private void getItemsAdder(final String item) {
+        if (!CustomStack.isInRegistry(item)) {
+            throw new FusionException("The id " + item + " is not a valid ItemsAdder item!");
+        }
+
+        final CustomStack builder = CustomStack.getInstance(item);
+
+        if (builder == null) {
+            throw new FusionException("The id " + item + " is not a valid ItemsAdder item!");
+        }
+
+        this.itemStack = builder.getItemStack();
+    }
+
+    private void getOraxen(final String item) {
+        if (!OraxenItems.exists(item)) {
+            throw new FusionException("The id " + item + " is not a valid Oraxen item!");
+        }
+
+        final io.th0rgal.oraxen.items.ItemBuilder builder = OraxenItems.getItemById(item);
+
+        if (builder == null) {
+            throw new FusionException("The id " + item + " is not a valid Oraxen item!");
+        }
+
+        this.itemStack = builder.build();
+    }
+
+    private void getNexo(final String item) {
+        if (!NexoItems.exists(item)) {
+            throw new FusionException("The id " + item + " is not a valid Nexo item!");
+        }
+
+        final com.nexomc.nexo.items.ItemBuilder builder = NexoItems.itemFromId(item);
+
+        if (builder == null) {
+            throw new FusionException("The id " + item + " is not a valid Nexo item!");
+        }
+
+        this.itemStack = builder.build();
     }
 }
