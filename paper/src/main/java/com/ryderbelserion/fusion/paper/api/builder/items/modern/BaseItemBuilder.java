@@ -872,26 +872,12 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     private void setItem(final String item) {
-        if (item.contains(":")) {
-            final String[] split = item.split(":");
+        final ItemType itemType = ItemUtils.getItemType(item);
 
-            if (split.length == 2) {
-                withType(ItemType.STONE);
-
-                setItemModel(split[0], split[1]);
-            } else {
-                if (this.isVerbose) {
-                    this.logger.warn("The value {} does not match the correct format which is namespace:id!", item);
-                }
-            }
+        if (itemType != null) {
+            withType(itemType);
         } else {
-            final ItemType itemType = ItemUtils.getItemType(item);
-
-            if (itemType != null) {
-                withType(itemType);
-            } else {
-                withBase64(item);
-            }
+            withBase64(item);
         }
     }
 

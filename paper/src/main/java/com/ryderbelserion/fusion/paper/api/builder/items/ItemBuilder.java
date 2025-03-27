@@ -557,19 +557,6 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             return (T) this;
         }
 
-        if (key.contains(":")) {
-            final String[] sections = key.split(":");
-
-            if (sections.length == 2) {
-                final String namespace = sections[0];
-                final String id = sections[1];
-
-                if (namespace != null && id != null) {
-                    setItemModel(namespace, id);
-                }
-            }
-        }
-
         return withType(itemType);
     }
 
