@@ -6,6 +6,8 @@ import com.nexomc.nexo.items.ItemBuilder;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.api.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.LoggerImpl;
+import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builder.ComponentBuilder;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PatternBuilder;
@@ -44,6 +46,7 @@ import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
@@ -55,7 +58,13 @@ import java.util.Optional;
 
 public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
+    protected final Plugin plugin = FusionPlugin.getPlugin();
+
     private final FusionCore api = FusionCore.FusionProvider.get();
+
+    private final boolean isVerbose = this.api.isVerbose();
+
+    private final LoggerImpl logger = this.api.getLogger();
 
     private final List<ItemFlag> itemflags = new ArrayList<>();
 
@@ -141,13 +150,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                     return (B) this;
                 }
 
-                final ItemType itemType = ItemUtils.getItemType(item);
-
-                if (itemType != null) {
-                    withType(itemType);
-                } else {
-                    withBase64(item);
-                }
+                setItem(item);
             }
 
             case "oraxen" -> {
@@ -157,13 +160,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                     return (B) this;
                 }
 
-                final ItemType itemType = ItemUtils.getItemType(item);
-
-                if (itemType != null) {
-                    withType(itemType);
-                } else {
-                    withBase64(item);
-                }
+                setItem(item);
             }
 
             case "itemsadder" -> {
@@ -173,24 +170,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                     return (B) this;
                 }
 
-                final ItemType itemType = ItemUtils.getItemType(item);
-
-                if (itemType != null) {
-                    withType(itemType);
-                } else {
-                    withBase64(item);
-                }
+                setItem(item);
             }
 
-            case "none" -> {
-                final ItemType itemType = ItemUtils.getItemType(item);
-
-                if (itemType != null) {
-                    withType(itemType);
-                } else {
-                    withBase64(item);
-                }
-            }
+            case "none" -> setItem(item);
 
             default -> {
                 if (Support.nexo.isEnabled() && NexoItems.exists(item)) {
@@ -213,13 +196,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                     return (B) this;
                 }
 
-                final ItemType itemType = ItemUtils.getItemType(item);
-
-                if (itemType != null) {
-                    withType(itemType);
-                } else {
-                    withBase64(item);
-                }
+                setItem(item);
             }
         }
 
@@ -854,6 +831,30 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         }
 
         return clonedLine;
+    }
+
+    private void setItem(final String item) {
+        if (item.contains(":")) {
+            final String[] split = item.split(":");
+
+            if (split.length == 2) {
+                withType(ItemType.STONE);
+
+                setItemModel(split[0], split[1]);
+            } else {
+                if (this.isVerbose) {
+                    this.logger.warn("The value {} does not match the correct format which is namespace:id!", item);
+                }
+            }
+        } else {
+            final ItemType itemType = ItemUtils.getItemType(item);
+
+            if (itemType != null) {
+                withType(itemType);
+            } else {
+                withBase64(item);
+            }
+        }
     }
 
     private @Nullable ItemFlag getFlag(final String name) {

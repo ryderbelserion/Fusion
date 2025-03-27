@@ -8,7 +8,6 @@ import com.ryderbelserion.fusion.api.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.config.ConfigKeys;
 import com.ryderbelserion.fusion.config.SecondKeys;
 import com.ryderbelserion.fusion.commands.CommandManager;
-import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -21,13 +20,14 @@ public class FusionPlugin extends JavaPlugin {
         return JavaPlugin.getPlugin(FusionPlugin.class);
     }
 
-    private final FusionPaper api = (FusionPaper) FusionCore.FusionProvider.get();
+    private FusionPaper api = null;
 
     @Override
     public void onEnable() {
-        this.api.enable(this);
-
         final ComponentLogger logger = getComponentLogger();
+
+        this.api = new FusionPaper(logger, getDataFolder());
+        this.api.enable(this);
 
         logger.warn("==== PLATFORM INDEPENDENT FILEMANAGER START ====");
 
