@@ -45,6 +45,12 @@ public class FileUtils {
     private static final File dataFolder = api.getDataFolder().toFile();
 
     public static void extract(@NotNull final String input, @NotNull final Path output, final boolean purge) {
+        if (!Files.exists(output)) {
+            final File file = output.toFile();
+
+            file.mkdirs();
+        }
+
         final Path path = Paths.get(output.resolve(input).toUri());
 
         if (purge) {
