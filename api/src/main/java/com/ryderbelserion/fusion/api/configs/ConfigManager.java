@@ -5,13 +5,13 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import java.io.File;
+import java.nio.file.Path;
 
 public class ConfigManager {
 
-    private final File dataFolder;
+    private final Path dataFolder;
 
-    public ConfigManager(final File dataFolder) {
+    public ConfigManager(final Path dataFolder) {
         this.dataFolder = dataFolder;
     }
 
@@ -21,7 +21,7 @@ public class ConfigManager {
     public final void init(final Class<? extends SettingsHolder>... classes) {
         final YamlFileResourceOptions builder = YamlFileResourceOptions.builder().indentationSize(2).build();
 
-        this.config = SettingsManagerBuilder.withYamlFile(new File(this.dataFolder, "fusion.yml"), builder)
+        this.config = SettingsManagerBuilder.withYamlFile(this.dataFolder.resolve("fusion.yml"), builder)
                 .useDefaultMigrationService()
                 .configurationData(classes)
                 .create();

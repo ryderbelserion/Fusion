@@ -5,12 +5,14 @@ import com.ryderbelserion.fusion.api.enums.FileType;
 import com.ryderbelserion.fusion.api.files.FileManager;
 import com.ryderbelserion.fusion.api.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.api.files.types.YamlCustomFile;
+import com.ryderbelserion.fusion.commands.CommandManager;
 import com.ryderbelserion.fusion.config.ConfigKeys;
 import com.ryderbelserion.fusion.config.SecondKeys;
-import com.ryderbelserion.fusion.commands.CommandManager;
 import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,7 +28,7 @@ public class FusionPlugin extends JavaPlugin {
     public void onEnable() {
         final ComponentLogger logger = getComponentLogger();
 
-        this.api = new FusionPaper(logger, getDataFolder());
+        this.api = new FusionPaper(logger, getDataPath());
         this.api.enable(this);
 
         logger.warn("==== PLATFORM INDEPENDENT FILEMANAGER START ====");
@@ -70,6 +72,18 @@ public class FusionPlugin extends JavaPlugin {
         final LegacyFileManager paper = this.api.getLegacyFileManager();
 
         paper.addFolder("codes", FileType.YAML).addFolder("vouchers", FileType.YAML);
+
+        final LegacyCustomFile file = paper.getFile("Starter-Money.yml", FileType.YAML);
+
+        if (file != null) {
+            final YamlConfiguration configuration = file.getConfiguration();
+
+            if (configuration != null) {
+                logger.warn("Code: {}", configuration.getString("voucher-code.code", "beans"));
+            }
+        } else {
+            logger.warn("The file is null.");
+        }
 
         logger.warn("==== PAPER FILEMANAGER END ====");
 

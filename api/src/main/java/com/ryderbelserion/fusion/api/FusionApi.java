@@ -6,7 +6,7 @@ import com.ryderbelserion.fusion.api.configs.ConfigManager;
 import com.ryderbelserion.fusion.api.configs.keys.ConfigKeys;
 import com.ryderbelserion.fusion.api.files.FileManager;
 import com.ryderbelserion.fusion.api.interfaces.ILogger;
-import java.io.File;
+import java.nio.file.Path;
 
 public abstract class FusionApi {
 
@@ -14,7 +14,7 @@ public abstract class FusionApi {
     private FileManager fileManager;
     protected SettingsManager config;
 
-    public abstract File getDataFolder();
+    public abstract Path getDataFolder();
 
     public abstract ILogger getLogger();
 

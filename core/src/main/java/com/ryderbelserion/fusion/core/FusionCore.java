@@ -9,16 +9,16 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
 public abstract class FusionCore extends FusionApi {
 
     private final LoggerImpl logger;
-    private final File dataFolder;
+    private final Path dataFolder;
 
-    public FusionCore(final ComponentLogger logger, final File dataFolder) {
+    public FusionCore(@NotNull final ComponentLogger logger, @NotNull final Path dataFolder) {
         this.logger = new LoggerImpl(logger);
         this.dataFolder = dataFolder;
     }
@@ -46,7 +46,7 @@ public abstract class FusionCore extends FusionApi {
     public abstract @NotNull String getItemsPlugin();
 
     @Override
-    public @NotNull final File getDataFolder() {
+    public @NotNull final Path getDataFolder() {
         return this.dataFolder;
     }
 

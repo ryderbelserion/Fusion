@@ -27,7 +27,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class FusionPaper extends FusionCore {
 
-    public FusionPaper(@NotNull final ComponentLogger logger, @NotNull final File dataFolder) {
+    public FusionPaper(@NotNull final ComponentLogger logger, @NotNull final Path dataFolder) {
         super(logger, dataFolder);
     }
 

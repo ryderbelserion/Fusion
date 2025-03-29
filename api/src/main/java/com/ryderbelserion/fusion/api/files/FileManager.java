@@ -31,7 +31,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
     private final boolean isVerbose = this.api.isVerbose();
 
-    private final File dataFolder = this.api.getDataFolder();
+    private final Path dataFolder = this.api.getDataFolder();
 
     // folder -> file name -> associated custom file
     // this can also be used to replace files above, which means we use getFile#getPath()
@@ -45,7 +45,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     }
 
     public final FileManager init(final boolean isReload) {
-        this.dataFolder.mkdirs(); // create directory
+        this.dataFolder.toFile().mkdirs();
 
         this.customFiles.putIfAbsent(this.path, new HashMap<>()); // add new hashmap
         
@@ -67,11 +67,9 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             this.folders.put(folder, fileType);
         }
 
-        final File directory = new File(this.dataFolder, folder);
+        final File directory = this.dataFolder.resolve(folder).toFile();
 
-        if (directory.mkdirs()) {
-            FileUtils.extracts(String.format("/%s/", directory.getName()), directory.toPath(), false);
-        }
+        FileUtils.extract(directory.getName(), this.dataFolder, false);
 
         final File[] contents = directory.listFiles();
 
@@ -115,11 +113,9 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             return this;
         }
 
-        final File directory = new File(this.dataFolder, folder);
+        final File directory = this.dataFolder.resolve(folder).toFile();
 
-        if (directory.mkdirs()) {
-            FileUtils.extracts(String.format("/%s/", directory.getName()), directory.toPath(), false);
-        }
+        FileUtils.extract(directory.getName(), this.dataFolder, false);
 
         final File[] contents = directory.listFiles();
 
@@ -163,7 +159,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             return this;
         }
 
-        final File file = new File(this.dataFolder, folder != null ? folder + File.separator + fileName : fileName);
+        final File file = this.dataFolder.resolve(folder != null ? folder + File.separator + fileName : fileName).toFile();
 
         final JaluCustomFile jalu = new JaluCustomFile(file, holders);
 
@@ -206,10 +202,10 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             return this;
         }
 
-        final File file = new File(this.dataFolder, folder != null ? folder + File.separator + fileName : fileName);
+        final File file = this.dataFolder.resolve(folder != null ? folder + File.separator + fileName : fileName).toFile();
 
         if (!file.exists()) {
-            extractFile(file.getPath());
+            FileUtils.extract(file.getName(), file.getParentFile().toPath(), false);
         }
 
         final String extension = fileType.getExtension();
@@ -454,32 +450,22 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     }
 
     // Extracts a resource to a specific path.
-    public final FileManager extractResource(@NotNull final String resource, @NotNull final String output, boolean replaceExisting) {
-        final Path path = this.dataFolder.toPath();
-
-        FileUtils.extracts(String.format(File.separator + "%s" + File.separator, resource), path.resolve(output), replaceExisting);
+    public final FileManager extractResource(@NotNull final String input, @NotNull final String output, boolean purge) {
+        FileUtils.extract(input, this.dataFolder.resolve(output), purge);
 
         return this;
     }
 
     // Extracts a folder without loading a file into the map.
     public final FileManager extractFolder(@NotNull final String folder) {
-        final File directory = new File(this.dataFolder, folder);
-
-        if (directory.mkdirs()) {
-            FileUtils.extracts(String.format(File.separator + "%s" + File.separator, directory.getName()), directory.toPath(), false);
-        }
+        FileUtils.extract(folder, this.dataFolder, false);
 
         return this;
     }
 
     // Extracts a file without loading a file into the map.
     public final FileManager extractFile(@NotNull final String name) {
-        final File file = new File(this.dataFolder, name);
-
-        if (file.exists()) return this;
-
-        FileUtils.saveResource(name, false, this.isVerbose);
+        FileUtils.extract(name, this.dataFolder, false);
 
         return this;
     }
