@@ -53,6 +53,12 @@ public class FileUtils {
 
         final Path path = Paths.get(output.resolve(input).toUri());
 
+        final File file = path.toFile();
+
+        if (file.exists() && file.isDirectory()) {
+            return;
+        }
+
         if (purge) {
             try {
                 Files.walkFileTree(path, new SimpleFileVisitor<>() {
