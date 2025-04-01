@@ -119,8 +119,10 @@ public class FileUtils {
                     continue;
                 }
 
-                try (final InputStream stream = jar.getInputStream(entry)) {
-                    Files.copy(stream, path);
+                if (!Files.exists(path)) {
+                    try (final InputStream stream = jar.getInputStream(entry)) {
+                        Files.copy(stream, path);
+                    }
                 }
 
                 processedFiles.add(entryName);
