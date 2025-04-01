@@ -73,9 +73,13 @@ public class FileUtils {
             } catch (IOException ignored) {}
         }
 
-        final File dir = path.toFile();
+        final File key = path.toFile();
 
-        if (dir.exists() && dir.isDirectory()) {
+        if (key.exists()) { // return if it exists at all
+            if (key.isDirectory()) {
+                return;
+            }
+
             return;
         }
 
