@@ -53,6 +53,16 @@ public class FileUtils {
 
         final Path path = Paths.get(output.resolve(input).toUri());
 
+        final File key = path.toFile();
+
+        if (key.exists()) { // return if it exists at all
+            if (key.isDirectory()) {
+                return;
+            }
+
+            return;
+        }
+
         if (purge) {
             try {
                 Files.walkFileTree(path, new SimpleFileVisitor<>() {
@@ -71,16 +81,6 @@ public class FileUtils {
                     }
                 });
             } catch (IOException ignored) {}
-        }
-
-        final File key = path.toFile();
-
-        if (key.exists()) { // return if it exists at all
-            if (key.isDirectory()) {
-                return;
-            }
-
-            return;
         }
 
         final Set<String> processedFiles = new HashSet<>();

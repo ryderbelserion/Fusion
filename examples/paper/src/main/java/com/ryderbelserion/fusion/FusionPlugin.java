@@ -73,6 +73,8 @@ public class FusionPlugin extends JavaPlugin {
 
         paper.addFolder("codes", FileType.YAML).addFolder("vouchers", FileType.YAML);
 
+        paper.addFile("data.yml");
+
         final LegacyCustomFile file = paper.getFile("Starter-Money.yml", FileType.YAML);
 
         if (file != null) {
