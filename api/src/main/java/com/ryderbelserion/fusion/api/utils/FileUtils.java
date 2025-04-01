@@ -53,9 +53,9 @@ public class FileUtils {
 
         final Path path = Paths.get(output.resolve(input).toUri());
 
-        final File file = path.toFile();
+        final File dir = path.toFile();
 
-        if (file.exists() && file.isDirectory()) {
+        if (dir.exists() && dir.isDirectory()) {
             return;
         }
 
