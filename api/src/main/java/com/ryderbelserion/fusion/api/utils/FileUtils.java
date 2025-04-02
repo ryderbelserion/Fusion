@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.api.utils;
 
 import com.ryderbelserion.fusion.api.FusionApi;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.api.interfaces.ILogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.BufferedWriter;
@@ -11,12 +12,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,15 +22,12 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -44,19 +37,21 @@ public class FileUtils {
 
     private static final File dataFolder = api.getDataFolder().toFile();
 
-    public static void extract(@NotNull final String input, @NotNull final Path output, final boolean purge) {
-        if (!Files.exists(output)) {
-            final File file = output.toFile();
+    private static final ILogger logger = api.getLogger();
 
-            file.mkdirs();
+    public static void extract(@NotNull final String input, @NotNull final Path output, final boolean purge) {
+        if (!Files.exists(output)) { // create directory if it does not exist.
+            try {
+                Files.createDirectory(output);
+            } catch (final IOException exception) {
+                logger.warn("Could not create directory: " + output, exception);
+            }
         }
 
         final Path path = Paths.get(output.resolve(input).toUri());
 
-        final File key = path.toFile();
-
-        if (key.exists()) { // return if it exists at all
-            if (key.isDirectory()) {
+        if (Files.exists(path)) { // return if it exists at all
+            if (Files.isDirectory(path)) {
                 return;
             }
 
@@ -110,11 +105,11 @@ public class FileUtils {
                 if (entryName.contains("/")) { // check if file is in a folder
                     final String name = entryName.split("/")[1];
 
-                    final Path file = path.resolve(name);
+                    final Path resolution = path.resolve(name);
 
-                    if (!Files.exists(file)) {
+                    if (!Files.exists(resolution)) {
                         try (final InputStream stream = jar.getInputStream(entry)) {
-                            Files.copy(stream, path.resolve(name));
+                            Files.copy(stream, resolution);
                         }
                     }
 
@@ -123,10 +118,8 @@ public class FileUtils {
                     continue;
                 }
 
-                if (!Files.exists(path)) {
-                    try (final InputStream stream = jar.getInputStream(entry)) {
-                        Files.copy(stream, path);
-                    }
+                try (final InputStream stream = jar.getInputStream(entry)) {
+                    Files.copy(stream, path);
                 }
 
                 processedFiles.add(entryName);
@@ -136,22 +129,61 @@ public class FileUtils {
         }
     }
 
-    public static void download(@NotNull final String link, @NotNull final File directory) {
-        CompletableFuture.runAsync(() -> {
-            URL url;
+    public static List<String> getNamesWithoutExtension(@Nullable final String folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
+        final List<Path> files = getFiles(folder, path, extension, depth);
 
+        final List<String> names = new ArrayList<>();
+
+        for (final Path file : files) {
+            final String name = file.getFileName().toString().replace(extension, "");
+
+            if (names.contains(name)) {
+                continue;
+            }
+
+            names.add(name);
+        }
+
+        return names;
+    }
+
+    public static List<Path> getNamesByExtension(@Nullable final String folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
+        return getFiles(folder, path, extension, depth);
+    }
+
+    public static List<Path> getFiles(@Nullable final String folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
+        final List<Path> files = new ArrayList<>();
+
+        final Path resolution = folder != null ? path.resolve(folder) : path;
+
+        if (Files.isDirectory(resolution)) { // check if resolved path is a folder to loop through!
             try {
-                url = URI.create(link).toURL();
-            } catch (MalformedURLException exception) {
-                throw new FusionException("Failed to download because " + link + " is malformed", exception);
-            }
+                Files.walkFileTree(resolution, new HashSet<>(), Math.max(depth, 1), new SimpleFileVisitor<>() {
+                    @Override
+                    public @NotNull FileVisitResult visitFile(@NotNull final Path path, @NotNull final BasicFileAttributes attributes) {
+                        final String name = path.getFileName().toString();
 
-            try (ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream()); FileOutputStream outputStream = new FileOutputStream(directory)) {
-                outputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
-            } catch (IOException exception) {
-                throw new FusionException("Failed to download " + link + " to " + directory.getAbsolutePath(), exception);
+                        if (name.endsWith(extension)) {
+                            files.add(path);
+                        }
+
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
+            } catch (final IOException exception) {
+                exception.printStackTrace();
             }
-        });
+        }
+
+        return files;
+    }
+
+    public static List<Path> getFiles(@NotNull final String folder, @NotNull final Path path, final String extension) {
+        return getFiles(folder, path, extension, 1);
+    }
+
+    public static List<Path> getFiles(@NotNull final Path path, final String extension) {
+        return getFiles(null, path, extension, 1);
     }
 
     public static void write(@NotNull final File input, @NotNull final String format) {
@@ -169,7 +201,7 @@ public class FileUtils {
     }
 
     public static void zip(@NotNull final File input, @NotNull final String extension, final boolean purge) {
-        final List<File> files = getFiles(dataFolder, input.getName(), extension, false);
+        /*final List<File> files = getFiles(dataFolder, input.getName(), extension, false);
 
         if (files.isEmpty()) return;
 
@@ -187,11 +219,11 @@ public class FileUtils {
             return;
         }
 
-        int count = getFiles(input, ".gz", true).size();
+        int count = getFiles(input).size();
 
         count++;
 
-        zip(files, input, "-" + count, purge);
+        zip(files, input, "-" + count, purge);*/
     }
 
     public static void zip(@NotNull final List<File> files, @Nullable final File directory, final String extra, final boolean purge) {
@@ -235,49 +267,5 @@ public class FileUtils {
         } catch (IOException exception) {
             throw new FusionException("Failed to zip " + zipFile, exception);
         }
-    }
-
-    public static List<String> getNames(@NotNull final File directory, @NotNull final String folder, @NotNull final String extension, final boolean keepExtension) {
-        return getFiles(directory, folder, extension, keepExtension).stream().map(File::getName).collect(Collectors.toList());
-    }
-
-    public static List<String> getNames(@NotNull final File directory, @NotNull final String extension, final boolean keepExtension) {
-        return getFiles(directory, extension, keepExtension).stream().map(File::getName).collect(Collectors.toList());
-    }
-
-    public static List<File> getFiles(@NotNull final File directory, @NotNull final String folder, @NotNull final String extension, final boolean keepExtension) {
-        return getFiles(folder.isEmpty() ? directory : new File(directory, folder), extension, keepExtension);
-    }
-
-    public static List<File> getFiles(@NotNull final File directory, @NotNull final String extension, final boolean keepExtension) {
-        List<File> files = new ArrayList<>();
-
-        String[] list = directory.list();
-        if (list == null) return files;
-
-        File[] array = directory.listFiles();
-        if (array == null) return files;
-
-        for (final File file : array) {
-            if (file.isDirectory()) {
-                final String[] folder = file.list();
-
-                if (folder != null) {
-                    for (final String name : folder) {
-                        if (!name.endsWith(extension)) continue;
-
-                        files.add(new File(keepExtension ? name : name.replaceAll(extension, "")));
-                    }
-                }
-            } else {
-                final String name = file.getName();
-
-                if (!name.endsWith(extension)) continue;
-
-                files.add(new File(keepExtension ? name : name.replaceAll(extension, "")));
-            }
-        }
-
-        return Collections.unmodifiableList(files);
     }
 }

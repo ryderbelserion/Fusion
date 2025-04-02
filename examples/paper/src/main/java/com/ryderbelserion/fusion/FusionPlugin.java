@@ -1,20 +1,9 @@
 package com.ryderbelserion.fusion;
 
-import ch.jalu.configme.SettingsManager;
-import com.ryderbelserion.fusion.api.enums.FileType;
-import com.ryderbelserion.fusion.api.files.FileManager;
-import com.ryderbelserion.fusion.api.files.types.JaluCustomFile;
-import com.ryderbelserion.fusion.api.files.types.YamlCustomFile;
-import com.ryderbelserion.fusion.commands.CommandManager;
-import com.ryderbelserion.fusion.config.ConfigKeys;
-import com.ryderbelserion.fusion.config.SecondKeys;
+import com.ryderbelserion.fusion.api.utils.FileUtils;
+import com.ryderbelserion.fusion.core.api.LoggerImpl;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.files.LegacyCustomFile;
-import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Nullable;
 
 public class FusionPlugin extends JavaPlugin {
 
@@ -26,12 +15,20 @@ public class FusionPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        final ComponentLogger logger = getComponentLogger();
-
-        this.api = new FusionPaper(logger, getDataPath());
+        this.api = new FusionPaper(getComponentLogger(), getDataPath());
         this.api.enable(this);
 
-        logger.warn("==== PLATFORM INDEPENDENT FILEMANAGER START ====");
+        final LoggerImpl logger = this.api.getLogger();
+
+        FileUtils.getFiles("vouchers", getDataPath(), ".yml", 2).forEach(folder -> {
+            logger.warn("<red>Folder: <yellow>{}", folder.getFileName());
+        });
+
+        FileUtils.getFiles(getDataPath(), ".yml").forEach(folder -> {
+            logger.warn("<red>File: <green>{}", folder.getFileName());
+        });
+
+        /*logger.warn("==== PLATFORM INDEPENDENT FILEMANAGER START ====");
 
         final FileManager fileManager = this.api.getFileManager();
 
@@ -71,9 +68,7 @@ public class FusionPlugin extends JavaPlugin {
 
         final LegacyFileManager paper = this.api.getLegacyFileManager();
 
-        paper.addFolder("codes", FileType.YAML).addFolder("vouchers", FileType.YAML);
-
-        paper.addFile("data.yml");
+        paper.addFolder("codes", FileType.YAML).addFolder("vouchers", FileType.YAML).addFile("data.yml");
 
         final LegacyCustomFile file = paper.getFile("Starter-Money.yml", FileType.YAML);
 
@@ -89,7 +84,7 @@ public class FusionPlugin extends JavaPlugin {
 
         logger.warn("==== PAPER FILEMANAGER END ====");
 
-        CommandManager.load();
+        CommandManager.load();*/
     }
 
     @Override
