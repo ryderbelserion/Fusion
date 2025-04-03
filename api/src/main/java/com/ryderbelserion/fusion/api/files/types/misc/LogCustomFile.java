@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 public class LogCustomFile extends CustomFile<LogCustomFile> {
 
@@ -33,6 +34,12 @@ public class LogCustomFile extends CustomFile<LogCustomFile> {
 
     @Override
     public final LogCustomFile save() {
+        try {
+            FileUtils.compress(getPath(), Optional.empty(), Optional.empty(), true);
+        } catch (final IOException exception) {
+            throw new FusionException("Could not compress file " + getFileName(), exception);
+        }
+
         build();
 
         return this;

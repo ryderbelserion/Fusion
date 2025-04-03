@@ -9,7 +9,6 @@ import com.ryderbelserion.fusion.api.enums.FileType;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.api.files.CustomFile;
 import org.jetbrains.annotations.NotNull;
-import java.io.File;
 import java.nio.file.Path;
 
 public class JaluCustomFile extends CustomFile<JaluCustomFile> {
@@ -19,8 +18,8 @@ public class JaluCustomFile extends CustomFile<JaluCustomFile> {
     private SettingsManager settingsManager;
 
     @SafeVarargs
-    public JaluCustomFile(@NotNull final Path path, @NotNull Class<? extends SettingsHolder>... holders) {
-        super(path);
+    public JaluCustomFile(@NotNull final Path path, final boolean isDynamic, @NotNull Class<? extends SettingsHolder>... holders) {
+        super(path, isDynamic);
 
         this.holders = holders;
     }

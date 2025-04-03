@@ -3,7 +3,6 @@ package com.ryderbelserion.fusion.api.files.types.misc;
 import com.ryderbelserion.fusion.api.enums.FileType;
 import com.ryderbelserion.fusion.api.files.CustomFile;
 import org.jetbrains.annotations.NotNull;
-import java.io.File;
 import java.nio.file.Path;
 
 public class NbtCustomFile extends CustomFile<NbtCustomFile> {

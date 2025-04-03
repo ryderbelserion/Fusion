@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,8 +31,7 @@ public abstract class CustomFile<T extends CustomFile<T>> {
     }
 
     public CustomFile(@NotNull final Path path) {
-        this.isDynamic = false;
-        this.path = path;
+        this(path, false);
     }
 
     public CustomFile<T> build() {
@@ -164,16 +162,20 @@ public abstract class CustomFile<T extends CustomFile<T>> {
         return this;
     }
 
+    public boolean isDirectory() {
+        return Files.isDirectory(this.path);
+    }
+
     public String getFileName() {
         return this.path.getFileName().toString();
     }
 
-    public boolean isLoaded() {
-        return Files.exists(this.path);
+    public boolean isDynamic() {
+        return this.isDynamic;
     }
 
-    public boolean isDirectory() {
-        return Files.isDirectory(this.path);
+    public boolean isLoaded() {
+        return Files.exists(this.path);
     }
 
     public FileType getType() {
