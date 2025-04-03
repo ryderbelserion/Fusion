@@ -52,9 +52,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
@@ -750,18 +752,26 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.itemType.isEdible();
     }
 
-    public final boolean isLeather() {
-        final String id = asString();
+    private static final Set<String> leather_items = new HashSet<>() {{
+        add(ItemType.LEATHER_HELMET.key().asString());
+        add(ItemType.LEATHER_CHESTPLATE.key().asString());
+        add(ItemType.LEATHER_LEGGINGS.key().asString());
+        add(ItemType.LEATHER_BOOTS.key().asString());
+        add(ItemType.LEATHER_HORSE_ARMOR.key().asString());
+    }};
 
-        return id.equalsIgnoreCase(ItemType.LEATHER_HELMET.key().asString()) || id.equalsIgnoreCase(ItemType.LEATHER_CHESTPLATE.key().asString())
-                || id.equalsIgnoreCase(ItemType.LEATHER_LEGGINGS.key().asString()) || id.equalsIgnoreCase(ItemType.LEATHER_BOOTS.key().asString())
-                || id.equalsIgnoreCase(ItemType.LEATHER_HORSE_ARMOR.key().asString());
+    private static final Set<String> potions = new HashSet<>() {{
+        add(ItemType.POTION.key().asString());
+        add(ItemType.SPLASH_POTION.key().asString());
+        add(ItemType.LINGERING_POTION.key().asString());
+    }};
+
+    public final boolean isLeather() {
+        return leather_items.contains(asString());
     }
 
     public final boolean isPotion() {
-        final String id = asString();
-
-        return id.equalsIgnoreCase(ItemType.POTION.key().asString()) || id.equalsIgnoreCase(ItemType.SPLASH_POTION.key().asString()) || id.equalsIgnoreCase(ItemType.LINGERING_POTION.key().asString());
+        return potions.contains(asString());
     }
 
     public final boolean isBanner() {
