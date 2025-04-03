@@ -8,7 +8,8 @@ listOf(
     "discord" to "discord",
 
     "examples/paper" to "example-paper",
-    "examples/fabric" to "example-fabric"
+    "examples/fabric" to "example-fabric",
+    "examples/discord" to "example-discord"
 ).forEach(::includeProject)
 
 fun includeProject(pair: Pair<String, String>): Unit = includeProject(pair.first, pair.second)
