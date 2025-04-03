@@ -1,7 +1,9 @@
 package com.ryderbelserion.fusion;
 
+import ch.jalu.configme.SettingsManager;
 import com.ryderbelserion.fusion.api.enums.FileType;
 import com.ryderbelserion.fusion.api.files.FileManager;
+import com.ryderbelserion.fusion.api.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.api.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.commands.CommandManager;
 import com.ryderbelserion.fusion.config.ConfigKeys;
@@ -51,32 +53,18 @@ public class FusionPlugin extends JavaPlugin {
             logger.warn("<yellow>String: {}", german.getStringValue("root", "reload-plugin"));
         }
 
-        //@Nullable final JaluCustomFile customFile = fileManager.getJaluFile("config.yml");
-
-        //if (customFile != null) {
-            //final SettingsManager manager = customFile.getSettingsManager();
-
-            //logger.warn("Key: {}", manager.getProperty(ConfigKeys.root_key));
-            //logger.warn("Second Key: {}", manager.getProperty(SecondKeys.second_key));
-        //}
-
-        logger.warn("<red>==== PLATFORM INDEPENDENT FILEMANAGER END ====");
-
-        CommandManager.load();
-
-        /*logger.warn("==== PLATFORM INDEPENDENT FILEMANAGER START ====");
-
-        fileManager.addFolder("locale", FileType.YAML, null, false)
-                .addFile("config.yml", null, null, ConfigKeys.class, SecondKeys.class).init(false);
-
-        @Nullable final JaluCustomFile customFile = fileManager.getJaluFile("config.yml");
+        final JaluCustomFile customFile = fileManager.getJaluFile(path.resolve("config.yml"));
 
         if (customFile != null) {
             final SettingsManager manager = customFile.getSettingsManager();
 
-            logger.warn("Key: {}", manager.getProperty(ConfigKeys.root_key));
-            logger.warn("Second Key: {}", manager.getProperty(SecondKeys.second_key));
-        }*/
+            logger.warn("<yellow>Key: {}", manager.getProperty(ConfigKeys.root_key));
+            logger.warn("<yellow>Second Key: {}", manager.getProperty(SecondKeys.second_key));
+        }
+
+        logger.warn("<red>==== PLATFORM INDEPENDENT FILEMANAGER END ====");
+
+        CommandManager.load();
     }
 
     @Override
