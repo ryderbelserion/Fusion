@@ -9,6 +9,9 @@ import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,16 +24,16 @@ public abstract class CustomFile<T extends CustomFile<T>> {
     protected final boolean isVerbose = this.api.isVerbose();
 
     private final boolean isDynamic;
-    private final File file;
+    private final Path path;
 
-    public CustomFile(@NotNull final File file, boolean isDynamic) {
+    public CustomFile(@NotNull final Path path, boolean isDynamic) {
         this.isDynamic = isDynamic;
-        this.file = file;
+        this.path = path;
     }
 
-    public CustomFile(@NotNull final File file) {
+    public CustomFile(@NotNull final Path path) {
         this.isDynamic = false;
-        this.file = file;
+        this.path = path;
     }
 
     public CustomFile<T> build() {
@@ -40,6 +43,10 @@ public abstract class CustomFile<T extends CustomFile<T>> {
     public abstract CustomFile<T> load();
 
     public abstract CustomFile<T> save();
+
+    public CustomFile<T> saveDirectory() {
+        return save();
+    }
 
     public CustomFile<T> write(@NotNull final String content) {
         if (getType() != FileType.LOG) {
@@ -140,12 +147,14 @@ public abstract class CustomFile<T extends CustomFile<T>> {
     }
 
     public CustomFile<T> delete() {
-        final File file = getFile();
+        try {
+            Files.deleteIfExists(getPath());
 
-        if (file != null && file.exists() && file.delete()) {
             if (this.isVerbose) {
                 this.logger.warn("Successfully deleted {}", getFileName());
             }
+        } catch (final IOException exception) {
+            exception.printStackTrace();
         }
 
         return this;
@@ -156,22 +165,22 @@ public abstract class CustomFile<T extends CustomFile<T>> {
     }
 
     public String getFileName() {
-        return this.file.getName();
+        return this.path.getFileName().toString();
     }
 
-    public boolean isDynamic() {
-        return this.isDynamic;
+    public boolean isLoaded() {
+        return Files.exists(this.path);
+    }
+
+    public boolean isDirectory() {
+        return Files.isDirectory(this.path);
     }
 
     public FileType getType() {
         return FileType.NONE;
     }
 
-    public boolean isLoaded() {
-        return this.file.exists();
-    }
-
-    public File getFile() {
-        return this.file;
+    public Path getPath() {
+        return this.path;
     }
 }

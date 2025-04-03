@@ -4,12 +4,12 @@ import com.ryderbelserion.fusion.api.enums.FileType;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.api.files.CustomFile;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
-import java.io.File;
+import java.nio.file.Path;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
 
@@ -18,25 +18,23 @@ public class YamlCustomFile extends CustomFile<YamlCustomFile> {
     private CommentedConfigurationNode configurationNode;
     private final YamlConfigurationLoader loader;
 
-    public YamlCustomFile(@NotNull final File file, final boolean isDynamic, @Nullable final UnaryOperator<ConfigurationOptions> options) {
-        super(file, isDynamic);
+    public YamlCustomFile(@NotNull final Path path, final boolean isDynamic, final Optional<UnaryOperator<ConfigurationOptions>> options) {
+        super(path, isDynamic);
 
         final YamlConfigurationLoader.Builder builder = YamlConfigurationLoader.builder();
 
-        if (options != null) {
-            builder.defaultOptions(options);
-        }
+        options.ifPresent(builder::defaultOptions);
 
-        this.loader = builder.indent(2).file(file).build();
+        this.loader = builder.indent(2).path(path).build();
     }
 
-    public YamlCustomFile(@NotNull final File file, final boolean isDynamic) {
-        this(file, isDynamic, null);
+    public YamlCustomFile(@NotNull final Path path, final boolean isDynamic) {
+        this(path, isDynamic, Optional.empty());
     }
 
     @Override
     public final YamlCustomFile load() {
-        if (getFile().isDirectory()) {
+        if (isDirectory()) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot load configuration, as {} is a directory.", getFileName());
             }
@@ -57,7 +55,7 @@ public class YamlCustomFile extends CustomFile<YamlCustomFile> {
 
     @Override
     public final YamlCustomFile save() {
-        if (getFile().isDirectory()) {
+        if (isDirectory()) {
             if (this.isVerbose) {
                 this.logger.warn("Cannot save configuration, as {} is a directory.", getFileName());
             }

@@ -49,7 +49,7 @@ public final class LegacyFileManager {
 
         final File directory = new File(this.dataFolder, folder);
 
-        FileUtils.extract(directory.getName(), this.dataFolder.toPath(), false);
+        FileUtils.extract(folder, this.dataFolder.toPath(), false);
 
         final File[] contents = directory.listFiles();
 

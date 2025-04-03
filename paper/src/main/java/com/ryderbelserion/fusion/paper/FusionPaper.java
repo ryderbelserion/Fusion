@@ -11,8 +11,6 @@ import com.ryderbelserion.fusion.paper.api.structure.StructureRegistry;
 import com.ryderbelserion.fusion.paper.api.enums.Support;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import com.ryderbelserion.fusion.paper.files.config.PluginKeys;
-import io.papermc.paper.plugin.bootstrap.BootstrapContext;
-import io.papermc.paper.plugin.configuration.PluginMeta;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
@@ -49,7 +47,7 @@ public class FusionPaper extends FusionCore {
     public void enable(@NotNull final Plugin plugin) {
         if (this.isRegistered) return;
 
-        init(plugin.getName(), PluginKeys.class, ConfigKeys.class);
+        init(PluginKeys.class, ConfigKeys.class);
 
         FusionPlugin.setPlugin(plugin);
 
@@ -73,12 +71,10 @@ public class FusionPaper extends FusionCore {
         this.isRegistered = true;
     }
 
-    public void bootstrap(@NotNull final BootstrapContext context) {
+    public void bootstrap() {
         if (this.isRegistered) return;
 
-        final PluginMeta pluginMeta = context.getPluginMeta();
-
-        init(pluginMeta.getName(), PluginKeys.class, ConfigKeys.class);
+        init(PluginKeys.class, ConfigKeys.class);
     }
 
     public @NotNull final LegacyFileManager getLegacyFileManager() {

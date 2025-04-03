@@ -10,6 +10,7 @@ import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.api.files.CustomFile;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
+import java.nio.file.Path;
 
 public class JaluCustomFile extends CustomFile<JaluCustomFile> {
 
@@ -18,15 +19,15 @@ public class JaluCustomFile extends CustomFile<JaluCustomFile> {
     private SettingsManager settingsManager;
 
     @SafeVarargs
-    public JaluCustomFile(@NotNull final File file, @NotNull Class<? extends SettingsHolder>... holders) {
-        super(file);
+    public JaluCustomFile(@NotNull final Path path, @NotNull Class<? extends SettingsHolder>... holders) {
+        super(path);
 
         this.holders = holders;
     }
 
     @Override
     public final JaluCustomFile build() {
-        final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(getFile(), this.options != null ? options : YamlFileResourceOptions.builder().indentationSize(2).build());
+        final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(getPath(), this.options != null ? options : YamlFileResourceOptions.builder().indentationSize(2).build());
 
         if (this.service != null) {
             builder.migrationService(this.service);
@@ -46,7 +47,7 @@ public class JaluCustomFile extends CustomFile<JaluCustomFile> {
     @Override
     public JaluCustomFile load() {
         if (this.settingsManager == null) {
-            throw new FusionException("There was no settings manager available for " + getFile().getName());
+            throw new FusionException("There was no settings manager available for " + getFileName());
         }
 
         this.settingsManager.reload();
@@ -57,7 +58,7 @@ public class JaluCustomFile extends CustomFile<JaluCustomFile> {
     @Override
     public JaluCustomFile save() {
         if (this.settingsManager == null) {
-            throw new FusionException("There was no settings manager available for " + getFile().getName());
+            throw new FusionException("There was no settings manager available for " + getFileName());
         }
 
         this.settingsManager.save();

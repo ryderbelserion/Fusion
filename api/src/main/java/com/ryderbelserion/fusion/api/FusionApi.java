@@ -32,14 +32,18 @@ public abstract class FusionApi {
         return this.config.getProperty(ConfigKeys.is_verbose);
     }
 
+    public int getDepth() {
+        return this.config.getProperty(ConfigKeys.recursion_depth);
+    }
+
     @SuppressWarnings("unchecked")
-    public void init(final String path, final Class<? extends SettingsHolder>... classes) {
+    public void init(final Class<? extends SettingsHolder>... classes) {
         this.configManager = new ConfigManager(getDataFolder()); // create config manager
         this.configManager.init(classes); // load configs
 
         this.config = this.configManager.getConfig(); // assign it
 
-        this.fileManager = new FileManager(path);
+        this.fileManager = new FileManager();
     }
 
     public void save() {

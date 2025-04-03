@@ -57,10 +57,10 @@ public abstract class FusionCore extends FusionApi {
 
     @SafeVarargs
     @Override
-    public final void init(final String path, final Class<? extends SettingsHolder>... classes) {
+    public final void init(final Class<? extends SettingsHolder>... classes) {
         FusionProvider.register(this);
 
-        super.init(path, classes);
+        super.init(classes);
     }
 
     public static class FusionProvider {

@@ -16,7 +16,6 @@ import java.net.URISyntaxException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDate;
@@ -25,9 +24,11 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -35,7 +36,7 @@ public class FileUtils {
 
     private static final FusionApi api = FusionApi.Provider.get();
 
-    private static final File dataFolder = api.getDataFolder().toFile();
+    private static final Path dataFolder = api.getDataFolder();
 
     private static final ILogger logger = api.getLogger();
 
@@ -48,7 +49,7 @@ public class FileUtils {
             }
         }
 
-        final Path path = Paths.get(output.resolve(input).toUri());
+        final Path path = output.resolve(input);
 
         if (Files.exists(path)) { // return if it exists at all
             if (Files.isDirectory(path)) {
@@ -129,8 +130,8 @@ public class FileUtils {
         }
     }
 
-    public static List<String> getNamesWithoutExtension(@Nullable final String folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
-        final List<Path> files = getFiles(folder, path, extension, depth);
+    public static List<String> getNamesWithoutExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
+        final List<Path> files = getFiles(folder.map(path::resolve).orElse(path), extension, depth);
 
         final List<String> names = new ArrayList<>();
 
@@ -147,18 +148,16 @@ public class FileUtils {
         return names;
     }
 
-    public static List<Path> getNamesByExtension(@Nullable final String folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
-        return getFiles(folder, path, extension, depth);
+    public static List<Path> getNamesByExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
+        return getFiles(folder.map(path::resolve).orElse(path), extension, depth);
     }
 
-    public static List<Path> getFiles(@Nullable final String folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
+    public static List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth) {
         final List<Path> files = new ArrayList<>();
 
-        final Path resolution = folder != null ? path.resolve(folder) : path;
-
-        if (Files.isDirectory(resolution)) { // check if resolved path is a folder to loop through!
+        if (Files.isDirectory(path)) { // check if resolved path is a folder to loop through!
             try {
-                Files.walkFileTree(resolution, new HashSet<>(), Math.max(depth, 1), new SimpleFileVisitor<>() {
+                Files.walkFileTree(path, new HashSet<>(), Math.max(depth, 1), new SimpleFileVisitor<>() {
                     @Override
                     public @NotNull FileVisitResult visitFile(@NotNull final Path path, @NotNull final BasicFileAttributes attributes) {
                         final String name = path.getFileName().toString();
@@ -178,12 +177,12 @@ public class FileUtils {
         return files;
     }
 
-    public static List<Path> getFiles(@NotNull final String folder, @NotNull final Path path, final String extension) {
-        return getFiles(folder, path, extension, 1);
+    public static List<Path> getFiles(@NotNull final Optional<String> folder, @NotNull final Path path, final String extension) {
+        return getFiles(folder.map(path::resolve).orElse(path), extension, 1);
     }
 
     public static List<Path> getFiles(@NotNull final Path path, final String extension) {
-        return getFiles(null, path, extension, 1);
+        return getFiles(path, extension, 1);
     }
 
     public static void write(@NotNull final File input, @NotNull final String format) {
@@ -196,76 +195,65 @@ public class FileUtils {
         }
     }
 
-    public static void zip(@NotNull final File input, final boolean purge) {
-        zip(List.of(input), null, "", purge);
+    public static void compress(@NotNull final List<Path> paths, @NotNull final Optional<Path> directory, @NotNull final Optional<String> content, final boolean purge) throws IOException {
+        for (final Path path : paths) {
+            compress(path, directory, content, purge);
+        }
     }
 
-    public static void zip(@NotNull final File input, @NotNull final String extension, final boolean purge) {
-        /*final List<File> files = getFiles(dataFolder, input.getName(), extension, false);
-
-        if (files.isEmpty()) return;
-
-        boolean hasNonEmptyFile = false;
-
-        for (final File zip : files) {
-            if (zip.exists() && zip.length() > 0) {
-                hasNonEmptyFile = true;
-
-                break;
-            }
-        }
-
-        if (!hasNonEmptyFile) {
+    public static void compress(@NotNull final Path path, @NotNull final Optional<Path> directory, @NotNull final Optional<String> content, final boolean purge) throws IOException {
+        if (!Files.exists(path)) {
             return;
         }
-
-        int count = getFiles(input).size();
-
-        count++;
-
-        zip(files, input, "-" + count, purge);*/
-    }
-
-    public static void zip(@NotNull final List<File> files, @Nullable final File directory, final String extra, final boolean purge) {
-        if (files.isEmpty()) return;
 
         final StringBuilder builder = new StringBuilder();
 
         builder.append(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        if (!builder.isEmpty()) {
-            builder.append(extra);
-        }
+        content.ifPresent(builder::append);
 
         builder.append(".gz");
 
-        if (directory != null) {
-            directory.mkdirs();
-        }
+        final Path file = directory.orElse(dataFolder).resolve(builder.toString());
 
-        final File zipFile = new File(directory == null ? dataFolder : directory, builder.toString());
+        final long size = Files.size(path);
 
-        try (final FileOutputStream fileOutputStream = new FileOutputStream(zipFile); ZipOutputStream zipOut = new ZipOutputStream(fileOutputStream)) {
-            for (File file : files) {
-                if (file.length() > 0) {
-                    try (final FileInputStream fileInputStream = new FileInputStream(file)) {
-                        final ZipEntry zipEntry = new ZipEntry(file.getName());
+        if (size <= 0) return;
 
-                        zipOut.putNextEntry(zipEntry);
+        if (Files.isDirectory(path)) {
+            try (final ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(file)); final Stream<Path> values = Files.walk(path)) {
+                final List<Path> entries = values.filter(key -> !Files.isDirectory(key)).toList();
 
-                        byte[] bytes = new byte[1024];
-                        int length;
+                for (final Path entry : entries) {
+                    final ZipEntry zipEntry = new ZipEntry(entry.toString());
 
-                        while ((length = fileInputStream.read(bytes)) >= 0) {
-                            zipOut.write(bytes, 0, length);
-                        }
+                    output.putNextEntry(zipEntry);
+
+                    Files.copy(entry, output);
+
+                    output.closeEntry();
+
+                    if (purge) {
+                        Files.deleteIfExists(entry);
                     }
-
-                    if (purge) file.delete();
                 }
             }
-        } catch (IOException exception) {
-            throw new FusionException("Failed to zip " + zipFile, exception);
+
+            return;
+        }
+
+        try (final ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(file))) {
+            final ZipEntry zipEntry = new ZipEntry(path.toString());
+
+            output.putNextEntry(zipEntry);
+
+            Files.copy(path, output);
+
+            output.closeEntry();
+        }
+
+        if (purge) {
+            Files.deleteIfExists(path);
         }
     }
 }

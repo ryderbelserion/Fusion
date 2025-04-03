@@ -4,11 +4,12 @@ import com.ryderbelserion.fusion.api.enums.FileType;
 import com.ryderbelserion.fusion.api.files.CustomFile;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
+import java.nio.file.Path;
 
 public class NbtCustomFile extends CustomFile<NbtCustomFile> {
 
-    public NbtCustomFile(@NotNull final File file, final boolean isDynamic) {
-        super(file, isDynamic);
+    public NbtCustomFile(@NotNull final Path path, final boolean isDynamic) {
+        super(path, isDynamic);
     }
 
     @Override

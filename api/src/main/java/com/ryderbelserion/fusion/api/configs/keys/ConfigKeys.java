@@ -29,4 +29,10 @@ public class ConfigKeys implements SettingsHolder {
     })
     public static final Property<String> rounding = newProperty("settings.rounding", "half_even");
 
+    @Comment({
+            "This config option decides how deep to search through a given folder.",
+            "It only applies to folders that are dynamic like the crates folder or vouchers"
+    })
+    public static final Property<Integer> recursion_depth = newProperty("settings.recursion_depth", 1);
+
 }
