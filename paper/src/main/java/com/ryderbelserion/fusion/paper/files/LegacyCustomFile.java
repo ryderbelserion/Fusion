@@ -3,7 +3,7 @@ package com.ryderbelserion.fusion.paper.files;
 import com.ryderbelserion.fusion.api.enums.FileType;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.LoggerImpl;
+import com.ryderbelserion.fusion.core.api.managers.LoggerManager;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
@@ -14,7 +14,7 @@ public final class LegacyCustomFile {
 
     private final FusionCore api = FusionCore.FusionProvider.get();
 
-    private final LoggerImpl logger = this.api.getLogger();
+    private final LoggerManager logger = this.api.getLogger();
     private final boolean isVerbose = this.api.isVerbose();
 
     private final String effectiveName;

@@ -8,7 +8,7 @@ import com.ryderbelserion.fusion.api.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.commands.CommandManager;
 import com.ryderbelserion.fusion.config.ConfigKeys;
 import com.ryderbelserion.fusion.config.SecondKeys;
-import com.ryderbelserion.fusion.core.api.LoggerImpl;
+import com.ryderbelserion.fusion.core.api.managers.LoggerManager;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.file.Path;
@@ -27,7 +27,7 @@ public class FusionPlugin extends JavaPlugin {
         this.api = new FusionPaper(getComponentLogger(), getDataPath());
         this.api.enable(this);
 
-        final LoggerImpl logger = this.api.getLogger();
+        final LoggerManager logger = this.api.getLogger();
 
         final Path path = getDataPath();
 

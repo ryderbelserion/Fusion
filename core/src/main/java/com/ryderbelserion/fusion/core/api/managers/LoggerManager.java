@@ -1,14 +1,14 @@
-package com.ryderbelserion.fusion.core.api;
+package com.ryderbelserion.fusion.core.api.managers;
 
 import com.ryderbelserion.fusion.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 
-public class LoggerImpl implements ILogger {
+public class LoggerManager implements ILogger {
 
     private final ComponentLogger logger;
 
-    public LoggerImpl(final ComponentLogger logger) {
+    public LoggerManager(final ComponentLogger logger) {
         this.logger = logger;
     }
 

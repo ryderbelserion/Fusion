@@ -1,8 +1,8 @@
-package com.ryderbelserion.fusion.core.api.support;
+package com.ryderbelserion.fusion.core.api.managers;
 
 import com.ryderbelserion.fusion.api.FusionApi;
 import com.ryderbelserion.fusion.api.interfaces.ILogger;
-import com.ryderbelserion.fusion.core.api.support.interfaces.IPlugin;
+import com.ryderbelserion.fusion.core.api.interfaces.IPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Collections;

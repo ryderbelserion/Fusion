@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.core;
 
 import ch.jalu.configme.SettingsHolder;
 import com.ryderbelserion.fusion.api.FusionApi;
-import com.ryderbelserion.fusion.core.api.LoggerImpl;
+import com.ryderbelserion.fusion.core.api.managers.LoggerManager;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -15,11 +15,11 @@ import java.util.Map;
 
 public abstract class FusionCore extends FusionApi {
 
-    private final LoggerImpl logger;
+    private final LoggerManager logger;
     private final Path dataFolder;
 
     public FusionCore(@NotNull final ComponentLogger logger, @NotNull final Path dataFolder) {
-        this.logger = new LoggerImpl(logger);
+        this.logger = new LoggerManager(logger);
         this.dataFolder = dataFolder;
     }
 
@@ -51,7 +51,7 @@ public abstract class FusionCore extends FusionApi {
     }
 
     @Override
-    public @NotNull final LoggerImpl getLogger() {
+    public @NotNull final LoggerManager getLogger() {
         return this.logger;
     }
 

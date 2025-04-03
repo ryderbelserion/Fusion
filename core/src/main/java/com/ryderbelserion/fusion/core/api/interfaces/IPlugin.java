@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.core.api.support.interfaces;
+package com.ryderbelserion.fusion.core.api.interfaces;
 
 import org.jetbrains.annotations.NotNull;
 import java.util.UUID;

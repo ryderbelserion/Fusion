@@ -6,7 +6,7 @@ import com.nexomc.nexo.items.ItemBuilder;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.api.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.LoggerImpl;
+import com.ryderbelserion.fusion.core.api.managers.LoggerManager;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builder.ComponentBuilder;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PotionBuilder;
@@ -66,7 +66,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     private final boolean isVerbose = this.api.isVerbose();
 
-    private final LoggerImpl logger = this.api.getLogger();
+    private final LoggerManager logger = this.api.getLogger();
 
     private final List<ItemFlag> itemflags = new ArrayList<>();
 
