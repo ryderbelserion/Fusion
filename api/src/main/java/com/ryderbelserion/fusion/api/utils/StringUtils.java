@@ -1,11 +1,9 @@
 package com.ryderbelserion.fusion.api.utils;
 
 import com.ryderbelserion.fusion.api.FusionApi;
-
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -35,18 +33,6 @@ public class StringUtils {
         } catch (NumberFormatException exception) {
             return Optional.empty();
         }
-    }
-
-    public static String toString(final List<String> list) {
-        if (list.isEmpty()) return "";
-
-        final StringBuilder message = new StringBuilder();
-
-        for (final String line : list) {
-            message.append(line).append("\n");
-        }
-
-        return api.chomp(message.toString());
     }
 
     public static String format(final double value) {

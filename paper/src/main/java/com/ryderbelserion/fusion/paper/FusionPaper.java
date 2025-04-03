@@ -18,7 +18,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -157,17 +156,14 @@ public class FusionPaper extends FusionCore {
 
     @Override
     public void sendMessage(@NotNull final Audience audience, @NotNull final List<String> lines, @NotNull final Map<String, String> placeholders) {
-        sendMessage(audience, com.ryderbelserion.fusion.api.utils.StringUtils.toString(lines), placeholders);
+        for (final String line : lines) {
+            sendMessage(audience, line, placeholders);
+        }
     }
 
     @Override
     public @NotNull final String getItemsPlugin() {
         return this.config.getProperty(PluginKeys.items_plugin);
-    }
-
-    @Override
-    public @NotNull final String chomp(@NotNull final String message) {
-        return StringUtils.chomp(message);
     }
 
     @Override
