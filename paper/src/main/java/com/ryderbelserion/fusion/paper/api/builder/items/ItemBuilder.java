@@ -77,6 +77,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+@Deprecated(since = "0.30.0", forRemoval = true)
 public class ItemBuilder<T extends ItemBuilder<T>> {
 
     private final FusionCore api = FusionCore.FusionProvider.get();
