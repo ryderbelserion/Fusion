@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated(since = "0.30.0", forRemoval = true)
 public final class LegacyFileManager {
 
     private final FusionCore api = FusionCore.FusionProvider.get();

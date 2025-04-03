@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.concurrent.CompletableFuture;
 
+@Deprecated(since = "0.30.0", forRemoval = true)
 public final class LegacyCustomFile {
 
     private final FusionCore api = FusionCore.FusionProvider.get();
