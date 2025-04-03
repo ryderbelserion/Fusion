@@ -76,6 +76,7 @@ public class FusionPaper extends FusionCore {
         init(PluginKeys.class, ConfigKeys.class);
     }
 
+    @Deprecated(since = "0.30.0", forRemoval = true)
     public @NotNull final LegacyFileManager getLegacyFileManager() {
         if (this.fileManager == null) {
             throw new FusionException("An error occurred while trying to get the legacy file manager instance.");
