@@ -9,7 +9,6 @@ import com.ryderbelserion.fusion.config.SecondKeys;
 import com.ryderbelserion.fusion.core.api.LoggerImpl;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
 import java.util.Optional;
 
@@ -30,10 +29,6 @@ public class FusionPlugin extends JavaPlugin {
 
         final Path path = getDataPath();
 
-        //FileUtils.getFiles(path.resolve("vouchers"), ".yml", 2).forEach(folder -> logger.warn("<red>Folder: <yellow>{}", folder.getFileName()));
-
-        //FileUtils.getFiles(path, ".yml").forEach(folder -> logger.warn("<red>File: <green>{}", folder.getFileName()));
-
         logger.warn("<red>==== PLATFORM INDEPENDENT FILEMANAGER START ====");
 
         final FileManager fileManager = this.api.getFileManager();
@@ -41,7 +36,7 @@ public class FusionPlugin extends JavaPlugin {
         final Path locale = path.resolve("locale");
 
         fileManager.addFolder(locale, FileType.YAML, Optional.empty(), false)
-                .addFile(path.resolve("config.yml"), Optional.empty(), Optional.empty(), false, ConfigKeys.class, SecondKeys.class)
+                .addFile(path.resolve("config.yml"), Optional.empty(), Optional.empty(), false, false, ConfigKeys.class, SecondKeys.class)
                 .init(false);
 
         final YamlCustomFile english = fileManager.getYamlFile(locale.resolve("en-US.yml"));
@@ -64,12 +59,6 @@ public class FusionPlugin extends JavaPlugin {
             //logger.warn("Key: {}", manager.getProperty(ConfigKeys.root_key));
             //logger.warn("Second Key: {}", manager.getProperty(SecondKeys.second_key));
         //}
-
-        fileManager.getCustomFiles().forEach((key, value) -> {
-            logger.warn("<light_purple>File: {}", key);
-
-            //value.forEach((name, custom) -> logger.warn("<aqua>Custom Key: {}", name));
-        });
 
         logger.warn("<red>==== PLATFORM INDEPENDENT FILEMANAGER END ====");
 
