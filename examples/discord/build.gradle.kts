@@ -17,3 +17,7 @@ repositories {
 dependencies {
     implementation(project(":fusion-discord"))
 }
+
+application {
+    mainClass.set("com.ryderbelserion.fusion.discord.Starter")
+}

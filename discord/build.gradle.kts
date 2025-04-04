@@ -13,8 +13,8 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.logback)
-    implementation(libs.jda)
-
     api(project(":fusion-api"))
+
+    api(libs.logback)
+    api(libs.jda)
 }
