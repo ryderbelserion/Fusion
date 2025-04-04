@@ -46,7 +46,7 @@ public class FusionPaper extends FusionCore {
     public void enable(@NotNull final Plugin plugin) {
         if (this.isRegistered) return;
 
-        init(PluginKeys.class, ConfigKeys.class);
+        init(ConfigKeys.class, PluginKeys.class);
 
         FusionPlugin.setPlugin(plugin);
 
