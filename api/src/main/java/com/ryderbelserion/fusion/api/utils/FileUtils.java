@@ -48,8 +48,10 @@ public class FileUtils {
 
         final Path path = output.resolve(input);
 
-        if (Files.exists(path)) { // return if it exists at all
-            if (Files.isDirectory(path)) {
+        final File file = path.toFile();
+
+        if (file.exists()) {
+            if (file.isDirectory()) {
                 return;
             }
 
