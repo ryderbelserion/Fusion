@@ -472,7 +472,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             throw new FusionException("Flag " + flag + " is not a valid flag");
         }
 
-        this.item.editMeta(itemMeta -> itemMeta.removeItemFlags(itemFlag));
+        this.item.editMeta(itemMeta -> itemMeta.removeItemFlags(itemFlag)); //todo() replace in 1.21.5
         this.itemflags.remove(itemFlag);
 
         return (B) this;

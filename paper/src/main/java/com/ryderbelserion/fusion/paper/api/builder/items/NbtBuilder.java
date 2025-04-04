@@ -29,10 +29,6 @@ public class NbtBuilder {
         this.itemStack = createNewStack ? itemStack.clone() : itemStack;
     }
 
-    public final boolean hasItemMeta() {
-        return !this.itemStack.hasItemMeta();
-    }
-
     public @NotNull final NbtBuilder setItemStack(final ItemStack itemStack) {
         this.itemStack = itemStack;
 
@@ -40,36 +36,31 @@ public class NbtBuilder {
     }
 
     public @NotNull final NbtBuilder setPersistentDouble(@NotNull final NamespacedKey key, final double value) {
-        this.itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(key, PersistentDataType.DOUBLE, value));
+        this.itemStack.editPersistentDataContainer(container -> container.set(key, PersistentDataType.DOUBLE, value));
 
         return this;
     }
 
     public @NotNull final NbtBuilder setPersistentInteger(@NotNull final NamespacedKey key, final int value) {
-        this.itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, value));
+        this.itemStack.editPersistentDataContainer(container -> container.set(key, PersistentDataType.INTEGER, value));
 
         return this;
     }
 
     public @NotNull final NbtBuilder setPersistentBoolean(@NotNull final NamespacedKey key, final boolean value) {
-        this.itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, value));
+        this.itemStack.editPersistentDataContainer(container -> container.set(key, PersistentDataType.BOOLEAN, value));
 
         return this;
     }
 
     public @NotNull final NbtBuilder setPersistentString(@NotNull final NamespacedKey key, @NotNull final String value) {
-        this.itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, value));
+        this.itemStack.editPersistentDataContainer(container -> container.set(key, PersistentDataType.STRING, value));
 
         return this;
     }
 
     public @NotNull final NbtBuilder setPersistentList(@NotNull final NamespacedKey key, @NotNull final List<String> values) {
-        // This must always apply the item meta as we are adding to the storage so item meta will be created anyway.
-        this.itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().set(
-                key,
-                PersistentDataType.LIST.listTypeFrom(PersistentDataType.STRING),
-                values
-        ));
+        this.itemStack.editPersistentDataContainer(container -> container.set(key, PersistentDataType.LIST.listTypeFrom(PersistentDataType.STRING), values));
 
         return this;
     }
@@ -97,9 +88,9 @@ public class NbtBuilder {
     public @NotNull final NbtBuilder removePersistentKey(@Nullable final NamespacedKey key) {
         if (key == null) return this;
 
-        if (!this.itemStack.getPersistentDataContainer().has(key)) return this;
-
-        this.itemStack.editMeta(itemMeta -> itemMeta.getPersistentDataContainer().remove(key));
+        this.itemStack.editPersistentDataContainer(container -> {
+            if (container.has(key)) container.remove(key);
+        });
 
         return this;
     }
