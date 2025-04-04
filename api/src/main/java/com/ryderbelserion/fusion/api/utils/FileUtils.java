@@ -127,6 +127,14 @@ public class FileUtils {
         }
     }
 
+    public static List<String> getNamesWithoutExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension) {
+        return getNamesWithoutExtension(folder, path, extension, api.getDepth());
+    }
+
+    public static List<Path> getNamesByExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension) {
+        return getFiles(folder.map(path::resolve).orElse(path), extension, api.getDepth());
+    }
+
     public static List<String> getNamesWithoutExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
         final List<Path> files = getFiles(folder.map(path::resolve).orElse(path), extension, depth);
 
