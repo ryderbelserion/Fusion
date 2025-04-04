@@ -277,7 +277,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             }
         }
 
-        setHidingToolTips(itemStack.hasData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP));
+        setHidingToolTips(itemStack.hasData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP) || itemStack.hasData(DataComponentTypes.HIDE_TOOLTIP));
 
         setUnbreakable(itemStack.hasData(DataComponentTypes.UNBREAKABLE));
     }
@@ -429,7 +429,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         }
 
         if (this.isHidingToolTips) {
-            this.itemStack.setData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
+            this.itemStack.setData(DataComponentTypes.HIDE_TOOLTIP);
         }
 
         if (this.isUnbreakable) {
