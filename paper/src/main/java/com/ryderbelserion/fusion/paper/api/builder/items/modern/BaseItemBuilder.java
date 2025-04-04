@@ -89,34 +89,20 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         withCustomItem(item);
     }
 
-    public ItemStack asItemStack(@Nullable final Audience audience, final boolean isLegacy) {
+    public ItemStack asItemStack(@Nullable final Audience audience) {
         if (this.displayName != null) {
-            if (isLegacy) { // legacy support for other plugins, only here temporarily
-                this.item.editMeta(itemMeta -> itemMeta.setDisplayName(ColorUtils.color(withPlaceholders(audience, this.displayName))));
-            } else {
-                final ComponentBuilder builder = new ComponentBuilder(this.displayName);
+            final ComponentBuilder builder = new ComponentBuilder(this.displayName);
 
-                this.item.setData(this.isStatic ? DataComponentTypes.ITEM_NAME : DataComponentTypes.CUSTOM_NAME, builder.asComponent(audience, this.placeholders));
-            }
+            this.item.setData(this.isStatic ? DataComponentTypes.ITEM_NAME : DataComponentTypes.CUSTOM_NAME, builder.asComponent(audience, this.placeholders));
         }
 
         if (!this.displayLore.isEmpty()) {
-            if (isLegacy) { // legacy support for other plugins, only here temporarily
-                final List<String> lines = new ArrayList<>();
+            final ComponentBuilder builder = new ComponentBuilder(this.displayLore);
 
-                for (String line : this.displayLore) {
-                    lines.add(ColorUtils.color(withPlaceholders(audience, line)));
-                }
-
-                this.item.editMeta(itemMeta -> itemMeta.setLore(lines));
-            } else {
-                final ComponentBuilder builder = new ComponentBuilder(this.displayLore);
-
-                this.item.setData(DataComponentTypes.LORE, ItemLore.lore(builder.asComponents(audience, this.placeholders)));
-            }
+            this.item.setData(DataComponentTypes.LORE, ItemLore.lore(builder.asComponents(audience, this.placeholders)));
         }
 
-        if (!this.itemflags.isEmpty()) { // temporary for now.
+        if (!this.itemflags.isEmpty()) { //todo() replace in 1.21.5
             this.item.editMeta(itemMeta -> this.itemflags.forEach(flag -> {
                 itemMeta.addItemFlags(flag);
 
@@ -131,12 +117,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.item;
     }
 
-    public ItemStack asItemStack(boolean isLegacy) {
-        return asItemStack(null, isLegacy);
-    }
-
     public ItemStack asItemStack() {
-        return asItemStack(false);
+        return asItemStack(null);
     }
 
     public B build() {
@@ -705,11 +687,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public void setItemToInventory(final Audience audience, final Inventory inventory, final int slot) {
-        inventory.setItem(slot, asItemStack(audience, false));
+        inventory.setItem(slot, asItemStack(audience));
     }
 
     public void addItemToInventory(final Audience audience, final Inventory inventory) {
-        inventory.addItem(asItemStack(audience, false));
+        inventory.addItem(asItemStack(audience));
     }
 
     public void setItemToInventory(final Inventory inventory, final int slot) {

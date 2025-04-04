@@ -5,7 +5,6 @@ import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
-import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
@@ -14,21 +13,8 @@ import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ColorUtils {
-
-    public static String color(String message) {
-        Matcher matcher = Pattern.compile("#[a-fA-F\\d]{6}").matcher(message);
-        StringBuilder buffer = new StringBuilder();
-
-        while (matcher.find()) {
-            matcher.appendReplacement(buffer, net.md_5.bungee.api.ChatColor.of(matcher.group()).toString());
-        }
-
-        return ChatColor.translateAlternateColorCodes('&', matcher.appendTail(buffer).toString());
-    }
 
     public static void updateTitle(@NotNull final Player player, @NotNull final String title) {
         final ServerPlayer entityPlayer = (ServerPlayer) ((CraftHumanEntity) player).getHandle();
