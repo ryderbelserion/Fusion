@@ -175,11 +175,11 @@ public class FileUtils {
     }
 
     public static List<Path> getFiles(@NotNull final Optional<String> folder, @NotNull final Path path, final String extension) {
-        return getFiles(folder.map(path::resolve).orElse(path), extension, 1);
+        return getFiles(folder.map(path::resolve).orElse(path), extension, api.getDepth());
     }
 
     public static List<Path> getFiles(@NotNull final Path path, final String extension) {
-        return getFiles(path, extension, 1);
+        return getFiles(path, extension, api.getDepth());
     }
 
     public static void write(@NotNull final File input, @NotNull final String format) {
