@@ -48,16 +48,6 @@ public class FileUtils {
 
         final Path path = output.resolve(input);
 
-        final File file = path.toFile();
-
-        if (file.exists()) {
-            if (file.isDirectory()) {
-                return;
-            }
-
-            return;
-        }
-
         if (purge) {
             try {
                 Files.walkFileTree(path, new SimpleFileVisitor<>() {
@@ -76,6 +66,14 @@ public class FileUtils {
                     }
                 });
             } catch (IOException ignored) {}
+        }
+
+        if (Files.exists(path)) {
+            return;
+        }
+
+        if (Files.isDirectory(path)) {
+            return;
         }
 
         final Set<String> processedFiles = new HashSet<>();

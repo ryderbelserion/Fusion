@@ -7,18 +7,26 @@ import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.managers.LoggerManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 @Deprecated(since = "0.30.0", forRemoval = true)
 public final class LegacyFileManager {
@@ -50,7 +58,11 @@ public final class LegacyFileManager {
 
         final File directory = new File(this.dataFolder, folder);
 
-        FileUtils.extract(folder, this.dataFolder.toPath(), false);
+        if (!directory.exists()) {
+            directory.mkdirs();
+
+            extracts(String.format("/%s/", directory.getName()), directory.toPath(), false);
+        }
 
         final File[] contents = directory.listFiles();
 
@@ -316,6 +328,55 @@ public final class LegacyFileManager {
             }
         } catch (IOException exception) {
             throw new FusionException("Failed to save " + resourcePath + " to " + outFile.getName(), exception);
+        }
+    }
+
+    public void extracts(@NotNull String input, @Nullable final Path output, final boolean replaceExisting) {
+        if (output == null || input.isEmpty()) return;
+
+        try (JarFile jarFile = new JarFile(Path.of(FileUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
+            final String path = input.substring(1);
+            final Enumeration<JarEntry> entries = jarFile.entries();
+
+            while (entries.hasMoreElements()) {
+                final JarEntry entry = entries.nextElement();
+                final String name = entry.getName();
+
+                if (!name.startsWith(path)) continue;
+
+                final Path file = output.resolve(name.substring(path.length()));
+
+                final boolean exists = Files.exists(file);
+
+                if (!replaceExisting && exists) continue;
+
+                if (entry.isDirectory()) {
+                    if (!exists) {
+                        try {
+                            Files.createDirectories(file);
+                        } catch (IOException exception) {
+                            throw new FusionException("Failed to create directory " + file, exception);
+                        }
+                    }
+
+                    continue;
+                }
+
+                try (final InputStream inputStream = new BufferedInputStream(jarFile.getInputStream(entry)); final OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file.toFile()))) {
+                    final byte[] buffer = new byte[4096];
+                    int readCount;
+
+                    while ((readCount = inputStream.read(buffer)) > 0) {
+                        outputStream.write(buffer, 0, readCount);
+                    }
+
+                    outputStream.flush();
+                } catch (IOException exception) {
+                    throw new FusionException("Failed to save " + file + " to " + output, exception);
+                }
+            }
+        } catch (IOException | URISyntaxException exception) {
+            throw new RuntimeException(exception);
         }
     }
 

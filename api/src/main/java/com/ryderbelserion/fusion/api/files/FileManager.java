@@ -237,8 +237,8 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     }
 
     // Extracts a resource to a specific path.
-    public final FileManager extractResource(@NotNull final String input, @NotNull final String output, boolean purge) {
-        FileUtils.extract(input, this.dataFolder.resolve(output), purge);
+    public final FileManager extractResource(@NotNull final String path, @NotNull final String output, boolean purge) {
+        FileUtils.extract(path, this.dataFolder.resolve(output), purge);
 
         return this;
     }
