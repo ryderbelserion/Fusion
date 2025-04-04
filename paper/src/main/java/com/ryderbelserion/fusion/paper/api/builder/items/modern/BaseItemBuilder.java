@@ -201,10 +201,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             throw new FusionException("The item type cannot be null!");
         }
 
-        if (this.item == null) {
-            this.item = type.createItemStack(Math.max(amount, 1));
-        }
-
+        this.item = type.createItemStack(Math.max(amount, 1));
         this.itemType = this.item.getType().asItemType();
 
         return (B) this;
@@ -255,6 +252,14 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             final Optional<Number> customModelData = StringUtils.tryParseInt(model);
 
             customModelData.ifPresent(number -> setCustomModelData(number.intValue()));
+        }
+
+        return (B) this;
+    }
+
+    public B addEnchantments(@NotNull final HashMap<String, Integer> enchantments) {
+        for (final Map.Entry<String, Integer> entry : enchantments.entrySet()) {
+            addEnchantment(entry.getKey(), entry.getValue());
         }
 
         return (B) this;
