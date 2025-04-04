@@ -6,7 +6,6 @@ import com.nexomc.nexo.items.ItemBuilder;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.api.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.managers.LoggerManager;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builder.ComponentBuilder;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PotionBuilder;
@@ -46,11 +45,13 @@ import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -63,10 +64,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     protected final Plugin plugin = FusionPlugin.getPlugin();
 
     private final FusionCore api = FusionCore.FusionProvider.get();
-
-    private final boolean isVerbose = this.api.isVerbose();
-
-    private final LoggerManager logger = this.api.getLogger();
 
     private final List<ItemFlag> itemflags = new ArrayList<>();
 
@@ -395,6 +392,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
+    @Deprecated(since = "0.30.0", forRemoval = true)
     public B hideToolTip() {
         if (this.item.hasData(DataComponentTypes.HIDE_TOOLTIP)) {
             return (B) this;
@@ -405,6 +403,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
+    @Deprecated(since = "0.30.0", forRemoval = true)
     public B showToolTip() {
         if (!this.item.hasData(DataComponentTypes.HIDE_TOOLTIP)) {
             return (B) this;
@@ -415,6 +414,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
+    @Deprecated(since = "0.30.0", forRemoval = true)
     public B hideAdditionalToolTip() {
         if (this.item.hasData(DataComponentTypes.HIDE_TOOLTIP) || this.item.hasData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)) {
             return (B) this;
@@ -425,6 +425,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
+    @Deprecated(since = "0.30.0", forRemoval = true)
     public B showAdditionalToolTip() {
         if (!this.item.hasData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)) {
             return (B) this;
@@ -435,24 +436,28 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
+    @Deprecated(since = "0.30.0", forRemoval = true)
     public B addItemFlag(final ItemFlag itemFlag) {
         this.itemflags.add(itemFlag);
 
         return (B) this;
     }
 
+    @Deprecated(since = "0.30.0", forRemoval = true)
     public B addItemFlags(final List<String> flags) {
         flags.forEach(this::addItemFlag);
 
         return (B) this;
     }
 
+    @Deprecated(since = "0.30.0", forRemoval = true)
     public B removeItemFlags(final List<String> flags) {
         flags.forEach(this::removeItemFlag);
 
         return (B) this;
     }
 
+    @Deprecated(since = "0.30.0", forRemoval = true)
     public B addItemFlag(final String flag) {
         final ItemFlag itemFlag = getFlag(flag);
 
@@ -465,6 +470,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
+    @Deprecated(since = "0.30.0", forRemoval = true)
     public B removeItemFlag(final String flag) {
         final ItemFlag itemFlag = getFlag(flag);
 
@@ -740,14 +746,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         }
 
         return new SpawnerBuilder(this.item);
-    }
-
-    public void setItemToInventory(final Audience audience, final Inventory inventory, final int slot, final boolean isLegacy) {
-        inventory.setItem(slot, asItemStack(audience, isLegacy));
-    }
-
-    public void addItemToInventory(final Audience audience, final Inventory inventory, final boolean isLegacy) {
-        inventory.addItem(asItemStack(audience, isLegacy));
     }
 
     public void setItemToInventory(final Audience audience, final Inventory inventory, final int slot) {

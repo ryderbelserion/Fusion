@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated(since = "0.30.0", forRemoval = true)
 public class NbtBuilder {
 
     private ItemStack itemStack;
