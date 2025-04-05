@@ -8,6 +8,8 @@ import com.ryderbelserion.fusion.api.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builder.ComponentBuilder;
+import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiAction;
+import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.SkullBuilder;
@@ -38,6 +40,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -84,6 +87,14 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     public BaseItemBuilder(final String item) {
         withCustomItem(item);
+    }
+
+    public @NotNull GuiItem asGuiItem(@Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
+        return new GuiItem(this.item, action);
+    }
+
+    public @NotNull GuiItem asGuiItem() {
+        return new GuiItem(this.item, null);
     }
 
     public ItemStack asItemStack(@Nullable final Audience audience) {
