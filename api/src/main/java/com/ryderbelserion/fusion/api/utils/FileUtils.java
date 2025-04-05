@@ -127,12 +127,26 @@ public class FileUtils {
         }
     }
 
-    public static List<String> getNamesWithoutExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension) {
-        return getNamesWithoutExtension(folder, path, extension, api.getDepth());
+    public static List<String> getNamesByExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
+        final List<Path> files = getFiles(folder.map(path::resolve).orElse(path), extension, depth);
+
+        final List<String> names = new ArrayList<>();
+
+        for (final Path file : files) {
+            final String name = file.getFileName().toString();
+
+            if (!name.endsWith(extension)) {
+                continue;
+            }
+
+            names.add(name);
+        }
+
+        return names;
     }
 
-    public static List<Path> getNamesByExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension) {
-        return getFiles(folder.map(path::resolve).orElse(path), extension, api.getDepth());
+    public static List<String> getNamesByExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension) {
+        return getNamesByExtension(folder, path, extension, api.getDepth());
     }
 
     public static List<String> getNamesWithoutExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
@@ -153,8 +167,8 @@ public class FileUtils {
         return names;
     }
 
-    public static List<Path> getNamesByExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
-        return getFiles(folder.map(path::resolve).orElse(path), extension, depth);
+    public static List<String> getNamesWithoutExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension) {
+        return getNamesWithoutExtension(folder, path, extension, api.getDepth());
     }
 
     public static List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth) {
