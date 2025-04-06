@@ -90,11 +90,19 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public @NotNull GuiItem asGuiItem(@Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
-        return new GuiItem(this.item, action);
+        return new GuiItem(asItemStack(), action);
     }
 
     public @NotNull GuiItem asGuiItem() {
-        return new GuiItem(this.item, null);
+        return new GuiItem(asItemStack(), null);
+    }
+
+    public @NotNull GuiItem asGuiItem(final Audience audience, @Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
+        return new GuiItem(asItemStack(audience), action);
+    }
+
+    public @NotNull GuiItem asGuiItem(final Audience audience) {
+        return new GuiItem(asItemStack(audience), null);
     }
 
     public ItemStack asItemStack(@Nullable final Audience audience) {
