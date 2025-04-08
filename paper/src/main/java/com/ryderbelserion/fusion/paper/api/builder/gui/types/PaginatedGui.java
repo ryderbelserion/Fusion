@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.paper.api.builder.gui.types;
 
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiContainer;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.types.IPaginatedGui;
 import com.ryderbelserion.fusion.paper.api.builder.gui.enums.InteractionComponent;
 import org.bukkit.entity.Player;
@@ -24,8 +25,8 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     private int pageNumber = 1;
     private int pageSize;
 
-    public PaginatedGui(@NotNull final String title, final int pageSize, final int rows, @NotNull final Set<InteractionComponent> components) {
-        super(title, rows, components);
+    public PaginatedGui(@NotNull final GuiContainer guiContainer, final int pageSize, @NotNull final Set<InteractionComponent> components) {
+        super(guiContainer, components);
 
         if (pageSize == 0) {
             calculatePageSize();
@@ -33,7 +34,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
             this.pageSize = pageSize;
         }
 
-        int size = rows * 9;
+        final int size = guiContainer.inventorySize() * 9;
 
         this.currentPage = new LinkedHashMap<>(size);
     }

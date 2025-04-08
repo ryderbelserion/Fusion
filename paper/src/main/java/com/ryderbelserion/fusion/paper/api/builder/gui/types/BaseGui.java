@@ -7,6 +7,7 @@ import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiAction;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiFiller;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiType;
+import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiContainer;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.types.IBaseGui;
 import com.ryderbelserion.fusion.paper.api.builder.gui.enums.InteractionComponent;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
@@ -57,34 +58,22 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     private final Inventory inventory;
     private boolean isUpdating;
-    private String title;
     private int rows;
 
-    public BaseGui(@NotNull final String title, final int rows, final Set<InteractionComponent> components) {
-        this.title = title;
-        this.rows = rows;
+    private final GuiContainer guiContainer;
 
-        int size = this.rows * 9;
+    public BaseGui(@NotNull final GuiContainer guiContainer, @NotNull final Set<InteractionComponent> components) {
+        this.guiContainer = guiContainer;
+        this.inventory = this.guiContainer.createInventory(this);
+        this.guiType = this.guiContainer.guiType();
+        this.rows = this.guiContainer.rows();
+
+        final int size = this.guiContainer.inventorySize();
 
         this.slotActions = new LinkedHashMap<>(size);
         this.guiItems = new LinkedHashMap<>(size);
 
         this.interactionComponents = safeCopy(components);
-
-        this.inventory = plugin.getServer().createInventory(this, size, title());
-    }
-
-    public BaseGui(@NotNull final String title, final GuiType guiType, final Set<InteractionComponent> components) {
-        this.title = title;
-
-        this.slotActions = new LinkedHashMap<>(guiType.getLimit());
-        this.guiItems = new LinkedHashMap<>(guiType.getLimit());
-
-        this.interactionComponents = safeCopy(components);
-
-        this.inventory = plugin.getServer().createInventory(this, guiType.getInventoryType(), title());
-
-        this.guiType = guiType;
     }
 
     @Override
@@ -99,12 +88,12 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     @Override
     public void setTitle(@NotNull final String title) {
-        this.title = title;
+        this.guiContainer.title(title);
     }
 
     @Override
     public @NotNull final Component title() {
-        return AdvUtils.parse(this.title);
+        return AdvUtils.parse(this.guiContainer.title());
     }
 
     @Override
@@ -113,13 +102,8 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setRows(final int rows) {
-        this.rows = rows;
-    }
-
-    @Override
     public final int getSize() {
-        return getRows() * 9;
+        return this.rows * 9;
     }
 
     @Override
@@ -174,7 +158,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     @Override
     public void giveItem(final Player player, final ItemStack itemStack) {
-        player.getInventory().addItem(itemStack);
+        player.getInventory().addItem(itemStack.clone());
     }
 
     @Override
@@ -292,7 +276,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     @Override
     public void updateTitle(final Player player) {
-        ColorUtils.updateTitle(player, this.title);
+        ColorUtils.updateTitle(player, this.guiContainer.title());
     }
 
     @Override
@@ -445,6 +429,10 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     public final int getSlotFromRowColumn(final int row, final int col) {
         return (col + (row - 1) * 9) - 1;
+    }
+
+    protected @NotNull final GuiContainer guiContainer() {
+        return this.guiContainer;
     }
 
     private void validateSlot(final int slot) {

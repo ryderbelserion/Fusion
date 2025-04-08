@@ -31,8 +31,6 @@ public interface IBaseGui {
 
     int getRows();
 
-    void setRows(final int rows);
-
     int getSize();
 
     GuiType getGuiType();
