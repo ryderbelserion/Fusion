@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.paper.api.builder.gui;
 
 import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiContainer;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiProvider;
+import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiProvider;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.BaseGui;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;

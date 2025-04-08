@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.paper.api.builder.gui;
 
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.paper.api.builder.gui.enums.InteractionComponent;
+import com.ryderbelserion.fusion.paper.api.builder.gui.enums.GuiComponent;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.BaseGui;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 public abstract class GuiBuilder<G extends BaseGui, B extends GuiBuilder<G, B>> {
 
-    private final EnumSet<InteractionComponent> components = EnumSet.noneOf(InteractionComponent.class);
+    private final EnumSet<GuiComponent> components = EnumSet.noneOf(GuiComponent.class);
     private String title = null;
 
     private Consumer<G> consumer;
@@ -27,31 +27,31 @@ public abstract class GuiBuilder<G extends BaseGui, B extends GuiBuilder<G, B>> 
     }
 
     public final B disableItemPlacement() {
-        this.components.add(InteractionComponent.PREVENT_ITEM_PLACE);
+        this.components.add(GuiComponent.PREVENT_ITEM_PLACE);
 
         return (B) this;
     }
 
     public final B disableItemTake() {
-        this.components.add(InteractionComponent.PREVENT_ITEM_TAKE);
+        this.components.add(GuiComponent.PREVENT_ITEM_TAKE);
 
         return (B) this;
     }
 
     public final B disableItemSwap() {
-        this.components.add(InteractionComponent.PREVENT_ITEM_SWAP);
+        this.components.add(GuiComponent.PREVENT_ITEM_SWAP);
 
         return (B) this;
     }
 
     public final B disableItemDrop() {
-        this.components.add(InteractionComponent.PREVENT_ITEM_DROP);
+        this.components.add(GuiComponent.PREVENT_ITEM_DROP);
 
         return (B) this;
     }
 
     public final B disableInteractions() {
-        this.components.addAll(InteractionComponent.VALUES);
+        this.components.addAll(GuiComponent.VALUES);
 
         return (B) this;
     }
@@ -63,25 +63,25 @@ public abstract class GuiBuilder<G extends BaseGui, B extends GuiBuilder<G, B>> 
     }
 
     public final B enableItemPlacement() {
-        this.components.remove(InteractionComponent.PREVENT_ITEM_PLACE);
+        this.components.remove(GuiComponent.PREVENT_ITEM_PLACE);
 
         return (B) this;
     }
 
     public final B enableItemTake() {
-        this.components.remove(InteractionComponent.PREVENT_ITEM_TAKE);
+        this.components.remove(GuiComponent.PREVENT_ITEM_TAKE);
 
         return (B) this;
     }
 
     public final B enableItemSwap() {
-        this.components.remove(InteractionComponent.PREVENT_ITEM_SWAP);
+        this.components.remove(GuiComponent.PREVENT_ITEM_SWAP);
 
         return (B) this;
     }
 
     public final B enableItemDrop() {
-        this.components.remove(InteractionComponent.PREVENT_ITEM_DROP);
+        this.components.remove(GuiComponent.PREVENT_ITEM_DROP);
 
         return (B) this;
     }
@@ -92,7 +92,7 @@ public abstract class GuiBuilder<G extends BaseGui, B extends GuiBuilder<G, B>> 
         return (B) this;
     }
 
-    protected @NotNull final Set<InteractionComponent> getInteractionComponents() {
+    protected @NotNull final Set<GuiComponent> getInteractionComponents() {
         return this.components;
     }
 

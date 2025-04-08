@@ -1,11 +1,10 @@
 package com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.types;
 
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiAction;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiFiller;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiType;
-import com.ryderbelserion.fusion.paper.api.builder.gui.enums.InteractionComponent;
-import net.kyori.adventure.text.Component;
+import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiFiller;
+import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builder.gui.enums.GuiType;
+import com.ryderbelserion.fusion.paper.api.builder.gui.enums.GuiComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -27,7 +26,7 @@ public interface IBaseGui {
 
     void setTitle(final String title);
 
-    Component title();
+    net.kyori.adventure.text.Component title();
 
     int getRows();
 
@@ -55,9 +54,9 @@ public interface IBaseGui {
 
     void setUpdating(final boolean isUpdating);
 
-    void addInteractionComponent(final InteractionComponent... components);
+    void addInteractionComponent(final GuiComponent... components);
 
-    void removeInteractionComponent(final InteractionComponent component);
+    void removeInteractionComponent(final GuiComponent component);
 
     boolean canPerformOtherActions();
 
@@ -127,7 +126,7 @@ public interface IBaseGui {
 
     void open(final Player player);
 
-    default Set<InteractionComponent> safeCopy(final Set<InteractionComponent> components) {
-        return components.isEmpty() ? EnumSet.noneOf(InteractionComponent.class) : EnumSet.copyOf(components);
+    default Set<GuiComponent> safeCopy(final Set<GuiComponent> components) {
+        return components.isEmpty() ? EnumSet.noneOf(GuiComponent.class) : EnumSet.copyOf(components);
     }
 }

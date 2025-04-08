@@ -10,7 +10,7 @@ import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builder.PlayerBuilder;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiAction;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiItem;
 import com.ryderbelserion.fusion.paper.api.enums.Support;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;

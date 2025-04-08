@@ -4,16 +4,15 @@ import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiAction;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiFiller;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiType;
+import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiFiller;
+import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builder.gui.enums.GuiType;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiContainer;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.types.IBaseGui;
-import com.ryderbelserion.fusion.paper.api.builder.gui.enums.InteractionComponent;
+import com.ryderbelserion.fusion.paper.api.builder.gui.enums.GuiComponent;
 import com.ryderbelserion.fusion.paper.api.scheduler.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -44,7 +43,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     private final Map<Integer, GuiAction<InventoryClickEvent>> slotActions;
     private final Map<Integer, GuiItem> guiItems;
 
-    private final Set<InteractionComponent> interactionComponents;
+    private final Set<GuiComponent> components;
 
     private GuiAction<InventoryClickEvent> defaultTopClickAction;
     private GuiAction<InventoryClickEvent> playerInventoryAction;
@@ -62,7 +61,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     private final GuiContainer guiContainer;
 
-    public BaseGui(@NotNull final GuiContainer guiContainer, @NotNull final Set<InteractionComponent> components) {
+    public BaseGui(@NotNull final GuiContainer guiContainer, @NotNull final Set<GuiComponent> components) {
         this.guiContainer = guiContainer;
         this.inventory = this.guiContainer.createInventory(this);
         this.guiType = this.guiContainer.guiType();
@@ -73,7 +72,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
         this.slotActions = new LinkedHashMap<>(size);
         this.guiItems = new LinkedHashMap<>(size);
 
-        this.interactionComponents = safeCopy(components);
+        this.components = safeCopy(components);
     }
 
     @Override
@@ -92,7 +91,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public @NotNull final Component title() {
+    public @NotNull final net.kyori.adventure.text.Component title() {
         return AdvUtils.parse(this.guiContainer.title());
     }
 
@@ -117,43 +116,43 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void addInteractionComponent(final InteractionComponent... components) {
-        this.interactionComponents.addAll(Arrays.asList(components));
+    public void addInteractionComponent(final GuiComponent... components) {
+        this.components.addAll(Arrays.asList(components));
     }
 
     @Override
-    public void removeInteractionComponent(final InteractionComponent component) {
-        this.interactionComponents.remove(component);
+    public void removeInteractionComponent(final GuiComponent component) {
+        this.components.remove(component);
     }
 
     @Override
     public final boolean canPerformOtherActions() {
-        return !this.interactionComponents.contains(InteractionComponent.PREVENT_OTHER_ACTIONS);
+        return !this.components.contains(GuiComponent.PREVENT_OTHER_ACTIONS);
     }
 
     @Override
     public final boolean isInteractionsDisabled() {
-        return this.interactionComponents.size() == InteractionComponent.VALUES.size();
+        return this.components.size() == GuiComponent.VALUES.size();
     }
 
     @Override
     public final boolean canPlaceItems() {
-        return !this.interactionComponents.contains(InteractionComponent.PREVENT_ITEM_PLACE);
+        return !this.components.contains(GuiComponent.PREVENT_ITEM_PLACE);
     }
 
     @Override
     public final boolean canTakeItems() {
-        return !this.interactionComponents.contains(InteractionComponent.PREVENT_ITEM_TAKE);
+        return !this.components.contains(GuiComponent.PREVENT_ITEM_TAKE);
     }
 
     @Override
     public final boolean canSwapItems() {
-        return !this.interactionComponents.contains(InteractionComponent.PREVENT_ITEM_SWAP);
+        return !this.components.contains(GuiComponent.PREVENT_ITEM_SWAP);
     }
 
     @Override
     public final boolean canDropItems() {
-        return !this.interactionComponents.contains(InteractionComponent.PREVENT_ITEM_DROP);
+        return !this.components.contains(GuiComponent.PREVENT_ITEM_DROP);
     }
 
     @Override

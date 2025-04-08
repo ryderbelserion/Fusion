@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.paper.api.builder.gui.types;
 
 import com.ryderbelserion.fusion.paper.api.builder.gui.BaseGuiBuilder;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.Gui;
+import com.ryderbelserion.fusion.paper.api.builder.gui.objects.Gui;
 import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 

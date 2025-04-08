@@ -1,9 +1,9 @@
 package com.ryderbelserion.fusion.paper.api.builder.gui.types;
 
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiContainer;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.types.IPaginatedGui;
-import com.ryderbelserion.fusion.paper.api.builder.gui.enums.InteractionComponent;
+import com.ryderbelserion.fusion.paper.api.builder.gui.enums.GuiComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +25,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     private int pageNumber = 1;
     private int pageSize;
 
-    public PaginatedGui(@NotNull final GuiContainer guiContainer, final int pageSize, @NotNull final Set<InteractionComponent> components) {
+    public PaginatedGui(@NotNull final GuiContainer guiContainer, final int pageSize, @NotNull final Set<GuiComponent> components) {
         super(guiContainer, components);
 
         if (pageSize == 0) {

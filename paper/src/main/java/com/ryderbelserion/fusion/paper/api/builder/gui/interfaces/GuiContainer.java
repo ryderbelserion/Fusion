@@ -1,5 +1,7 @@
 package com.ryderbelserion.fusion.paper.api.builder.gui.interfaces;
 
+import com.ryderbelserion.fusion.paper.api.builder.gui.enums.GuiType;
+import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiProvider;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;

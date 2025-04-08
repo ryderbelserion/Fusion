@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.paper.api.builder.gui.interfaces;
+package com.ryderbelserion.fusion.paper.api.builder.gui.enums;
 
 import org.bukkit.event.inventory.InventoryType;
 import org.jetbrains.annotations.NotNull;

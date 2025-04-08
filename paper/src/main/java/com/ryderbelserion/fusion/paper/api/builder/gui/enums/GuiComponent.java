@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
-public enum InteractionComponent {
+public enum GuiComponent {
 
     PREVENT_ITEM_PLACE,
     PREVENT_ITEM_TAKE,
@@ -12,6 +12,6 @@ public enum InteractionComponent {
     PREVENT_ITEM_DROP,
     PREVENT_OTHER_ACTIONS;
 
-    public static final Set<InteractionComponent> VALUES = Collections.unmodifiableSet(EnumSet.allOf(InteractionComponent.class));
+    public static final Set<GuiComponent> VALUES = Collections.unmodifiableSet(EnumSet.allOf(GuiComponent.class));
 
 }

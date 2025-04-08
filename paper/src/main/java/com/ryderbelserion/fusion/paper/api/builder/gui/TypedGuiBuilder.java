@@ -1,10 +1,10 @@
 package com.ryderbelserion.fusion.paper.api.builder.gui;
 
 import com.ryderbelserion.fusion.paper.FusionPlugin;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.Gui;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiType;
+import com.ryderbelserion.fusion.paper.api.builder.gui.objects.Gui;
+import com.ryderbelserion.fusion.paper.api.builder.gui.enums.GuiType;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiContainer;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiProvider;
+import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiProvider;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.ChestGui;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Contract;
