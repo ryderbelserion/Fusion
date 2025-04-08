@@ -609,6 +609,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public B setItemDamage(final int damage) {
+        if (damage == -1) return (B) this;
+
         this.item.setData(DataComponentTypes.DAMAGE, Math.min(damage, getType().getMaxDurability()));
 
         return (B) this;
