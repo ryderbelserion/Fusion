@@ -48,7 +48,7 @@ public final class TypedGuiBuilder extends BaseGuiBuilder<Gui, TypedGuiBuilder> 
     @Override
     @Contract(" -> new")
     public Gui create() {
-        final Gui gui = new Gui(new GuiContainer.Typed(getTitle(), this.guiProvider, this.guiType), getInteractionComponents());
+        final Gui gui = new Gui(new GuiContainer.Typed(getTitle(), this.guiProvider, this.guiType), getComponents());
 
         final Consumer<Gui> consumer = getConsumer();
 

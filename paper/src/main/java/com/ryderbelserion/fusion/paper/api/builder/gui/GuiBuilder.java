@@ -92,7 +92,7 @@ public abstract class GuiBuilder<G extends BaseGui, B extends GuiBuilder<G, B>> 
         return (B) this;
     }
 
-    protected @NotNull final Set<GuiComponent> getInteractionComponents() {
+    protected @NotNull final Set<GuiComponent> getComponents() {
         return this.components;
     }
 
@@ -112,6 +112,6 @@ public abstract class GuiBuilder<G extends BaseGui, B extends GuiBuilder<G, B>> 
         this.title = builder.getTitle();
 
         this.components.clear();
-        this.components.addAll(builder.getInteractionComponents());
+        this.components.addAll(builder.getComponents());
     }
 }

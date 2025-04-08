@@ -9,7 +9,7 @@ public final class ChestGui extends BaseGuiBuilder<Gui, ChestGui> {
 
     @Override
     public @NotNull Gui create() {
-        final Gui gui = new Gui(createContainer(), getInteractionComponents());
+        final Gui gui = new Gui(createContainer(), getComponents());
 
         final Consumer<Gui> consumer = getConsumer();
 

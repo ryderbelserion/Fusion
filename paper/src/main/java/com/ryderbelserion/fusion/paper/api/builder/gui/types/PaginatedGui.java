@@ -5,6 +5,7 @@ import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiContainer;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.types.IPaginatedGui;
 import com.ryderbelserion.fusion.paper.api.builder.gui.enums.GuiComponent;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -44,6 +45,11 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
         this.pageSize = pageSize;
 
         return this;
+    }
+
+    @Override
+    public final int getPageSize() {
+        return this.pageSize;
     }
 
     @Override
@@ -102,27 +108,14 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public void open(@NotNull final Player player, final boolean purge) {
-        open(player, 1, null);
-    }
-
-    @Override
-    public void open(@NotNull final Player player) {
-        open(player, 1, null);
-    }
-
-    @Override
-    public void open(@NotNull final Player player, @NotNull final Consumer<PaginatedGui> consumer) {
-        open(player, 1, consumer);
-    }
-
-    @Override
     public void open(@NotNull final Player player, final int openPage, @Nullable final Consumer<PaginatedGui> consumer) {
         if (player.isSleeping()) return;
 
         if (openPage <= getMaxPages() || openPage > 0) this.pageNumber = openPage;
 
-        getInventory().clear();
+        final Inventory inventory = getInventory();
+
+        inventory.clear();
         this.currentPage.clear();
 
         populate();
@@ -136,14 +129,29 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
             consumer.accept(this);
         }
 
-        player.openInventory(getInventory());
+        player.openInventory(inventory);
+    }
+
+    @Override
+    public void open(@NotNull final Player player, @NotNull final Consumer<PaginatedGui> consumer) {
+        open(player, 1, consumer);
+    }
+
+    @Override
+    public void open(@NotNull final Player player, final boolean purge) {
+        open(player, 1, null);
+    }
+
+    @Override
+    public void open(@NotNull final Player player) {
+        open(player, 1, null);
     }
 
     @Override
     public final int getNextPageNumber() {
         if (this.pageNumber + 1 > getMaxPages()) return this.pageNumber;
 
-        return pageNumber + 1;
+        return this.pageNumber + 1;
     }
 
     @Override
@@ -154,7 +162,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public final boolean next() {
+    public boolean next() {
         if (this.pageNumber + 1 > getMaxPages()) return false;
 
         this.pageNumber++;
@@ -165,7 +173,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public final boolean previous() {
+    public boolean previous() {
         if (this.pageNumber - 1 == 0) return false;
 
         this.pageNumber--;
@@ -213,8 +221,10 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
 
     @Override
     public void clearPageContents() {
+        final Inventory inventory = getInventory();
+
         for (Map.Entry<Integer, GuiItem> entry : this.currentPage.entrySet()) {
-            getInventory().setItem(entry.getKey(), null);
+            inventory.setItem(entry.getKey(), null);
         }
     }
 
@@ -241,7 +251,8 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     @Override
     public void populatePage() {
         int slot = 0;
-        final int inventorySize = getInventory().getSize();
+        final Inventory inventory = getInventory();
+        final int inventorySize = inventory.getSize();
 
         final Iterator<GuiItem> iterator = getItemsFromPage(this.pageNumber).iterator();
 
@@ -250,7 +261,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
                 break; // Exit the loop if slot exceeds inventory size
             }
 
-            if (getGuiItem(slot) != null || getInventory().getItem(slot) != null) {
+            if (getGuiItem(slot) != null || inventory.getItem(slot) != null) {
                 slot++;
 
                 continue;
@@ -260,7 +271,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
 
             this.currentPage.put(slot, guiItem);
 
-            getInventory().setItem(slot, guiItem.getItemStack());
+            inventory.setItem(slot, guiItem.getItemStack());
 
             slot++;
         }

@@ -21,7 +21,7 @@ public final class PaginatedBuilder extends BaseGuiBuilder<PaginatedGui, Paginat
 
     @Override
     public @NotNull PaginatedGui create() {
-        final PaginatedGui gui = new PaginatedGui(createContainer(), this.pageSize, getInteractionComponents());
+        final PaginatedGui gui = new PaginatedGui(createContainer(), this.pageSize, getComponents());
 
         final Consumer<PaginatedGui> consumer = getConsumer();
 

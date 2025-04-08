@@ -14,6 +14,8 @@ public interface IPaginatedGui {
 
     PaginatedGui setPageSize(final int pageSize);
 
+    int getPageSize();
+
     void addItem(@NotNull final GuiItem guiItem);
 
     void removePageItem(final int slot);
