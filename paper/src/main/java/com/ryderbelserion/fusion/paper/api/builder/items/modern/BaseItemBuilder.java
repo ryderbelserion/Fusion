@@ -279,7 +279,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B addEnchantment(@NotNull final String enchant, final int level) {
+    public B addEnchantment(@NotNull final String enchant, final int level, final boolean fetchEnchantments) {
         if (enchant.isEmpty()) return (B) this;
 
         final Enchantment enchantment = ItemUtils.getEnchantment(enchant);
@@ -288,17 +288,19 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         final ItemEnchantments.Builder builder = ItemEnchantments.itemEnchantments();
 
-        if (isBook() && this.item.hasData(DataComponentTypes.STORED_ENCHANTMENTS)) {
-            final ItemEnchantments enchantments = this.item.getData(DataComponentTypes.STORED_ENCHANTMENTS);
+        if (fetchEnchantments) {
+            if (isBook() && this.item.hasData(DataComponentTypes.STORED_ENCHANTMENTS)) {
+                final ItemEnchantments enchantments = this.item.getData(DataComponentTypes.STORED_ENCHANTMENTS);
 
-            if (enchantments != null) {
-                builder.addAll(enchantments.enchantments());
-            }
-        } else if (this.item.hasData(DataComponentTypes.ENCHANTMENTS)) {
-            final ItemEnchantments enchantments = this.item.getData(DataComponentTypes.ENCHANTMENTS);
+                if (enchantments != null) {
+                    builder.addAll(enchantments.enchantments());
+                }
+            } else if (this.item.hasData(DataComponentTypes.ENCHANTMENTS)) {
+                final ItemEnchantments enchantments = this.item.getData(DataComponentTypes.ENCHANTMENTS);
 
-            if (enchantments != null) {
-                builder.addAll(enchantments.enchantments());
+                if (enchantments != null) {
+                    builder.addAll(enchantments.enchantments());
+                }
             }
         }
 
@@ -307,6 +309,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         this.item.setData(isBook() ? DataComponentTypes.STORED_ENCHANTMENTS : DataComponentTypes.ENCHANTMENTS, builder.build());
 
         return (B) this;
+    }
+
+    public B addEnchantment(@NotNull final String enchant, final int level) {
+        return addEnchantment(enchant, level, false);
     }
 
     public B removeEnchantment(@NotNull final String enchant) {
