@@ -50,26 +50,34 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     private final Map<Path, CustomFile<? extends CustomFile<?>>> customFiles = new HashMap<>();
     private final Map<Path, FileType> folders = new HashMap<>(); // stores the folder and it's file type
 
-    public final FileManager init(final boolean isReload) {
+    public final FileManager init(final boolean isReload, final boolean isExtract) {
         this.dataFolder.toFile().mkdirs();
         
-        this.folders.forEach((folder, type) -> addFolder(folder, type, Optional.empty(), isReload)); // add new files
+        this.folders.forEach((folder, type) -> addFolder(folder, type, Optional.empty(), isReload, isExtract)); // add new files
+
+        return this;
+    }
+
+    public final FileManager init(final boolean isReload) {
+        return init(isReload, true);
+    }
+
+    public final FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Optional<UnaryOperator<ConfigurationOptions>> options, final boolean isReload, final boolean isExtract) {
+        this.folders.putIfAbsent(folder, fileType);
+
+        extractFolder(folder, false, isExtract);
+
+        final List<Path> files = FileUtils.getFiles(folder, fileType.getExtension(), this.depth);
+
+        for (final Path path : files) {
+            addFile(path, options, true, isReload, isExtract);
+        }
 
         return this;
     }
 
     public final FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Optional<UnaryOperator<ConfigurationOptions>> options, final boolean isReload) {
-        this.folders.putIfAbsent(folder, fileType);
-
-        FileUtils.extract(folder.getFileName().toString(), this.dataFolder, false);
-
-        final List<Path> files = FileUtils.getFiles(folder, fileType.getExtension(), this.depth);
-
-        for (final Path path : files) {
-            addFile(path, options, true, isReload);
-        }
-
-        return this;
+        return addFolder(folder, fileType, options, isReload, true);
     }
 
     public final FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType) {
@@ -83,7 +91,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     public final FileManager addFolder(@NotNull final Path folder, @NotNull final Optional<MigrationService> service, @NotNull final Optional<YamlFileResourceOptions> options, final boolean isReload, final boolean isDynamic, @NotNull final Class<? extends SettingsHolder>... holders) {
         this.folders.putIfAbsent(folder, FileType.YAML);
 
-        FileUtils.extract(folder.getFileName().toString(), this.dataFolder, false);
+        extractFolder(folder, false, true);
 
         final List<Path> files = FileUtils.getFiles(this.dataFolder.resolve(folder), ".yml", this.depth);
 
@@ -116,10 +124,10 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         return this;
     }
 
-    public FileManager addFile(@NotNull final Path path, @NotNull final Optional<UnaryOperator<ConfigurationOptions>> options, final boolean isDynamic, final boolean isReload) {
+    public FileManager addFile(@NotNull final Path path, @NotNull final Optional<UnaryOperator<ConfigurationOptions>> options, final boolean isDynamic, final boolean isReload, final boolean isExtract) {
         final String fileName = path.getFileName().toString();
 
-        if (!Files.exists(path)) {
+        if (isExtract && !Files.exists(path)) {
             FileUtils.extract(fileName, path.getParent(), false);
         }
 
@@ -149,7 +157,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     }
 
     public final FileManager addFile(@NotNull final Path path, @NotNull final Optional<UnaryOperator<ConfigurationOptions>> options) {
-        return addFile(path, options, false, false);
+        return addFile(path, options, false, false, true);
     }
 
     public final FileManager addFile(@NotNull final Path path) {
@@ -232,6 +240,26 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
     public final FileManager purge() {
         this.customFiles.clear();
+
+        return this;
+    }
+
+    // Extracts multiple folders
+    public final FileManager extractFolder(@NotNull final List<Path> folders, final boolean purge, final boolean isExtract) {
+        if (!isExtract) return this;
+
+        for (final Path path : folders) {
+            extractFolder(path, purge, true);
+        }
+
+        return this;
+    }
+
+    // Extracts an entire folder
+    public final FileManager extractFolder(@NotNull final Path folder, final boolean purge, final boolean isExtract) {
+        if (!isExtract) return this;
+
+        FileUtils.extract(folder.getFileName().toString(), this.dataFolder, purge);
 
         return this;
     }
