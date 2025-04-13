@@ -18,6 +18,10 @@ public abstract class FusionApi {
 
     public abstract ILogger getLogger();
 
+    public String chomp(final String message) {
+        return "";
+    }
+
     public String getNumberFormat() {
         return this.config.getProperty(ConfigKeys.number_format);
     }

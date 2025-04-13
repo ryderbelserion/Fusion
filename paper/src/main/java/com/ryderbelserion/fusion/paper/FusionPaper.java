@@ -18,6 +18,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -95,6 +96,11 @@ public class FusionPaper extends FusionCore {
 
     public @NotNull final ModuleLoader getLoader() {
         return this.loader;
+    }
+
+    @Override
+    public final String chomp(@NotNull final String message) {
+        return StringUtils.chomp(message);
     }
 
     @Override
