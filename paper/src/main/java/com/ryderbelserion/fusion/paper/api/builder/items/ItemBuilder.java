@@ -18,7 +18,7 @@ import dev.lone.itemsadder.api.CustomStack;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.CustomModelData;
 import io.papermc.paper.datacomponent.item.ItemAttributeModifiers;
-import io.papermc.paper.datacomponent.item.Unbreakable;
+import io.papermc.paper.datacomponent.item.TooltipDisplay;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.text.Component;
@@ -267,17 +267,16 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
         setGlowing(itemStack.hasData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE));
 
-        if (itemStack.hasData(DataComponentTypes.ATTRIBUTE_MODIFIERS)) {
-            final ItemAttributeModifiers attributeModifiers = itemStack.getData(DataComponentTypes.ATTRIBUTE_MODIFIERS);
+        final boolean hasToolTipDisplay = itemStack.hasData(DataComponentTypes.TOOLTIP_DISPLAY);
 
-            if (attributeModifiers != null) {
-                final boolean tooltip = attributeModifiers.showInTooltip();
+        if (hasToolTipDisplay) {
+            final TooltipDisplay display = itemStack.getData(DataComponentTypes.TOOLTIP_DISPLAY);
 
-                setHidingItemFlags(tooltip).setHidingToolTips(tooltip);
+            if (display != null) {
+                setHidingToolTips(display.hideTooltip());
+                setHidingItemFlags(display.hideTooltip());
             }
         }
-
-        setHidingToolTips(itemStack.hasData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP) || itemStack.hasData(DataComponentTypes.HIDE_TOOLTIP));
 
         setUnbreakable(itemStack.hasData(DataComponentTypes.UNBREAKABLE));
     }
@@ -421,7 +420,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
             values.forEach(modifier -> builder.addModifier(modifier.attribute(), modifier.modifier()));
 
-            this.itemStack.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, builder.showInTooltip(false));
+            this.itemStack.setData(DataComponentTypes.ATTRIBUTE_MODIFIERS, builder);
         }
 
         if (this.isGlowing) {
@@ -429,11 +428,13 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         }
 
         if (this.isHidingToolTips) {
-            this.itemStack.setData(DataComponentTypes.HIDE_TOOLTIP);
+            final TooltipDisplay display = TooltipDisplay.tooltipDisplay().hideTooltip(true).build();
+
+            this.itemStack.setData(DataComponentTypes.TOOLTIP_DISPLAY, display);
         }
 
         if (this.isUnbreakable) {
-            this.itemStack.setData(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable().build().showInTooltip(true));
+            this.itemStack.setData(DataComponentTypes.UNBREAKABLE);
         }
 
         return this.itemStack;
@@ -712,7 +713,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
     public @NotNull T setNamePlaceholders(Map<String, String> placeholders) {
         placeholders.forEach(this::addNamePlaceholder);
-        
+
         return (T) this;
     }
 

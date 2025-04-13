@@ -5,6 +5,8 @@ import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.api.utils.FileUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.managers.LoggerManager;
+import com.ryderbelserion.fusion.paper.FusionPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.BufferedInputStream;
@@ -32,6 +34,8 @@ import java.util.jar.JarFile;
 public final class LegacyFileManager {
 
     private final FusionCore api = FusionCore.FusionProvider.get();
+
+    private final Plugin plugin = FusionPlugin.getPlugin();
 
     private final LoggerManager logger = this.api.getLogger();
     private final File dataFolder = this.api.getDataFolder().toFile();
@@ -141,7 +145,7 @@ public final class LegacyFileManager {
                 this.logger.warn("Successfully extracted file {} to {}", fileName, file.getPath());
             }
 
-            saveResource(resourcePath);
+            this.plugin.saveResource(resourcePath, false);
         }
 
         switch (fileType) {
@@ -289,46 +293,6 @@ public final class LegacyFileManager {
 
     public Map<String, LegacyCustomFile> getFiles() {
         return Collections.unmodifiableMap(this.files);
-    }
-
-    private void saveResource(@NotNull String resourcePath) {
-        if (resourcePath == null || resourcePath.isEmpty()) {
-            throw new FusionException("ResourcePath cannot be null or empty");
-        }
-
-        resourcePath = resourcePath.replace('\\', '/');
-        final InputStream inputStream = getResource(resourcePath);
-
-        if (inputStream == null) {
-            throw new FusionException("The embedded resource '" + resourcePath + "' cannot be found.");
-        }
-
-        File outFile = new File(this.dataFolder, resourcePath);
-        int lastIndex = resourcePath.lastIndexOf('/');
-        File outDir = new File(this.dataFolder, resourcePath.substring(0, Math.max(lastIndex, 0)));
-
-        if (outDir.mkdirs()) {
-            if (this.isVerbose) this.logger.warn("Created directory {}", outDir.getAbsolutePath());
-        }
-
-        try {
-            if (!outFile.exists()) {
-                final OutputStream outputStream = new FileOutputStream(outFile);
-                byte[] buf = new byte[1024];
-                int len;
-
-                while ((len = inputStream.read(buf)) > 0) {
-                    outputStream.write(buf, 0, len);
-                }
-
-                outputStream.close();
-                inputStream.close();
-            } else {
-                if (this.isVerbose) this.logger.warn("Could not save {} to {} because {} already exists", outFile.getName(), outFile, outFile.getName());
-            }
-        } catch (IOException exception) {
-            throw new FusionException("Failed to save " + resourcePath + " to " + outFile.getName(), exception);
-        }
     }
 
     public void extracts(@NotNull String input, @Nullable final Path output, final boolean replaceExisting) {

@@ -1,6 +1,5 @@
 package com.ryderbelserion.fusion.paper.api.builder.items.modern;
 
-import com.google.common.collect.ImmutableMultimap;
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
@@ -20,6 +19,7 @@ import com.ryderbelserion.fusion.paper.api.enums.Support;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import dev.lone.itemsadder.api.CustomStack;
+import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.CustomModelData;
 import io.papermc.paper.datacomponent.item.DyedItemColor;
@@ -27,10 +27,9 @@ import io.papermc.paper.datacomponent.item.ItemArmorTrim;
 import io.papermc.paper.datacomponent.item.ItemEnchantments;
 import io.papermc.paper.datacomponent.item.ItemLore;
 import io.papermc.paper.datacomponent.item.MapItemColor;
-import io.papermc.paper.datacomponent.item.Unbreakable;
+import io.papermc.paper.datacomponent.item.TooltipDisplay;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -39,10 +38,8 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
@@ -67,8 +64,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     protected final Plugin plugin = FusionPlugin.getPlugin();
 
     private final FusionCore api = FusionCore.FusionProvider.get();
-
-    private final List<ItemFlag> itemflags = new ArrayList<>();
 
     private Map<String, String> placeholders = new HashMap<>();
 
@@ -116,16 +111,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             final ComponentBuilder builder = new ComponentBuilder(this.displayLore);
 
             this.item.setData(DataComponentTypes.LORE, ItemLore.lore(builder.asComponents(audience, this.placeholders)));
-        }
-
-        if (!this.itemflags.isEmpty()) { //todo() replace in 1.21.5
-            this.item.editMeta(itemMeta -> this.itemflags.forEach(flag -> {
-                itemMeta.addItemFlags(flag);
-
-                if (flag == ItemFlag.HIDE_ATTRIBUTES) {
-                    itemMeta.setAttributeModifiers(ImmutableMultimap.of());
-                }
-            }));
         }
 
         build();
@@ -416,101 +401,82 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    @Deprecated(since = "0.30.0", forRemoval = true)
     public B hideToolTip() {
-        if (this.item.hasData(DataComponentTypes.HIDE_TOOLTIP)) {
-            return (B) this;
+        final TooltipDisplay.Builder builder = TooltipDisplay.tooltipDisplay();
+
+        if (this.item.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {
+            final TooltipDisplay display = this.item.getData(DataComponentTypes.TOOLTIP_DISPLAY);
+
+            if (display != null) {
+                builder.hideTooltip(display.hideTooltip());
+                builder.hiddenComponents(display.hiddenComponents());
+            }
         }
 
-        this.item.setData(DataComponentTypes.HIDE_TOOLTIP);
+        this.item.setData(DataComponentTypes.TOOLTIP_DISPLAY, builder.hideTooltip(true).build());
 
         return (B) this;
     }
 
-    @Deprecated(since = "0.30.0", forRemoval = true)
     public B showToolTip() {
-        if (!this.item.hasData(DataComponentTypes.HIDE_TOOLTIP)) {
+        if (!this.item.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {
             return (B) this;
         }
 
-        this.item.unsetData(DataComponentTypes.HIDE_TOOLTIP);
+        final TooltipDisplay.Builder builder = TooltipDisplay.tooltipDisplay();
+
+        if (this.item.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {
+            final TooltipDisplay display = this.item.getData(DataComponentTypes.TOOLTIP_DISPLAY);
+
+            if (display != null) {
+                builder.hideTooltip(display.hideTooltip());
+                builder.hiddenComponents(display.hiddenComponents());
+            }
+        }
+
+        this.item.setData(DataComponentTypes.TOOLTIP_DISPLAY, builder.hideTooltip(false).build());
 
         return (B) this;
     }
 
-    @Deprecated(since = "0.30.0", forRemoval = true)
-    public B hideAdditionalToolTip() {
-        if (this.item.hasData(DataComponentTypes.HIDE_TOOLTIP) || this.item.hasData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)) {
+    public B hideComponents(final List<String> components) {
+        for (final String component : components) {
+            hideComponent(component);
+        }
+
+        return (B) this;
+    }
+
+    // i.e. minecraft:banner_patterns
+    public B hideComponent(final String component) {
+        if (component.isEmpty()) return (B) this;
+
+        final Optional<DataComponentType> type = ItemUtils.getDataComponentType(component);
+
+        if (type.isEmpty()) return (B) this;
+
+        if (this.item.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {
+            final TooltipDisplay display = this.item.getData(DataComponentTypes.TOOLTIP_DISPLAY);
+
+            if (display != null) {
+                display.hiddenComponents().add(type.get());
+            }
+
             return (B) this;
         }
 
-        this.item.setData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
+        final TooltipDisplay.Builder display = TooltipDisplay.tooltipDisplay();
 
-        return (B) this;
-    }
+        display.addHiddenComponents(type.get());
 
-    @Deprecated(since = "0.30.0", forRemoval = true)
-    public B showAdditionalToolTip() {
-        if (!this.item.hasData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP)) {
-            return (B) this;
-        }
-
-        this.item.unsetData(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP);
-
-        return (B) this;
-    }
-
-    @Deprecated(since = "0.30.0", forRemoval = true)
-    public B addItemFlag(final ItemFlag itemFlag) {
-        this.itemflags.add(itemFlag);
-
-        return (B) this;
-    }
-
-    @Deprecated(since = "0.30.0", forRemoval = true)
-    public B addItemFlags(final List<String> flags) {
-        flags.forEach(this::addItemFlag);
-
-        return (B) this;
-    }
-
-    @Deprecated(since = "0.30.0", forRemoval = true)
-    public B removeItemFlags(final List<String> flags) {
-        flags.forEach(this::removeItemFlag);
-
-        return (B) this;
-    }
-
-    @Deprecated(since = "0.30.0", forRemoval = true)
-    public B addItemFlag(final String flag) {
-        final ItemFlag itemFlag = getFlag(flag);
-
-        if (itemFlag == null) {
-            throw new FusionException("Flag " + flag + " is not a valid flag");
-        }
-
-        addItemFlag(itemFlag);
-
-        return (B) this;
-    }
-
-    @Deprecated(since = "0.30.0", forRemoval = true)
-    public B removeItemFlag(final String flag) {
-        final ItemFlag itemFlag = getFlag(flag);
-
-        if (itemFlag == null) {
-            throw new FusionException("Flag " + flag + " is not a valid flag");
-        }
-
-        this.item.editMeta(itemMeta -> itemMeta.removeItemFlags(itemFlag)); //todo() replace in 1.21.5
-        this.itemflags.remove(itemFlag);
+        this.item.setData(DataComponentTypes.TOOLTIP_DISPLAY, display);
 
         return (B) this;
     }
 
     public B setUnbreakable(final boolean isUnbreakable) {
         if (isUnbreakable && !this.item.hasData(DataComponentTypes.UNBREAKABLE)) {
-            this.item.setData(DataComponentTypes.UNBREAKABLE, Unbreakable.unbreakable().build());
+            this.item.setData(DataComponentTypes.UNBREAKABLE);
 
             return (B) this;
         }
@@ -574,7 +540,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B setTrim(@NotNull final String pattern, @NotNull final String material, final boolean hideToolTip) {
+    public B setTrim(@NotNull final String pattern, @NotNull final String material) {
         if (pattern.isEmpty() || material.isEmpty()) return (B) this;
 
         final TrimMaterial trimMaterial = ItemUtils.getTrimMaterial(material);
@@ -590,8 +556,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         }
 
         final ItemArmorTrim.Builder builder = ItemArmorTrim
-                .itemArmorTrim(new ArmorTrim(trimMaterial, trimPattern))
-                .showInTooltip(hideToolTip);
+                .itemArmorTrim(new ArmorTrim(trimMaterial, trimPattern));
 
         this.item.setData(DataComponentTypes.TRIM, builder.build());
 
@@ -930,27 +895,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         this.itemType = this.item.getType().asItemType();
     }
 
-    private String withPlaceholders(@Nullable final Audience audience, final String line) {
-        String clonedLine = line;
-
-        for (final Map.Entry<String, String> placeholder : this.placeholders.entrySet()) {
-            if (placeholder != null) {
-                final String key = placeholder.getKey();
-                final String value = placeholder.getValue();
-
-                if (value != null) {
-                    clonedLine = clonedLine.replace(key, value).replace(key.toLowerCase(), value);
-                }
-            }
-        }
-
-        if (audience instanceof Player player && Support.placeholder_api.isEnabled()) {
-            clonedLine = PlaceholderAPI.setPlaceholders(player, clonedLine);
-        }
-
-        return clonedLine;
-    }
-
     private void setItem(final String item) {
         final ItemType itemType = ItemUtils.getItemType(item);
 
@@ -959,19 +903,5 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         } else {
             withBase64(item);
         }
-    }
-
-    private @Nullable ItemFlag getFlag(final String name) {
-        ItemFlag flag = null;
-
-        for (final ItemFlag value : ItemFlag.values()) {
-            if (value.name().equalsIgnoreCase(name)) {
-                flag = value;
-
-                break;
-            }
-        }
-
-        return flag;
     }
 }

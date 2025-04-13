@@ -26,7 +26,7 @@ public class TestCommand extends BaseCommand {
             put("aqua_affinity", 3);
             put("unbreaking", 3);
             put("thorns", 3);
-        }}).setTrim("sentry", "quartz", false);
+        }}).setTrim("sentry", "quartz");
 
         player.getInventory().addItem(builder.asItemStack());
     }

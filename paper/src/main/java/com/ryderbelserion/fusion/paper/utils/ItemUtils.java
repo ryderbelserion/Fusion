@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.paper.utils;
 
 import com.ryderbelserion.fusion.api.FusionApi;
 import com.ryderbelserion.fusion.api.interfaces.ILogger;
+import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.NamespacedKey;
@@ -20,6 +21,7 @@ import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Base64;
+import java.util.Optional;
 
 public final class ItemUtils {
 
@@ -31,6 +33,18 @@ public final class ItemUtils {
 
     public static @NotNull RegistryAccess getRegistryAccess() {
         return RegistryAccess.registryAccess();
+    }
+
+    public static Optional<DataComponentType> getDataComponentType(@NotNull final String value) {
+        if (value.isEmpty()) {
+            if (isVerbose) logger.severe("{} cannot be blank while fetching a data component.", value);
+
+            return Optional.empty();
+        }
+
+        final DataComponentType type = getRegistryAccess().getRegistry(RegistryKey.DATA_COMPONENT_TYPE).get(getKey(value));
+
+        return Optional.ofNullable(type);
     }
 
     public static @Nullable ItemType getItemType(@NotNull final String value) {
