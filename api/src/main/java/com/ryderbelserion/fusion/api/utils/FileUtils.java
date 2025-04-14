@@ -235,22 +235,22 @@ public class FileUtils {
 
         final Path file = directory.orElse(dataFolder).resolve(builder.toString());
 
-        final long size = Files.size(path);
-
-        if (size <= 0) return;
-
         if (Files.isDirectory(path)) {
             try (final ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(file)); final Stream<Path> values = Files.walk(path)) {
                 final List<Path> entries = values.filter(key -> !Files.isDirectory(key)).toList();
 
                 for (final Path entry : entries) {
-                    final ZipEntry zipEntry = new ZipEntry(entry.toString());
+                    final long size = Files.size(entry);
 
-                    output.putNextEntry(zipEntry);
+                    if (size > 0) {
+                        final ZipEntry zipEntry = new ZipEntry(entry.toString());
 
-                    Files.copy(entry, output);
+                        output.putNextEntry(zipEntry);
 
-                    output.closeEntry();
+                        Files.copy(entry, output);
+
+                        output.closeEntry();
+                    }
 
                     if (purge) {
                         Files.deleteIfExists(entry);
@@ -261,14 +261,18 @@ public class FileUtils {
             return;
         }
 
-        try (final ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(file))) {
-            final ZipEntry zipEntry = new ZipEntry(path.toString());
+        final long size = Files.size(path);
 
-            output.putNextEntry(zipEntry);
+        if (size > 0) {
+            try (final ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(file))) {
+                final ZipEntry zipEntry = new ZipEntry(path.toString());
 
-            Files.copy(path, output);
+                output.putNextEntry(zipEntry);
 
-            output.closeEntry();
+                Files.copy(path, output);
+
+                output.closeEntry();
+            }
         }
 
         if (purge) {

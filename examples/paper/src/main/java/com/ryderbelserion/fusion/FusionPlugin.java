@@ -13,6 +13,8 @@ import com.ryderbelserion.fusion.core.api.managers.LoggerManager;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +70,12 @@ public class FusionPlugin extends JavaPlugin {
         logger.warn("<red>==== PLATFORM INDEPENDENT FILEMANAGER END ====");
 
         logger.warn("<red>==== LEGACY FILEMANAGER START ====");
+
+        try {
+            FileUtils.compress(getDataPath().resolve("vouchers"), Optional.of(getDataPath().resolve("backups")), Optional.empty(), true);
+        } catch (IOException exception) {
+            logger.warn("Failed to compress: ", exception);
+        }
 
         final LegacyFileManager legacyFileManager = this.api.getLegacyFileManager();
 
