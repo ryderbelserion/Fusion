@@ -5,13 +5,16 @@ import com.ryderbelserion.fusion.api.enums.FileType;
 import com.ryderbelserion.fusion.api.files.FileManager;
 import com.ryderbelserion.fusion.api.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.api.files.types.YamlCustomFile;
+import com.ryderbelserion.fusion.api.utils.FileUtils;
 import com.ryderbelserion.fusion.commands.CommandManager;
 import com.ryderbelserion.fusion.config.ConfigKeys;
 import com.ryderbelserion.fusion.config.SecondKeys;
 import com.ryderbelserion.fusion.core.api.managers.LoggerManager;
 import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 
 public class FusionPlugin extends JavaPlugin {
@@ -63,6 +66,28 @@ public class FusionPlugin extends JavaPlugin {
         }
 
         logger.warn("<red>==== PLATFORM INDEPENDENT FILEMANAGER END ====");
+
+        logger.warn("<red>==== LEGACY FILEMANAGER START ====");
+
+        final LegacyFileManager legacyFileManager = this.api.getLegacyFileManager();
+
+        legacyFileManager.addFolder("vouchers", FileType.YAML);
+
+        legacyFileManager.getFiles().forEach((name, legacyCustomFile) -> logger.warn("<yellow>File Name: {}", name));
+
+        logger.warn("<red>==== LEGACY FILEMANAGER END ====");
+
+        final List<String> files = FileUtils.getNamesWithoutExtension(Optional.of("vouchers"), getDataPath(), ".yml", 2);
+
+        logger.warn("<green>Size No Extension: {}", files.size());
+
+        files.forEach(file -> logger.warn("Voucher Name No Extension: {}", file));
+
+        final List<String> extensions = FileUtils.getNamesByExtension(Optional.of("vouchers"), getDataPath(), ".yml", 2);
+
+        logger.warn("<green>Size Extensions: {}", extensions.size());
+
+        extensions.forEach(file -> logger.warn("Voucher Name Extension: {}", file));
 
         CommandManager.load();
     }
