@@ -1,16 +1,14 @@
 package com.ryderbelserion.fusion.paper;
 
-import com.ryderbelserion.fusion.api.configs.keys.ConfigKeys;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.ConfigKeys;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.api.builder.gui.listeners.GuiListener;
-import com.ryderbelserion.fusion.paper.api.modules.EventRegistry;
-import com.ryderbelserion.fusion.paper.api.modules.ModuleLoader;
 import com.ryderbelserion.fusion.paper.api.structure.StructureRegistry;
 import com.ryderbelserion.fusion.paper.api.enums.Support;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
-import com.ryderbelserion.fusion.paper.files.config.PluginKeys;
+import com.ryderbelserion.fusion.paper.api.PluginKeys;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
@@ -34,20 +32,17 @@ import java.util.Map;
 public class FusionPaper extends FusionCore {
 
     public FusionPaper(@NotNull final ComponentLogger logger, @NotNull final Path dataFolder) {
-        super(logger, dataFolder);
+        super(consumer -> consumer.configurationData(ConfigKeys.class, PluginKeys.class), logger, dataFolder);
     }
 
     private boolean isRegistered = false;
 
-    private HeadDatabaseAPI hdb = null;
     private LegacyFileManager fileManager = null;
     private StructureRegistry registry;
-    private ModuleLoader loader;
+    private HeadDatabaseAPI heads;
 
     public void enable(@NotNull final Plugin plugin) {
         if (this.isRegistered) return;
-
-        init(ConfigKeys.class, PluginKeys.class);
 
         FusionPlugin.setPlugin(plugin);
 
@@ -58,26 +53,17 @@ public class FusionPaper extends FusionCore {
         }
 
         if (Support.head_database.isEnabled()) {
-            this.hdb = new HeadDatabaseAPI();
+            this.heads = new HeadDatabaseAPI();
         }
 
         final Server server = plugin.getServer();
         final PluginManager manager = server.getPluginManager();
-
-        this.loader = new ModuleLoader(new EventRegistry(plugin, server));
 
         manager.registerEvents(new GuiListener(), plugin);
 
         this.isRegistered = true;
     }
 
-    public void bootstrap() {
-        if (this.isRegistered) return;
-
-        init(PluginKeys.class, ConfigKeys.class);
-    }
-
-    @Deprecated(since = "0.30.0", forRemoval = true)
     public @NotNull final LegacyFileManager getLegacyFileManager() {
         if (this.fileManager == null) {
             throw new FusionException("An error occurred while trying to get the legacy file manager instance.");
@@ -90,36 +76,17 @@ public class FusionPaper extends FusionCore {
         return this.registry;
     }
 
-    public @Nullable final HeadDatabaseAPI getDatabaseAPI() {
-        return this.hdb;
-    }
+    @Override
+    public @NotNull final HeadDatabaseAPI getHeadDatabaseAPI() {
+        if (this.heads == null) {
+            throw new FusionException("HeadDatabaseAPI is not initialized.");
+        }
 
-    public @NotNull final ModuleLoader getLoader() {
-        return this.loader;
+        return this.heads;
     }
 
     @Override
-    public final String chomp(@NotNull final String message) {
-        return StringUtils.chomp(message);
-    }
-
-    @Override
-    public @NotNull Component placeholders(@NotNull String line) {
-        return placeholders(null, line, new HashMap<>());
-    }
-
-    @Override
-    public @NotNull Component placeholders(@NotNull String line, @NotNull Map<String, String> placeholders) {
-        return placeholders(null, line, placeholders);
-    }
-
-    @Override
-    public @NotNull Component placeholders(@Nullable final Audience audience, @NotNull String line, @NotNull final Map<String, String> placeholders) {
-        return placeholders(null, line, placeholders, null);
-    }
-
-    @Override
-    public @NotNull Component placeholders(@Nullable final Audience audience, @NotNull String line, @NotNull final Map<String, String> placeholders, @Nullable final List<TagResolver> tags) {
+    public @NotNull final Component placeholders(@Nullable final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders, @Nullable final List<TagResolver> tags) {
         final List<TagResolver> resolvers = new ArrayList<>();
 
         if (tags != null) {
@@ -142,23 +109,42 @@ public class FusionPaper extends FusionCore {
     }
 
     @Override
-    public @NotNull Component color(@NotNull String line) {
-        return color(null, line, new HashMap<>());
+    public @NotNull final Component placeholders(@Nullable final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders) {
+        return placeholders(null, line, placeholders, null);
     }
 
     @Override
-    public @NotNull Component color(@NotNull String line, @NotNull Map<String, String> placeholders) {
-        return color(null, line, placeholders);
+    public @NotNull final Component placeholders(@NotNull final String line, @NotNull final Map<String, String> placeholders) {
+        return placeholders(null, line, placeholders);
     }
 
     @Override
-    public @NotNull Component color(@Nullable final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders) {
+    public @NotNull final Component placeholders(@NotNull final String line) {
+        return placeholders(null, line, new HashMap<>());
+    }
+    @Override
+    public @NotNull final Component color(@Nullable final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders) {
         return placeholders(audience, line, placeholders);
     }
 
     @Override
-    public void sendMessage(@NotNull final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders) {
-        audience.sendMessage(color(audience, line, placeholders));
+    public @NotNull final Component color(@NotNull final String line, @NotNull final Map<String, String> placeholders) {
+        return color(null, line, placeholders);
+    }
+
+    @Override
+    public @NotNull final Component color(@NotNull final String line) {
+        return color(null, line, new HashMap<>());
+    }
+
+    @Override
+    public @NotNull final String chomp(@NotNull final String message) {
+        return StringUtils.chomp(message);
+    }
+
+    @Override
+    public @NotNull final String getItemsPlugin() {
+        return this.config.getProperty(PluginKeys.items_plugin);
     }
 
     @Override
@@ -169,12 +155,7 @@ public class FusionPaper extends FusionCore {
     }
 
     @Override
-    public @NotNull final String getItemsPlugin() {
-        return this.config.getProperty(PluginKeys.items_plugin);
-    }
-
-    @Override
-    public @Nullable final HeadDatabaseAPI getHeadDatabaseAPI() {
-        return this.hdb;
+    public void sendMessage(@NotNull final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders) {
+        audience.sendMessage(color(audience, line, placeholders));
     }
 }

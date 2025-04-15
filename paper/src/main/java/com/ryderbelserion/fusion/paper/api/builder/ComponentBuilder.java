@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.builder;
 
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
@@ -22,17 +22,17 @@ import java.util.Map;
 
 public class ComponentBuilder {
 
-    private final FusionCore api = FusionCore.FusionProvider.get();
+    private final FusionCore api = FusionCore.Provider.get();
 
     private final Map<ResolverType, List<TagResolver>> resolvers = new HashMap<>();
 
     private final List<String> lines = new ArrayList<>();
 
-    public ComponentBuilder(final String line) {
+    public ComponentBuilder(@NotNull final String line) {
         this(List.of(line));
     }
 
-    public ComponentBuilder(final List<String> lines) {
+    public ComponentBuilder(@NotNull final List<String> lines) {
         lines.forEach(line -> this.lines.add(line.replaceAll("\\{", "<").replaceAll("}", ">")));
     }
 
@@ -66,23 +66,23 @@ public class ComponentBuilder {
         return asComponent(null);
     }
 
-    public ComponentBuilder addClickResolver(final String key, final String value, @NotNull final ClickEvent.Action action) {
+    public ComponentBuilder addClickResolver(@NotNull final String key, @NotNull final String value, @NotNull final ClickEvent.Action action) {
         return addResolver(ResolverType.CLICK_EVENT, key, value, action);
     }
 
-    public ComponentBuilder addPlaceholderResolver(final String key, final String value) {
+    public ComponentBuilder addPlaceholderResolver(@NotNull final String key, @NotNull final String value) {
         return addResolver(ResolverType.PLACEHOLDER, key, value, null);
     }
 
-    public ComponentBuilder addHoverResolver(final String key, final String value) {
+    public ComponentBuilder addHoverResolver(@NotNull final String key, @NotNull final String value) {
         return addResolver(ResolverType.HOVER_EVENT, key, value, null);
     }
 
-    public ComponentBuilder addColorResolver(final String key, final String value) {
+    public ComponentBuilder addColorResolver(@NotNull final String key, @NotNull final String value) {
         return addResolver(ResolverType.TEXT_COLOR, key, value, null);
     }
 
-    public ComponentBuilder addResolver(final ResolverType type, final String key, final String value, @Nullable final ClickEvent.Action action) {
+    public ComponentBuilder addResolver(@NotNull final ResolverType type, @NotNull final String key, @NotNull final String value, @Nullable final ClickEvent.Action action) {
         final List<TagResolver> resolvers = this.resolvers.getOrDefault(type, new ArrayList<>());
 
         switch (type) {
@@ -116,7 +116,7 @@ public class ComponentBuilder {
         return this;
     }
 
-    public ComponentBuilder addResolver(final ResolverType type, final TagResolver... tags) {
+    public ComponentBuilder addResolver(@NotNull final ResolverType type, @NotNull final TagResolver... tags) {
         final List<TagResolver> resolvers = this.resolvers.getOrDefault(type, new ArrayList<>());
 
         resolvers.addAll(Arrays.asList(tags));
@@ -126,19 +126,19 @@ public class ComponentBuilder {
         return this;
     }
 
-    public ComponentBuilder removeResolver(final ResolverType type) {
+    public ComponentBuilder removeResolver(@NotNull final ResolverType type) {
         this.resolvers.remove(type);
 
         return this;
     }
 
-    public ComponentBuilder addLine(final String line) {
+    public ComponentBuilder addLine(@NotNull final String line) {
         this.lines.add(line);
 
         return this;
     }
 
-    public ComponentBuilder removeLine(final String line) {
+    public ComponentBuilder removeLine(@NotNull final String line) {
         this.lines.remove(line);
 
         return this;

@@ -1,11 +1,11 @@
 package com.ryderbelserion.fusion.paper.files;
 
-import com.ryderbelserion.fusion.api.enums.FileType;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.api.utils.FileUtils;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.utils.FileUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.managers.LoggerManager;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,15 +30,14 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-@Deprecated(since = "0.30.0", forRemoval = true)
 public final class LegacyFileManager {
 
-    private final FusionCore api = FusionCore.FusionProvider.get();
+    private final FusionCore api = FusionCore.Provider.get();
 
     private final Plugin plugin = FusionPlugin.getPlugin();
 
-    private final LoggerManager logger = this.api.getLogger();
-    private final File dataFolder = this.api.getDataFolder().toFile();
+    private final ComponentLogger logger = this.api.getLogger();
+    private final File dataFolder = this.api.getDataPath().toFile();
     private final boolean isVerbose = this.api.isVerbose();
 
     private final Map<String, LegacyCustomFile> files = new HashMap<>();
@@ -110,8 +109,6 @@ public final class LegacyFileManager {
 
         if (fileName.endsWith(".yml")) {
             type = FileType.YAML;
-        } else if (fileName.endsWith(".json")) {
-            type = FileType.JSON;
         } else if (fileName.endsWith(".nbt")) {
             type = FileType.NBT;
         }
@@ -167,7 +164,7 @@ public final class LegacyFileManager {
                 this.files.put(strippedName, new LegacyCustomFile(fileType, file, isDynamic).load());
             }
 
-            case JSON -> throw new FusionException("The file type with extension " + extension + " is not currently supported.");
+            //case JSON -> throw new FusionException("The file type with extension " + extension + " is not currently supported.");
 
             case NONE -> {} // do nothing
         }

@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.paper.files.config;
+package com.ryderbelserion.fusion.paper.api;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;

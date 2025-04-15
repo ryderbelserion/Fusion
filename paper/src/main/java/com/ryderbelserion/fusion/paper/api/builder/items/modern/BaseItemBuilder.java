@@ -2,8 +2,8 @@ package com.ryderbelserion.fusion.paper.api.builder.items.modern;
 
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builder.ComponentBuilder;
@@ -63,7 +63,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     protected final Plugin plugin = FusionPlugin.getPlugin();
 
-    private final FusionCore api = FusionCore.FusionProvider.get();
+    private final FusionCore api = FusionCore.Provider.get();
 
     private Map<String, String> placeholders = new HashMap<>();
 
@@ -92,11 +92,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return new GuiItem(asItemStack(), null);
     }
 
-    public @NotNull GuiItem asGuiItem(final Audience audience, @Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
+    public @NotNull GuiItem asGuiItem(@NotNull final Audience audience, @Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
         return new GuiItem(asItemStack(audience), action);
     }
 
-    public @NotNull GuiItem asGuiItem(final Audience audience) {
+    public @NotNull GuiItem asGuiItem(@NotNull final Audience audience) {
         return new GuiItem(asItemStack(audience), null);
     }
 
@@ -126,7 +126,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B withCustomItem(final String item) {
+    public B withCustomItem(@NotNull final String item) {
         switch (this.api.getItemsPlugin().toLowerCase()) {
             case "nexo" -> {
                 if (Support.nexo.isEnabled()) {
@@ -588,32 +588,32 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B addPlaceholder(final String placeholder, final String value) {
+    public B addPlaceholder(@NotNull final String placeholder, @NotNull final String value) {
         this.placeholders.put(placeholder, value);
 
         return (B) this;
     }
 
-    public B setPlaceholders(final Map<String, String> placeholders) {
+    public B setPlaceholders(@NotNull final Map<String, String> placeholders) {
         this.placeholders = placeholders;
 
         return (B) this;
     }
 
-    public boolean hasPlaceholder(final String placeholder) {
+    public boolean hasPlaceholder(@NotNull final String placeholder) {
         return this.placeholders.containsKey(placeholder);
     }
 
-    public B removePlaceholder(final String placeholder) {
+    public B removePlaceholder(@NotNull final String placeholder) {
         this.placeholders.remove(placeholder);
 
         return (B) this;
     }
 
-    public B withSkull(final String skull) {
-        final HeadDatabaseAPI hdb = this.api.getHeadDatabaseAPI();
+    public B withSkull(@NotNull final String skull) {
+        if (skull.isEmpty()) return (B) this;
 
-        if (skull.isEmpty() || hdb == null) return (B) this;
+        @NotNull final HeadDatabaseAPI hdb = this.api.getHeadDatabaseAPI();
 
         this.item = hdb.isHead(skull) ? hdb.getItemHead(skull) : ItemType.PLAYER_HEAD.createItemStack();
 
@@ -670,7 +670,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.item.getPersistentDataContainer().getOrDefault(key, PersistentDataType.STRING, "");
     }
 
-    public final BaseItemBuilder<B> removePersistentKey(@org.jetbrains.annotations.Nullable final NamespacedKey key) {
+    public final BaseItemBuilder<B> removePersistentKey(@Nullable final NamespacedKey key) {
         if (key == null) return this;
 
         this.item.editPersistentDataContainer(container -> {
@@ -732,19 +732,19 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return new SpawnerBuilder(this.item);
     }
 
-    public void setItemToInventory(final Audience audience, final Inventory inventory, final int slot) {
+    public void setItemToInventory(@Nullable final Audience audience, @NotNull final Inventory inventory, final int slot) {
         inventory.setItem(slot, asItemStack(audience));
     }
 
-    public void addItemToInventory(final Audience audience, final Inventory inventory) {
+    public void addItemToInventory(@Nullable final Audience audience, @NotNull final Inventory inventory) {
         inventory.addItem(asItemStack(audience));
     }
 
-    public void setItemToInventory(final Inventory inventory, final int slot) {
+    public void setItemToInventory(@NotNull final Inventory inventory, final int slot) {
         setItemToInventory(null, inventory, slot);
     }
 
-    public void addItemToInventory(final Inventory inventory) {
+    public void addItemToInventory(@NotNull final Inventory inventory) {
         addItemToInventory(null, inventory);
     }
 
@@ -830,7 +830,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.itemType.key();
     }
 
-    protected final void setItemStack(final ItemStack item) {
+    protected final void setItemStack(@NotNull final ItemStack item) {
         this.item = item;
         this.itemType = this.item.getType().asItemType();
     }
@@ -857,7 +857,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return data;
     }
 
-    private void getItemsAdder(final String item) {
+    private void getItemsAdder(@NotNull final String item) {
         if (!CustomStack.isInRegistry(item)) {
             return;
         }
@@ -872,7 +872,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         this.itemType = this.item.getType().asItemType();
     }
 
-    private void getOraxen(final String item) {
+    private void getOraxen(@NotNull final String item) {
         if (!OraxenItems.exists(item)) {
             return;
         }
@@ -887,7 +887,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         this.itemType = this.item.getType().asItemType();
     }
 
-    private void getNexo(final String item) {
+    private void getNexo(@NotNull final String item) {
         if (!NexoItems.exists(item)) {
             return;
         }
@@ -902,7 +902,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         this.itemType = this.item.getType().asItemType();
     }
 
-    private void setItem(final String item) {
+    private void setItem(@NotNull final String item) {
         final ItemType itemType = ItemUtils.getItemType(item);
 
         if (itemType != null) {

@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.builder.gui.objects;
 
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.api.builder.gui.enums.GuiType;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.BaseGui;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.PaginatedGui;

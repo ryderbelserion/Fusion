@@ -5,6 +5,10 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
+base {
+    archivesName.set("fusion-paper")
+}
+
 project.group = "${rootProject.group}.paper"
 project.version = rootProject.version
 
@@ -26,4 +30,10 @@ dependencies {
     }
 
     api(project(":fusion-core"))
+}
+
+tasks {
+    shadowJar {
+        archiveClassifier.set("")
+    }
 }

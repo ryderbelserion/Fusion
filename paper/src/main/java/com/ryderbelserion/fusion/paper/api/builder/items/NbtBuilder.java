@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-@Deprecated(since = "0.30.0", forRemoval = true)
 public class NbtBuilder {
 
     private ItemStack itemStack;
@@ -30,7 +29,7 @@ public class NbtBuilder {
         this.itemStack = createNewStack ? itemStack.clone() : itemStack;
     }
 
-    public @NotNull final NbtBuilder setItemStack(final ItemStack itemStack) {
+    public @NotNull final NbtBuilder setItemStack(@NotNull final ItemStack itemStack) {
         this.itemStack = itemStack;
 
         return this;

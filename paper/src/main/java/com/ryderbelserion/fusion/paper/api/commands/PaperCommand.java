@@ -16,7 +16,7 @@ public abstract class PaperCommand extends Command<CommandSourceStack, PaperComm
     public PaperCommand() {}
 
     @Override
-    public @NotNull CompletableFuture<Suggestions> suggestStringArgument(final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip) {
+    public @NotNull CompletableFuture<Suggestions> suggestStringArgument(@NotNull final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip) {
         for (int count = min; count <= max; ++count) {
             final String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
 
@@ -31,17 +31,17 @@ public abstract class PaperCommand extends Command<CommandSourceStack, PaperComm
     }
 
     @Override
-    public @NotNull CompletableFuture<Suggestions> suggestStringArgument(final SuggestionsBuilder builder, @NotNull final String tooltip) {
+    public @NotNull CompletableFuture<Suggestions> suggestStringArgument(@NotNull final SuggestionsBuilder builder, @NotNull final String tooltip) {
         return suggestStringArgument(builder, 1, 8, tooltip);
     }
 
     @Override
-    public @NotNull CompletableFuture<Suggestions> suggestStringArgument(SuggestionsBuilder builder) {
+    public @NotNull CompletableFuture<Suggestions> suggestStringArgument(@NotNull final SuggestionsBuilder builder) {
         return suggestStringArgument(builder, "");
     }
 
     @Override
-    public @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip) {
+    public @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(@NotNull final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip) {
         for (int count = min; count <= max; ++count) {
             if (tooltip.isBlank()) {
                 builder.suggest(count);
@@ -54,17 +54,17 @@ public abstract class PaperCommand extends Command<CommandSourceStack, PaperComm
     }
 
     @Override
-    public @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(final SuggestionsBuilder builder, @NotNull final String tooltip) {
+    public @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(@NotNull final SuggestionsBuilder builder, @NotNull final String tooltip) {
         return suggestIntegerArgument(builder, 1, 64, tooltip);
     }
 
     @Override
-    public @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(SuggestionsBuilder builder) {
+    public @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(@NotNull final SuggestionsBuilder builder) {
         return suggestIntegerArgument(builder, "");
     }
 
     @Override
-    public @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip) {
+    public @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(@NotNull final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip) {
         int count = min;
 
         while (count <= max) {
@@ -85,12 +85,12 @@ public abstract class PaperCommand extends Command<CommandSourceStack, PaperComm
     }
 
     @Override
-    public @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(final SuggestionsBuilder builder, @NotNull final String tooltip) {
+    public @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(@NotNull final SuggestionsBuilder builder, @NotNull final String tooltip) {
         return suggestDoubleArgument(builder, 0, 64, tooltip);
     }
 
     @Override
-    public @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(SuggestionsBuilder builder) {
+    public @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(@NotNull final SuggestionsBuilder builder) {
         return suggestDoubleArgument(builder, "");
     }
 }

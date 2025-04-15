@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.structure;
 
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -13,6 +13,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.structure.Structure;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,7 +63,7 @@ public class StructureBuilder {
         this.isReady = false;
     }
 
-    public void saveStructure(@NotNull final File file, final Location uno, final Location dos, final boolean includeEntities, final boolean registerStructure) {
+    public void saveStructure(@NotNull final File file, @Nullable final Location uno, @Nullable final Location dos, final boolean includeEntities, final boolean registerStructure) {
         if (uno == null || dos == null) {
             throw new FusionException("Cannot save structure as the file or one of the corners is null.");
         }

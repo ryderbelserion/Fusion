@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.builder.gui.types;
 
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiAction;

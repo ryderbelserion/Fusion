@@ -1,10 +1,10 @@
 package com.ryderbelserion.fusion.paper.utils;
 
-import com.ryderbelserion.fusion.api.FusionApi;
-import com.ryderbelserion.fusion.api.interfaces.ILogger;
+import com.ryderbelserion.fusion.core.FusionCore;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -25,9 +25,9 @@ import java.util.Optional;
 
 public final class ItemUtils {
 
-    private static final FusionApi api = FusionApi.Provider.get();
+    private static final FusionCore api = FusionCore.Provider.get();
 
-    private static final ILogger logger = api.getLogger();
+    private static final ComponentLogger logger = api.getLogger();
 
     private static final boolean isVerbose = api.isVerbose();
 
@@ -37,7 +37,7 @@ public final class ItemUtils {
 
     public static Optional<DataComponentType> getDataComponentType(@NotNull final String value) {
         if (value.isEmpty()) {
-            if (isVerbose) logger.severe("{} cannot be blank while fetching a data component.", value);
+            if (isVerbose) logger.error("{} cannot be blank while fetching a data component.", value);
 
             return Optional.empty();
         }
@@ -49,7 +49,7 @@ public final class ItemUtils {
 
     public static @Nullable ItemType getItemType(@NotNull final String value) {
         if (value.isEmpty()) {
-            if (isVerbose) logger.severe("{} cannot be blank when fetching item types.", value);
+            if (isVerbose) logger.error("{} cannot be blank when fetching item types.", value);
 
             return null;
         }
@@ -57,7 +57,7 @@ public final class ItemUtils {
         @Nullable final ItemType key = getRegistryAccess().getRegistry(RegistryKey.ITEM).get(getKey(value));
 
         if (key == null) {
-            if (isVerbose) logger.severe("{} is not a valid item type.", value);
+            if (isVerbose) logger.error("{} is not a valid item type.", value);
 
             return null;
         }
@@ -67,7 +67,7 @@ public final class ItemUtils {
 
     public static @Nullable Sound getSound(@NotNull final String value) {
         if (value.isEmpty()) {
-            if (isVerbose) logger.severe("{} cannot be blank when fetching the sound.", value);
+            if (isVerbose) logger.error("{} cannot be blank when fetching the sound.", value);
 
             return null;
         }
@@ -75,7 +75,7 @@ public final class ItemUtils {
         @Nullable final Sound key = getRegistryAccess().getRegistry(RegistryKey.SOUND_EVENT).get(getKey(value));
 
         if (key == null) {
-            if (isVerbose) logger.severe("{} is not a valid sound.", value);
+            if (isVerbose) logger.error("{} is not a valid sound.", value);
 
             return null;
         }
@@ -85,7 +85,7 @@ public final class ItemUtils {
 
     public static @Nullable Enchantment getEnchantment(@NotNull final String value) {
         if (value.isEmpty()) {
-            if (isVerbose) logger.severe("{} cannot be blank when fetching the enchantment.", value);
+            if (isVerbose) logger.error("{} cannot be blank when fetching the enchantment.", value);
 
             return null;
         }
@@ -93,7 +93,7 @@ public final class ItemUtils {
         @Nullable final Enchantment key = getRegistryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(getKey(value));
 
         if (key == null) {
-            if (isVerbose) logger.severe("{} is not a valid enchantment.", value);
+            if (isVerbose) logger.error("{} is not a valid enchantment.", value);
 
             return null;
         }
@@ -103,7 +103,7 @@ public final class ItemUtils {
 
     public static @Nullable TrimPattern getTrimPattern(@NotNull final String value) {
         if (value.isEmpty()) {
-            if (isVerbose) logger.severe("{} cannot be blank when fetching the trim pattern.", value);
+            if (isVerbose) logger.error("{} cannot be blank when fetching the trim pattern.", value);
 
             return null;
         }
@@ -111,7 +111,7 @@ public final class ItemUtils {
         @Nullable final TrimPattern key = getRegistryAccess().getRegistry(RegistryKey.TRIM_PATTERN).get(getKey(value));
 
         if (key == null) {
-            if (isVerbose) logger.severe("{} is not a valid trim pattern.", value);
+            if (isVerbose) logger.error("{} is not a valid trim pattern.", value);
 
             return null;
         }
@@ -121,7 +121,7 @@ public final class ItemUtils {
 
     public static @Nullable TrimMaterial getTrimMaterial(@NotNull final String value) {
         if (value.isEmpty()) {
-            if (isVerbose) logger.severe("{} cannot be blank when fetching the trim material.", value);
+            if (isVerbose) logger.error("{} cannot be blank when fetching the trim material.", value);
 
             return null;
         }
@@ -129,7 +129,7 @@ public final class ItemUtils {
         @Nullable final TrimMaterial key = getRegistryAccess().getRegistry(RegistryKey.TRIM_MATERIAL).get(getKey(value));
 
         if (key == null) {
-            if (isVerbose) logger.severe("{} is not a valid trim material.", value);
+            if (isVerbose) logger.error("{} is not a valid trim material.", value);
 
             return null;
         }
@@ -139,7 +139,7 @@ public final class ItemUtils {
 
     public static @Nullable PotionType getPotionType(@NotNull final String value) {
         if (value.isEmpty()) {
-            if (isVerbose) logger.severe("{} cannot be blank when fetching the potion.", value);
+            if (isVerbose) logger.error("{} cannot be blank when fetching the potion.", value);
 
             return null;
         }
@@ -147,7 +147,7 @@ public final class ItemUtils {
         @Nullable final PotionType key = getRegistryAccess().getRegistry(RegistryKey.POTION).get(getKey(value));
 
         if (key == null) {
-            if (isVerbose) logger.severe("{} is not a valid potion.", value);
+            if (isVerbose) logger.error("{} is not a valid potion.", value);
 
             return null;
         }
@@ -157,7 +157,7 @@ public final class ItemUtils {
 
     public static @Nullable PotionEffectType getPotionEffect(@NotNull final String value) {
         if (value.isEmpty()) {
-            if (isVerbose) logger.severe("{} cannot be blank when fetching the potion effect.", value);
+            if (isVerbose) logger.error("{} cannot be blank when fetching the potion effect.", value);
 
             return null;
         }
@@ -165,7 +165,7 @@ public final class ItemUtils {
         @Nullable final PotionEffectType key = getRegistryAccess().getRegistry(RegistryKey.MOB_EFFECT).get(getKey(value));
 
         if (key == null) {
-            if (isVerbose) logger.severe("{} is not a valid potion effect.", value);
+            if (isVerbose) logger.error("{} is not a valid potion effect.", value);
 
             return null;
         }
@@ -175,7 +175,7 @@ public final class ItemUtils {
 
     public static @Nullable Particle getParticleType(@NotNull final String value) {
         if (value.isEmpty()) {
-            if (isVerbose) logger.severe("{} cannot be blank when fetching the particle.", value);
+            if (isVerbose) logger.error("{} cannot be blank when fetching the particle.", value);
 
             return null;
         }
@@ -183,7 +183,7 @@ public final class ItemUtils {
         @Nullable final Particle key = getRegistryAccess().getRegistry(RegistryKey.PARTICLE_TYPE).get(getKey(value));
 
         if (key == null) {
-            if (isVerbose) logger.severe("{} is not a valid particle.", value);
+            if (isVerbose) logger.error("{} is not a valid particle.", value);
 
             return null;
         }
@@ -193,7 +193,7 @@ public final class ItemUtils {
 
     public static @Nullable PatternType getPatternType(@NotNull final String value) {
         if (value.isEmpty()) {
-            if (isVerbose) logger.severe("{} cannot be blank when fetching banner pattern types!", value);
+            if (isVerbose) logger.error("{} cannot be blank when fetching banner pattern types!", value);
 
             return null;
         }
@@ -201,7 +201,7 @@ public final class ItemUtils {
         @Nullable final PatternType key = getRegistryAccess().getRegistry(RegistryKey.BANNER_PATTERN).get(getKey(value));
 
         if (key == null) {
-            if (isVerbose) logger.severe("{} is not a valid banner pattern.", value);
+            if (isVerbose) logger.error("{} is not a valid banner pattern.", value);
 
             return null;
         }
@@ -211,7 +211,7 @@ public final class ItemUtils {
 
     public static @Nullable EntityType getEntity(@NotNull final String value) {
         if (value.isEmpty()) {
-            if (isVerbose) logger.severe("{} cannot be blank when fetching the entity.", value);
+            if (isVerbose) logger.error("{} cannot be blank when fetching the entity.", value);
 
             return null;
         }
@@ -219,7 +219,7 @@ public final class ItemUtils {
         @Nullable final EntityType key = getRegistryAccess().getRegistry(RegistryKey.ENTITY_TYPE).get(getKey(value));
 
         if (key == null) {
-            if (isVerbose) logger.severe("{} is not a valid entity.", value);
+            if (isVerbose) logger.error("{} is not a valid entity.", value);
 
             return null;
         }
@@ -229,7 +229,7 @@ public final class ItemUtils {
 
     public static @Nullable Attribute getAttribute(@NotNull final String value) {
         if (value.isEmpty()) {
-            if (isVerbose) logger.severe("{} cannot be blank when fetching the attribute.", value);
+            if (isVerbose) logger.error("{} cannot be blank when fetching the attribute.", value);
 
             return null;
         }
@@ -237,7 +237,7 @@ public final class ItemUtils {
         @Nullable final Attribute key = getRegistryAccess().getRegistry(RegistryKey.ATTRIBUTE).get(getKey(value));
 
         if (key == null) {
-            if (isVerbose) logger.severe("{} is not a valid attribute.", value);
+            if (isVerbose) logger.error("{} is not a valid attribute.", value);
 
             return null;
         }

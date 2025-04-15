@@ -20,23 +20,23 @@ public class PotionBuilder extends BaseItemBuilder<PotionBuilder> {
         this.builder = PotionContents.potionContents();
     }
 
-    public PotionBuilder withPotionEffect(final PotionEffectType potionEffectType, final int duration, final int amplifier, final boolean isAmbient, final boolean isParticles, final boolean hasIcon) {
+    public PotionBuilder withPotionEffect(@NotNull final PotionEffectType potionEffectType, final int duration, final int amplifier, final boolean isAmbient, final boolean isParticles, final boolean hasIcon) {
         this.builder.addCustomEffect(new PotionEffect(potionEffectType, duration, amplifier).withAmbient(isAmbient).withParticles(isParticles).withIcon(hasIcon));
 
         return this;
     }
 
-    public PotionBuilder withPotionEffect(final PotionEffectType potionEffectType, final int duration, final int amplifier) {
+    public PotionBuilder withPotionEffect(@NotNull final PotionEffectType potionEffectType, final int duration, final int amplifier) {
         return withPotionEffect(potionEffectType, duration, amplifier, true, true, true);
     }
 
-    public PotionBuilder withPotionType(final PotionType potionType) {
+    public PotionBuilder withPotionType(@NotNull final PotionType potionType) {
         this.builder.potion(potionType);
 
         return this;
     }
 
-    public PotionBuilder withCustomName(final String customName) {
+    public PotionBuilder withCustomName(@NotNull final String customName) {
         this.builder.customName(customName);
 
         return this;

@@ -30,7 +30,7 @@ public class FireworkStarBuilder extends BaseItemBuilder<FireworkStarBuilder> {
         return this;
     }
 
-    public FireworkStarBuilder withColor(final Color color) {
+    public FireworkStarBuilder withColor(@NotNull final Color color) {
         this.builder.withColor(color);
 
         return this;
@@ -48,7 +48,7 @@ public class FireworkStarBuilder extends BaseItemBuilder<FireworkStarBuilder> {
         return this;
     }
 
-    public FireworkStarBuilder withFade(final Color color) {
+    public FireworkStarBuilder withFade(@NotNull final Color color) {
         this.builder.withFade(color);
 
         return this;
@@ -66,7 +66,7 @@ public class FireworkStarBuilder extends BaseItemBuilder<FireworkStarBuilder> {
         return this;
     }
 
-    public FireworkStarBuilder with(final FireworkEffect.Type type) {
+    public FireworkStarBuilder with(@NotNull final FireworkEffect.Type type) {
         this.builder.with(type);
 
         return this;

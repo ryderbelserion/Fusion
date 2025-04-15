@@ -1,20 +1,20 @@
 package com.ryderbelserion.fusion.paper.files;
 
-import com.ryderbelserion.fusion.api.enums.FileType;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.managers.LoggerManager;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.concurrent.CompletableFuture;
 
-@Deprecated(since = "0.30.0", forRemoval = true)
 public final class LegacyCustomFile {
 
-    private final FusionCore api = FusionCore.FusionProvider.get();
+    private final FusionCore api = FusionCore.Provider.get();
 
-    private final LoggerManager logger = this.api.getLogger();
+    private final ComponentLogger logger = this.api.getLogger();
     private final boolean isVerbose = this.api.isVerbose();
 
     private final String effectiveName;
@@ -22,7 +22,7 @@ public final class LegacyCustomFile {
     private final boolean isDynamic;
     private final File file;
 
-    public LegacyCustomFile(final FileType fileType, final File file, final boolean isDynamic) {
+    public LegacyCustomFile(@NotNull final FileType fileType, @NotNull final File file, final boolean isDynamic) {
         this.effectiveName = file.getName().replace(".yml", "");
         this.isDynamic = isDynamic;
         this.fileType = fileType;
@@ -70,7 +70,7 @@ public final class LegacyCustomFile {
 
         if (this.configuration == null) {
             if (this.isVerbose) {
-                this.logger.severe("Configuration is null, cannot save {}!", getFileName());
+                this.logger.error("Configuration is null, cannot save {}!", getFileName());
             }
 
             return this;
