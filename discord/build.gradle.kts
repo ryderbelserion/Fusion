@@ -13,8 +13,15 @@ repositories {
 }
 
 dependencies {
-    api(project(":fusion-api"))
+    api(project(":fusion-core"))
 
+    // Adventure
+    api(libs.bundles.adventure)
+
+    // Configurate
+    api(libs.configurate.yaml)
+
+    // JDA
     api(libs.logback)
     api(libs.jda)
 }
