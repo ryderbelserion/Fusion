@@ -5,9 +5,6 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
-project.group = "${rootProject.group}.paper"
-project.version = rootProject.version
-
 repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 

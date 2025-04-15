@@ -1,28 +1,19 @@
 package com.ryderbelserion.fusion.paper;
 
-import com.ryderbelserion.fusion.api.configs.keys.ConfigKeys;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
-import com.ryderbelserion.fusion.paper.api.builder.gui.listeners.GuiListener;
-import com.ryderbelserion.fusion.paper.api.modules.EventRegistry;
 import com.ryderbelserion.fusion.paper.api.modules.ModuleLoader;
 import com.ryderbelserion.fusion.paper.api.structure.StructureRegistry;
 import com.ryderbelserion.fusion.paper.api.enums.Support;
-import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
-import com.ryderbelserion.fusion.paper.files.config.PluginKeys;
+import com.ryderbelserion.fusion.paper.api.PluginKeys;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
@@ -37,53 +28,43 @@ public class FusionPaper extends FusionCore {
         super(logger, dataFolder);
     }
 
-    private boolean isRegistered = false;
+    private final boolean isRegistered = false;
 
-    private HeadDatabaseAPI hdb = null;
-    private LegacyFileManager fileManager = null;
+    private final HeadDatabaseAPI hdb = null;
     private StructureRegistry registry;
     private ModuleLoader loader;
 
     public void enable(@NotNull final Plugin plugin) {
         if (this.isRegistered) return;
 
-        init(ConfigKeys.class, PluginKeys.class);
+        //init(ConfigKeys.class, PluginKeys.class);
 
-        FusionPlugin.setPlugin(plugin);
+        //FusionPlugin.setPlugin(plugin);
 
-        this.registry = new StructureRegistry();
+        //this.registry = new StructureRegistry();
 
-        if (this.fileManager == null) {
-            this.fileManager = new LegacyFileManager();
-        }
+        //if (this.fileManager == null) {
+        //    this.fileManager = new LegacyFileManager();
+        //}
 
-        if (Support.head_database.isEnabled()) {
-            this.hdb = new HeadDatabaseAPI();
-        }
+        //if (Support.head_database.isEnabled()) {
+        //    this.hdb = new HeadDatabaseAPI();
+        //}
 
-        final Server server = plugin.getServer();
-        final PluginManager manager = server.getPluginManager();
+        //final Server server = plugin.getServer();
+        //final PluginManager manager = server.getPluginManager();
 
-        this.loader = new ModuleLoader(new EventRegistry(plugin, server));
+        //this.loader = new ModuleLoader(new EventRegistry(plugin, server));
 
-        manager.registerEvents(new GuiListener(), plugin);
+        //manager.registerEvents(new GuiListener(), plugin);
 
-        this.isRegistered = true;
+        //this.isRegistered = true;
     }
 
     public void bootstrap() {
         if (this.isRegistered) return;
 
-        init(PluginKeys.class, ConfigKeys.class);
-    }
-
-    @Deprecated(since = "0.30.0", forRemoval = true)
-    public @NotNull final LegacyFileManager getLegacyFileManager() {
-        if (this.fileManager == null) {
-            throw new FusionException("An error occurred while trying to get the legacy file manager instance.");
-        }
-
-        return this.fileManager;
+        //init(PluginKeys.class, ConfigKeys.class);
     }
 
     public @NotNull final StructureRegistry getRegistry() {
@@ -96,11 +77,6 @@ public class FusionPaper extends FusionCore {
 
     public @NotNull final ModuleLoader getLoader() {
         return this.loader;
-    }
-
-    @Override
-    public final String chomp(@NotNull final String message) {
-        return StringUtils.chomp(message);
     }
 
     @Override
@@ -129,9 +105,9 @@ public class FusionPaper extends FusionCore {
         String clonedLine = line.replaceAll("\\{", "<").replaceAll("}", ">");
 
         placeholders.forEach((placeholder, value) -> {
-            final TagResolver tag = Placeholder.parsed(placeholder.replaceAll("\\{", "").replaceAll("}", "").replaceAll("<", "").replaceAll(">", "").toLowerCase(), value);
+            //final TagResolver tag = Placeholder.parsed(placeholder.replaceAll("\\{", "").replaceAll("}", "").replaceAll("<", "").replaceAll(">", "").toLowerCase(), value);
 
-            resolvers.add(tag);
+            //resolvers.add(tag);
         });
 
         if (audience instanceof Player player && Support.placeholder_api.isEnabled()) {
@@ -175,6 +151,6 @@ public class FusionPaper extends FusionCore {
 
     @Override
     public @Nullable final HeadDatabaseAPI getHeadDatabaseAPI() {
-        return this.hdb;
+        return null;
     }
 }

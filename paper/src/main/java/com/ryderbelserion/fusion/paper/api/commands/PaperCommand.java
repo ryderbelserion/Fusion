@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.paper.api.commands;
 
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import com.ryderbelserion.fusion.core.api.commands.Command;
+import com.ryderbelserion.fusion.core.commands.Command;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.api.commands.context.PaperCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;

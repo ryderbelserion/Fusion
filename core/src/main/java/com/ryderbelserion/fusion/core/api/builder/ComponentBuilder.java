@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class ComponentBuilder {
 
-    private final FusionCore api = FusionCore.FusionProvider.get();
+    private final FusionCore api = FusionCore.Provider.get();
 
     private final TextComponent.@NotNull Builder builder = Component.text();
     private final Audience target;

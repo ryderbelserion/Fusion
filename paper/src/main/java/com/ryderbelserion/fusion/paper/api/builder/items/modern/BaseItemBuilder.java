@@ -2,8 +2,8 @@ package com.ryderbelserion.fusion.paper.api.builder.items.modern;
 
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builder.ComponentBuilder;
@@ -29,7 +29,6 @@ import io.papermc.paper.datacomponent.item.ItemLore;
 import io.papermc.paper.datacomponent.item.MapItemColor;
 import io.papermc.paper.datacomponent.item.TooltipDisplay;
 import io.th0rgal.oraxen.api.OraxenItems;
-import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -63,7 +62,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     protected final Plugin plugin = FusionPlugin.getPlugin();
 
-    private final FusionCore api = FusionCore.FusionProvider.get();
+    private final FusionCore api = FusionCore.Provider.get();
 
     private Map<String, String> placeholders = new HashMap<>();
 
@@ -613,16 +612,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     public B removePlaceholder(final String placeholder) {
         this.placeholders.remove(placeholder);
-
-        return (B) this;
-    }
-
-    public B withSkull(final String skull) {
-        final HeadDatabaseAPI hdb = this.api.getHeadDatabaseAPI();
-
-        if (skull.isEmpty() || hdb == null) return (B) this;
-
-        this.item = hdb.isHead(skull) ? hdb.getItemHead(skull) : ItemType.PLAYER_HEAD.createItemStack();
 
         return (B) this;
     }

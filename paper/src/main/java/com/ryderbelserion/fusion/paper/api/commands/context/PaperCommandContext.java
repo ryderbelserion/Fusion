@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.commands.context;
 
-import com.ryderbelserion.fusion.core.api.commands.context.CommandContext;
+import com.ryderbelserion.fusion.core.commands.context.CommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

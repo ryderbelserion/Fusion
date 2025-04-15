@@ -2,14 +2,17 @@ package com.ryderbelserion.fusion.paper.api.builder.items.modern.types;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.BaseItemBuilder;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ResolvableProfile;
+import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.profile.PlayerTextures;
+import org.intellij.lang.annotations.Subst;
 import org.jetbrains.annotations.NotNull;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -59,16 +62,15 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         return this;
     }
 
-    @Override
-    public SkullBuilder withBase64(@NotNull final String base64) {
-        if (base64.isEmpty()) return this;
+    public SkullBuilder withSkull(@NotNull final HeadDatabaseAPI api, @NotNull final String skull) {
+        if (skull.isEmpty()) return this;
 
-        this.builder.addProperty(new ProfileProperty("textures", base64));
+        setItemStack(api.isHead(skull) ? api.getItemHead(skull) : ItemType.PLAYER_HEAD.createItemStack());
 
         return this;
     }
 
-    public SkullBuilder withName(@NotNull final String playerName) {
+    public SkullBuilder withName(@Subst("ryderbelserion") @NotNull final String playerName) {
         if (playerName.isEmpty()) return this;
 
         if (playerName.length() > 16) {
@@ -76,6 +78,15 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         }
 
         this.builder.name(playerName);
+
+        return this;
+    }
+
+    @Override
+    public SkullBuilder withBase64(@NotNull final String base64) {
+        if (base64.isEmpty()) return this;
+
+        this.builder.addProperty(new ProfileProperty("textures", base64));
 
         return this;
     }

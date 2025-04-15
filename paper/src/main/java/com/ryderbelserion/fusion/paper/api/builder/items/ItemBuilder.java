@@ -3,8 +3,8 @@ package com.ryderbelserion.fusion.paper.api.builder.items;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.nexomc.nexo.api.NexoItems;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
@@ -80,7 +80,7 @@ import java.util.function.Consumer;
 @Deprecated(since = "0.30.0", forRemoval = true)
 public class ItemBuilder<T extends ItemBuilder<T>> {
 
-    private final FusionCore api = FusionCore.FusionProvider.get();
+    private final FusionCore api = FusionCore.Provider.get();
 
     private final Plugin plugin = FusionPlugin.getPlugin();
 

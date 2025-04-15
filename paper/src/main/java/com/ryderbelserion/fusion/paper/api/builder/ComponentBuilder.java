@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.builder;
 
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class ComponentBuilder {
 
-    private final FusionCore api = FusionCore.FusionProvider.get();
+    private final FusionCore api = FusionCore.Provider.get();
 
     private final Map<ResolverType, List<TagResolver>> resolvers = new HashMap<>();
 
@@ -86,7 +86,12 @@ public class ComponentBuilder {
         final List<TagResolver> resolvers = this.resolvers.getOrDefault(type, new ArrayList<>());
 
         switch (type) {
-            case PLACEHOLDER -> resolvers.add(Placeholder.parsed(key.replaceAll("\\{", "").replaceAll("}", "").replaceAll("<", "").replaceAll(">", ""), value));
+            case PLACEHOLDER -> {
+                final String component = key.replaceAll("\\{", "").replaceAll("}", "");
+                final String tag = component.replaceAll("<", "").replaceAll(">", "");
+
+                resolvers.add(Placeholder.parsed(tag, value));
+            }
 
             case TEXT_COLOR -> {
                 @NotNull final Color color = ColorUtils.getColor(value);

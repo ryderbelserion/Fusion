@@ -1,15 +1,14 @@
 rootProject.name = "fusion"
 
 listOf(
-    "api" to "api",
     "core" to "core",
     "paper" to "paper",
     "fabric" to "fabric",
-    "discord" to "discord",
+    //"discord" to "discord",
 
     "examples/paper" to "example-paper",
     "examples/fabric" to "example-fabric",
-    "examples/discord" to "example-discord"
+    //"examples/discord" to "example-discord"
 ).forEach(::includeProject)
 
 fun includeProject(pair: Pair<String, String>): Unit = includeProject(pair.first, pair.second)

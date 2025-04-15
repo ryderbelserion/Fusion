@@ -9,10 +9,15 @@ repositories {
     maven("https://libraries.minecraft.net")
 }
 
+
 dependencies {
+    compileOnly(libs.configurate.yaml)
+
     compileOnly(libs.bundles.adventure)
 
     compileOnly(libs.brigadier)
 
-    api(project(":fusion-api"))
+    compileOnly(libs.jetbrains)
+
+    api(libs.jalu)
 }

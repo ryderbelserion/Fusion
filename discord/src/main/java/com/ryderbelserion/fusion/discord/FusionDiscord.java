@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.discord;
 
 import ch.qos.logback.classic.Logger;
 import com.ryderbelserion.fusion.api.FusionApi;
-import com.ryderbelserion.fusion.api.configs.keys.ConfigKeys;
+import com.ryderbelserion.fusion.api.managers.configs.keys.ConfigKeys;
 import com.ryderbelserion.fusion.discord.configs.DiscordKeys;
 import com.ryderbelserion.fusion.discord.managers.LoggerManager;
 import net.dv8tion.jda.api.JDA;
