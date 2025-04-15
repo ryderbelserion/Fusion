@@ -1,5 +1,6 @@
 ### Intellij
 .kotlin
+.idea
 !.idea/icon.png
 
 examples/discord/fusion/
