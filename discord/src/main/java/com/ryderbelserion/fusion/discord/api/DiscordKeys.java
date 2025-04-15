@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.discord.configs;
+package com.ryderbelserion.fusion.discord.api;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;

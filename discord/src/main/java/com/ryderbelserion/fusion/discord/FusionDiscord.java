@@ -1,34 +1,26 @@
 package com.ryderbelserion.fusion.discord;
 
-import ch.qos.logback.classic.Logger;
-import com.ryderbelserion.fusion.api.FusionApi;
-import com.ryderbelserion.fusion.api.configs.keys.ConfigKeys;
-import com.ryderbelserion.fusion.discord.configs.DiscordKeys;
-import com.ryderbelserion.fusion.discord.managers.LoggerManager;
+import ch.jalu.configme.configurationdata.ConfigurationDataBuilder;
+import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.ConfigKeys;
+import com.ryderbelserion.fusion.discord.api.DiscordKeys;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.Optional;
 
-public class FusionDiscord extends FusionApi {
+public class FusionDiscord extends FusionCore {
 
-    private final LoggerManager logger;
-    private final Path dataFolder;
+    private JDA jda;
 
-    public FusionDiscord(@NotNull final Path dataFolder, @NotNull final Logger logger) {
-        this.logger = new LoggerManager(logger);
-        this.dataFolder = dataFolder;
-
-        build();
+    public FusionDiscord(@NotNull final ComponentLogger logger, @NotNull final Path dataPath) {
+        super(logger, dataPath);
     }
 
-    private Optional<JDA> jda;
-
-    public void build() {
-        Provider.register(this);
-
-        init(ConfigKeys.class, DiscordKeys.class);
+    public FusionDiscord start() {
+        build(ConfigurationDataBuilder.createConfiguration(ConfigKeys.class, DiscordKeys.class));
 
         final String token = this.config.getProperty(DiscordKeys.token);
 
@@ -37,23 +29,15 @@ public class FusionDiscord extends FusionApi {
         try {
             jda.awaitReady();
         } catch (final InterruptedException exception) {
-            exception.printStackTrace();
+            getLogger().error("Interrupted while waiting for JDA to start", exception);
         }
 
-        this.jda = Optional.of(jda);
+        this.jda = jda;
+
+        return this;
     }
 
     public final Optional<JDA> getJda() {
-        return this.jda;
-    }
-
-    @Override
-    public @NotNull final LoggerManager getLogger() {
-        return this.logger;
-    }
-
-    @Override
-    public @NotNull final Path getDataFolder() {
-        return this.dataFolder;
+        return Optional.ofNullable(this.jda);
     }
 }
