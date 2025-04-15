@@ -7,7 +7,7 @@ plugins {
 }
 
 project.group = "${rootProject.group}.discord"
-project.version = rootProject.version
+project.version = "1.0.0"
 project.description = "An example usage of Fusion for Discord Bots!"
 
 repositories {
@@ -15,9 +15,15 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":fusion-discord"))
+    api(project(":fusion-discord"))
 }
 
 application {
     mainClass.set("com.ryderbelserion.fusion.discord.Starter")
+}
+
+tasks {
+    shadowJar {
+        archiveClassifier.set("")
+    }
 }

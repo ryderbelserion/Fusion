@@ -5,7 +5,7 @@ plugins {
 }
 
 project.group = "${rootProject.group}.fabric"
-project.version = rootProject.version
+project.version = "1.0.0"
 project.description = "An example usage of Fusion for Fabric based servers!"
 
 repositories {

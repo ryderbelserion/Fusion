@@ -5,8 +5,12 @@ plugins {
     id("paper-plugin")
 }
 
+base {
+    archivesName.set("fusion-paper-example")
+}
+
 project.group = "${rootProject.group}.paper"
-project.version = rootProject.version
+project.version = "1.0.0"
 project.description = "An example usage of Fusion for Paper based servers!"
 
 repositories {
@@ -38,5 +42,9 @@ tasks {
         defaultCharacterEncoding = Charsets.UTF_8.name()
 
         minecraftVersion(libs.versions.minecraft.get())
+    }
+
+    shadowJar {
+        archiveClassifier.set("")
     }
 }
