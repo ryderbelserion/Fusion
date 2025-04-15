@@ -589,17 +589,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     public @NotNull T setCustomModelData(final int model) {
         if (model == -1) return (T) this;
 
-        final CustomModelData.Builder data = CustomModelData.customModelData();
-
-        if (this.itemStack.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
-            @Nullable final CustomModelData component = this.itemStack.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
-
-            if (component != null) {
-                data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
-            }
-        }
-
-        this.itemStack.setData(DataComponentTypes.CUSTOM_MODEL_DATA, data.addFloat(model).build());
+        this.itemStack.setData(DataComponentTypes.CUSTOM_MODEL_DATA, populateData().addFloat(model).build());
 
         return (T) this;
     }
@@ -613,15 +603,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             return setCustomModelData(integer.orElse(-1).intValue());
         }
 
-        final CustomModelData.Builder data = CustomModelData.customModelData();
-
-        if (this.itemStack.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
-            @Nullable final CustomModelData component = this.itemStack.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
-
-            if (component != null) {
-                data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
-            }
-        }
+        final CustomModelData.Builder data = populateData();
 
         this.itemStack.setData(DataComponentTypes.CUSTOM_MODEL_DATA, data.addString(model).build());
 
@@ -1282,6 +1264,20 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
     private @Nullable Player getPlayer(@NotNull final UUID uuid) {
         return this.server.getPlayer(uuid);
+    }
+
+    private CustomModelData.Builder populateData() {
+        final CustomModelData.Builder data = CustomModelData.customModelData();
+
+        if (this.itemStack.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
+            @Nullable final CustomModelData component = this.itemStack.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
+
+            if (component != null) {
+                data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
+            }
+        }
+
+        return data;
     }
 
     private void getItemsAdder(final String item) {

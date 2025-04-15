@@ -491,17 +491,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public B setCustomModelData(final int customModelData) {
         if (customModelData == -1) return (B) this;
 
-        final CustomModelData.Builder data = CustomModelData.customModelData();
-
-        if (this.item.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
-            final CustomModelData component = this.item.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
-
-            if (component != null) {
-                data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
-            }
-        }
-
-        this.item.setData(DataComponentTypes.CUSTOM_MODEL_DATA, data.addFloat(customModelData).build());
+        this.item.setData(DataComponentTypes.CUSTOM_MODEL_DATA, populateData().addFloat(customModelData).build());
 
         return (B) this;
     }
@@ -509,15 +499,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public B setCustomModelData(final String customModelData) {
         if (customModelData.isEmpty()) return (B) this;
 
-        final CustomModelData.Builder data = CustomModelData.customModelData();
+        final Optional<Number> integer = StringUtils.tryParseInt(customModelData);
 
-        if (this.item.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
-            final CustomModelData component = this.item.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
-
-            if (component != null) {
-                data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
-            }
+        if (integer.isPresent()) {
+            return setCustomModelData(integer.orElse(-1).intValue());
         }
+
+        final CustomModelData.Builder data = populateData();
 
         this.item.setData(DataComponentTypes.CUSTOM_MODEL_DATA, data.addString(customModelData).build());
 
@@ -848,6 +836,20 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     protected final ItemType getType() {
         return this.itemType;
+    }
+
+    private CustomModelData.Builder populateData() {
+        final CustomModelData.Builder data = CustomModelData.customModelData();
+
+        if (this.item.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
+            @Nullable final CustomModelData component = this.item.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
+
+            if (component != null) {
+                data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
+            }
+        }
+
+        return data;
     }
 
     private void getItemsAdder(final String item) {
