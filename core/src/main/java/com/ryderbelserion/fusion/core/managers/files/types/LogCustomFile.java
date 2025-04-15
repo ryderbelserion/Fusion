@@ -1,19 +1,18 @@
-package com.ryderbelserion.fusion.api.files.types.misc;
+package com.ryderbelserion.fusion.core.managers.files.types;
 
-import com.ryderbelserion.fusion.api.enums.FileType;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.api.files.CustomFile;
-import com.ryderbelserion.fusion.api.utils.FileUtils;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.interfaces.ICustomFile;
+import com.ryderbelserion.fusion.core.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
 
-public class LogCustomFile extends CustomFile<LogCustomFile> {
+public class LogCustomFile extends ICustomFile<LogCustomFile> {
 
-    public LogCustomFile(@NotNull final Path path, final boolean isDynamic) {
-        super(path, isDynamic);
+    public LogCustomFile(@NotNull final Path path, final boolean isStatic) {
+        super(path, isStatic);
     }
 
     @Override
@@ -35,7 +34,7 @@ public class LogCustomFile extends CustomFile<LogCustomFile> {
     @Override
     public final LogCustomFile save() {
         try {
-            FileUtils.compress(getPath(), Optional.empty(), Optional.empty(), true);
+            FileUtils.compress(getPath(), null, "", true);
         } catch (final IOException exception) {
             throw new FusionException("Could not compress file " + getFileName(), exception);
         }
@@ -46,12 +45,7 @@ public class LogCustomFile extends CustomFile<LogCustomFile> {
     }
 
     @Override
-    public final LogCustomFile saveDirectory() {
-        return this;
-    }
-
-    @Override
-    public CustomFile<LogCustomFile> write(@NotNull final String content) {
+    public final LogCustomFile write(@NotNull final String content) {
         FileUtils.write(getPath().toFile(), content);
 
         return this;

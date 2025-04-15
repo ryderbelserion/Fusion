@@ -1,18 +1,16 @@
-package com.ryderbelserion.fusion.api.files;
+package com.ryderbelserion.fusion.core.managers.files;
 
-import ch.jalu.configme.SettingsHolder;
-import ch.jalu.configme.migration.MigrationService;
+import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
-import com.ryderbelserion.fusion.api.FusionApi;
-import com.ryderbelserion.fusion.api.enums.FileType;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.api.interfaces.ILogger;
-import com.ryderbelserion.fusion.api.files.types.JaluCustomFile;
-import com.ryderbelserion.fusion.api.files.types.JsonCustomFile;
-import com.ryderbelserion.fusion.api.files.types.misc.LogCustomFile;
-import com.ryderbelserion.fusion.api.files.types.misc.NbtCustomFile;
-import com.ryderbelserion.fusion.api.files.types.YamlCustomFile;
-import com.ryderbelserion.fusion.api.utils.FileUtils;
+import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.interfaces.ICustomFile;
+import com.ryderbelserion.fusion.core.managers.files.types.JaluCustomFile;
+import com.ryderbelserion.fusion.core.managers.files.types.LogCustomFile;
+import com.ryderbelserion.fusion.core.managers.files.types.YamlCustomFile;
+import com.ryderbelserion.fusion.core.utils.FileUtils;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationOptions;
@@ -23,37 +21,36 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 public class FileManager { // note: no longer strip file names, so it's stored as config.yml or crates.log
 
-    private final FusionApi api = FusionApi.Provider.get();
+    private final FusionCore api = FusionCore.Provider.get();
 
-    private final ILogger logger = this.api.getLogger();
+    private final ComponentLogger logger = this.api.getLogger();
 
     private final boolean isVerbose = this.api.isVerbose();
 
-    private final Path dataFolder = this.api.getDataFolder();
+    private final Path dataFolder = this.api.getDataPath();
 
-    private final int depth = this.api.getDepth();
+    private final int depth = this.api.getRecursionDepth();
 
     private final Map<String, FileType> fileMap = Map.of(
             ".yml", FileType.YAML,
-            ".json", FileType.JSON,
-            ".nbt", FileType.NBT,
+            //".json", FileType.JSON,
             ".log", FileType.LOG
     );
 
     // folder -> file name -> associated custom file
     // this can also be used to replace files above, which means we use getFile#getPath()
-    private final Map<Path, CustomFile<? extends CustomFile<?>>> customFiles = new HashMap<>();
+    private final Map<Path, ICustomFile<? extends ICustomFile<?>>> customFiles = new HashMap<>();
     private final Map<Path, FileType> folders = new HashMap<>(); // stores the folder and it's file type
 
     public final FileManager init(final boolean isReload, final boolean isExtract) {
         this.dataFolder.toFile().mkdirs();
-        
-        this.folders.forEach((folder, type) -> addFolder(folder, type, Optional.empty(), isReload, isExtract)); // add new files
+
+        this.folders.forEach((folder, type) -> addFolder(folder, type, null, isReload, isExtract)); // add new files
 
         return this;
     }
@@ -62,7 +59,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         return init(isReload, true);
     }
 
-    public final FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Optional<UnaryOperator<ConfigurationOptions>> options, final boolean isReload, final boolean isExtract) {
+    public FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @Nullable final UnaryOperator<ConfigurationOptions> options, final boolean isReload, final boolean isExtract) {
         this.folders.putIfAbsent(folder, fileType);
 
         extractFolder(folder, false, isExtract);
@@ -70,13 +67,13 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         final List<Path> files = FileUtils.getFiles(folder, fileType.getExtension(), this.depth);
 
         for (final Path path : files) {
-            addFile(path, options, true, isReload, isExtract);
+            addFile(path, options, false, isReload, isExtract);
         }
 
         return this;
     }
 
-    public final FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Optional<UnaryOperator<ConfigurationOptions>> options, final boolean isReload) {
+    public FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @Nullable final UnaryOperator<ConfigurationOptions> options, final boolean isReload) {
         return addFolder(folder, fileType, options, isReload, true);
     }
 
@@ -87,8 +84,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     }
 
     // extraction is required, but this sets up configme for folders
-    @SafeVarargs
-    public final FileManager addFolder(@NotNull final Path folder, @NotNull final Optional<MigrationService> service, @NotNull final Optional<YamlFileResourceOptions> options, final boolean isReload, final boolean isDynamic, @NotNull final Class<? extends SettingsHolder>... holders) {
+    public FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder, @Nullable final YamlFileResourceOptions options, final boolean isReload, final boolean isStatic) {
         this.folders.putIfAbsent(folder, FileType.YAML);
 
         extractFolder(folder, false, true);
@@ -96,16 +92,15 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         final List<Path> files = FileUtils.getFiles(this.dataFolder.resolve(folder), ".yml", this.depth);
 
         for (final Path path : files) {
-            addFile(path, service, options, isReload, isDynamic, holders);
+            addFile(path, builder, options, isReload, isStatic);
         }
 
         return this;
     }
 
     // no extraction required as this is only for ConfigMe
-    @SafeVarargs
-    public final FileManager addFile(@NotNull final Path path, @NotNull final Optional<MigrationService> service, @NotNull final Optional<YamlFileResourceOptions> options, final boolean isReload, final boolean isDynamic, @NotNull final Class<? extends SettingsHolder>... holders) {
-        final CustomFile<? extends CustomFile<?>> file = this.customFiles.getOrDefault(path, null);
+    public FileManager addFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, @Nullable final YamlFileResourceOptions options, final boolean isReload, final boolean isStatic) {
+        final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
         if (file != null && !isReload) {
             file.load();
@@ -113,10 +108,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             return this;
         }
 
-        final JaluCustomFile jalu = new JaluCustomFile(path, isDynamic, holders);
-
-        service.ifPresent(jalu::setService);
-        options.ifPresent(jalu::setOptions);
+        final JaluCustomFile jalu = new JaluCustomFile(path, builder, options, isStatic);
 
         // only add to map if absent
         this.customFiles.putIfAbsent(path, jalu.build());
@@ -124,7 +116,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         return this;
     }
 
-    public FileManager addFile(@NotNull final Path path, @NotNull final Optional<UnaryOperator<ConfigurationOptions>> options, final boolean isDynamic, final boolean isReload, final boolean isExtract) {
+    public FileManager addFile(@NotNull final Path path, @Nullable final UnaryOperator<ConfigurationOptions> options, final boolean isStatic, final boolean isReload, final boolean isExtract) {
         final String fileName = path.getFileName().toString();
 
         if (isExtract && !Files.exists(path)) {
@@ -133,7 +125,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
         final FileType fileType = detectFileType(fileName);
 
-        final CustomFile<? extends CustomFile<?>> file = this.customFiles.getOrDefault(path, null);
+        final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
         if (file != null && !isReload) {
             file.load();
@@ -142,13 +134,9 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         }
 
         switch (fileType) {
-            case YAML -> this.customFiles.putIfAbsent(path, new YamlCustomFile(path, isDynamic, options).load());
+            case YAML -> this.customFiles.putIfAbsent(path, new YamlCustomFile(path, options, isStatic).load());
 
-            case JSON -> this.customFiles.putIfAbsent(path, new JsonCustomFile(path, isDynamic, options).load());
-
-            case NBT -> this.customFiles.putIfAbsent(path, new NbtCustomFile(path, isDynamic));
-
-            case LOG -> this.customFiles.putIfAbsent(path, new LogCustomFile(path, isDynamic));
+            case LOG -> this.customFiles.putIfAbsent(path, new LogCustomFile(path, isStatic));
 
             case NONE -> {}
         }
@@ -156,16 +144,16 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         return this;
     }
 
-    public final FileManager addFile(@NotNull final Path path, @NotNull final Optional<UnaryOperator<ConfigurationOptions>> options) {
+    public final FileManager addFile(@NotNull final Path path, @Nullable final UnaryOperator<ConfigurationOptions> options) {
         return addFile(path, options, false, false, true);
     }
 
     public final FileManager addFile(@NotNull final Path path) {
-        return addFile(path, Optional.empty());
+        return addFile(path, null);
     }
 
     public final FileManager saveFile(@NotNull final Path path) {
-        final CustomFile<? extends CustomFile<?>> file = this.customFiles.getOrDefault(path, null);
+        final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
         if (file == null) {
             return this;
@@ -194,7 +182,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
             throw new FusionException("The file " + fileName + " is not a log file.");
         }
 
-        final CustomFile<? extends CustomFile<?>> file = this.customFiles.getOrDefault(path, null);
+        final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
         if (file == null) {
             if (this.isVerbose) {
@@ -211,7 +199,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
     // removes a file with an option to delete
     public final FileManager removeFile(@NotNull final Path path, final boolean purge) {
-        final CustomFile<? extends CustomFile<?>> file = this.customFiles.get(path);
+        final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.get(path);
 
         if (purge) {
             file.delete();
@@ -226,7 +214,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         return this;
     }
 
-    public final FileManager removeFile(@NotNull final CustomFile<? extends CustomFile<?>> customFile, final boolean purge) {
+    public final FileManager removeFile(@NotNull final ICustomFile<? extends ICustomFile<?>> customFile, final boolean purge) {
         return removeFile(customFile.getPath(), purge);
     }
 
@@ -265,7 +253,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     }
 
     // Extracts a resource to a specific path.
-    public final FileManager extractResource(@NotNull final String path, @NotNull final String output, boolean purge) {
+    public final FileManager extractResource(@NotNull final String path, @NotNull final String output, final boolean purge) {
         FileUtils.extract(path, this.dataFolder.resolve(output), purge);
 
         return this;
@@ -278,15 +266,15 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         return this;
     }
 
-    private FileManager refresh(boolean toggle) { // save or reload all files
+    private FileManager refresh(final boolean toggle) { // save or reload all files
         if (this.customFiles.isEmpty()) return this;
 
         // folder -> file object
         // we search hashmap by the folder, fetch hashmap of folder, remove file from hashmap of folder and then re-set the hashmap
         final List<Path> brokenFiles = new ArrayList<>();
 
-        for (Map.Entry<Path, CustomFile<? extends CustomFile<?>>> file : this.customFiles.entrySet()) {
-            final CustomFile<? extends CustomFile<?>> value = file.getValue();
+        for (Map.Entry<Path, ICustomFile<? extends ICustomFile<?>>> file : this.customFiles.entrySet()) {
+            final ICustomFile<? extends ICustomFile<?>> value = file.getValue();
 
             if (value == null) {
                 continue;
@@ -318,27 +306,23 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         return this.fileMap.entrySet().stream().filter(entry -> fileName.endsWith(entry.getKey())).map(Map.Entry::getValue).findFirst().orElse(FileType.NONE);
     }
 
-    public @Nullable final CustomFile<? extends CustomFile<?>> getCustomFile(@NotNull final Path path) {
+    public @Nullable final ICustomFile<? extends ICustomFile<?>> getCustomFile(@NotNull final Path path) {
         return getCustomFiles().getOrDefault(path, null);
     }
 
-    public @Nullable final YamlCustomFile getYamlFile(final Path path) {
+    public @Nullable final YamlCustomFile getYamlFile(@NotNull final Path path) {
         return (YamlCustomFile) getCustomFile(path);
     }
 
-    public @Nullable final JsonCustomFile getJsonFile(final Path path) {
-        return (JsonCustomFile) getCustomFile(path);
-    }
-
-    public @Nullable final JaluCustomFile getJaluFile(final Path path) {
+    public @Nullable final JaluCustomFile getJaluFile(@NotNull final Path path) {
         return (JaluCustomFile) getCustomFile(path);
     }
 
-    public @Nullable final LogCustomFile getLogFile(final Path path) {
+    public @Nullable final LogCustomFile getLogFile(@NotNull final Path path) {
         return (LogCustomFile) getCustomFile(path);
     }
 
-    public Map<Path, CustomFile<? extends CustomFile<?>>> getCustomFiles() {
+    public @NotNull final Map<Path, ICustomFile<? extends ICustomFile<?>>> getCustomFiles() {
         return Collections.unmodifiableMap(this.customFiles);
     }
 }

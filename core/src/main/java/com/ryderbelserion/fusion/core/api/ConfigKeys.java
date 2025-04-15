@@ -1,9 +1,10 @@
-package com.ryderbelserion.fusion.api.configs.keys;
+package com.ryderbelserion.fusion.core.api;
 
 import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
+
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
 public class ConfigKeys implements SettingsHolder {
@@ -27,7 +28,7 @@ public class ConfigKeys implements SettingsHolder {
             "",
             "Available types: up, down, ceiling, floor, half_up, half_down, half_even, unnecessary"
     })
-    public static final Property<String> rounding = newProperty("settings.rounding", "half_even");
+    public static final Property<String> rounding_format = newProperty("settings.rounding", "half_even");
 
     @Comment({
             "This config option decides how deep to search through a given folder.",

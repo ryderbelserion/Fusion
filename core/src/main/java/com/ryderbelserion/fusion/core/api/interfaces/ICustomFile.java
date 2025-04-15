@@ -1,9 +1,9 @@
-package com.ryderbelserion.fusion.api.files;
+package com.ryderbelserion.fusion.core.api.interfaces;
 
-import com.ryderbelserion.fusion.api.FusionApi;
-import com.ryderbelserion.fusion.api.enums.FileType;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.api.interfaces.ILogger;
+import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -14,39 +14,39 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class CustomFile<T extends CustomFile<T>> {
+public abstract class ICustomFile<T extends ICustomFile<T>> {
 
-    private final FusionApi api = FusionApi.Provider.get();
+    protected final FusionCore api = FusionCore.Provider.get();
 
-    protected final ILogger logger = this.api.getLogger();
+    protected final ComponentLogger logger = this.api.getLogger();
 
     protected final boolean isVerbose = this.api.isVerbose();
 
-    private final boolean isDynamic;
+    private final boolean isStatic;
     private final Path path;
 
-    public CustomFile(@NotNull final Path path, boolean isDynamic) {
-        this.isDynamic = isDynamic;
+    public ICustomFile(@NotNull final Path path, boolean isStatic) {
+        this.isStatic = isStatic;
         this.path = path;
     }
 
-    public CustomFile(@NotNull final Path path) {
+    public ICustomFile(@NotNull final Path path) {
         this(path, false);
     }
 
-    public CustomFile<T> build() {
+    public ICustomFile<T> build() {
         return this;
     }
 
-    public abstract CustomFile<T> load();
+    public abstract ICustomFile<T> load();
 
-    public abstract CustomFile<T> save();
+    public abstract ICustomFile<T> save();
 
-    public CustomFile<T> saveDirectory() {
+    public ICustomFile<T> saveDirectory() {
         return save();
     }
 
-    public CustomFile<T> write(@NotNull final String content) {
+    public ICustomFile<T> write(@NotNull final String content) {
         if (getType() != FileType.LOG) {
             throw new FusionException("This file is not a log file");
         }
@@ -54,75 +54,75 @@ public abstract class CustomFile<T extends CustomFile<T>> {
         return this;
     }
 
-    public String getStringValueWithDefault(final String defaultValue, final Object... path) {
+    public String getStringValueWithDefault(@NotNull final String defaultValue, @NotNull final Object... path) {
         return switch (getType()) {
-            case JSON -> getBasicConfigurationNode().node(path).getString(defaultValue);
+            //case JSON -> getBasicConfigurationNode().node(path).getString(defaultValue);
             case YAML -> getConfigurationNode().node(path).getString(defaultValue);
             default -> throw new IllegalStateException("Unexpected value: " + getType());
         };
     }
 
-    public String getStringValue(final Object... path) {
+    public String getStringValue(@NotNull final Object... path) {
         return getStringValueWithDefault("", path);
     }
 
-    public boolean getBooleanValueWithDefault(final boolean defaultValue, final Object... path) {
+    public boolean getBooleanValueWithDefault(final boolean defaultValue, @NotNull final Object... path) {
         return switch (getType()) {
-            case JSON -> getBasicConfigurationNode().node(path).getBoolean(defaultValue);
+            //case JSON -> getBasicConfigurationNode().node(path).getBoolean(defaultValue);
             case YAML -> getConfigurationNode().node(path).getBoolean(defaultValue);
             default -> throw new IllegalStateException("Unexpected value: " + getType());
         };
     }
 
-    public boolean getBooleanValue(final Object... path) {
+    public boolean getBooleanValue(@NotNull final Object... path) {
         return getBooleanValueWithDefault(false, path);
     }
 
-    public double getDoubleValueWithDefault(final double defaultValue, final Object... path) {
+    public double getDoubleValueWithDefault(final double defaultValue, @NotNull final Object... path) {
         return switch (getType()) {
-            case JSON -> getBasicConfigurationNode().node(path).getDouble(defaultValue);
+            //case JSON -> getBasicConfigurationNode().node(path).getDouble(defaultValue);
             case YAML -> getConfigurationNode().node(path).getDouble(defaultValue);
             default -> throw new IllegalStateException("Unexpected value: " + getType());
         };
     }
 
-    public double getDoubleValue(final Object... path) {
+    public double getDoubleValue(@NotNull final Object... path) {
         return getDoubleValueWithDefault(0.0, path);
     }
 
-    public long getLongValueWithDefault(final long defaultValue, final Object... path) {
+    public long getLongValueWithDefault(final long defaultValue, @NotNull final Object... path) {
         return switch (getType()) {
-            case JSON -> getBasicConfigurationNode().node(path).getLong(defaultValue);
+            //case JSON -> getBasicConfigurationNode().node(path).getLong(defaultValue);
             case YAML -> getConfigurationNode().node(path).getLong(defaultValue);
             default -> throw new IllegalStateException("Unexpected value: " + getType());
         };
     }
 
-    public long getLongValue(final Object... path) {
+    public long getLongValue(@NotNull final Object... path) {
         return getLongValueWithDefault(0L, path);
     }
 
-    public int getIntValueWithDefault(final int defaultValue, final Object... path) {
+    public int getIntValueWithDefault(final int defaultValue, @NotNull final Object... path) {
         return switch (getType()) {
-            case JSON -> getBasicConfigurationNode().node(path).getInt(defaultValue);
+            //case JSON -> getBasicConfigurationNode().node(path).getInt(defaultValue);
             case YAML -> getConfigurationNode().node(path).getInt(defaultValue);
             default -> throw new IllegalStateException("Unexpected value: " + getType());
         };
     }
 
-    public int getIntValue(final Object... path) {
+    public int getIntValue(@NotNull final Object... path) {
         return getIntValueWithDefault(0, path);
     }
 
-    public List<String> getStringList(final Object... path) {
+    public List<String> getStringList(@NotNull final Object... path) {
         return switch (getType()) {
-            case JSON -> {
+            /*case JSON -> {
                 try {
                     yield getBasicConfigurationNode().node(path).getList(String.class);
                 } catch (SerializationException exception) {
                     throw new FusionException("Failed to serialize " + Arrays.toString(path), exception);
                 }
-            }
+            }*/
 
             case YAML -> {
                 try {
@@ -144,7 +144,7 @@ public abstract class CustomFile<T extends CustomFile<T>> {
         return null;
     }
 
-    public CustomFile<T> delete() {
+    public ICustomFile<T> delete() {
         try {
             Files.deleteIfExists(getPath());
 
@@ -152,13 +152,13 @@ public abstract class CustomFile<T extends CustomFile<T>> {
                 this.logger.warn("Successfully deleted {}", getFileName());
             }
         } catch (final IOException exception) {
-            exception.printStackTrace();
+            this.logger.warn("Failed to delete {}: {}", getPath(), exception);
         }
 
         return this;
     }
 
-    public CustomFile<T> getInstance() {
+    public ICustomFile<T> getInstance() {
         return this;
     }
 
@@ -170,8 +170,8 @@ public abstract class CustomFile<T extends CustomFile<T>> {
         return this.path.getFileName().toString();
     }
 
-    public boolean isDynamic() {
-        return this.isDynamic;
+    public boolean isStatic() {
+        return this.isStatic;
     }
 
     public boolean isLoaded() {

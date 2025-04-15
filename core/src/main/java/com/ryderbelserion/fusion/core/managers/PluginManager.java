@@ -1,8 +1,8 @@
-package com.ryderbelserion.fusion.core.api.managers;
+package com.ryderbelserion.fusion.core.managers;
 
-import com.ryderbelserion.fusion.api.FusionApi;
-import com.ryderbelserion.fusion.api.interfaces.ILogger;
+import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.interfaces.IPlugin;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
@@ -11,9 +11,9 @@ import java.util.Map;
 
 public class PluginManager {
 
-    private static final FusionApi api = FusionApi.Provider.get();
+    private static final FusionCore api = FusionCore.Provider.get();
 
-    private static final ILogger logger = api.getLogger();
+    private static final ComponentLogger logger = api.getLogger();
 
     private static final boolean isVerbose = api.isVerbose();
 

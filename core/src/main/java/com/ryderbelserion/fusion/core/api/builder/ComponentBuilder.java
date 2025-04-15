@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class ComponentBuilder {
 
-    private final FusionCore api = FusionCore.FusionProvider.get();
+    private final FusionCore api = FusionCore.Provider.get();
 
     private final TextComponent.@NotNull Builder builder = Component.text();
     private final Audience target;
@@ -23,13 +23,13 @@ public class ComponentBuilder {
         this.target = target;
     }
 
-    public @NotNull ComponentBuilder append(@NotNull final Component component) {
+    public @NotNull final ComponentBuilder append(@NotNull final Component component) {
         this.builder.append(component);
 
         return this;
     }
 
-    public @NotNull ComponentBuilder addHoverEvent(@NotNull final String text) {
+    public @NotNull final ComponentBuilder addHoverEvent(@NotNull final String text) {
         if (!text.isEmpty()) {
             this.builder.hoverEvent(HoverEvent.showText(AdvUtils.parse(text)));
         }
@@ -37,7 +37,7 @@ public class ComponentBuilder {
         return this;
     }
 
-    public @NotNull ComponentBuilder addClickEvent(@Nullable final ClickEvent.Action action, @NotNull final String text) {
+    public @NotNull final ComponentBuilder addClickEvent(@Nullable final ClickEvent.Action action, @NotNull final String text) {
         if (action != null && !text.isEmpty()) {
             this.builder.clickEvent(ClickEvent.clickEvent(action, text));
         }
@@ -45,7 +45,7 @@ public class ComponentBuilder {
         return this;
     }
 
-    public @NotNull TextComponent build() {
+    public @NotNull final TextComponent build() {
         if (this.value.isEmpty()) {
             return Component.empty();
         }
@@ -54,7 +54,7 @@ public class ComponentBuilder {
     }
 
     public void send() {
-        final Component component = build();
+        @NotNull final Component component = build();
 
         if (!component.equals(Component.empty())) {
             this.target.sendMessage(component);
@@ -71,7 +71,7 @@ public class ComponentBuilder {
         }
     }
 
-    public @NotNull String getValue() {
+    public @NotNull final String getValue() {
         return this.value;
     }
 }

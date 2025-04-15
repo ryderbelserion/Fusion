@@ -1,35 +1,37 @@
-package com.ryderbelserion.fusion.api.files.types;
+package com.ryderbelserion.fusion.core.managers.files.types;
 
-import com.ryderbelserion.fusion.api.enums.FileType;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.api.files.CustomFile;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.interfaces.ICustomFile;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.nio.file.Path;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
 
-public class YamlCustomFile extends CustomFile<YamlCustomFile> {
+public class YamlCustomFile extends ICustomFile<YamlCustomFile> {
 
     private CommentedConfigurationNode configurationNode;
     private final YamlConfigurationLoader loader;
 
-    public YamlCustomFile(@NotNull final Path path, final boolean isDynamic, final Optional<UnaryOperator<ConfigurationOptions>> options) {
-        super(path, isDynamic);
+    public YamlCustomFile(@NotNull final Path path, @Nullable final UnaryOperator<ConfigurationOptions> options, final boolean isStatic) {
+        super(path, isStatic);
 
         final YamlConfigurationLoader.Builder builder = YamlConfigurationLoader.builder();
 
-        options.ifPresent(builder::defaultOptions);
+        if (options != null) {
+            builder.defaultOptions(options);
+        }
 
         this.loader = builder.indent(2).path(path).build();
     }
 
-    public YamlCustomFile(@NotNull final Path path, final boolean isDynamic) {
-        this(path, isDynamic, Optional.empty());
+    public YamlCustomFile(@NotNull final Path path, final boolean isStatic) {
+        this(path, null, isStatic);
     }
 
     @Override
@@ -65,7 +67,7 @@ public class YamlCustomFile extends CustomFile<YamlCustomFile> {
 
         if (this.configurationNode == null) {
             if (this.isVerbose) {
-                this.logger.severe("Configuration is null, cannot save {}!", getFileName());
+                this.logger.error("Configuration is null, cannot save {}!", getFileName());
             }
 
             return this;

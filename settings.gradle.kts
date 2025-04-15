@@ -1,7 +1,6 @@
 rootProject.name = "fusion"
 
 listOf(
-    "api" to "api",
     "core" to "core",
     "paper" to "paper",
     "fabric" to "fabric",

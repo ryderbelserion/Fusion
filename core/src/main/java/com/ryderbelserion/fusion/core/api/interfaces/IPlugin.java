@@ -13,7 +13,7 @@ public interface IPlugin {
         return "";
     }
 
-    default IPlugin init() {
+    default @NotNull IPlugin init() {
         return this;
     }
 

@@ -1,9 +1,10 @@
-package com.ryderbelserion.fusion.api.utils;
+package com.ryderbelserion.fusion.core.utils;
 
-import com.ryderbelserion.fusion.api.FusionApi;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.api.interfaces.ILogger;
+import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -21,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -31,18 +31,18 @@ import java.util.zip.ZipOutputStream;
 
 public class FileUtils {
 
-    private static final FusionApi api = FusionApi.Provider.get();
+    private static final FusionCore api = FusionCore.Provider.get();
 
-    private static final Path dataFolder = api.getDataFolder();
+    private static final Path dataFolder = api.getDataPath();
 
-    private static final ILogger logger = api.getLogger();
+    private static final ComponentLogger logger = api.getLogger();
 
     public static void extract(@NotNull final String input, @NotNull final Path output, final boolean purge) {
         if (!Files.exists(output)) { // create directory if it does not exist.
             try {
                 Files.createDirectory(output);
             } catch (final IOException exception) {
-                logger.warn("Could not create directory: " + output, exception);
+                logger.warn("Could not create directory: {}", output, exception);
             }
         }
 
@@ -59,7 +59,7 @@ public class FileUtils {
                     }
 
                     @Override
-                    public @NotNull FileVisitResult postVisitDirectory(@NotNull Path directory, IOException exception) throws IOException {
+                    public @NotNull FileVisitResult postVisitDirectory(@NotNull final Path directory, final IOException exception) throws IOException {
                         Files.delete(directory);
 
                         return FileVisitResult.CONTINUE;
@@ -78,7 +78,7 @@ public class FileUtils {
 
         final Set<String> processedFiles = new HashSet<>();
 
-        try (final JarFile jar = new JarFile(Path.of(FusionApi.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
+        try (final JarFile jar = new JarFile(Path.of(FusionCore.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
             final Enumeration<JarEntry> entries = jar.entries();
 
             while (entries.hasMoreElements()) {
@@ -122,13 +122,13 @@ public class FileUtils {
 
                 processedFiles.add(entryName);
             }
-        } catch (URISyntaxException | IOException exception) {
+        } catch (final URISyntaxException | IOException exception) {
             throw new FusionException(String.format("Failed to extract %s", input), exception);
         }
     }
 
-    public static List<String> getNamesByExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
-        final List<Path> files = getFiles(folder.map(path::resolve).orElse(path), extension, depth);
+    public static List<String> getNamesByExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
+        final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), extension, depth);
 
         final List<String> names = new ArrayList<>();
 
@@ -145,12 +145,12 @@ public class FileUtils {
         return names;
     }
 
-    public static List<String> getNamesByExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension) {
-        return getNamesByExtension(folder, path, extension, api.getDepth());
+    public static List<String> getNamesByExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension) {
+        return getNamesByExtension(folder, path, extension, api.getRecursionDepth());
     }
 
-    public static List<String> getNamesWithoutExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
-        final List<Path> files = getFiles(folder.map(path::resolve).orElse(path), extension, depth);
+    public static List<String> getNamesWithoutExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
+        final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), extension, depth);
 
         final List<String> names = new ArrayList<>();
 
@@ -167,8 +167,8 @@ public class FileUtils {
         return names;
     }
 
-    public static List<String> getNamesWithoutExtension(@NotNull final Optional<String> folder, @NotNull final Path path, @NotNull final String extension) {
-        return getNamesWithoutExtension(folder, path, extension, api.getDepth());
+    public static List<String> getNamesWithoutExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension) {
+        return getNamesWithoutExtension(folder, path, extension, api.getRecursionDepth());
     }
 
     public static List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth) {
@@ -189,19 +189,19 @@ public class FileUtils {
                     }
                 });
             } catch (final IOException exception) {
-                exception.printStackTrace();
+                logger.warn("Failed to get list of files.", exception);
             }
         }
 
         return files;
     }
 
-    public static List<Path> getFiles(@NotNull final Optional<String> folder, @NotNull final Path path, final String extension) {
-        return getFiles(folder.map(path::resolve).orElse(path), extension, api.getDepth());
+    public static List<Path> getFiles(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension) {
+        return getFiles(folder.isEmpty() ? path : path.resolve(folder), extension, api.getRecursionDepth());
     }
 
-    public static List<Path> getFiles(@NotNull final Path path, final String extension) {
-        return getFiles(path, extension, api.getDepth());
+    public static List<Path> getFiles(@NotNull final Path path, @NotNull final String extension) {
+        return getFiles(path, extension, api.getRecursionDepth());
     }
 
     public static void write(@NotNull final File input, @NotNull final String format) {
@@ -214,13 +214,13 @@ public class FileUtils {
         }
     }
 
-    public static void compress(@NotNull final List<Path> paths, @NotNull final Optional<Path> directory, @NotNull final Optional<String> content, final boolean purge) throws IOException {
+    public static void compress(@NotNull final List<Path> paths, @NotNull final Path directory, @NotNull final String content, final boolean purge) throws IOException {
         for (final Path path : paths) {
             compress(path, directory, content, purge);
         }
     }
 
-    public static void compress(@NotNull final Path path, @NotNull final Optional<Path> directory, @NotNull final Optional<String> content, final boolean purge) throws IOException {
+    public static void compress(@NotNull final Path path, @Nullable final Path directory, @NotNull final String content, final boolean purge) throws IOException {
         if (!Files.exists(path)) {
             return;
         }
@@ -229,11 +229,13 @@ public class FileUtils {
 
         builder.append(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        content.ifPresent(builder::append);
+        if (!content.isEmpty()) {
+            builder.append(content);
+        }
 
         builder.append(".gz");
 
-        final Path file = directory.orElse(dataFolder).resolve(builder.toString());
+        final Path file = directory == null ? dataFolder : directory.resolve(builder.toString());
 
         if (Files.isDirectory(path)) {
             try (final ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(file)); final Stream<Path> values = Files.walk(path)) {

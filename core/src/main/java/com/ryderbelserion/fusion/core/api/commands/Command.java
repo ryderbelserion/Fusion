@@ -21,22 +21,22 @@ public abstract class Command<S, I extends CommandContext<S>> {
 
     public abstract @NotNull Command<S, I> registerPermission();
 
-    public abstract @NotNull CompletableFuture<Suggestions> suggestStringArgument(final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip);
+    public abstract @NotNull CompletableFuture<Suggestions> suggestStringArgument(@NotNull final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip);
 
-    public abstract @NotNull CompletableFuture<Suggestions> suggestStringArgument(final SuggestionsBuilder builder, @NotNull final String tooltip);
+    public abstract @NotNull CompletableFuture<Suggestions> suggestStringArgument(@NotNull final SuggestionsBuilder builder, @NotNull final String tooltip);
 
-    public abstract @NotNull CompletableFuture<Suggestions> suggestStringArgument(final SuggestionsBuilder builder);
+    public abstract @NotNull CompletableFuture<Suggestions> suggestStringArgument(@NotNull final SuggestionsBuilder builder);
 
-    public abstract @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip);
+    public abstract @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(@NotNull final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip);
 
-    public abstract @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(final SuggestionsBuilder builder, @NotNull final String tooltip);
+    public abstract @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(@NotNull final SuggestionsBuilder builder, @NotNull final String tooltip);
 
-    public abstract @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(final SuggestionsBuilder builder);
+    public abstract @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(@NotNull final SuggestionsBuilder builder);
 
-    public abstract @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip);
+    public abstract @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(@NotNull final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip);
 
-    public abstract @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(final SuggestionsBuilder builder, @NotNull final String tooltip);
+    public abstract @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(@NotNull final SuggestionsBuilder builder, @NotNull final String tooltip);
 
-    public abstract @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(final SuggestionsBuilder builder);
+    public abstract @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(@NotNull final SuggestionsBuilder builder);
 
 }

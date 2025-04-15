@@ -1,4 +1,6 @@
-package com.ryderbelserion.fusion.api.enums;
+package com.ryderbelserion.fusion.core.api.enums;
+
+import org.jetbrains.annotations.NotNull;
 
 public enum FileType {
 
@@ -6,7 +8,7 @@ public enum FileType {
 
     JALU(".jalu"),
 
-    JSON(".json"),
+    //JSON(".json"),
 
     NONE("none"),
 
@@ -16,11 +18,11 @@ public enum FileType {
 
     private final String extension;
 
-    FileType(final String extension) {
+    FileType(@NotNull final String extension) {
         this.extension = extension;
     }
 
-    public String getExtension() {
+    public @NotNull final String getExtension() {
         return this.extension;
     }
 }
