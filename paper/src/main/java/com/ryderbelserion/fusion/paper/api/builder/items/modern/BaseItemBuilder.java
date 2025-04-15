@@ -219,11 +219,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public B withType(@NotNull final String key) {
         if (key.isEmpty()) return (B) this;
 
-        withCustomItem(key);
+        // Don't override the provided material but copy it instead.
+        String type = key;
 
         if (key.contains(":")) {
             final String[] sections = key.split(":");
 
+            type = sections[0];
             String data = sections[1];
 
             if (data.contains("#")) {
@@ -251,12 +253,15 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             }
         } else if (key.contains("#")) {
             final String[] sections = key.split("#");
+            type = sections[0];
             final String model = sections[1];
 
             final Optional<Number> customModelData = StringUtils.tryParseInt(model);
 
             customModelData.ifPresent(number -> setCustomModelData(number.intValue()));
         }
+
+        withCustomItem(type);
 
         return (B) this;
     }
@@ -842,7 +847,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         final CustomModelData.Builder data = CustomModelData.customModelData();
 
         if (this.item.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
-            @Nullable final CustomModelData component = this.item.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
+            final CustomModelData component = this.item.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
 
             if (component != null) {
                 data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
