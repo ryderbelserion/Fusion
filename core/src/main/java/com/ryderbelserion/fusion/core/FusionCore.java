@@ -30,7 +30,13 @@ public abstract class FusionCore {
         this.dataPath = dataPath;
         this.logger = logger;
 
-        build(consumer, options);
+        final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(this.dataPath.resolve("fusion.yml"), options);
+
+        builder.useDefaultMigrationService();
+
+        consumer.accept(builder); // overrides the default migration service if set in the consumer.
+
+        this.config = builder.create();
 
         this.fileManager = new FileManager();
     }
@@ -41,24 +47,6 @@ public abstract class FusionCore {
 
     public FusionCore(@NotNull ComponentLogger logger, @NotNull Path dataPath) {
         this(consumer -> consumer.configurationData(ConfigKeys.class), YamlFileResourceOptions.builder().indentationSize(2).build(), logger, dataPath);
-    }
-
-    public void build(@NotNull final Consumer<SettingsManagerBuilder> consumer, @NotNull final YamlFileResourceOptions options) {
-        final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(this.dataPath.resolve("fusion.yml"), options);
-
-        consumer.accept(builder);
-
-        this.config = builder.create();
-
-        this.fileManager = new FileManager();
-    }
-
-    public void build(@NotNull final YamlFileResourceOptions options) {
-        build(consumer -> consumer.configurationData(ConfigKeys.class), options);
-    }
-
-    public void build() {
-        build(consumer -> consumer.configurationData(ConfigKeys.class), YamlFileResourceOptions.builder().indentationSize(2).build());
     }
 
     public @NotNull Component placeholders(@Nullable final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders, @Nullable final List<TagResolver> tags) {

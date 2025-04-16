@@ -26,13 +26,13 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":fusion-paper"))
-
     implementation(libs.triumph.cmds)
 
     compileOnly(libs.bundles.shared) {
         exclude("org.bukkit", "*")
     }
+
+    api(project(":fusion-paper"))
 }
 
 tasks {

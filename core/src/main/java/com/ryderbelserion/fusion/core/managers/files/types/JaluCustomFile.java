@@ -33,7 +33,9 @@ public class JaluCustomFile extends ICustomFile<JaluCustomFile> {
     public final JaluCustomFile build() {
         final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(getPath(), this.options);
 
-        this.builder.accept(builder);
+        builder.useDefaultMigrationService();
+
+        this.builder.accept(builder); // overrides the default migration service if set in the consumer.
 
         this.config = builder.create();
 

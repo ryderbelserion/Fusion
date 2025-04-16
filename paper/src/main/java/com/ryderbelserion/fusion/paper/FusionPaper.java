@@ -32,7 +32,7 @@ import java.util.Map;
 public class FusionPaper extends FusionCore {
 
     public FusionPaper(@NotNull final ComponentLogger logger, @NotNull final Path dataFolder) {
-        super(consumer -> consumer.configurationData(ConfigKeys.class, PluginKeys.class), logger, dataFolder);
+        super(consumer -> consumer.useDefaultMigrationService().configurationData(ConfigKeys.class, PluginKeys.class), logger, dataFolder);
     }
 
     private boolean isRegistered = false;
