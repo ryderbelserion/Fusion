@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.core.api.interfaces;
 
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.managers.files.FileType;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;

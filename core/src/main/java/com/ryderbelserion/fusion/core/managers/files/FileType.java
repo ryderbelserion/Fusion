@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.core.api.enums;
+package com.ryderbelserion.fusion.core.managers.files;
 
 import org.jetbrains.annotations.NotNull;
 

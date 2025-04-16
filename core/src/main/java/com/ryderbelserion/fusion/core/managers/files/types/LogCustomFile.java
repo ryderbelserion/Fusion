@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.core.managers.files.types;
 
-import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.managers.files.FileType;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.core.utils.FileUtils;

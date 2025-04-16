@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.files;
 
-import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.managers.files.FileType;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.utils.FileUtils;
 import com.ryderbelserion.fusion.core.FusionCore;

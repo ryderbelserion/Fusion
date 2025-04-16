@@ -3,7 +3,6 @@ package com.ryderbelserion.fusion.core.managers.files;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.core.managers.files.types.JaluCustomFile;
