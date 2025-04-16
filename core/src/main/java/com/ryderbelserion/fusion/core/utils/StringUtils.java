@@ -2,7 +2,6 @@ package com.ryderbelserion.fusion.core.utils;
 
 import com.ryderbelserion.fusion.core.FusionCore;
 import org.jetbrains.annotations.NotNull;
-
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
