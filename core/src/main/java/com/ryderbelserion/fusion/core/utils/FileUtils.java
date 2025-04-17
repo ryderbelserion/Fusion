@@ -38,7 +38,7 @@ public class FileUtils {
     private static final ComponentLogger logger = api.getLogger();
 
     public static void extract(@NotNull final String input, @NotNull final Path output, final boolean purge) {
-        if (!Files.exists(output)) { // create directory if it does not exist.
+        if (!Files.exists(output)) { // create a directory if it does not exist.
             try {
                 Files.createDirectory(output);
             } catch (final IOException exception) {
@@ -92,7 +92,7 @@ public class FileUtils {
                     continue;
                 }
 
-                if (isDirectory) { // if directory, create directory.
+                if (isDirectory) { // if directory, create a directory.
                     Files.createDirectories(path);
 
                     processedFiles.add(entryName);
@@ -100,8 +100,13 @@ public class FileUtils {
                     continue;
                 }
 
-                if (entryName.contains("/")) { // check if file is in a folder
-                    final String name = entryName.split("/")[1];
+                if (entryName.contains("/")) { // check if a file is in a folder
+                    final String[] split = entryName.split("/");
+                    final String name = split[1];
+
+                    if (!Files.exists(path)) {
+                        Files.createDirectories(path);
+                    }
 
                     final Path resolution = path.resolve(name);
 
