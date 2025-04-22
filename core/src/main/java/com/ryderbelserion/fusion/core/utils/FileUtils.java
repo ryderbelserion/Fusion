@@ -64,7 +64,11 @@ public class FileUtils {
         }
 
         if (isFolder) {
-            folder.toFile().mkdirs();
+            try {
+                Files.createDirectories(folder);
+            } catch (final IOException exception) {
+                logger.warn("Failed to create folder {}", folder, exception);
+            }
         }
 
         try (final JarFile jar = new JarFile(Path.of(FusionCore.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
@@ -81,12 +85,20 @@ public class FileUtils {
 
                 final boolean isDirectory = entry.isDirectory();
 
+                final Path entryPath = output.resolve(entryName);
+
                 if (isDirectory) {
+                    Files.createDirectories(entryPath);
+
                     continue;
                 }
 
                 try (final InputStream stream = jar.getInputStream(entry)) {
-                    Files.copy(stream, output.resolve(entryName));
+                    if (isFolder) {
+                        Files.createDirectories(entryPath.getParent());
+                    }
+
+                    Files.copy(stream, entryPath);
                 }
             }
         } catch (final URISyntaxException | IOException exception) {
