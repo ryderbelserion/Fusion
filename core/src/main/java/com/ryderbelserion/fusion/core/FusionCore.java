@@ -85,10 +85,14 @@ public abstract class FusionCore {
     }
 
     public void sendMessage(@NotNull final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders) {
-
+        audience.sendMessage(color(audience, line, placeholders));
     }
 
     public void sendMessage(@NotNull final Audience audience, @NotNull final List<String> lines, @NotNull final Map<String, String> placeholders) {
+        for (final String line : lines) {
+            sendMessage(audience, line, placeholders);
+        }
+    }
 
     public <E> void registerEvent(@NotNull final E event) {
 
