@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Stream;
@@ -37,20 +36,12 @@ public class FileUtils {
 
     private static final ComponentLogger logger = api.getLogger();
 
-    public static void extract(@NotNull final String input, @NotNull final Path output, final boolean purge) {
-        if (!Files.exists(output)) { // create a directory if it does not exist.
-            try {
-                Files.createDirectory(output);
-            } catch (final IOException exception) {
-                logger.warn("Could not create directory: {}", output, exception);
-            }
-        }
-
-        final Path path = output.resolve(input);
+    public static void extract(@NotNull final String input, @NotNull final Path output, final boolean isFolder, final boolean purge) {
+        final Path folder = output.resolve(input);
 
         if (purge) {
             try {
-                Files.walkFileTree(path, new SimpleFileVisitor<>() {
+                Files.walkFileTree(folder, new SimpleFileVisitor<>() {
                     @Override
                     public @NotNull FileVisitResult visitFile(@NotNull final Path file, @NotNull final BasicFileAttributes attributes) throws IOException {
                         Files.delete(file);
@@ -68,15 +59,13 @@ public class FileUtils {
             } catch (IOException ignored) {}
         }
 
-        if (Files.exists(path)) {
+        if (Files.exists(folder)) {
             return;
         }
 
-        if (Files.isDirectory(path)) {
-            return;
+        if (isFolder) {
+            folder.toFile().mkdirs();
         }
-
-        final Set<String> processedFiles = new HashSet<>();
 
         try (final JarFile jar = new JarFile(Path.of(FusionCore.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
             final Enumeration<JarEntry> entries = jar.entries();
@@ -86,46 +75,19 @@ public class FileUtils {
 
                 final String entryName = entry.getName();
 
-                boolean isDirectory = entry.isDirectory();
-
-                if (entryName.endsWith(".class") || entryName.startsWith("META-INF") || processedFiles.contains(entryName) || !entryName.startsWith(input)) { // exclude .class, and META-INF before checking input
+                if (entryName.endsWith(".class") || entryName.startsWith("META-INF") || !entryName.startsWith(input)) { // exclude .class, and META-INF before checking input
                     continue;
                 }
 
-                if (isDirectory) { // if directory, create a directory.
-                    Files.createDirectories(path);
+                final boolean isDirectory = entry.isDirectory();
 
-                    processedFiles.add(entryName);
-
-                    continue;
-                }
-
-                if (entryName.contains("/")) { // check if a file is in a folder
-                    final String[] split = entryName.split("/");
-                    final String name = split[1];
-
-                    if (!Files.exists(path)) {
-                        Files.createDirectories(path);
-                    }
-
-                    final Path resolution = path.resolve(name);
-
-                    if (!Files.exists(resolution)) {
-                        try (final InputStream stream = jar.getInputStream(entry)) {
-                            Files.copy(stream, resolution);
-                        }
-                    }
-
-                    processedFiles.add(entryName);
-
+                if (isDirectory) {
                     continue;
                 }
 
                 try (final InputStream stream = jar.getInputStream(entry)) {
-                    Files.copy(stream, path);
+                    Files.copy(stream, output.resolve(entryName));
                 }
-
-                processedFiles.add(entryName);
             }
         } catch (final URISyntaxException | IOException exception) {
             throw new FusionException(String.format("Failed to extract %s", input), exception);

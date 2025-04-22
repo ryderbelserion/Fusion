@@ -119,7 +119,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
         final String fileName = path.getFileName().toString();
 
         if (isExtract && !Files.exists(path)) {
-            FileUtils.extract(fileName, path.getParent(), false);
+            FileUtils.extract(fileName, path.getParent(), false, false);
         }
 
         final FileType fileType = detectFileType(fileName);
@@ -246,21 +246,21 @@ public class FileManager { // note: no longer strip file names, so it's stored a
     public final FileManager extractFolder(@NotNull final Path folder, final boolean purge, final boolean isExtract) {
         if (!isExtract) return this;
 
-        FileUtils.extract(folder.getFileName().toString(), this.dataFolder, purge);
+        FileUtils.extract(folder.getFileName().toString(), this.dataFolder, true, purge);
 
         return this;
     }
 
     // Extracts a resource to a specific path.
     public final FileManager extractResource(@NotNull final String path, @NotNull final String output, final boolean purge) {
-        FileUtils.extract(path, this.dataFolder.resolve(output), purge);
+        FileUtils.extract(path, this.dataFolder.resolve(output), false, purge);
 
         return this;
     }
 
     // Extracts a resource to a specific path
     public final FileManager extractResource(@NotNull final String path) {
-        FileUtils.extract(path, this.dataFolder, false);
+        FileUtils.extract(path, this.dataFolder, false, false);
 
         return this;
     }
