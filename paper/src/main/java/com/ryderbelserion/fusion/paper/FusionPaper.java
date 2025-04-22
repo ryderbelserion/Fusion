@@ -64,6 +64,13 @@ public class FusionPaper extends FusionCore {
         this.isRegistered = true;
     }
 
+    @Override
+    public void disable() {
+        if (!this.isRegistered) return;
+
+        super.disable();
+    }
+
     public @NotNull final LegacyFileManager getLegacyFileManager() {
         if (this.fileManager == null) {
             throw new FusionException("An error occurred while trying to get the legacy file manager instance.");

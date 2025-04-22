@@ -97,6 +97,10 @@ public abstract class FusionCore {
         this.config.reload();
     }
 
+    public void disable() {
+        Provider.unregister();
+    }
+
     public <T> T getHeadDatabaseAPI() {
         return null;
     }
@@ -130,6 +134,10 @@ public abstract class FusionCore {
 
         public static void register(@NotNull final FusionCore core) {
             Provider.core = core;
+        }
+
+        public static void unregister() {
+            Provider.core = null;
         }
 
         public static FusionCore get() {
