@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.paper.api.structure;
 
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.paper.FusionPlugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -11,10 +12,10 @@ import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.structure.Structure;
+import org.bukkit.structure.StructureManager;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,9 +26,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class StructureBuilder {
 
-    private final Plugin plugin;
-    private final Server server;
-    private final org.bukkit.structure.StructureManager manager;
+    private final Plugin plugin = FusionPlugin.getPlugin();
+    private final Server server = this.plugin.getServer();
+    private final StructureManager manager = this.server.getStructureManager();
 
     private final Set<BlockState> structureBlocks = new HashSet<>();
     private final Set<BlockState> initialBlocks = new HashSet<>();
@@ -37,11 +38,7 @@ public class StructureBuilder {
     private final boolean isReady;
     private final NamespacedKey key;
 
-    public StructureBuilder(@NotNull final Plugin plugin, @NotNull final NamespacedKey key) {
-        this.plugin = plugin;
-        this.server = this.plugin.getServer();
-        this.manager = this.server.getStructureManager();
-
+    public StructureBuilder(@NotNull final NamespacedKey key) {
         this.key = key;
 
         this.structure = this.manager.loadStructure(this.key);
@@ -50,11 +47,7 @@ public class StructureBuilder {
         this.vector = this.structure != null ? this.structure.getSize() : null;
     }
 
-    public StructureBuilder(@NotNull final Plugin plugin, @NotNull final String keyName) {
-        this.plugin = plugin;
-        this.server = this.plugin.getServer();
-        this.manager = this.server.getStructureManager();
-
+    public StructureBuilder(@NotNull final String keyName) {
         this.structure = this.manager.createStructure();
         this.vector = null;
 
