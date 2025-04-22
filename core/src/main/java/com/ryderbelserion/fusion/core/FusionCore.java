@@ -20,6 +20,7 @@ public abstract class FusionCore {
 
     protected FileManager fileManager;
     protected SettingsManager config;
+    protected final PluginManager pluginManager;
 
     protected final ComponentLogger logger;
     protected final Path dataPath;
@@ -39,6 +40,7 @@ public abstract class FusionCore {
         this.config = builder.create();
 
         this.fileManager = new FileManager();
+        this.pluginManager = new PluginManager();
     }
 
     public FusionCore(@NotNull final Consumer<SettingsManagerBuilder> consumer, @NotNull final ComponentLogger logger, @NotNull final Path dataPath) {
@@ -83,6 +85,14 @@ public abstract class FusionCore {
 
     public void sendMessage(@NotNull final Audience audience, @NotNull final List<String> lines, @NotNull final Map<String, String> placeholders) {
 
+    }
+
+    public @NotNull PluginManager getPluginManager() {
+        return this.pluginManager;
+    }
+
+    public @NotNull ModuleManager getModuleManager() {
+        return this.moduleManager;
     }
 
     public @NotNull FileManager getFileManager() {

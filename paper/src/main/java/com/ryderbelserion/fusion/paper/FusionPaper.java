@@ -59,7 +59,7 @@ public class FusionPaper extends FusionCore {
         final Server server = plugin.getServer();
         final PluginManager manager = server.getPluginManager();
 
-        manager.registerEvents(new GuiListener(), plugin);
+        getPluginManager().printPlugins();
 
         this.isRegistered = true;
     }

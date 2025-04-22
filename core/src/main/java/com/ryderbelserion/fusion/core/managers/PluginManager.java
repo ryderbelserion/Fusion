@@ -11,49 +11,47 @@ import java.util.Map;
 
 public class PluginManager {
 
-    private static final FusionCore api = FusionCore.Provider.get();
+    private final FusionCore api = FusionCore.Provider.get();
 
-    private static final ComponentLogger logger = api.getLogger();
+    private final ComponentLogger logger = api.getLogger();
 
-    private static final boolean isVerbose = api.isVerbose();
+    private final boolean isVerbose = api.isVerbose();
 
-    private static final Map<String, IPlugin> plugins = new HashMap<>();
+    private final Map<String, IPlugin> plugins = new HashMap<>();
 
-    public PluginManager() {}
-
-    public static void registerPlugin(@NotNull final IPlugin plugin) {
-        plugins.put(plugin.getName(), plugin.init());
+    public void registerPlugin(@NotNull final IPlugin plugin) {
+        this.plugins.put(plugin.getName(), plugin.init());
     }
 
-    public static @Nullable IPlugin getPlugin(@NotNull final String name) {
-        return plugins.get(name);
+    public @Nullable final IPlugin getPlugin(@NotNull final String name) {
+        return this.plugins.get(name);
     }
 
-    public static boolean isEnabled(@NotNull final String name) {
+    public final boolean isEnabled(@NotNull final String name) {
         final IPlugin plugin = getPlugin(name);
 
         return plugin != null && plugin.isEnabled();
     }
 
-    public static void unregisterPlugin(@NotNull final IPlugin plugin) {
-        plugins.remove(plugin.getName());
+    public void unregisterPlugin(@NotNull final IPlugin plugin) {
+        this.plugins.remove(plugin.getName());
 
         plugin.stop();
     }
 
-    public static void printPlugins() {
-        if (isVerbose) {
+    public void printPlugins() {
+        if (this.isVerbose) {
             getPlugins().forEach((name, plugin) -> {
                 if (plugin.isEnabled() && !name.isEmpty()) {
-                    logger.info("{}: FOUND", name);
+                    this.logger.info("{}: FOUND", name);
                 } else {
-                    logger.info("{}: NOT FOUND", name);
+                    this.logger.info("{}: NOT FOUND", name);
                 }
             });
         }
     }
 
-    public static @NotNull Map<String, IPlugin> getPlugins() {
-        return Collections.unmodifiableMap(plugins);
+    public @NotNull final Map<String, IPlugin> getPlugins() {
+        return Collections.unmodifiableMap(this.plugins);
     }
 }
