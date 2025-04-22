@@ -85,11 +85,15 @@ public abstract class FusionCore {
 
     }
 
-    public ComponentLogger getLogger() {
+    public @NotNull FileManager getFileManager() {
+        return this.fileManager;
+    }
+
+    public @NotNull ComponentLogger getLogger() {
         return this.logger;
     }
 
-    public Path getDataPath() {
+    public @NotNull Path getDataPath() {
         return this.dataPath;
     }
 
@@ -101,19 +105,19 @@ public abstract class FusionCore {
         Provider.unregister();
     }
 
-    public <T> T getHeadDatabaseAPI() {
+    public @Nullable<T> T getHeadDatabaseAPI() {
         return null;
     }
 
-    public String getItemsPlugin() {
+    public @NotNull String getItemsPlugin() {
         return "none";
     }
 
-    public String chomp(String line) {
+    public @NotNull String chomp(@NotNull final String line) {
         return "";
     }
 
-    public String getRoundingFormat() {
+    public @NotNull String getRoundingFormat() {
         return this.config.getProperty(ConfigKeys.rounding_format);
     }
 
@@ -121,7 +125,7 @@ public abstract class FusionCore {
         return this.config.getProperty(ConfigKeys.recursion_depth);
     }
 
-    public String getNumberFormat() {
+    public @NotNull String getNumberFormat() {
         return this.config.getProperty(ConfigKeys.number_format);
     }
 
