@@ -1,6 +1,8 @@
 package com.ryderbelserion.fusion.core.api.interfaces;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.UUID;
 
 public interface IPlugin {
@@ -35,7 +37,11 @@ public interface IPlugin {
         return false;
     }
 
-    default <T> T get() {
+    default <V, T> T getData(@Nullable final V variable) {
         return null;
+    }
+
+    default <T> T getData() {
+        return getData(null);
     }
 }
