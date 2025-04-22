@@ -42,10 +42,17 @@ public class FusionPaper extends FusionCore {
     private StructureRegistry registry;
     private HeadDatabaseAPI heads;
 
+    private PluginManager pluginManager;
+    private Plugin plugin;
+
     public void enable(@NotNull final Plugin plugin) {
         if (this.isRegistered) return;
 
-        FusionPlugin.setPlugin(plugin);
+        FusionPlugin.setPlugin(this.plugin = plugin);
+
+        final Server server = plugin.getServer();
+
+        this.pluginManager = server.getPluginManager();
 
         this.registry = new StructureRegistry();
 
@@ -57,8 +64,7 @@ public class FusionPaper extends FusionCore {
             this.heads = new HeadDatabaseAPI();
         }
 
-        final Server server = plugin.getServer();
-        final PluginManager manager = server.getPluginManager();
+        this.pluginManager.registerEvents(new GuiListener(), plugin);
 
         getPluginManager().printPlugins();
 

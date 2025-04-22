@@ -4,6 +4,8 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
+import com.ryderbelserion.fusion.core.managers.ModuleManager;
+import com.ryderbelserion.fusion.core.managers.PluginManager;
 import com.ryderbelserion.fusion.core.managers.files.FileManager;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -18,10 +20,10 @@ import java.util.function.Consumer;
 
 public abstract class FusionCore {
 
-    protected FileManager fileManager;
-    protected SettingsManager config;
     protected final PluginManager pluginManager;
     protected final ModuleManager moduleManager;
+    protected final FileManager fileManager;
+    protected final SettingsManager config;
 
     protected final ComponentLogger logger;
     protected final Path dataPath;
