@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PluginManager {
+public class PluginExtension {
 
     private final FusionCore api = FusionCore.Provider.get();
 

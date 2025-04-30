@@ -66,7 +66,7 @@ public class FusionPaper extends FusionCore {
 
         this.pluginManager.registerEvents(new GuiListener(), plugin);
 
-        getPluginManager().printPlugins();
+        getPluginExtension().printPlugins();
 
         this.isRegistered = true;
     }

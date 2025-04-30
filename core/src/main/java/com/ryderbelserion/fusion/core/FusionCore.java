@@ -5,7 +5,7 @@ import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.managers.ModuleManager;
-import com.ryderbelserion.fusion.core.managers.PluginManager;
+import com.ryderbelserion.fusion.core.managers.PluginExtension;
 import com.ryderbelserion.fusion.core.managers.files.FileManager;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 
 public abstract class FusionCore {
 
-    protected final PluginManager pluginManager;
+    protected final PluginExtension pluginExtension;
     protected final ModuleManager moduleManager;
     protected final FileManager fileManager;
     protected final SettingsManager config;
@@ -44,7 +44,7 @@ public abstract class FusionCore {
 
         this.fileManager = new FileManager();
 
-        this.pluginManager = new PluginManager();
+        this.pluginExtension = new PluginExtension();
         this.moduleManager = new ModuleManager();
     }
 
@@ -98,8 +98,8 @@ public abstract class FusionCore {
 
     }
 
-    public @NotNull PluginManager getPluginManager() {
-        return this.pluginManager;
+    public @NotNull PluginExtension getPluginExtension() {
+        return this.pluginExtension;
     }
 
     public @NotNull ModuleManager getModuleManager() {
