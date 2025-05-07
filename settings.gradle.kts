@@ -6,6 +6,7 @@ listOf(
     "fabric" to "fabric",
     "discord" to "discord",
 
+    "examples/annotations" to "example-annotations",
     "examples/paper" to "example-paper",
     "examples/fabric" to "example-fabric",
     "examples/discord" to "example-discord"
