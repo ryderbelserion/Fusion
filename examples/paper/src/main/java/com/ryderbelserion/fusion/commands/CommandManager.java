@@ -4,6 +4,7 @@ import com.nexomc.nexo.api.NexoItems;
 import com.ryderbelserion.fusion.FusionPlugin;
 import com.ryderbelserion.fusion.commands.types.adventure.ComponentExample;
 import com.ryderbelserion.fusion.commands.types.item.ItemCommand;
+import com.ryderbelserion.fusion.commands.types.item.PurgeCommand;
 import com.ryderbelserion.fusion.commands.types.item.TestCommand;
 import com.ryderbelserion.fusion.paper.api.enums.Support;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
@@ -73,6 +74,8 @@ public class CommandManager {
 
         List.of(
                 new ComponentExample(),
+
+                new PurgeCommand(),
 
                 new ItemCommand(),
                 new TestCommand()

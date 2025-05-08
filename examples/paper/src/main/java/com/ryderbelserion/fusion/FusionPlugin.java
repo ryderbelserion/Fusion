@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion;
 
+import com.ryderbelserion.fusion.commands.CommandManager;
 import com.ryderbelserion.fusion.core.managers.ModuleManager;
 import com.ryderbelserion.fusion.core.utils.FileUtils;
 import com.ryderbelserion.fusion.modules.TestModule;
@@ -29,10 +30,22 @@ public class FusionPlugin extends JavaPlugin {
         moduleManager.addModule(new TestModule());
         moduleManager.load();
 
-        FileUtils.extract("guis", path.resolve("examples"), true, false);
-        FileUtils.extract("logs", path.resolve("examples"), true, false);
-        FileUtils.extract("crates", path.resolve("examples"), true, false);
-        FileUtils.extract("schematics", path.resolve("examples"), true, false);
+        purge();
+
+        CommandManager.load();
+    }
+
+    public FusionPaper getApi() {
+        return this.api;
+    }
+
+    public void purge() {
+        final Path path = getDataPath();
+
+        FileUtils.extract("guis", path.resolve("examples"), true, true);
+        FileUtils.extract("logs", path.resolve("examples"), true, true);
+        FileUtils.extract("crates", path.resolve("examples"), true, true);
+        FileUtils.extract("schematics", path.resolve("examples"), true, true);
 
         FileUtils.extract("banners/icons", path, true, true);
 
@@ -45,9 +58,5 @@ public class FusionPlugin extends JavaPlugin {
                 "messages.yml",
                 "editor.yml"
         ).forEach(file -> FileUtils.extract(file, path.resolve("examples"), false, true));
-    }
-
-    public FusionPaper getApi() {
-        return this.api;
     }
 }
