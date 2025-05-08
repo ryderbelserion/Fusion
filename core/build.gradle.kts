@@ -20,8 +20,6 @@ dependencies {
 
     compileOnly(libs.configurate.yaml)
 
-    compileOnly(libs.brigadier)
-
     compileOnly(libs.jetbrains)
 
     //api(libs.configurate.jackson)
