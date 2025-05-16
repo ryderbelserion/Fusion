@@ -6,10 +6,9 @@ listOf(
     "fabric" to "fabric",
     "discord" to "discord",
 
-    "examples/annotations" to "example-annotations",
-    "examples/paper" to "example-paper",
+    "examples/discord" to "example-discord",
     "examples/fabric" to "example-fabric",
-    "examples/discord" to "example-discord"
+    "examples/paper" to "example-paper",
 ).forEach(::includeProject)
 
 fun includeProject(pair: Pair<String, String>): Unit = includeProject(pair.first, pair.second)
