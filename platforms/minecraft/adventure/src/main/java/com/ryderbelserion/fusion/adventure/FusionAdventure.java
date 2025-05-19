@@ -1,9 +1,9 @@
 package com.ryderbelserion.fusion.adventure;
 
+import com.ryderbelserion.fusion.adventure.utils.ParseUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +24,7 @@ public abstract class FusionAdventure extends FusionCore {
 
         placeholders.forEach((placeholder, value) -> resolvers.add(Placeholder.parsed(replaceBrackets(placeholder.replaceAll("<", "").replaceAll(">", "")).toLowerCase(), value)));
 
-        return MiniMessage.miniMessage().deserialize(parsePlaceholders(audience, replaceBrackets(message)), TagResolver.resolver(resolvers));
+        return ParseUtils.parse(parsePlaceholders(audience, replaceBrackets(message)), TagResolver.resolver(resolvers));
     }
 
     public @NotNull Component color(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
@@ -47,7 +47,7 @@ public abstract class FusionAdventure extends FusionCore {
         messages.forEach(message -> sendMessage(audience, message, placeholders));
     }
 
-    private String replaceBrackets(final String input) {
+    private String replaceBrackets(@NotNull final String input) {
         return input.replaceAll("\\{", "<").replaceAll("}", ">");
     }
 }

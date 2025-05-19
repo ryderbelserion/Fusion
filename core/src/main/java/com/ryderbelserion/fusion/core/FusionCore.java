@@ -7,7 +7,6 @@ import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.managers.ModuleManager;
 import com.ryderbelserion.fusion.core.managers.PluginExtension;
 import com.ryderbelserion.fusion.core.managers.files.FileManager;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
