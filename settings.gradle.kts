@@ -31,4 +31,4 @@ listOf(
     "platforms/minecraft" to "minecraft",
 ).forEach(::includeProject)
 
-include("paper", "core")
+include("core")

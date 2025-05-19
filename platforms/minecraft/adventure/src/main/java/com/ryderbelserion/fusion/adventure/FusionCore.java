@@ -38,6 +38,14 @@ public abstract class FusionCore {
         return color(null, message, new HashMap<>());
     }
 
+    public void sendMessage(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
+        audience.sendMessage(color(audience, message, placeholders));
+    }
+
+    public void sendMessage(@NotNull final Audience audience, @NotNull final List<String> messages, @NotNull final Map<String, String> placeholders) {
+        messages.forEach(message -> sendMessage(audience, message, placeholders));
+    }
+
     private String replaceBrackets(final String input) {
         return input.replaceAll("\\{", "<").replaceAll("}", ">");
     }

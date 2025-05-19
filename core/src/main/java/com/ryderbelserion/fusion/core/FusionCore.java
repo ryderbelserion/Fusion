@@ -7,15 +7,10 @@ import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.managers.ModuleManager;
 import com.ryderbelserion.fusion.core.managers.PluginExtension;
 import com.ryderbelserion.fusion.core.managers.files.FileManager;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 public abstract class FusionCore {
@@ -54,44 +49,6 @@ public abstract class FusionCore {
 
     public FusionCore(@NotNull ComponentLogger logger, @NotNull Path dataPath) {
         this(consumer -> consumer.configurationData(ConfigKeys.class), YamlFileResourceOptions.builder().indentationSize(2).build(), logger, dataPath);
-    }
-
-    public @NotNull Component placeholders(@Nullable final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders, @Nullable final List<TagResolver> tags) {
-        return Component.empty();
-    }
-
-    public @NotNull Component placeholders(@Nullable final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders) {
-        return Component.empty();
-    }
-
-    public @NotNull Component placeholders(@NotNull final String line, @NotNull final Map<String, String> placeholders) {
-        return Component.empty();
-    }
-
-    public @NotNull Component placeholders(@NotNull final String line) {
-        return Component.empty();
-    }
-
-    public @NotNull Component color(@Nullable final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders) {
-        return Component.empty();
-    }
-
-    public @NotNull Component color(@NotNull final String line, @NotNull final Map<String, String> placeholders) {
-        return Component.empty();
-    }
-
-    public @NotNull Component color(@NotNull final String line) {
-        return Component.empty();
-    }
-
-    public void sendMessage(@NotNull final Audience audience, @NotNull final String line, @NotNull final Map<String, String> placeholders) {
-        audience.sendMessage(color(audience, line, placeholders));
-    }
-
-    public void sendMessage(@NotNull final Audience audience, @NotNull final List<String> lines, @NotNull final Map<String, String> placeholders) {
-        for (final String line : lines) {
-            sendMessage(audience, line, placeholders);
-        }
     }
 
     public <E> void registerEvent(@NotNull final E event) {
