@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":fusion-adventure"))
+    api(project(":fusion-adventure"))
 
     compileOnly(libs.bundles.shared)
 }
