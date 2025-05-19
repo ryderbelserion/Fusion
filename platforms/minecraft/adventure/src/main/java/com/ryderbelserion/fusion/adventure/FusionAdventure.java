@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.adventure;
 
+import ch.jalu.configme.SettingsManagerBuilder;
 import com.ryderbelserion.fusion.adventure.utils.ParseUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import net.kyori.adventure.audience.Audience;
@@ -7,15 +8,23 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 
 public abstract class FusionAdventure extends FusionCore {
 
+    public FusionAdventure(@NotNull final Logger logger, @NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
+        super(logger, path, consumer);
+    }
+
     public abstract String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message);
+
+    public abstract @NotNull String chomp(@NotNull final String message);
 
     public abstract Logger getLogger();
 

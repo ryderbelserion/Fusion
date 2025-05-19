@@ -1,6 +1,8 @@
 package com.ryderbelserion.fusion.paper;
 
 import com.ryderbelserion.fusion.adventure.FusionAdventure;
+import com.ryderbelserion.fusion.core.api.ConfigKeys;
+import com.ryderbelserion.fusion.paper.api.PluginKeys;
 import com.ryderbelserion.fusion.paper.enums.Support;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
@@ -16,6 +18,8 @@ public class FusionPaper extends FusionAdventure {
     private final Logger logger;
 
     public FusionPaper(final Plugin plugin) {
+        super(plugin.getLogger(), plugin.getDataPath(), consumer -> consumer.useDefaultMigrationService().configurationData(ConfigKeys.class, PluginKeys.class));
+
         FusionPlugin.setPlugin(this.plugin = plugin);
 
         this.logger = this.plugin.getLogger();
@@ -34,5 +38,9 @@ public class FusionPaper extends FusionAdventure {
     @Override
     public @NotNull final String chomp(@NotNull final String message) {
         return StringUtils.chomp(message);
+    }
+
+    public @NotNull final String getItemsPlugin() {
+        return this.config.getProperty(PluginKeys.items_plugin);
     }
 }
