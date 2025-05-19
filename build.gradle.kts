@@ -1,5 +1,5 @@
 plugins {
-    id("root-plugin")
+    id("config-java")
 }
 
 rootProject.group = "com.ryderbelserion.fusion"

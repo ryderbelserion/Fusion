@@ -1,34 +1,13 @@
 plugins {
-    id("root-plugin")
-
-    alias(libs.plugins.shadow)
+    `config-java`
 }
 
-project.group = "${rootProject.group}.core"
-project.version = rootProject.version
-
-base {
-    archivesName.set("fusion-core")
-}
-
-repositories {
-    maven("https://libraries.minecraft.net")
-}
+project.group = "${rootProject.name}.core"
 
 dependencies {
     compileOnly(libs.bundles.adventure)
 
     compileOnly(libs.configurate.yaml)
 
-    compileOnly(libs.jetbrains)
-
-    //api(libs.configurate.jackson)
-
     api(libs.jalu)
-}
-
-tasks {
-    shadowJar {
-        archiveClassifier.set("")
-    }
 }
