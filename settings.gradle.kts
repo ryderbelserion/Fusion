@@ -32,8 +32,9 @@ fun includeProject(name: String) {
 }
 
 listOf(
-    "platforms/adventure" to "adventure",
-    "platforms/paper" to "paper"
+    "platforms/minecraft/adventure" to "adventure",
+    "platforms/minecraft/paper" to "paper",
+    "platforms/minecraft" to "minecraft",
 ).forEach(::includeProject)
 
-include("paper","core")
+include("paper", "core")
