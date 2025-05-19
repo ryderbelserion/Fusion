@@ -2,7 +2,6 @@ package com.ryderbelserion.fusion.core.utils;
 
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.BufferedWriter;
@@ -24,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -34,7 +34,7 @@ public class FileUtils {
 
     private static final Path dataFolder = api.getDataPath();
 
-    private static final ComponentLogger logger = api.getLogger();
+    private static final Logger logger = api.getLogger();
 
     public static void extract(@NotNull final String input, @NotNull final Path output, final boolean isFolder, final boolean purge) {
         final Path folder = output.resolve(input);
@@ -67,7 +67,7 @@ public class FileUtils {
             try {
                 Files.createDirectories(folder);
             } catch (final IOException exception) {
-                logger.warn("Failed to create folder {}", folder, exception);
+                //logger.warn("Failed to create folder {}", folder, exception);
             }
         }
 
@@ -168,7 +168,7 @@ public class FileUtils {
                     }
                 });
             } catch (final IOException exception) {
-                logger.warn("Failed to get list of files.", exception);
+                //logger.warn("Failed to get list of files.", exception);
             }
         }
 

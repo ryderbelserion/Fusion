@@ -9,7 +9,6 @@ import com.ryderbelserion.fusion.core.managers.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.core.managers.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.core.managers.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.core.utils.FileUtils;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationOptions;
@@ -22,12 +21,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
+import java.util.logging.Logger;
 
 public class FileManager { // note: no longer strip file names, so it's stored as config.yml or crates.log
 
     private final FusionCore api = FusionCore.Provider.get();
 
-    private final ComponentLogger logger = this.api.getLogger();
+    private final Logger logger = this.api.getLogger();
 
     private final boolean isVerbose = this.api.isVerbose();
 
@@ -185,7 +185,7 @@ public class FileManager { // note: no longer strip file names, so it's stored a
 
         if (file == null) {
             if (this.isVerbose) {
-                this.logger.warn("Cannot write to file as the file does not exist.");
+                //this.logger.warn("Cannot write to file as the file does not exist.");
             }
 
             return this;

@@ -55,6 +55,7 @@ oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
 nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
 
 # https://github.com/KyoriPowered/adventure
+kyori-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "adventure" }
 kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }
 kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
@@ -64,7 +65,8 @@ jalu = { module = "ch.jalu:configme", version.ref = "jalu" }
 
 [bundles]
 adventure = [
-    "kyori-logger",
+    "kyori-legacy",
+    #"kyori-logger",
     "kyori-text",
     "kyori-api"
 ]

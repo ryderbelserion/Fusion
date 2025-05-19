@@ -3,7 +3,6 @@ package com.ryderbelserion.fusion.core.api.interfaces;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.managers.files.FileType;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -13,12 +12,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class ICustomFile<T extends ICustomFile<T>> {
 
     protected final FusionCore api = FusionCore.Provider.get();
 
-    protected final ComponentLogger logger = this.api.getLogger();
+    protected final Logger logger = this.api.getLogger();
 
     protected final boolean isVerbose = this.api.isVerbose();
 
@@ -149,10 +149,10 @@ public abstract class ICustomFile<T extends ICustomFile<T>> {
             Files.deleteIfExists(getPath());
 
             if (this.isVerbose) {
-                this.logger.warn("Successfully deleted {}", getFileName());
+                //this.logger.warn("Successfully deleted {}", getFileName());
             }
         } catch (final IOException exception) {
-            this.logger.warn("Failed to delete {}: {}", getPath(), exception);
+            //this.logger.warn("Failed to delete {}: {}", getPath(), exception);
         }
 
         return this;

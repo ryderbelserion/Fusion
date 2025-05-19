@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 public abstract class FusionCore {
 
@@ -20,10 +21,10 @@ public abstract class FusionCore {
     protected final FileManager fileManager;
     protected final SettingsManager config;
 
-    protected final ComponentLogger logger;
+    protected final Logger logger;
     protected final Path dataPath;
 
-    public FusionCore(@NotNull final Consumer<SettingsManagerBuilder> consumer, @NotNull final YamlFileResourceOptions options, @NotNull final ComponentLogger logger, @NotNull final Path dataPath) {
+    public FusionCore(@NotNull final Consumer<SettingsManagerBuilder> consumer, @NotNull final YamlFileResourceOptions options, @NotNull final Logger logger, @NotNull final Path dataPath) {
         Provider.register(this);
 
         this.dataPath = dataPath;
@@ -67,9 +68,7 @@ public abstract class FusionCore {
         return this.fileManager;
     }
 
-    public @NotNull ComponentLogger getLogger() {
-        return this.logger;
-    }
+    public abstract Logger getLogger();
 
     public @NotNull Path getDataPath() {
         return this.dataPath;

@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public abstract class FusionCore {
 
     public abstract String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message);
 
-    public abstract String chomp(@NotNull final String message);
+    public abstract Logger getLogger();
 
     public @NotNull Component color(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
         final List<TagResolver> resolvers = new ArrayList<>(tags);

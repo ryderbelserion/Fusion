@@ -2,18 +2,18 @@ package com.ryderbelserion.fusion.core.managers;
 
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.interfaces.IPlugin;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class PluginExtension {
 
     private final FusionCore api = FusionCore.Provider.get();
 
-    private final ComponentLogger logger = api.getLogger();
+    private final Logger logger = api.getLogger();
 
     private final boolean isVerbose = api.isVerbose();
 
@@ -43,9 +43,9 @@ public class PluginExtension {
         if (this.isVerbose) {
             getPlugins().forEach((name, plugin) -> {
                 if (plugin.isEnabled() && !name.isEmpty()) {
-                    this.logger.info("{}: FOUND", name);
+                    //this.logger.info("{}: FOUND", name);
                 } else {
-                    this.logger.info("{}: NOT FOUND", name);
+                    //this.logger.info("{}: NOT FOUND", name);
                 }
             });
         }
