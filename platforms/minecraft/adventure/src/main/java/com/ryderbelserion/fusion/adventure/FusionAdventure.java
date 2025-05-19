@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.adventure;
 
+import com.ryderbelserion.fusion.core.FusionCore;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public abstract class FusionCore {
+public abstract class FusionAdventure extends FusionCore {
 
     public abstract String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message);
 

@@ -44,12 +44,22 @@ public abstract class FusionCore {
         this.moduleManager = new ModuleManager();
     }
 
-    public FusionCore(@NotNull final Consumer<SettingsManagerBuilder> consumer, @NotNull final ComponentLogger logger, @NotNull final Path dataPath) {
+    public FusionCore(@NotNull final Consumer<SettingsManagerBuilder> consumer, @NotNull final Logger logger, @NotNull final Path dataPath) {
         this(consumer, YamlFileResourceOptions.builder().indentationSize(2).build(), logger, dataPath);
     }
 
-    public FusionCore(@NotNull ComponentLogger logger, @NotNull Path dataPath) {
+    public FusionCore(@NotNull Logger logger, @NotNull Path dataPath) {
         this(consumer -> consumer.configurationData(ConfigKeys.class), YamlFileResourceOptions.builder().indentationSize(2).build(), logger, dataPath);
+    }
+
+    protected FusionCore() {
+        this.pluginExtension = new PluginExtension();
+        this.moduleManager = new ModuleManager();
+        this.fileManager = new FileManager();
+
+        this.config = null;
+        this.dataPath = null;
+        this.logger = null;
     }
 
     public <E> void registerEvent(@NotNull final E event) {
@@ -90,9 +100,7 @@ public abstract class FusionCore {
         return "none";
     }
 
-    public @NotNull String chomp(@NotNull final String line) {
-        return "";
-    }
+    public abstract @NotNull String chomp(@NotNull final String message);
 
     public @NotNull String getRoundingFormat() {
         return this.config.getProperty(ConfigKeys.rounding_format);
