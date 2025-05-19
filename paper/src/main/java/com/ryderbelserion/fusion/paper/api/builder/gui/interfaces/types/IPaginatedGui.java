@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.types;
 
-import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.PaginatedGui;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,8 +13,6 @@ import java.util.function.Consumer;
 public interface IPaginatedGui {
 
     PaginatedGui setPageSize(final int pageSize);
-
-    int getPageSize();
 
     void addItem(@NotNull final GuiItem guiItem);
 

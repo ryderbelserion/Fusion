@@ -8,7 +8,7 @@ import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builder.ComponentBuilder;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiAction;
-import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.api.builder.items.modern.types.SkullBuilder;

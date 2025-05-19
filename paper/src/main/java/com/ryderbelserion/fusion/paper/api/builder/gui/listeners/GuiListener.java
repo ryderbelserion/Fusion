@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.paper.api.builder.gui.listeners;
 
 import com.google.common.base.Preconditions;
 import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiAction;
-import com.ryderbelserion.fusion.paper.api.builder.gui.objects.GuiItem;
+import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.BaseGui;
 import com.ryderbelserion.fusion.paper.api.builder.gui.types.PaginatedGui;
 import org.bukkit.event.Event;

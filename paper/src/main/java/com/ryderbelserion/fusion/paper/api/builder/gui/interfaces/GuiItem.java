@@ -1,7 +1,6 @@
-package com.ryderbelserion.fusion.paper.api.builder.gui.objects;
+package com.ryderbelserion.fusion.paper.api.builder.gui.interfaces;
 
 import com.google.common.base.Preconditions;
-import com.ryderbelserion.fusion.paper.api.builder.gui.interfaces.GuiAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
