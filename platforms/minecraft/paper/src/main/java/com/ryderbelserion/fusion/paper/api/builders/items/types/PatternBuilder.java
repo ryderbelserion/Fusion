@@ -1,6 +1,6 @@
-package com.ryderbelserion.fusion.paper.api.builders.items.modern.types;
+package com.ryderbelserion.fusion.paper.api.builders.items.types;
 
-import com.ryderbelserion.fusion.paper.api.builders.items.modern.BaseItemBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.BaseItemBuilder;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import io.papermc.paper.datacomponent.DataComponentTypes;

@@ -1,6 +1,6 @@
-package com.ryderbelserion.fusion.paper.api.builders.items.modern.types.fireworks;
+package com.ryderbelserion.fusion.paper.api.builders.items.types.fireworks;
 
-import com.ryderbelserion.fusion.paper.api.builders.items.modern.BaseItemBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.BaseItemBuilder;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Fireworks;
 import org.bukkit.Color;

@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.paper.api.builders.items.modern;
+package com.ryderbelserion.fusion.paper.api.builders.items;
 
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
@@ -10,12 +10,12 @@ import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
-import com.ryderbelserion.fusion.paper.api.builders.items.modern.types.PotionBuilder;
-import com.ryderbelserion.fusion.paper.api.builders.items.modern.types.PatternBuilder;
-import com.ryderbelserion.fusion.paper.api.builders.items.modern.types.SkullBuilder;
-import com.ryderbelserion.fusion.paper.api.builders.items.modern.types.SpawnerBuilder;
-import com.ryderbelserion.fusion.paper.api.builders.items.modern.types.fireworks.FireworkBuilder;
-import com.ryderbelserion.fusion.paper.api.builders.items.modern.types.fireworks.FireworkStarBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.PotionBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.PatternBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.SkullBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.SpawnerBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.fireworks.FireworkBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.fireworks.FireworkStarBuilder;
 import com.ryderbelserion.fusion.paper.api.enums.Support;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;

@@ -1,6 +1,6 @@
-package com.ryderbelserion.fusion.paper.api.builders.items.modern.types;
+package com.ryderbelserion.fusion.paper.api.builders.items.types;
 
-import com.ryderbelserion.fusion.paper.api.builders.items.modern.BaseItemBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.BaseItemBuilder;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
