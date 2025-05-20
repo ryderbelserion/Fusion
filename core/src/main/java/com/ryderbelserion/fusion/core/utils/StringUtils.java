@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -49,15 +48,7 @@ public class StringUtils {
         return RoundingMode.valueOf(api.getRoundingFormat().toUpperCase());
     }
 
-    public static String toString(@NotNull final List<String> list) {
-        if (list.isEmpty()) return "";
-
-        final StringBuilder message = new StringBuilder();
-
-        for (final String line : list) {
-            message.append(line).append("\n");
-        }
-
-        return api.chomp(message.toString());
+    public static String replaceBrackets(@NotNull final String input) {
+        return input.replaceAll("\\{", "<").replaceAll("}", ">").replaceAll("<", "").replaceAll(">", "");
     }
 }

@@ -1,16 +1,5 @@
 rootProject.name = "fusion"
 
-listOf(
-    "core" to "core",
-    "paper" to "paper",
-    "fabric" to "fabric",
-    "discord" to "discord",
-
-    "examples/discord" to "example-discord",
-    "examples/fabric" to "example-fabric",
-    "examples/paper" to "example-paper",
-).forEach(::includeProject)
-
 fun includeProject(pair: Pair<String, String>): Unit = includeProject(pair.first, pair.second)
 
 fun includeProject(name: String, block: ProjectDescriptor.() -> Unit) {
@@ -30,3 +19,19 @@ fun includeProject(name: String) {
         this.name = "${rootProject.name}-$name"
     }
 }
+
+listOf(
+    "platforms/discord/kord" to "kord",
+    "platforms/discord/jda" to "jda",
+    "platforms/discord" to "discord",
+
+    "platforms/minecraft/adventure" to "adventure",
+    "platforms/minecraft/fabric" to "fabric",
+
+    "platforms/minecraft/examples/paper" to "paper-example",
+    "platforms/minecraft/paper" to "paper",
+
+    "platforms/minecraft" to "minecraft",
+
+    "core" to "core"
+).forEach(::includeProject)
