@@ -733,20 +733,20 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return new SpawnerBuilder(this.item);
     }
 
-    public void setItemToInventory(@Nullable final Audience audience, @NotNull final Inventory inventory, final int slot) {
+    public void setItemToInventory(@NotNull final Audience audience, @NotNull final Inventory inventory, final int slot) {
         inventory.setItem(slot, asItemStack(audience));
     }
 
-    public void addItemToInventory(@Nullable final Audience audience, @NotNull final Inventory inventory) {
+    public void addItemToInventory(@NotNull final Audience audience, @NotNull final Inventory inventory) {
         inventory.addItem(asItemStack(audience));
     }
 
     public void setItemToInventory(@NotNull final Inventory inventory, final int slot) {
-        setItemToInventory(null, inventory, slot);
+        setItemToInventory(Audience.empty(), inventory, slot);
     }
 
     public void addItemToInventory(@NotNull final Inventory inventory) {
-        addItemToInventory(null, inventory);
+        addItemToInventory(Audience.empty(), inventory);
     }
 
     public final boolean isDyeable() {
