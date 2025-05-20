@@ -1,0 +1,31 @@
+name: 'Fusion'
+main: 'com.ryderbelserion.fusion.Fusion'
+
+description: 'I would like nuclear fusion to become a practical power source.'
+api-version: '1.21.5'
+version: '1.0.0'
+
+folia-supported: true
+
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    ItemsAdder:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    Oraxen:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    Nexo:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    HeadDatabase:
+      load: BEFORE
+      required: false
+      join-classpath: true

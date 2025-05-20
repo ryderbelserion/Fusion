@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":fusion-adventure"))
+    api(project(":fusion-adventure"))
 }

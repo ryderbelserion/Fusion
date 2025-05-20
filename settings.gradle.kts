@@ -27,8 +27,11 @@ listOf(
 
     "platforms/minecraft/adventure" to "adventure",
     "platforms/minecraft/fabric" to "fabric",
-    "platforms/minecraft/paper" to "paper",
-    "platforms/minecraft" to "minecraft",
-).forEach(::includeProject)
 
-include("core")
+    "platforms/minecraft/examples/paper" to "paper-example",
+    "platforms/minecraft/paper" to "paper",
+
+    "platforms/minecraft" to "minecraft",
+
+    "core" to "core"
+).forEach(::includeProject)

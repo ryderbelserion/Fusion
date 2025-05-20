@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
+import com.ryderbelserion.fusion.core.api.plugins.PluginBuilder;
 import org.jetbrains.annotations.NotNull;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -12,6 +13,7 @@ import java.util.logging.Logger;
 
 public abstract class FusionCore {
 
+    protected final PluginBuilder builder;
     protected final SettingsManager config;
 
     protected final Logger logger;
@@ -30,6 +32,12 @@ public abstract class FusionCore {
         consumer.accept(builder); // overrides the default migration service if set in the consumer.
 
         this.config = builder.create();
+
+        this.builder = new PluginBuilder();
+    }
+
+    public <E> void registerEvent(@NotNull final E event) {
+
     }
 
     public void reload() {
@@ -38,6 +46,10 @@ public abstract class FusionCore {
 
     public void disable() {
         Provider.unregister();
+    }
+
+    public PluginBuilder getBuilder() {
+        return this.builder;
     }
 
     public Logger getLogger() {

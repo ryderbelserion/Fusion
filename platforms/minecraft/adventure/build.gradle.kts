@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":core"))
+    api(project(":fusion-core"))
 
     compileOnly(libs.bundles.adventure)
 }
