@@ -48,7 +48,6 @@ import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
@@ -214,57 +213,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     public B withType(@Nullable final ItemType type) {
         return withType(type, 1);
-    }
-
-    @Deprecated(since = "0.16.0", forRemoval = true)
-    public B withType(@NotNull final String key) {
-        if (key.isEmpty()) return (B) this;
-
-        // Don't override the provided material but copy it instead.
-        String type = key;
-
-        if (key.contains(":")) {
-            final String[] sections = key.split(":");
-
-            type = sections[0];
-            String data = sections[1];
-
-            if (data.contains("#")) {
-                final String model = data.split("#")[1];
-
-                final Optional<Number> customModelData = StringUtils.tryParseInt(model);
-
-                if (customModelData.isPresent()) {
-                    final Number number = customModelData.get();
-
-                    data = data.replace("#" + number.intValue(), "");
-                }
-            }
-
-            final Optional<Number> damage = StringUtils.tryParseInt(data);
-
-            if (damage.isEmpty()) {
-                @org.jetbrains.annotations.Nullable final PotionEffectType potionEffect = ItemUtils.getPotionEffect(data);
-
-                final PotionBuilder potionBuilder = asPotionBuilder();
-
-                potionBuilder.setColor(data).withPotionType(ItemUtils.getPotionType(data)).withPotionEffect(potionEffect, 1, 1);
-            } else {
-                setItemDamage(damage.get().intValue());
-            }
-        } else if (key.contains("#")) {
-            final String[] sections = key.split("#");
-            type = sections[0];
-            final String model = sections[1];
-
-            final Optional<Number> customModelData = StringUtils.tryParseInt(model);
-
-            customModelData.ifPresent(number -> setCustomModelData(number.intValue()));
-        }
-
-        withCustomItem(type);
-
-        return (B) this;
     }
 
     public B addEnchantments(@NotNull final HashMap<String, Integer> enchantments) {
