@@ -13,7 +13,9 @@ repositories {
 }
 
 dependencies {
-    api(project(":fusion-adventure"))
+    api(project(":fusion-adventure")) {
+        exclude("org.yaml", "snakeyaml")
+    }
 
     compileOnly(libs.bundles.shared)
 }
