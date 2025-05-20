@@ -18,6 +18,8 @@ public abstract class FusionCore {
     protected final Path path;
 
     public FusionCore(@NotNull final Logger logger, @NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
+        Provider.register(this);
+
         this.logger = logger;
         this.path = path;
 
@@ -34,6 +36,18 @@ public abstract class FusionCore {
         this.config.reload();
     }
 
+    public void disable() {
+        Provider.unregister();
+    }
+
+    public Logger getLogger() {
+        return this.logger;
+    }
+
+    public Path getPath() {
+        return this.path;
+    }
+
     public String getRoundingFormat() {
         return this.config.getProperty(ConfigKeys.rounding_format);
     }
@@ -48,5 +62,21 @@ public abstract class FusionCore {
 
     public boolean isVerbose() {
         return this.config.getProperty(ConfigKeys.is_verbose);
+    }
+
+    public static class Provider {
+        private static FusionCore core = null;
+
+        public static void register(@NotNull final FusionCore core) {
+            Provider.core = core;
+        }
+
+        public static void unregister() {
+            Provider.core = null;
+        }
+
+        public static FusionCore get() {
+            return core;
+        }
     }
 }

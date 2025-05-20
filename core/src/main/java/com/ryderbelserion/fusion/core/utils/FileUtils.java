@@ -32,7 +32,7 @@ public class FileUtils {
 
     private static final FusionCore api = FusionCore.Provider.get();
 
-    private static final Path dataFolder = api.getDataPath();
+    private static final Path dataFolder = api.getPath();
 
     private static final Logger logger = api.getLogger();
 
@@ -67,7 +67,7 @@ public class FileUtils {
             try {
                 Files.createDirectories(folder);
             } catch (final IOException exception) {
-                //logger.warn("Failed to create folder {}", folder, exception);
+                logger.warning(String.format("Failed to create folder %s", folder));
             }
         }
 
@@ -168,7 +168,7 @@ public class FileUtils {
                     }
                 });
             } catch (final IOException exception) {
-                //logger.warn("Failed to get list of files.", exception);
+                logger.warning("Failed to get list of files.");
             }
         }
 

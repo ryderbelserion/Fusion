@@ -1,8 +1,9 @@
 package com.ryderbelserion.fusion.adventure;
 
 import ch.jalu.configme.SettingsManagerBuilder;
-import com.ryderbelserion.fusion.adventure.utils.ParseUtils;
+import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -31,9 +32,9 @@ public abstract class FusionAdventure extends FusionCore {
     public @NotNull Component color(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
         final List<TagResolver> resolvers = new ArrayList<>(tags);
 
-        placeholders.forEach((placeholder, value) -> resolvers.add(Placeholder.parsed(replaceBrackets(placeholder.replaceAll("<", "").replaceAll(">", "")).toLowerCase(), value)));
+        placeholders.forEach((placeholder, value) -> resolvers.add(Placeholder.parsed(StringUtils.replaceBrackets(placeholder).toLowerCase(), value)));
 
-        return ParseUtils.parse(parsePlaceholders(audience, replaceBrackets(message)), TagResolver.resolver(resolvers));
+        return AdvUtils.parse(parsePlaceholders(audience, StringUtils.replaceBrackets(message)), TagResolver.resolver(resolvers));
     }
 
     public @NotNull Component color(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
@@ -54,9 +55,5 @@ public abstract class FusionAdventure extends FusionCore {
 
     public void sendMessage(@NotNull final Audience audience, @NotNull final List<String> messages, @NotNull final Map<String, String> placeholders) {
         messages.forEach(message -> sendMessage(audience, message, placeholders));
-    }
-
-    private String replaceBrackets(@NotNull final String input) {
-        return input.replaceAll("\\{", "<").replaceAll("}", ">");
     }
 }

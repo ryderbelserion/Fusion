@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.core.api.interfaces;
 
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.managers.files.FileType;
+import com.ryderbelserion.fusion.core.files.FileType;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
@@ -25,7 +25,7 @@ public abstract class ICustomFile<T extends ICustomFile<T>> {
     private final boolean isStatic;
     private final Path path;
 
-    public ICustomFile(@NotNull final Path path, boolean isStatic) {
+    public ICustomFile(@NotNull final Path path, final boolean isStatic) {
         this.isStatic = isStatic;
         this.path = path;
     }
@@ -56,7 +56,6 @@ public abstract class ICustomFile<T extends ICustomFile<T>> {
 
     public String getStringValueWithDefault(@NotNull final String defaultValue, @NotNull final Object... path) {
         return switch (getType()) {
-            //case JSON -> getBasicConfigurationNode().node(path).getString(defaultValue);
             case YAML -> getConfigurationNode().node(path).getString(defaultValue);
             default -> throw new IllegalStateException("Unexpected value: " + getType());
         };
@@ -68,7 +67,6 @@ public abstract class ICustomFile<T extends ICustomFile<T>> {
 
     public boolean getBooleanValueWithDefault(final boolean defaultValue, @NotNull final Object... path) {
         return switch (getType()) {
-            //case JSON -> getBasicConfigurationNode().node(path).getBoolean(defaultValue);
             case YAML -> getConfigurationNode().node(path).getBoolean(defaultValue);
             default -> throw new IllegalStateException("Unexpected value: " + getType());
         };
@@ -80,7 +78,6 @@ public abstract class ICustomFile<T extends ICustomFile<T>> {
 
     public double getDoubleValueWithDefault(final double defaultValue, @NotNull final Object... path) {
         return switch (getType()) {
-            //case JSON -> getBasicConfigurationNode().node(path).getDouble(defaultValue);
             case YAML -> getConfigurationNode().node(path).getDouble(defaultValue);
             default -> throw new IllegalStateException("Unexpected value: " + getType());
         };
@@ -92,7 +89,6 @@ public abstract class ICustomFile<T extends ICustomFile<T>> {
 
     public long getLongValueWithDefault(final long defaultValue, @NotNull final Object... path) {
         return switch (getType()) {
-            //case JSON -> getBasicConfigurationNode().node(path).getLong(defaultValue);
             case YAML -> getConfigurationNode().node(path).getLong(defaultValue);
             default -> throw new IllegalStateException("Unexpected value: " + getType());
         };
@@ -104,7 +100,6 @@ public abstract class ICustomFile<T extends ICustomFile<T>> {
 
     public int getIntValueWithDefault(final int defaultValue, @NotNull final Object... path) {
         return switch (getType()) {
-            //case JSON -> getBasicConfigurationNode().node(path).getInt(defaultValue);
             case YAML -> getConfigurationNode().node(path).getInt(defaultValue);
             default -> throw new IllegalStateException("Unexpected value: " + getType());
         };
@@ -116,14 +111,6 @@ public abstract class ICustomFile<T extends ICustomFile<T>> {
 
     public List<String> getStringList(@NotNull final Object... path) {
         return switch (getType()) {
-            /*case JSON -> {
-                try {
-                    yield getBasicConfigurationNode().node(path).getList(String.class);
-                } catch (SerializationException exception) {
-                    throw new FusionException("Failed to serialize " + Arrays.toString(path), exception);
-                }
-            }*/
-
             case YAML -> {
                 try {
                     yield getConfigurationNode().node(path).getList(String.class);
@@ -149,10 +136,10 @@ public abstract class ICustomFile<T extends ICustomFile<T>> {
             Files.deleteIfExists(getPath());
 
             if (this.isVerbose) {
-                //this.logger.warn("Successfully deleted {}", getFileName());
+                this.logger.warning(String.format("Successfully deleted %s", getFileName()));
             }
         } catch (final IOException exception) {
-            //this.logger.warn("Failed to delete {}: {}", getPath(), exception);
+            this.logger.warning(String.format("Failed to delete %s: %s", getPath(), exception));
         }
 
         return this;
