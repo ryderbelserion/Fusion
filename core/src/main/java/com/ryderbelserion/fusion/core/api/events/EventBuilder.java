@@ -13,7 +13,7 @@ public class EventBuilder {
 
     private final List<IEvent> modules = new ArrayList<>();
 
-    public void load() {
+    public EventBuilder load() {
         this.modules.forEach(module -> {
             if (module.isEnabled()) {
                 this.api.registerEvent(module);
@@ -25,9 +25,11 @@ public class EventBuilder {
 
             module.stop();
         });
+
+        return this;
     }
 
-    public void reload() {
+    public EventBuilder reload() {
         this.modules.forEach(module -> {
             if (module.isEnabled()) {
                 module.restart();
@@ -35,9 +37,11 @@ public class EventBuilder {
                 module.stop();
             }
         });
+
+        return this;
     }
 
-    public void unload(final boolean purge) {
+    public EventBuilder unload(final boolean purge) {
         this.modules.forEach(module -> {
             if (module.isEnabled()) {
                 module.stop();
@@ -47,22 +51,28 @@ public class EventBuilder {
         if (purge) {
             this.modules.clear();
         }
+
+        return this;
     }
 
-    public void unload() {
-        unload(false);
+    public EventBuilder unload() {
+        return unload(false);
     }
 
-    public void addModule(final IEvent module) {
-        if (hasModule(module)) return;
+    public EventBuilder addModule(final IEvent module) {
+        if (hasModule(module)) return this;
 
         this.modules.add(module);
+
+        return this;
     }
 
-    public void removeModule(final IEvent module) {
-        if (!hasModule(module)) return;
+    public EventBuilder removeModule(final IEvent module) {
+        if (!hasModule(module)) return this;
 
         this.modules.remove(module);
+
+        return this;
     }
 
     public @NotNull final List<IEvent> getModules() {

@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
+import com.ryderbelserion.fusion.core.api.events.EventBuilder;
 import com.ryderbelserion.fusion.core.api.plugins.PluginBuilder;
 import org.jetbrains.annotations.NotNull;
 import java.nio.charset.StandardCharsets;
@@ -13,7 +14,8 @@ import java.util.logging.Logger;
 
 public abstract class FusionCore {
 
-    protected final PluginBuilder builder;
+    protected final PluginBuilder pluginBuilder;
+    protected final EventBuilder eventBuilder;
     protected final SettingsManager config;
 
     protected final Logger logger;
@@ -33,7 +35,8 @@ public abstract class FusionCore {
 
         this.config = builder.create();
 
-        this.builder = new PluginBuilder();
+        this.pluginBuilder = new PluginBuilder();
+        this.eventBuilder = new EventBuilder();
     }
 
     public <E> void registerEvent(@NotNull final E event) {
@@ -48,8 +51,12 @@ public abstract class FusionCore {
         Provider.unregister();
     }
 
-    public PluginBuilder getBuilder() {
-        return this.builder;
+    public PluginBuilder getPluginBuilder() {
+        return this.pluginBuilder;
+    }
+
+    public EventBuilder getEventBuilder() {
+        return this.eventBuilder;
     }
 
     public Logger getLogger() {
