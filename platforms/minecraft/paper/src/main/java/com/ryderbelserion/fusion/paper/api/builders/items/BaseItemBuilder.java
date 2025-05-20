@@ -356,18 +356,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public B hideToolTip() {
-        final TooltipDisplay.Builder builder = TooltipDisplay.tooltipDisplay();
-
-        if (this.item.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {
-            final TooltipDisplay display = this.item.getData(DataComponentTypes.TOOLTIP_DISPLAY);
-
-            if (display != null) {
-                builder.hideTooltip(display.hideTooltip());
-                builder.hiddenComponents(display.hiddenComponents());
-            }
-        }
-
-        this.item.setData(DataComponentTypes.TOOLTIP_DISPLAY, builder.hideTooltip(true).build());
+        this.item.setData(DataComponentTypes.TOOLTIP_DISPLAY, builder().hideTooltip(true).build());
 
         return (B) this;
     }
@@ -377,18 +366,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             return (B) this;
         }
 
-        final TooltipDisplay.Builder builder = TooltipDisplay.tooltipDisplay();
-
-        if (this.item.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {
-            final TooltipDisplay display = this.item.getData(DataComponentTypes.TOOLTIP_DISPLAY);
-
-            if (display != null) {
-                builder.hideTooltip(display.hideTooltip());
-                builder.hiddenComponents(display.hiddenComponents());
-            }
-        }
-
-        this.item.setData(DataComponentTypes.TOOLTIP_DISPLAY, builder.hideTooltip(false).build());
+        this.item.setData(DataComponentTypes.TOOLTIP_DISPLAY, builder().hideTooltip(false).build());
 
         return (B) this;
     }
@@ -849,6 +827,21 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         this.item = builder.build();
         this.itemType = this.item.getType().asItemType();
+    }
+
+    private TooltipDisplay.Builder builder() {
+        final TooltipDisplay.Builder builder = TooltipDisplay.tooltipDisplay();
+
+        if (this.item.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {
+            final TooltipDisplay display = this.item.getData(DataComponentTypes.TOOLTIP_DISPLAY);
+
+            if (display != null) {
+                builder.hideTooltip(display.hideTooltip());
+                builder.hiddenComponents(display.hiddenComponents());
+            }
+        }
+
+        return builder;
     }
 
     private void setItem(@NotNull final String item) {
