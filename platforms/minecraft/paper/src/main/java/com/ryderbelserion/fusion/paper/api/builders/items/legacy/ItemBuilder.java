@@ -5,7 +5,7 @@ import com.destroystokyo.paper.profile.ProfileProperty;
 import com.nexomc.nexo.api.NexoItems;
 import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.NumberUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
@@ -524,7 +524,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             if (data.contains("#")) {
                 final String model = data.split("#")[1];
 
-                final Optional<Number> customModelData = StringUtils.tryParseInt(model);
+                final Optional<Number> customModelData = NumberUtils.tryParseInt(model);
 
                 if (customModelData.isPresent()) {
                     data = data.replace("#" + customModelData.get(), "");
@@ -533,7 +533,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
                 }
             }
 
-            final Optional<Number> damage = StringUtils.tryParseInt(data);
+            final Optional<Number> damage = NumberUtils.tryParseInt(data);
 
             if (damage.isEmpty()) {
                 @Nullable final PotionEffectType potionEffect = ItemUtils.getPotionEffect(data);
@@ -553,7 +553,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             type = sections[0];
             final String model = sections[1];
 
-            final Optional<Number> customModelData = StringUtils.tryParseInt(model);
+            final Optional<Number> customModelData = NumberUtils.tryParseInt(model);
 
             customModelData.ifPresent(number -> setCustomModelData(number.intValue()));
         }
@@ -602,7 +602,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     public @NotNull T setCustomModelData(@NotNull final String model) {
         if (model.isEmpty()) return (T) this;
 
-        final Optional<Number> integer = StringUtils.tryParseInt(model);
+        final Optional<Number> integer = NumberUtils.tryParseInt(model);
 
         if (integer.isPresent()) {
             return setCustomModelData(integer.orElse(-1).intValue());

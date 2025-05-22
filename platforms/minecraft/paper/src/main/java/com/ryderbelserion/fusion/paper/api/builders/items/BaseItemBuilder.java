@@ -4,7 +4,7 @@ import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
 import com.ryderbelserion.fusion.adventure.api.builders.ComponentBuilder;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.core.utils.NumberUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
@@ -440,7 +440,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public B setCustomModelData(final String customModelData) {
         if (customModelData.isEmpty()) return (B) this;
 
-        final Optional<Number> integer = StringUtils.tryParseInt(customModelData);
+        final Optional<Number> integer = NumberUtils.tryParseInt(customModelData);
 
         if (integer.isPresent()) {
             return setCustomModelData(integer.orElse(-1).intValue());

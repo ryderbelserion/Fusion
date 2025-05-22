@@ -8,7 +8,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Optional;
 
-public class StringUtils {
+public class NumberUtils {
 
     private static final FusionCore api = FusionCore.Provider.get();
 
@@ -46,9 +46,5 @@ public class StringUtils {
 
     public static RoundingMode mode() {
         return RoundingMode.valueOf(api.getRoundingFormat().toUpperCase());
-    }
-
-    public static String replaceBrackets(@NotNull final String input) {
-        return input.replaceAll("\\{", "<").replaceAll("}", ">").replaceAll("<", "").replaceAll(">", "");
     }
 }
