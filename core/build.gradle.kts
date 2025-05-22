@@ -9,5 +9,7 @@ dependencies {
 
     compileOnly(libs.configurate.yaml)
 
+    api(libs.configurate.json)
+
     api(libs.jalu)
 }

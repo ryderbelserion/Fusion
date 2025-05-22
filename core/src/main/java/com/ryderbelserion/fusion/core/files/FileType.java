@@ -6,9 +6,9 @@ public enum FileType {
 
     YAML(".yml"),
 
-    JALU(".jalu"),
+    JALU(".yml"),
 
-    //JSON(".json"),
+    JSON(".json"),
 
     NONE("none"),
 

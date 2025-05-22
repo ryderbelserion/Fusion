@@ -4,77 +4,62 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.files.FileType;
-import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.api.interfaces.ICustomFile;
+import com.ryderbelserion.fusion.core.api.interfaces.IAbstractConfigFile;
+import com.ryderbelserion.fusion.core.files.FileAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Consumer;
 
-public class JaluCustomFile extends ICustomFile<JaluCustomFile> {
+public class JaluCustomFile extends IAbstractConfigFile<JaluCustomFile, SettingsManager, YamlFileResourceOptions> {
 
     private final Consumer<SettingsManagerBuilder> builder;
-    private final YamlFileResourceOptions options;
 
-    private SettingsManager config;
-
-    public JaluCustomFile(@NotNull final Path path, @NotNull Consumer<SettingsManagerBuilder> builder, @Nullable final YamlFileResourceOptions options, final boolean isStatic) {
-        super(path, isStatic);
+    public JaluCustomFile(@NotNull final Path path, @NotNull Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
+        super(path, actions, options == null ? YamlFileResourceOptions.builder().build() : options);
 
         this.builder = builder;
-        this.options = options == null ? YamlFileResourceOptions.builder().indentationSize(2).build() : options;
     }
 
-    public JaluCustomFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, final boolean isStatic) {
-        this(path, builder, null, isStatic);
-    }
-
-    @Override
-    public final JaluCustomFile build() {
-        final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(getPath(), this.options);
-
-        builder.useDefaultMigrationService();
-
-        this.builder.accept(builder); // overrides the default migration service if set in the consumer.
-
-        this.config = builder.create();
-
-        return this;
+    public JaluCustomFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions) {
+        this(path, builder, actions, null);
     }
 
     @Override
-    public final JaluCustomFile load() {
-        if (this.config == null) {
-            throw new FusionException("There was no settings manager available for " + getFileName());
+    public void loadConfig() {
+        if (this.configuration == null) {
+            final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(getPath(), this.loader);
+
+            builder.useDefaultMigrationService();
+
+            this.builder.accept(builder); // overrides the default migration service if set in the consumer.
+
+            this.configuration = builder.create();
+
+            return;
         }
 
-        this.config.reload();
-
-        return this;
+        this.configuration.reload();
     }
 
     @Override
-    public final JaluCustomFile save() {
-        if (this.config == null) {
-            throw new FusionException("There was no settings manager available for " + getFileName());
-        }
+    public void saveConfig() {
+        this.configuration.save();
+    }
 
-        this.config.save();
-
-        return this;
+    @Override
+    public SettingsManager getConfig() {
+        return this.configuration;
     }
 
     @Override
     public final boolean isLoaded() {
-        return this.config != null;
+        return this.configuration != null;
     }
 
     @Override
-    public final FileType getType() {
+    public final FileType getFileType() {
         return FileType.JALU;
-    }
-
-    public final SettingsManager getConfig() {
-        return this.config;
     }
 }

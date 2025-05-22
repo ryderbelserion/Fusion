@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.core.utils;
 
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.files.FileAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.BufferedWriter;
@@ -36,10 +37,10 @@ public class FileUtils {
 
     private static final Logger logger = api.getLogger();
 
-    public static void extract(@NotNull final String input, @NotNull final Path output, final boolean isFolder, final boolean purge) {
+    public static void extract(@NotNull final String input, @NotNull final Path output, @NotNull final List<FileAction> actions) {
         final Path folder = output.resolve(input);
 
-        if (purge) {
+        if (actions.contains(FileAction.DELETE)) {
             try {
                 Files.walkFileTree(folder, new SimpleFileVisitor<>() {
                     @Override
@@ -62,6 +63,8 @@ public class FileUtils {
         if (Files.exists(folder)) {
             return;
         }
+
+        final boolean isFolder = actions.contains(FileAction.FOLDER);
 
         if (isFolder) {
             try {
@@ -193,13 +196,13 @@ public class FileUtils {
         }
     }
 
-    public static void compress(@NotNull final List<Path> paths, @NotNull final Path directory, @NotNull final String content, final boolean purge) throws IOException {
+    public static void compress(@NotNull final List<Path> paths, @NotNull final Path directory, @NotNull final String content, @NotNull final List<FileAction> actions) throws IOException {
         for (final Path path : paths) {
-            compress(path, directory, content, purge);
+            compress(path, directory, content, actions);
         }
     }
 
-    public static void compress(@NotNull final Path path, @Nullable final Path directory, @NotNull final String content, final boolean purge) throws IOException {
+    public static void compress(@NotNull final Path path, @Nullable final Path directory, @NotNull final String content, @NotNull final List<FileAction> actions) throws IOException {
         if (!Files.exists(path)) {
             return;
         }
@@ -215,6 +218,8 @@ public class FileUtils {
         builder.append(".gz");
 
         final Path file = directory == null ? dataFolder : directory.resolve(builder.toString());
+
+        final boolean isDelete = actions.contains(FileAction.DELETE);
 
         if (Files.isDirectory(path)) {
             try (final ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(file)); final Stream<Path> values = Files.walk(path)) {
@@ -233,7 +238,7 @@ public class FileUtils {
                         output.closeEntry();
                     }
 
-                    if (purge) {
+                    if (isDelete) {
                         Files.deleteIfExists(entry);
                     }
                 }
@@ -256,7 +261,7 @@ public class FileUtils {
             }
         }
 
-        if (purge) {
+        if (isDelete) {
             Files.deleteIfExists(path);
         }
     }

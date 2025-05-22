@@ -35,20 +35,17 @@ nexo = "0.5.0-dev.14" # https://github.com/Nexo-MC
 
 ## Plugins
 feather = "0.3.2" # https://github.com/ryderbelserion/Feather
-minotaur = "2.8.7"
-hangar = "0.1.2"
 
 [plugins]
 # https://github.com/ryderbelserion/Feather
 feather = { id = "com.ryderbelserion.feather.core", version.ref = "feather" }
-hangar = { id = "io.papermc.hangar-publish-plugin", version.ref = "hangar" }
-minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
 
 [libraries]
 # https://github.com/PaperMC/paperweight
 paperweight = { module = "io.papermc.paperweight.userdev:io.papermc.paperweight.userdev.gradle.plugin", version.ref = "paperweight" }
 
 # https://github.com/SpongePowered/Configurate
+configurate-json = { module = "org.spongepowered:configurate-jackson", version.ref = "configurate" }
 configurate-yaml = { module = "org.spongepowered:configurate-yaml", version.ref = "configurate" }
 
 # https://github.com/JetBrains/kotlin
