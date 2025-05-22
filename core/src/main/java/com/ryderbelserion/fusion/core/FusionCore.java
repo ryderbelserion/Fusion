@@ -6,6 +6,7 @@ import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.events.EventBuilder;
 import com.ryderbelserion.fusion.core.api.plugins.PluginBuilder;
+import com.ryderbelserion.fusion.core.files.FileManager;
 import org.jetbrains.annotations.NotNull;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -16,6 +17,7 @@ public abstract class FusionCore {
 
     protected final PluginBuilder pluginBuilder;
     protected final EventBuilder eventBuilder;
+    protected final FileManager fileManager;
     protected final SettingsManager config;
 
     protected final Logger logger;
@@ -37,6 +39,7 @@ public abstract class FusionCore {
 
         this.pluginBuilder = new PluginBuilder();
         this.eventBuilder = new EventBuilder();
+        this.fileManager = new FileManager();
     }
 
     public <E> void registerEvent(@NotNull final E event) {
@@ -57,6 +60,10 @@ public abstract class FusionCore {
 
     public EventBuilder getEventBuilder() {
         return this.eventBuilder;
+    }
+
+    public FileManager getFileManager() {
+        return this.fileManager;
     }
 
     public Logger getLogger() {
