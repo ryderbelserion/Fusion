@@ -225,6 +225,10 @@ public class FileManager {
         return (JsonCustomFile) getCustomFile(path);
     }
 
+    public @Nullable final JaluCustomFile getJaluFile(@NotNull final Path path) {
+        return (JaluCustomFile) getCustomFile(path);
+    }
+
     public @NotNull final Map<Path, ICustomFile<? extends ICustomFile<?>>> getCustomFiles() {
         return Collections.unmodifiableMap(this.customFiles);
     }
