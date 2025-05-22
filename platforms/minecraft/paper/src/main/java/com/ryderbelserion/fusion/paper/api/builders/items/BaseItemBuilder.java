@@ -205,7 +205,16 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             throw new FusionException("The item type cannot be null!");
         }
 
-        this.item = type.createItemStack(Math.max(amount, 1));
+        final ItemStack itemStack = type.createItemStack(Math.max(amount, 1));
+
+        if (this.item != null) {
+            this.item.withType(itemStack.getType());
+            this.item.setAmount(itemStack.getAmount());
+
+            return (B) this;
+        }
+
+        this.item = itemStack;
         this.itemType = this.item.getType().asItemType();
 
         return (B) this;
