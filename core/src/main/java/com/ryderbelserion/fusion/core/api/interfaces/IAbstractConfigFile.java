@@ -23,8 +23,6 @@ public abstract class IAbstractConfigFile<A extends IAbstractConfigFile<A, C, L>
 
     public abstract void saveConfig() throws ConfigurateException;
 
-    public abstract C getConfig();
-
     @Override
     public A load() {
         if (isDirectory()) {

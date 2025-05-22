@@ -49,11 +49,6 @@ public class JaluCustomFile extends IAbstractConfigFile<JaluCustomFile, Settings
     }
 
     @Override
-    public SettingsManager getConfig() {
-        return this.configuration;
-    }
-
-    @Override
     public final boolean isLoaded() {
         return this.configuration != null;
     }

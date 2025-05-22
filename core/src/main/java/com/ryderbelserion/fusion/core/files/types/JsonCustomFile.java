@@ -30,11 +30,6 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
     }
 
     @Override
-    public BasicConfigurationNode getConfig() {
-        return this.configuration;
-    }
-
-    @Override
     public FileType getFileType() {
         return FileType.JSON;
     }

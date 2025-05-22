@@ -30,11 +30,6 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
     }
 
     @Override
-    public CommentedConfigurationNode getConfig() {
-        return this.configuration;
-    }
-
-    @Override
     public FileType getFileType() {
         return FileType.YAML;
     }
