@@ -19,7 +19,7 @@ public abstract class IAbstractConfigFile<A extends IAbstractConfigFile<A, C, L>
         this.loader = loader;
     }
 
-    public abstract void loadConfig() throws ConfigurateException;
+    public abstract C loadConfig() throws ConfigurateException;
 
     public abstract void saveConfig() throws ConfigurateException;
 
@@ -33,13 +33,13 @@ public abstract class IAbstractConfigFile<A extends IAbstractConfigFile<A, C, L>
             return (A) this;
         }
 
-        CompletableFuture.runAsync(() -> {
+        this.configuration = CompletableFuture.supplyAsync(() -> {
             try {
-                loadConfig();
+                return loadConfig();
             } catch (ConfigurateException exception) {
                 throw new FusionException("Failed to load configuration file: " + getFileName(), exception);
             }
-        });
+        }).join();
 
         return (A) this;
     }

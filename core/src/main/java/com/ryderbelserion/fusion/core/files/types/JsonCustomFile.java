@@ -20,8 +20,8 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
     }
 
     @Override
-    public void loadConfig() throws ConfigurateException {
-        this.configuration = this.loader.load();
+    public BasicConfigurationNode loadConfig() throws ConfigurateException {
+        return this.loader.load();
     }
 
     @Override

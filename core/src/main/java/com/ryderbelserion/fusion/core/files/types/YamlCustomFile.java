@@ -20,8 +20,8 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
     }
 
     @Override
-    public void loadConfig() throws ConfigurateException {
-        this.configuration = this.loader.load();
+    public CommentedConfigurationNode loadConfig() throws ConfigurateException {
+        return this.loader.load();
     }
 
     @Override
