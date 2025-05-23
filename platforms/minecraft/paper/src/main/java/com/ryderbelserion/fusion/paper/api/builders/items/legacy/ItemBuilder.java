@@ -467,14 +467,8 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
         final ItemStack itemStack = itemType.createItemStack(Math.max(amount, 1));
 
-        if (this.itemStack != null) {
-            this.itemStack.withType(itemStack.getType());
-            this.itemStack.setAmount(itemStack.getAmount());
-
-            return (T) this;
-        }
-
-        this.itemStack = itemStack;
+        this.itemStack = this.itemStack.withType(itemStack.getType());
+        this.itemStack.setAmount(itemStack.getAmount());
 
         return (T) this;
     }

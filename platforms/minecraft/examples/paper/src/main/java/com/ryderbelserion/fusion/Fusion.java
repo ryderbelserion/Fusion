@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
+import com.ryderbelserion.fusion.commands.ItemCommand;
 import com.ryderbelserion.fusion.config.Config;
 import com.ryderbelserion.fusion.core.api.events.EventBuilder;
 import com.ryderbelserion.fusion.core.files.FileAction;
@@ -11,6 +12,7 @@ import com.ryderbelserion.fusion.core.files.types.JsonCustomFile;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.events.CreatureSpawnEvent;
 import com.ryderbelserion.fusion.paper.FusionPaper;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.charset.Charset;
@@ -64,6 +66,8 @@ public class Fusion extends JavaPlugin {
         final EventBuilder builder = this.paper.getEventBuilder();
 
         builder.addModule(new CreatureSpawnEvent()).load();
+
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, command -> command.registrar().register("fusion", new ItemCommand()));
     }
 
     public final FusionPaper getPaper() {
