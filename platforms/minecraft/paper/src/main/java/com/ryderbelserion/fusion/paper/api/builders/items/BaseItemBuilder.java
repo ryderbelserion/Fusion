@@ -37,6 +37,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -52,6 +53,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -716,6 +718,39 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.itemType.isEdible();
     }
 
+    public final boolean isArmor() {
+        return armor.contains(asString());
+    }
+
+    private static final Set<String> armor = new HashSet<>() {{
+        addAll(leather_items);
+
+        add(ItemType.CHAINMAIL_HELMET.key().asString());
+        add(ItemType.CHAINMAIL_CHESTPLATE.key().asString());
+        add(ItemType.CHAINMAIL_LEGGINGS.key().asString());
+        add(ItemType.CHAINMAIL_BOOTS.key().asString());
+
+        add(ItemType.IRON_HELMET.key().asString());
+        add(ItemType.IRON_CHESTPLATE.key().asString());
+        add(ItemType.IRON_LEGGINGS.key().asString());
+        add(ItemType.IRON_BOOTS.key().asString());
+
+        add(ItemType.DIAMOND_HELMET.key().asString());
+        add(ItemType.DIAMOND_CHESTPLATE.key().asString());
+        add(ItemType.DIAMOND_LEGGINGS.key().asString());
+        add(ItemType.DIAMOND_BOOTS.key().asString());
+
+        add(ItemType.GOLDEN_HELMET.key().asString());
+        add(ItemType.GOLDEN_CHESTPLATE.key().asString());
+        add(ItemType.GOLDEN_LEGGINGS.key().asString());
+        add(ItemType.GOLDEN_BOOTS.key().asString());
+
+        add(ItemType.NETHERITE_HELMET.key().asString());
+        add(ItemType.NETHERITE_CHESTPLATE.key().asString());
+        add(ItemType.NETHERITE_LEGGINGS.key().asString());
+        add(ItemType.NETHERITE_BOOTS.key().asString());
+    }};
+
     private static final Set<String> leather_items = new HashSet<>() {{
         add(ItemType.LEATHER_HELMET.key().asString());
         add(ItemType.LEATHER_CHESTPLATE.key().asString());
@@ -762,6 +797,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return getKey().value();
     }
 
+    public final String getTranslationKey() {
+        return this.itemType.translationKey();
+    }
+
     public final Key getKey() {
         return this.itemType.key();
     }
@@ -804,8 +843,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             throw new FusionException("The id " + item + " is not a valid ItemsAdder item!");
         }
 
-        this.item = builder.getItemStack();
-        this.itemType = this.item.getType().asItemType();
+        setItemStack(builder.getItemStack());
     }
 
     private void getOraxen(@NotNull final String item) {
@@ -819,8 +857,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             throw new FusionException("The id " + item + " is not a valid Oraxen item!");
         }
 
-        this.item = builder.build();
-        this.itemType = this.item.getType().asItemType();
+        setItemStack(builder.build());
     }
 
     private void getNexo(@NotNull final String item) {
@@ -834,8 +871,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             throw new FusionException("The id " + item + " is not a valid Nexo item!");
         }
 
-        this.item = builder.build();
-        this.itemType = this.item.getType().asItemType();
+        setItemStack(builder.build());
     }
 
     private TooltipDisplay.Builder builder() {
