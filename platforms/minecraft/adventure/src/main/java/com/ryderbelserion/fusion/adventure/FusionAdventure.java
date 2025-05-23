@@ -34,7 +34,7 @@ public abstract class FusionAdventure extends FusionCore {
 
         placeholders.forEach((placeholder, value) -> resolvers.add(Placeholder.parsed(StringUtils.replaceBrackets(placeholder).toLowerCase(), value)));
 
-        return AdvUtils.parse(parsePlaceholders(audience, StringUtils.replaceBrackets(message)), TagResolver.resolver(resolvers));
+        return AdvUtils.parse(parsePlaceholders(audience, message.replaceAll("\\{", "<").replaceAll("}", ">")), TagResolver.resolver(resolvers));
     }
 
     public @NotNull Component color(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
