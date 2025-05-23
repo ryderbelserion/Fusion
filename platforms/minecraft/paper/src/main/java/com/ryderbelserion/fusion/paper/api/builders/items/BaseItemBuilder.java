@@ -721,7 +721,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     private static final Set<String> armor = new HashSet<>() {{
-        addAll(leather_items);
+        add(ItemType.LEATHER_HELMET.key().asString());
+        add(ItemType.LEATHER_CHESTPLATE.key().asString());
+        add(ItemType.LEATHER_LEGGINGS.key().asString());
+        add(ItemType.LEATHER_BOOTS.key().asString());
+        add(ItemType.LEATHER_HORSE_ARMOR.key().asString());
 
         add(ItemType.CHAINMAIL_HELMET.key().asString());
         add(ItemType.CHAINMAIL_CHESTPLATE.key().asString());
