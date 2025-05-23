@@ -37,7 +37,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -53,7 +52,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -558,34 +556,34 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public final BaseItemBuilder<B> setPersistentDouble(@NotNull final NamespacedKey key, final double value) {
+    public final B setPersistentDouble(@NotNull final NamespacedKey key, final double value) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.DOUBLE, value));
 
-        return this;
+        return (B) this;
     }
 
-    public final BaseItemBuilder<B> setPersistentInteger(@NotNull final NamespacedKey key, final int value) {
+    public final B setPersistentInteger(@NotNull final NamespacedKey key, final int value) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.INTEGER, value));
 
-        return this;
+        return (B) this;
     }
 
-    public final BaseItemBuilder<B> setPersistentBoolean(@NotNull final NamespacedKey key, final boolean value) {
+    public final B setPersistentBoolean(@NotNull final NamespacedKey key, final boolean value) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.BOOLEAN, value));
 
-        return this;
+        return (B) this;
     }
 
-    public final BaseItemBuilder<B> setPersistentString(@NotNull final NamespacedKey key, @NotNull final String value) {
+    public final B setPersistentString(@NotNull final NamespacedKey key, @NotNull final String value) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.STRING, value));
 
-        return this;
+        return (B) this;
     }
 
-    public final BaseItemBuilder<B> setPersistentList(@NotNull final NamespacedKey key, @NotNull final List<String> values) {
+    public final B setPersistentList(@NotNull final NamespacedKey key, @NotNull final List<String> values) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.LIST.listTypeFrom(PersistentDataType.STRING), values));
 
-        return this;
+        return (B) this;
     }
 
     public final boolean getBoolean(@NotNull final NamespacedKey key) {
@@ -608,14 +606,14 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.item.getPersistentDataContainer().getOrDefault(key, PersistentDataType.STRING, "");
     }
 
-    public final BaseItemBuilder<B> removePersistentKey(@Nullable final NamespacedKey key) {
-        if (key == null) return this;
+    public final B removePersistentKey(@Nullable final NamespacedKey key) {
+        if (key == null) return (B) this;
 
         this.item.editPersistentDataContainer(container -> {
             if (container.has(key)) container.remove(key);
         });
 
-        return this;
+        return (B) this;
     }
 
     public final boolean hasKey(@NotNull final NamespacedKey key) {
