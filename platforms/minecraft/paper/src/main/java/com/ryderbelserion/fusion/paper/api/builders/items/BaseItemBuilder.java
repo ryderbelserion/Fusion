@@ -207,7 +207,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         final ItemStack itemStack = type.createItemStack(Math.max(amount, 1));
 
-        setItemStack(this.item.withType(itemStack.getType()));
+        setItemStack(this.item == null ? itemStack : this.item.withType(itemStack.getType()));
 
         this.item.setAmount(itemStack.getAmount());
 
