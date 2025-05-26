@@ -34,8 +34,8 @@ listOf(
     "platforms/discord" to "discord",
 
     "platforms/minecraft/adventure" to "adventure",
-    "platforms/minecraft/examples/fabric" to "fabric-example",
-    "platforms/minecraft/fabric" to "fabric",
+    //"platforms/minecraft/examples/fabric" to "fabric-example",
+    //"platforms/minecraft/fabric" to "fabric",
 
     "platforms/minecraft/examples/paper" to "paper-example",
     "platforms/minecraft/paper" to "paper",
