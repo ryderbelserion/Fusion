@@ -40,14 +40,16 @@ public class FileManager {
             ".log", FileType.LOG
     );
 
-    public void init(@NotNull final List<FileAction> actions) {
+    public FileManager init(@NotNull final List<FileAction> actions) {
         this.dataFolder.toFile().mkdirs();
 
         this.folders.forEach((folder, type) -> addFolder(folder, type, actions, null));
+
+        return this;
     }
 
     // ConfigMe
-    public void addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
+    public FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
         addFolder(folder, FileType.JALU);
 
         extractFolder(folder, new ArrayList<>(actions) {{
@@ -59,9 +61,11 @@ public class FileManager {
         for (final Path path : files) {
             addFile(path, builder, actions, options);
         }
+
+        return this;
     }
 
-    public void addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
+    public FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
         addFolder(folder, fileType);
 
         extractFolder(folder, actions);
@@ -71,28 +75,34 @@ public class FileManager {
         for (final Path path : files) {
             addFile(path, actions, options);
         }
+
+        return this;
     }
 
-    public void addFolder(@NotNull final Path folder, @NotNull final FileType fileType) {
+    public FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType) {
         this.folders.putIfAbsent(folder, fileType);
+
+        return this;
     }
 
     // ConfigMe
-    public void addFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
+    public FileManager addFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
         if (file != null && !actions.contains(FileAction.RELOAD)) {
             file.load();
 
-            return;
+            return this;
         }
 
         final JaluCustomFile jalu = new JaluCustomFile(path, builder, actions, options);
 
         this.customFiles.putIfAbsent(path, jalu.load());
+
+        return this;
     }
 
-    public void addFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
+    public FileManager addFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
         final String fileName = path.getFileName().toString();
 
         if (actions.contains(FileAction.EXTRACT) && !Files.exists(path)) {
@@ -104,7 +114,7 @@ public class FileManager {
         if (file != null && !actions.contains(FileAction.RELOAD)) {
             file.load();
 
-            return;
+            return this;
         }
 
         final FileType fileType = detectFileType(fileName);
@@ -124,9 +134,11 @@ public class FileManager {
         if (customFile != null) {
             this.customFiles.putIfAbsent(path, customFile);
         }
+
+        return this;
     }
 
-    public void saveFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @NotNull final String content) {
+    public FileManager saveFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @NotNull final String content) {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
         if (file == null) {
@@ -134,7 +146,7 @@ public class FileManager {
                 this.logger.warning("Cannot write to file as the file does not exist.");
             }
 
-            return;
+            return this;
         }
 
         if (file.getFileType() != FileType.LOG) {
@@ -142,13 +154,15 @@ public class FileManager {
                 this.logger.warning("The file " + file.getFileName() + " is not a log file.");
             }
 
-            return;
+            return this;
         }
 
         file.save(content, actions);
+
+        return this;
     }
 
-    public void saveFile(@NotNull final Path path) {
+    public FileManager saveFile(@NotNull final Path path) {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
         if (file == null) {
@@ -156,7 +170,7 @@ public class FileManager {
                 this.logger.warning("Cannot write to file as the file does not exist.");
             }
 
-            return;
+            return this;
         }
 
         if (file.getFileType() == FileType.LOG) {
@@ -164,13 +178,15 @@ public class FileManager {
                 this.logger.warning("Please use the correct method FileManager#saveFile(path, content) to write to log files!");
             }
 
-            return;
+            return this;
         }
 
         file.save();
+
+        return this;
     }
 
-    public final void removeFile(@NotNull final Path path, final FileAction action) {
+    public final FileManager removeFile(@NotNull final Path path, final FileAction action) {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.get(path);
 
         if (action == FileAction.DELETE) {
@@ -178,35 +194,47 @@ public class FileManager {
 
             this.customFiles.remove(path);
 
-            return;
+            return this;
         }
 
         file.save();
+
+        return this;
     }
 
-    public void purge() {
+    public FileManager purge() {
         this.customFiles.clear();
         this.folders.clear();
+
+        return this;
     }
 
-    public final void removeFile(@NotNull final ICustomFile<? extends ICustomFile<?>> customFile, final FileAction action) {
+    public final FileManager removeFile(@NotNull final ICustomFile<? extends ICustomFile<?>> customFile, final FileAction action) {
         removeFile(customFile.getPath(), action);
+
+        return this;
     }
 
-    public final void extractFolder(@NotNull final Path folder, @NotNull final List<FileAction> actions) {
+    public final FileManager extractFolder(@NotNull final Path folder, @NotNull final List<FileAction> actions) {
         FileUtils.extract(folder.getFileName().toString(), this.dataFolder, new ArrayList<>(actions) {{
             add(FileAction.FOLDER);
         }});
+
+        return this;
     }
 
-    public void extractResource(@NotNull final String path, @NotNull final String output, @NotNull final FileAction action) {
+    public FileManager extractResource(@NotNull final String path, @NotNull final String output, @NotNull final FileAction action) {
         FileUtils.extract(path, this.dataFolder.resolve(output), new ArrayList<>() {{
             add(action);
         }});
+
+        return this;
     }
 
-    public void extractResource(@NotNull final String path) {
+    public FileManager extractResource(@NotNull final String path) {
         FileUtils.extract(path, this.dataFolder, new ArrayList<>());
+
+        return this;
     }
 
     public FileType detectFileType(@NotNull final String fileName) {
@@ -233,8 +261,8 @@ public class FileManager {
         return Collections.unmodifiableMap(this.customFiles);
     }
 
-    public void refresh(final boolean save) { // save or reload all files
-        if (this.customFiles.isEmpty()) return;
+    public FileManager refresh(final boolean save) { // save or reload all files
+        if (this.customFiles.isEmpty()) return this;
 
         // folder -> file object
         // we search hashmap by the folder, fetch hashmap of folder, remove file from hashmap of folder and then re-set the hashmap
@@ -265,5 +293,7 @@ public class FileManager {
         if (!brokenFiles.isEmpty()) {
             brokenFiles.forEach(this.customFiles::remove);
         }
+
+        return this;
     }
 }
