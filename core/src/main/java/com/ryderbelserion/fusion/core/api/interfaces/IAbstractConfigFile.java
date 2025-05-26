@@ -23,6 +23,50 @@ public abstract class IAbstractConfigFile<A extends IAbstractConfigFile<A, C, L>
 
     public abstract void saveConfig() throws ConfigurateException;
 
+    public String getStringValueWithDefault(final String defaultValue, final Object... path) {
+        return "";
+    }
+
+    public String getStringValue(final Object... path) {
+        return getStringValueWithDefault("", path);
+    }
+
+    public boolean getBooleanValueWithDefault(final boolean defaultValue, final Object... path) {
+        return false;
+    }
+
+    public boolean getBooleanValue(final Object... path) {
+        return getBooleanValueWithDefault(false, path);
+    }
+
+    public double getDoubleValueWithDefault(final double defaultValue, final Object... path) {
+        return -1.0;
+    }
+
+    public double getDoubleValue(final Object... path) {
+        return getDoubleValueWithDefault(0.0, path);
+    }
+
+    public long getLongValueWithDefault(final long defaultValue, final Object... path) {
+        return -1L;
+    }
+
+    public long getLongValue(final Object... path) {
+        return getLongValueWithDefault(0L, path);
+    }
+
+    public int getIntValueWithDefault(final int defaultValue, final Object... path) {
+        return -1;
+    }
+
+    public int getIntValue(final Object... path) {
+        return getIntValueWithDefault(0, path);
+    }
+
+    public List<String> getStringList(final Object... path) {
+        return List.of();
+    }
+
     @Override
     public A load() {
         if (isDirectory()) {

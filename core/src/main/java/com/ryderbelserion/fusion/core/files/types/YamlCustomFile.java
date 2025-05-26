@@ -29,6 +29,46 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
         this.loader.save(this.configuration);
     }
 
+    public String getStringValueWithDefault(final String defaultValue, final Object... path) {
+        return getConfiguration().node(path).getString(defaultValue);
+    }
+
+    public String getStringValue(final Object... path) {
+        return getStringValueWithDefault("", path);
+    }
+
+    public boolean getBooleanValueWithDefault(final boolean defaultValue, final Object... path) {
+        return getConfiguration().node(path).getBoolean(defaultValue);
+    }
+
+    public boolean getBooleanValue(final Object... path) {
+        return getBooleanValueWithDefault(false, path);
+    }
+
+    public double getDoubleValueWithDefault(final double defaultValue, final Object... path) {
+        return getConfiguration().node(path).getDouble(defaultValue);
+    }
+
+    public double getDoubleValue(final Object... path) {
+        return getDoubleValueWithDefault(0.0, path);
+    }
+
+    public long getLongValueWithDefault(final long defaultValue, final Object... path) {
+        return getConfiguration().node(path).getLong(defaultValue);
+    }
+
+    public long getLongValue(final Object... path) {
+        return getLongValueWithDefault(0L, path);
+    }
+
+    public int getIntValueWithDefault(final int defaultValue, final Object... path) {
+        return getConfiguration().node(path).getInt(defaultValue);
+    }
+
+    public int getIntValue(final Object... path) {
+        return getIntValueWithDefault(0, path);
+    }
+
     @Override
     public FileType getFileType() {
         return FileType.YAML;
