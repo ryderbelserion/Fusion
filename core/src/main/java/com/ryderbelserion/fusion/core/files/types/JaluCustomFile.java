@@ -35,10 +35,10 @@ public class JaluCustomFile extends IAbstractConfigFile<JaluCustomFile, Settings
 
             this.builder.accept(builder); // overrides the default migration service if set in the consumer.
 
-            this.configuration = builder.create();
-
-            return this.configuration;
+            return builder.create();
         }
+
+        this.configuration.reload();
 
         return this.configuration;
     }

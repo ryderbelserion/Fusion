@@ -89,7 +89,7 @@ public class FileManager {
     public FileManager addFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
-        if (file != null && actions.contains(FileAction.RELOAD)) {
+        if (file != null && !actions.contains(FileAction.RELOAD)) { // if the reload action is not present, we load the file!
             file.load();
 
             return this;
@@ -111,7 +111,7 @@ public class FileManager {
 
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
-        if (file != null && actions.contains(FileAction.RELOAD)) {
+        if (file != null && !actions.contains(FileAction.RELOAD)) { // if the reload action is not present, we load the file!
             file.load();
 
             return this;
@@ -125,9 +125,6 @@ public class FileManager {
             case YAML -> customFile = new YamlCustomFile(path, actions, options).load();
             case JSON -> customFile = new JsonCustomFile(path, actions, options).load();
             case LOG -> customFile = new LogCustomFile(path, actions).load();
-            case JALU -> customFile = new JaluCustomFile(path, settingsManagerBuilder -> {
-
-            }, actions).load();
             default -> {}
         }
 
@@ -264,8 +261,6 @@ public class FileManager {
     public FileManager refresh(final boolean save) { // save or reload all files
         if (this.customFiles.isEmpty()) return this;
 
-        // folder -> file object
-        // we search hashmap by the folder, fetch hashmap of folder, remove file from hashmap of folder and then re-set the hashmap
         final List<Path> brokenFiles = new ArrayList<>();
 
         for (Map.Entry<Path, ICustomFile<? extends ICustomFile<?>>> file : this.customFiles.entrySet()) {
