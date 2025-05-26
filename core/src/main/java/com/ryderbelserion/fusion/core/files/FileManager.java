@@ -89,7 +89,7 @@ public class FileManager {
     public FileManager addFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
-        if (file != null && !actions.contains(FileAction.RELOAD)) {
+        if (file != null && actions.contains(FileAction.RELOAD)) {
             file.load();
 
             return this;
@@ -111,7 +111,7 @@ public class FileManager {
 
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
-        if (file != null && !actions.contains(FileAction.RELOAD)) {
+        if (file != null && actions.contains(FileAction.RELOAD)) {
             file.load();
 
             return this;
