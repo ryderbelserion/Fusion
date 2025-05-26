@@ -1,3 +1,11 @@
+pluginManagement {
+    repositories {
+        maven("https://maven.fabricmc.net/")
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
 rootProject.name = "fusion"
 
 fun includeProject(pair: Pair<String, String>): Unit = includeProject(pair.first, pair.second)
@@ -26,6 +34,7 @@ listOf(
     "platforms/discord" to "discord",
 
     "platforms/minecraft/adventure" to "adventure",
+    "platforms/minecraft/examples/fabric" to "fabric-example",
     "platforms/minecraft/fabric" to "fabric",
 
     "platforms/minecraft/examples/paper" to "paper-example",
