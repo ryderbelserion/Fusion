@@ -1,6 +1,7 @@
 pluginManagement {
     repositories {
         maven("https://maven.fabricmc.net/")
+
         gradlePluginPortal()
         mavenCentral()
     }
@@ -31,16 +32,13 @@ fun includeProject(name: String) {
 listOf(
     "platforms/discord/kord" to "kord",
     "platforms/discord/jda" to "jda",
-    "platforms/discord" to "discord",
 
     "platforms/minecraft/adventure" to "adventure",
-    //"platforms/minecraft/examples/fabric" to "fabric-example",
     //"platforms/minecraft/fabric" to "fabric",
-
-    "platforms/minecraft/examples/paper" to "paper-example",
     "platforms/minecraft/paper" to "paper",
 
-    "platforms/minecraft" to "minecraft",
+    //"examples/fabric" to "examples-fabric",
+    "examples/paper" to "examples-paper",
 
     "core" to "core"
 ).forEach(::includeProject)
