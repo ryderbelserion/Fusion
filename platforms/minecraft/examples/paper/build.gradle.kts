@@ -5,6 +5,8 @@ plugins {
 repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi")
 
+    maven("https://repo.triumphteam.dev/snapshots")
+
     maven("https://repo.nexomc.com/snapshots")
 
     maven("https://repo.oraxen.com/releases")
@@ -13,6 +15,8 @@ repositories {
 }
 
 dependencies {
+    implementation(libs.triumph.cmds)
+
     api(project(":fusion-paper"))
 }
 

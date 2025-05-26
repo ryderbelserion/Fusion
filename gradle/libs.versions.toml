@@ -33,6 +33,8 @@ itemsadder = "4.0.10" # https://github.com/ItemsAdder
 oraxen = "1.190.0" # https://github.com/oraxen
 nexo = "1.6.0" # https://github.com/Nexo-MC
 
+triumph-cmds = "2.0.0-BETA-3" # https://github.com/TriumphTeam/triumph-cmds
+
 ## Plugins
 feather = "0.3.2" # https://github.com/ryderbelserion/Feather
 
@@ -88,6 +90,9 @@ nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 # https://github.com/discord-jda/JDA
 jda = { module = "net.dv8tion:JDA", version.ref = "jda" }
+
+# https://github.com/TriumphTeam/triumph-cmds
+triumph-cmds = { module = "dev.triumphteam:triumph-cmd-bukkit", version.ref = "triumph-cmds" }
 
 # https://github.com/KyoriPowered/adventure
 kyori-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "adventure" }
