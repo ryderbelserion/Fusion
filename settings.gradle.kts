@@ -38,6 +38,8 @@ listOf(
     "platforms/minecraft/paper" to "paper",
 
     //"examples/fabric" to "examples-fabric",
+
+    "examples/addons/mob-addon" to "mob-addon",
     "examples/paper" to "examples-paper",
 
     "core" to "core"

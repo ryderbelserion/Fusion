@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
+import com.ryderbelserion.fusion.core.api.addons.AddonManager;
 import com.ryderbelserion.fusion.core.api.events.EventBuilder;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.api.plugins.PluginBuilder;
@@ -12,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
 public abstract class FusionCore {
 
@@ -21,13 +21,13 @@ public abstract class FusionCore {
     protected final FileManager fileManager;
     protected final SettingsManager config;
 
-    protected final Logger logger;
+    protected final AddonManager addonManager;
+
     protected final Path path;
 
-    public FusionCore(@NotNull final Logger logger, @NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
+    public FusionCore(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
         Provider.register(this);
 
-        this.logger = logger;
         this.path = path;
 
         final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(this.path.resolve("fusion.yml"), YamlFileResourceOptions.builder().charset(StandardCharsets.UTF_8).indentationSize(2).build());
@@ -39,6 +39,7 @@ public abstract class FusionCore {
         this.config = builder.create();
 
         this.pluginBuilder = new PluginBuilder();
+        this.addonManager = new AddonManager(this.path);
         this.eventBuilder = new EventBuilder();
         this.fileManager = new FileManager();
     }
@@ -57,10 +58,16 @@ public abstract class FusionCore {
 
     public void disable() {
         Provider.unregister();
+
+        this.addonManager.purge();
     }
 
     public PluginBuilder getPluginBuilder() {
         return this.pluginBuilder;
+    }
+
+    public AddonManager getAddonManager() {
+        return this.addonManager;
     }
 
     public EventBuilder getEventBuilder() {

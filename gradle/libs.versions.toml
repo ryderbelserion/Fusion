@@ -106,7 +106,7 @@ jalu = { module = "ch.jalu:configme", version.ref = "jalu" }
 [bundles]
 adventure = [
     "kyori-legacy",
-    #"kyori-logger",
+    "kyori-logger",
     "kyori-text",
     "kyori-api"
 ]

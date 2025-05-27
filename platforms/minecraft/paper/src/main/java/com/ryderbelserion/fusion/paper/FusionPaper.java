@@ -58,6 +58,14 @@ public class FusionPaper extends FusionAdventure {
         }
 
         this.pluginManager.registerEvents(new GuiListener(), this.plugin);
+
+        this.addonManager.load().enableAddons();
+
+        if (this.isVerbose()) {
+            final int size = this.addonManager.getAddons().size();
+
+            this.logger.warn("Successfully enabled {} addons", size);
+        }
     }
 
     @Override

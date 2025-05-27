@@ -70,6 +70,11 @@ public class Fusion extends JavaPlugin {
         new CommandHandler();
     }
 
+    @Override
+    public void onDisable() {
+        this.paper.disable();
+    }
+
     public final FileManager getFileManager() {
         return this.fileManager;
     }
