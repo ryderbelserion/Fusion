@@ -3,4 +3,4 @@ plugins {
 }
 
 rootProject.group = "com.ryderbelserion.fusion"
-rootProject.version = "1.10.1"
+rootProject.version = "1.11.0"
