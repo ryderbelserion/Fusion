@@ -1,4 +1,5 @@
 plugins {
+    `config-publish`
     `config-paper`
 }
 

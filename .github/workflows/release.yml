@@ -18,6 +18,4 @@ jobs:
         run: chmod +x ./gradlew
       - name: Publish Fusion
         run: |
-          ./gradlew fusion-core:publish --stacktrace
-          ./gradlew fusion-adventure:publish --stacktrace
-          ./gradlew fusion-paper:publish --stacktrace
+          ./gradlew publish --stacktrace
