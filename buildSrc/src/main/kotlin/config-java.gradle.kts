@@ -1,10 +1,8 @@
 plugins {
     id("com.gradleup.shadow")
 
-    `java-library`
-
     `maven-publish`
-    signing
+    `java-library`
 }
 
 project.version = rootProject.version
@@ -86,10 +84,6 @@ tasks {
                 }
             }
         }
-    }
-
-    signing {
-        sign(publishing.publications["maven"])
     }
 
     compileJava {
