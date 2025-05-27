@@ -5,6 +5,7 @@ import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.events.EventBuilder;
+import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.api.plugins.PluginBuilder;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +47,10 @@ public abstract class FusionCore {
 
     }
 
+    public ILogger getLogger() {
+        return null;
+    }
+
     public void reload() {
         this.config.reload();
     }
@@ -64,10 +69,6 @@ public abstract class FusionCore {
 
     public FileManager getFileManager() {
         return this.fileManager;
-    }
-
-    public Logger getLogger() {
-        return this.logger;
     }
 
     public Path getPath() {

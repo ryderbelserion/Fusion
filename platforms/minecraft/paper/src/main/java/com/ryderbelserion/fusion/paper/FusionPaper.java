@@ -11,6 +11,7 @@ import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -19,7 +20,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
-import java.util.logging.Logger;
 
 public class FusionPaper extends FusionAdventure {
 
@@ -31,12 +31,12 @@ public class FusionPaper extends FusionAdventure {
 
     private PluginManager pluginManager = null;
 
-    public FusionPaper(@NotNull final Logger logger, @NotNull final Path path) {
+    public FusionPaper(@NotNull final ComponentLogger logger, @NotNull final Path path) {
         super(logger, path, consumer -> consumer.useDefaultMigrationService().configurationData(ConfigKeys.class, PluginKeys.class));
     }
 
     public FusionPaper(@NotNull final Plugin plugin) {
-        this(plugin.getLogger(), plugin.getDataPath());
+        this(plugin.getComponentLogger(), plugin.getDataPath());
 
         enable(plugin);
     }
@@ -68,11 +68,6 @@ public class FusionPaper extends FusionAdventure {
     @Override
     public @NotNull final String parsePlaceholders(@NotNull final Audience audience, @NotNull final String input) {
         return Support.placeholder_api.isEnabled() && audience instanceof Player player ? PlaceholderAPI.setPlaceholders(player, input) : input;
-    }
-
-    @Override
-    public @NotNull final Logger getLogger() {
-        return this.logger;
     }
 
     @Override

@@ -71,7 +71,7 @@ public abstract class IAbstractConfigFile<A extends IAbstractConfigFile<A, C, L>
     public A load() {
         if (isDirectory()) {
             if (this.isVerbose) {
-                this.logger.warning(String.format("Cannot load configuration, as %s is a directory.", getFileName()));
+                this.logger.warn("Cannot load configuration, as {} is a directory.", getFileName());
             }
 
             return (A) this;
@@ -92,7 +92,7 @@ public abstract class IAbstractConfigFile<A extends IAbstractConfigFile<A, C, L>
     public A save() {
         if (isDirectory()) {
             if (this.isVerbose) {
-                this.logger.warning(String.format("Cannot save configuration, as %s is a directory.", getFileName()));
+                this.logger.warn("Cannot save configuration, as {} is a directory.", getFileName());
             }
 
             return (A) this;
@@ -100,7 +100,7 @@ public abstract class IAbstractConfigFile<A extends IAbstractConfigFile<A, C, L>
 
         if (this.configuration == null) {
             if (this.isVerbose) {
-                this.logger.severe(String.format("Configuration is null, cannot save %s!", getFileName()));
+                this.logger.error("Configuration is null, cannot save {}!", getFileName());
             }
 
             return (A) this;

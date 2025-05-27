@@ -3,6 +3,7 @@ package com.ryderbelserion.fusion.core.files;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.core.api.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.core.files.types.JsonCustomFile;
@@ -21,12 +22,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
-import java.util.logging.Logger;
 
 public class FileManager {
 
     private final FusionCore api = FusionCore.Provider.get();
-    private final Logger logger = this.api.getLogger();
+    private final ILogger logger = this.api.getLogger();
     private final boolean isVerbose = this.api.isVerbose();
     private final Path dataFolder = this.api.getPath();
     private final int depth = this.api.getRecursionDepth();
@@ -140,7 +140,7 @@ public class FileManager {
 
         if (file == null) {
             if (this.isVerbose) {
-                this.logger.warning("Cannot write to file as the file does not exist.");
+                this.logger.warn("Cannot write to file as the file does not exist.");
             }
 
             return this;
@@ -148,7 +148,7 @@ public class FileManager {
 
         if (file.getFileType() != FileType.LOG) {
             if (this.isVerbose) {
-                this.logger.warning("The file " + file.getFileName() + " is not a log file.");
+                this.logger.warn("The file {} is not a log file.", file.getFileName());
             }
 
             return this;
@@ -164,7 +164,7 @@ public class FileManager {
 
         if (file == null) {
             if (this.isVerbose) {
-                this.logger.warning("Cannot write to file as the file does not exist.");
+                this.logger.warn("Cannot write to file as the file does not exist.");
             }
 
             return this;
@@ -172,7 +172,7 @@ public class FileManager {
 
         if (file.getFileType() == FileType.LOG) {
             if (this.isVerbose) {
-                this.logger.warning("Please use the correct method FileManager#saveFile(path, content) to write to log files!");
+                this.logger.warn("Please use the correct method FileManager#saveFile(path, content) to write to log files!");
             }
 
             return this;

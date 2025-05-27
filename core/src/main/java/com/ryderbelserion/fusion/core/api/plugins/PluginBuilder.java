@@ -1,19 +1,19 @@
 package com.ryderbelserion.fusion.core.api.plugins;
 
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.api.plugins.interfacers.IPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class PluginBuilder {
 
     private final FusionCore api = FusionCore.Provider.get();
 
-    private final Logger logger = this.api.getLogger();
+    private final ILogger logger = this.api.getLogger();
 
     private final boolean isVerbose = this.api.isVerbose();
 
@@ -47,9 +47,9 @@ public class PluginBuilder {
         if (this.isVerbose) {
             getPlugins().forEach((name, plugin) -> {
                 if (plugin.isEnabled() && !name.isEmpty()) {
-                    this.logger.info(String.format("%s: FOUND", name));
+                    this.logger.safe("{}: FOUND", name);
                 } else {
-                    this.logger.info(String.format("%s: NOT FOUND", name));
+                    this.logger.safe("{}: NOT FOUND", name);
                 }
             });
         }

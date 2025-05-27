@@ -8,12 +8,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.logging.Logger;
 
 public abstract class ICustomFile<A extends ICustomFile<A>> {
 
     protected final FusionCore api = FusionCore.Provider.get();
-    protected final Logger logger = this.api.getLogger();
+    protected final ILogger logger = this.api.getLogger();
     protected final boolean isVerbose = this.api.isVerbose();
 
     private final List<FileAction> actions;
@@ -39,10 +38,10 @@ public abstract class ICustomFile<A extends ICustomFile<A>> {
             Files.deleteIfExists(getPath());
 
             if (this.isVerbose) {
-                this.logger.warning(String.format("Successfully deleted %s", getFileName()));
+                this.logger.warn("Successfully deleted {}", getFileName());
             }
         } catch (final IOException exception) {
-            this.logger.warning(String.format("Failed to delete %s: %s", getPath(), exception));
+            this.logger.warn("Failed to delete {}: {}", getPath(), exception);
         }
 
         return (A) this;

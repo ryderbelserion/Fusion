@@ -1,11 +1,13 @@
 package com.ryderbelserion.fusion.adventure;
 
 import ch.jalu.configme.SettingsManagerBuilder;
+import com.ryderbelserion.fusion.adventure.api.AdventureLogger;
 import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
 import com.ryderbelserion.fusion.adventure.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
@@ -15,19 +17,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
 public abstract class FusionAdventure extends FusionCore {
 
-    public FusionAdventure(@NotNull final Logger logger, @NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
-        super(logger, path, consumer);
+    protected final AdventureLogger logger;
+
+    public FusionAdventure(@NotNull final ComponentLogger logger, @NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
+        super(path, consumer);
+
+        this.logger = new AdventureLogger(logger);
     }
 
     public abstract String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message);
 
     public abstract @NotNull String chomp(@NotNull final String message);
 
-    public abstract Logger getLogger();
+    @Override
+    public final AdventureLogger getLogger() {
+        return this.logger;
+    }
 
     public @NotNull Component color(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
         final List<TagResolver> resolvers = new ArrayList<>(tags);
