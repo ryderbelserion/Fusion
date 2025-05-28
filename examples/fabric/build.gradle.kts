@@ -5,6 +5,8 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":fusion-fabric"))
+
     minecraft(libs.minecraft.get())
     mappings(loom.officialMojangMappings())
 
@@ -12,21 +14,19 @@ dependencies {
     modCompileOnly(libs.fabric.api.get())
 }
 
-tasks.register("runFabric") {
-    this.group = "run fabric"
-}
+tasks {
+    processResources {
+        filteringCharset = Charsets.UTF_8.name()
 
-tasks.processResources {
-    filteringCharset = Charsets.UTF_8.name()
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
 
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-
-    with(copySpec {
-        from("src/main/resources/fabric.mod.json") {
-            expand(
-                "minecraft" to libs.versions.minecraft.get(),
-                "fabricloader" to libs.versions.fabric.loader.get()
-            )
-        }
-    })
+        with(copySpec {
+            from("src/main/resources/fabric.mod.json") {
+                expand(
+                    "minecraft" to libs.versions.minecraft.get(),
+                    "fabricloader" to libs.versions.fabric.loader.get()
+                )
+            }
+        })
+    }
 }
