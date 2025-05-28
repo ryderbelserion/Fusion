@@ -98,6 +98,10 @@ public abstract class FusionCore {
         return this.config.getProperty(ConfigKeys.is_verbose);
     }
 
+    public boolean isAddonsEnabled() {
+        return this.config.getProperty(ConfigKeys.addon_system);
+    }
+
     public static class Provider {
         private static FusionCore core = null;
 
