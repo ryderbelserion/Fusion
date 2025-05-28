@@ -156,11 +156,11 @@ public class AddonManager {
         final String group = addon.getMain();
         final String name = addon.getName();
 
-        if (group.isEmpty()) {
+        if (group.isEmpty() || group.equals("N/A")) {
             throw new FusionException(String.format("Addon %s does not have a group key.", group));
         }
 
-        if (name.isEmpty()) {
+        if (name.isEmpty() || name.equals("N/A")) {
             throw new FusionException(String.format("Addon %s does not have a name key.", name));
         }
 
