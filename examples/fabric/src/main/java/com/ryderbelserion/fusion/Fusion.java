@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.RootCommandNode;
-import com.ryderbelserion.fusion.builders.ItemBuilder;
+import com.ryderbelserion.fusion.fabric.builders.ItemBuilder;
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -21,7 +21,7 @@ public class Fusion implements DedicatedServerModInitializer {
                     final CommandSourceStack source = context.getSource();
 
                     if (source.isPlayer()) {
-                        final ItemBuilder itemBuilder = new ItemBuilder(Items.ACACIA_BOAT);
+                        final ItemBuilder itemBuilder = new ItemBuilder(Items.ACACIA_BOAT).setAmount(32);
 
                         itemBuilder.addInventory(source.getPlayerOrException());
 
