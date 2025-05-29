@@ -34,6 +34,7 @@ listOf(
     //"platforms/discord/jda" to "jda",
 
     "platforms/minecraft/adventure" to "adventure",
+    "platforms/minecraft/neoforge" to "neoforge",
     "platforms/minecraft/fabric" to "fabric",
     "platforms/minecraft/paper" to "paper",
 
