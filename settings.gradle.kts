@@ -34,10 +34,10 @@ listOf(
     //"platforms/discord/jda" to "jda",
 
     "platforms/minecraft/adventure" to "adventure",
-    //"platforms/minecraft/fabric" to "fabric",
+    "platforms/minecraft/fabric" to "fabric",
     "platforms/minecraft/paper" to "paper",
 
-    //"examples/fabric" to "examples-fabric",
+    "examples/fabric" to "examples-fabric",
 
     "examples/addons/mob-addon" to "mob-addon",
     "examples/paper" to "examples-paper",

@@ -8,3 +8,9 @@ dependencies {
 
     compileOnly(libs.bundles.adventure)
 }
+
+tasks {
+    build {
+        dependsOn(shadowJar)
+    }
+}
