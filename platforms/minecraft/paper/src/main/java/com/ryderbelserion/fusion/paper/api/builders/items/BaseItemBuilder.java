@@ -382,7 +382,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    // i.e. minecraft:banner_patterns
+    // i.e. minecraft:banner_patterns without minecraft
     public B hideComponent(final String component) {
         if (component.isEmpty()) return (B) this;
 
@@ -390,17 +390,15 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         if (type.isEmpty()) return (B) this;
 
-        if (this.item.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {
-            final TooltipDisplay display = this.item.getData(DataComponentTypes.TOOLTIP_DISPLAY);
-
-            if (display != null) {
-                display.hiddenComponents().add(type.get());
-            }
-
-            return (B) this;
-        }
-
         final TooltipDisplay.Builder display = TooltipDisplay.tooltipDisplay();
+
+        if (this.item.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {
+            final TooltipDisplay components = this.item.getData(DataComponentTypes.TOOLTIP_DISPLAY);
+
+            if (components != null) {
+                display.hiddenComponents(components.hiddenComponents());
+            }
+        }
 
         display.addHiddenComponents(type.get());
 
