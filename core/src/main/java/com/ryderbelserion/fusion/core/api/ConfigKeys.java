@@ -23,7 +23,7 @@ public class ConfigKeys implements SettingsHolder {
             "This enables an experimental addon system which will create an addons folder",
             "The addons folder only accepts .jar or .zip files that contain addon.properties",
             "",
-            "This option does work and you can make addons however, Please do not use turn this to true",
+            "This option does work, and you can make addons however, Please do not use turn this to true",
             "I am not ready yet to write official documentation on how to use this!"
     })
     public static final Property<Boolean> addon_system = newProperty("settings.addon_system", false);
