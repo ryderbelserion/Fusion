@@ -31,6 +31,7 @@ fun includeProject(name: String) {
 
 listOf(
     //"platforms/discord/kord" to "kord",
+    //"platforms/discord/core to "jda-core",
     //"platforms/discord/jda" to "jda",
 
     "platforms/minecraft/adventure" to "adventure",
