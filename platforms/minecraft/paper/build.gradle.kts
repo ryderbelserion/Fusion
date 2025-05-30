@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    api(project(":fusion-adventure")) {
+    api(project(":fusion-core")) {
         exclude("org.yaml", "snakeyaml")
     }
 
