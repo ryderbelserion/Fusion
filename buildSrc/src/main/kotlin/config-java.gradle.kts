@@ -32,6 +32,8 @@ java {
 
 tasks {
     shadowJar {
+        archiveClassifier.set("")
+
         exclude("META-INF/**")
     }
 

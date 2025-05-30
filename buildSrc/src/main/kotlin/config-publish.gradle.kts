@@ -1,9 +1,26 @@
 plugins {
+    id("com.jeff-media.fix-javadoc-plugin")
+
     `maven-publish`
     `java-library`
 }
 
 tasks {
+    javadoc {
+        val name = rootProject.name.replaceFirstChar { it.uppercase() }
+        val options = options as StandardJavadocDocletOptions
+
+        options.encoding = Charsets.UTF_8.name()
+        options.overview("src/main/javadoc/overview.html")
+        options.use()
+        options.isDocFilesSubDirs = true
+        options.windowTitle("$name ${rootProject.version} API Documentation")
+        options.docTitle("<h1>$name ${rootProject.version} API</h1>")
+        options.bottom("Copyright © 2025 Ryder Belserion")
+        options.linkSource(true)
+        options.addBooleanOption("html5", true)
+    }
+
     publishing {
         publications {
             create<MavenPublication>("maven") {
@@ -20,6 +37,13 @@ tasks {
                 credentials(PasswordCredentials::class)
                 authentication.create<BasicAuthentication>("basic")
             }
+        }
+    }
+
+    withType<com.jeff_media.fixjavadoc.FixJavadoc> {
+        configureEach {
+            newLineOnMethodParameters.set(false)
+            keepOriginal.set(false)
         }
     }
 
