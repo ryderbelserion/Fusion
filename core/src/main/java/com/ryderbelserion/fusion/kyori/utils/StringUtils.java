@@ -1,13 +1,13 @@
-package com.ryderbelserion.fusion.adventure.utils;
+package com.ryderbelserion.fusion.kyori.utils;
 
-import com.ryderbelserion.fusion.adventure.FusionAdventure;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.core.FusionCore;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class StringUtils {
 
-    private static final FusionAdventure api = (FusionAdventure) FusionCore.Provider.get();
+    private static final FusionKyori api = (FusionKyori) FusionCore.Provider.get();
 
     public static String toString(@NotNull final List<String> list) {
         if (list.isEmpty()) return "";

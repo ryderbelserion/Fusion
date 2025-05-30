@@ -1,9 +1,9 @@
-package com.ryderbelserion.fusion.adventure;
+package com.ryderbelserion.fusion.kyori;
 
 import ch.jalu.configme.SettingsManagerBuilder;
-import com.ryderbelserion.fusion.adventure.api.AdventureLogger;
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
-import com.ryderbelserion.fusion.adventure.utils.StringUtils;
+import com.ryderbelserion.fusion.kyori.api.AdventureLogger;
+import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
+import com.ryderbelserion.fusion.kyori.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -18,11 +18,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public abstract class FusionAdventure extends FusionCore {
+public abstract class FusionKyori extends FusionCore {
 
     protected final AdventureLogger logger;
 
-    public FusionAdventure(@NotNull final ComponentLogger logger, @NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
+    public FusionKyori(@NotNull final ComponentLogger logger, @NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
         super(path, consumer);
 
         this.logger = new AdventureLogger(logger);

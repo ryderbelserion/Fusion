@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.builders.gui.types;
 
-import com.ryderbelserion.fusion.adventure.FusionAdventure;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
@@ -41,7 +41,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     private final Plugin plugin = FusionPlugin.getPlugin();
 
-    private final FusionAdventure adventure = (FusionAdventure) FusionCore.Provider.get();
+    private final FusionKyori adventure = (FusionKyori) FusionCore.Provider.get();
 
     private final GuiFiller filler = new GuiFiller(this);
 

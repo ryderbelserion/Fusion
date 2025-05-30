@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.paper.api.builders.items;
 
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
-import com.ryderbelserion.fusion.adventure.api.builders.ComponentBuilder;
+import com.ryderbelserion.fusion.kyori.api.builders.ComponentBuilder;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.utils.NumberUtils;
 import com.ryderbelserion.fusion.core.FusionCore;

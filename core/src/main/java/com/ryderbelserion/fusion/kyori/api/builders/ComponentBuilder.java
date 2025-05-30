@@ -1,8 +1,8 @@
-package com.ryderbelserion.fusion.adventure.api.builders;
+package com.ryderbelserion.fusion.kyori.api.builders;
 
-import com.ryderbelserion.fusion.adventure.FusionAdventure;
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
-import com.ryderbelserion.fusion.adventure.utils.StringUtils;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
+import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
+import com.ryderbelserion.fusion.kyori.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import net.kyori.adventure.audience.Audience;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class ComponentBuilder {
 
-    private final FusionAdventure adventure = (FusionAdventure) FusionCore.Provider.get();
+    private final FusionKyori adventure = (FusionKyori) FusionCore.Provider.get();
 
     private final Map<ResolverType, List<TagResolver>> resolvers = new HashMap<>();
     private final List<String> lines = new ArrayList<>();

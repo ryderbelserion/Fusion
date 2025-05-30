@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper;
 
-import com.ryderbelserion.fusion.adventure.FusionAdventure;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.api.PluginKeys;
@@ -20,7 +20,7 @@ import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 
-public class FusionPaper extends FusionAdventure {
+public class FusionPaper extends FusionKyori {
 
     private LegacyFileManager fileManager = null;
     private StructureRegistry registry = null;
