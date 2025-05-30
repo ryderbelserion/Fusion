@@ -5,7 +5,6 @@ import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.addons.AddonManager;
-import com.ryderbelserion.fusion.core.api.events.EventBuilder;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.api.plugins.PluginBuilder;
 import com.ryderbelserion.fusion.core.files.FileManager;
@@ -17,7 +16,6 @@ import java.util.function.Consumer;
 public abstract class FusionCore {
 
     protected final PluginBuilder pluginBuilder;
-    protected final EventBuilder eventBuilder;
     protected final FileManager fileManager;
     protected final SettingsManager config;
 
@@ -40,12 +38,7 @@ public abstract class FusionCore {
 
         this.pluginBuilder = new PluginBuilder();
         this.addonManager = new AddonManager(this.path);
-        this.eventBuilder = new EventBuilder();
         this.fileManager = new FileManager();
-    }
-
-    public <E> void registerEvent(@NotNull final E event) {
-
     }
 
     public ILogger getLogger() {
@@ -68,10 +61,6 @@ public abstract class FusionCore {
 
     public AddonManager getAddonManager() {
         return this.addonManager;
-    }
-
-    public EventBuilder getEventBuilder() {
-        return this.eventBuilder;
     }
 
     public FileManager getFileManager() {

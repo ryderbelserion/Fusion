@@ -15,7 +15,6 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
@@ -68,11 +67,6 @@ public class FusionPaper extends FusionAdventure {
                 this.logger.warn("Successfully enabled {} addons", size);
             }
         }
-    }
-
-    @Override
-    public <E> void registerEvent(@NotNull E event) {
-        this.pluginManager.registerEvents((Listener) event, this.plugin);
     }
 
     @Override
