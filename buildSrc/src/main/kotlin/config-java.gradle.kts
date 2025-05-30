@@ -31,6 +31,10 @@ java {
 }
 
 tasks {
+    shadowJar {
+        exclude("META-INF/**")
+    }
+
     compileJava {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(21)
