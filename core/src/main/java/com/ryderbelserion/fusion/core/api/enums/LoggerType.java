@@ -1,5 +1,8 @@
 package com.ryderbelserion.fusion.core.api.enums;
 
+/**
+ * Available logger types when using {@code ILogger#log(@NotNull final LoggerType type, @NotNull final String message, @NotNull final Object... args) }
+ */
 public enum LoggerType {
     /**
      * Safe logging type!

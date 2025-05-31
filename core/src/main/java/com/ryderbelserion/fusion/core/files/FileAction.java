@@ -25,5 +25,4 @@ public enum FileAction {
      * Tells the FileManager that the file is not dynamic.
      */
     STATIC
-
 }

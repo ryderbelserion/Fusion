@@ -22,8 +22,6 @@ import java.util.Map;
 
 /**
  * Builds a component to send to a player.
- *
- * @author ryderbelserion
  */
 public class ComponentBuilder {
 

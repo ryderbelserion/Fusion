@@ -4,8 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * A custom exception to catch exceptions
- *
- * @author ryderbelserion
  */
 public final class FusionException extends IllegalStateException {
 

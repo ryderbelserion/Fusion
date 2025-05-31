@@ -29,6 +29,9 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * A set of utilities that make extracting or retrieving information about files much easier
+ */
 public class FileUtils {
 
     private static final FusionCore fusion = FusionCore.Provider.get();
@@ -232,6 +235,15 @@ public class FileUtils {
         return files;
     }
 
+    /**
+     * Retrieves a list of paths from the relative path, including the given extension.
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param folder the directory to scan for files
+     * @param path the relative parent path
+     * @param extension the file extension to be searched for (e.g., ".yml")
+     * @return a list of files
+     */
     public static List<Path> getFiles(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension) {
         return getFiles(folder.isEmpty() ? path : path.resolve(folder), List.of(extension), fusion.getRecursionDepth());
     }
@@ -249,10 +261,26 @@ public class FileUtils {
         return getFiles(path, List.of(extension), depth);
     }
 
+    /**
+     * Retrieves a list of paths from the relative path, including the given extension.
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param path the directory to scan for files
+     * @param extensions the file extensions to be searched for (e.g., ".yml")
+     * @return a list of files
+     */
     public static List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions) {
         return getFiles(path, extensions, fusion.getRecursionDepth());
     }
 
+    /**
+     * Retrieves a list of paths from the relative path, including the given extension.
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param path the directory to scan for files
+     * @param extension the file extension to be searched for (e.g., ".yml")
+     * @return a list of files
+     */
     public static List<Path> getFiles(@NotNull final Path path, @NotNull final String extension) {
         return getFiles(path, List.of(extension), fusion.getRecursionDepth());
     }
@@ -274,12 +302,30 @@ public class FileUtils {
         }
     }
 
+    /**
+     * Compresses multiple files into zip folders.
+     *
+     * @param paths        the list of relative paths to compress
+     * @param directory    the directory where the zip file goes
+     * @param content      the optional string to append to the {@link StringBuilder}
+     * @param actions      the list of actions
+     * @throws IOException throws if anything breaks along the way
+     */
     public static void compress(@NotNull final List<Path> paths, @NotNull final Path directory, @NotNull final String content, @NotNull final List<FileAction> actions) throws IOException {
         for (final Path path : paths) {
             compress(path, directory, content, actions);
         }
     }
 
+    /**
+     * Compresses multiple files into zip folders.
+     *
+     * @param path         the relative path to compress
+     * @param directory    the directory where the zip file goes
+     * @param content      the optional string to append to the {@link StringBuilder}
+     * @param actions      the list of actions
+     * @throws IOException throws if anything breaks along the way
+     */
     public static void compress(@NotNull final Path path, @Nullable final Path directory, @NotNull final String content, @NotNull final List<FileAction> actions) throws IOException {
         if (!Files.exists(path)) {
             return;

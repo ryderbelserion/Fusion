@@ -15,8 +15,6 @@ import java.util.function.Consumer;
 
 /**
  * Handles the core of the library!
- *
- * @author ryderbelserion
  */
 public abstract class FusionCore {
 

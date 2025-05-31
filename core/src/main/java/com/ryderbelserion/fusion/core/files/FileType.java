@@ -4,8 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Holds the FileType's which are used in {@link FileManager} or {@link com.ryderbelserion.fusion.core.utils.FileUtils}
- *
- * @author ryderbelserion
  */
 public enum FileType {
 

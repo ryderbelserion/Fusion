@@ -24,9 +24,8 @@ import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 /**
- * A class responsible for handling our precious files!
- *
- * @author ryderbelserion
+ * Loads, reloads, or saves existing files. It supports ConfigMe, Configurate-Jackson/Yaml,
+ * and even supports loading/saving log files... It uses the {@link Path} as an identifier.
  */
 public class FileManager {
 
@@ -34,6 +33,13 @@ public class FileManager {
     private final ILogger logger;
     private final Path path;
 
+    /**
+     * Constructs a {@code FileManager} with an instance of {@link FusionCore}, path, and {@link ILogger}.
+     *
+     * @param core   the {@link FusionCore} instance
+     * @param path   the {@link Path}
+     * @param logger the {@link ILogger} instance
+     */
     public FileManager(@NotNull final FusionCore core, @NotNull final Path path, @NotNull final ILogger logger) {
         this.logger = logger;
         this.core = core;

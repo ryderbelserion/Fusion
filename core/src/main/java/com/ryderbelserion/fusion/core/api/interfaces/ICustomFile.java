@@ -9,6 +9,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * Represents a customizable file object that allows for type-safe manipulation.
+ *
+ * @param <A> the type of the custom file instance, enabling self-referential generics
+ */
 public abstract class ICustomFile<A extends ICustomFile<A>> {
 
     protected final FusionCore fusion = FusionCore.Provider.get();
@@ -22,17 +27,39 @@ public abstract class ICustomFile<A extends ICustomFile<A>> {
         this.path = path;
     }
 
-    public abstract A load();
+    /**
+     * Loads the configuration, This is a generic way to support multiple configuration types.
+     *
+     * @return {@link A}
+     */
+    public abstract @NotNull A load();
 
-    public A save(final String content, @NotNull final List<FileAction> actions) {
+    /**
+     * Saves the configuration, usually used for log files.
+     *
+     * @param content the content to write to the file
+     * @param actions list of actions
+     * @return {@link A}
+     */
+    public @NotNull A save(final String content, @NotNull final List<FileAction> actions) {
         return save();
     }
 
-    public A save() {
+    /**
+     * Saves the configuration as is.
+     *
+     * @return {@link A}
+     */
+    public @NotNull A save() {
         return (A) this;
     }
 
-    public A delete() {
+    /**
+     * Deletes a file if it exists.
+     *
+     * @return {@link A}
+     */
+    public @NotNull A delete() {
         try {
             Files.deleteIfExists(getPath());
 
@@ -44,27 +71,57 @@ public abstract class ICustomFile<A extends ICustomFile<A>> {
         return (A) this;
     }
 
+    /**
+     * Checks if the relative path is a directory.
+     *
+     * @return true or false
+     */
     public boolean isDirectory() {
         return Files.isDirectory(this.path);
     }
 
-    public String getFileName() {
+    /**
+     * Retrieves the name of the relative path.
+     *
+     * @return the name
+     */
+    public @NotNull String getFileName() {
         return this.path.getFileName().toString();
     }
 
-    public Path getPath() {
+    /**
+     * Retrieves the relative path.
+     *
+     * @return the path
+     */
+    public @NotNull Path getPath() {
         return this.path;
     }
 
+    /**
+     * Checks if the relative path exists.
+     *
+     * @return true or false
+     */
     public boolean isLoaded() {
         return Files.exists(this.path);
     }
 
+    /**
+     * Checks if the instance of this file is static.
+     *
+     * @return true or false
+     */
     public boolean isStatic() {
         return this.actions.contains(FileAction.STATIC);
     }
 
-    public FileType getFileType() {
+    /**
+     * Retrieves the file type.
+     *
+     * @return the {@link FileType}
+     */
+    public @NotNull FileType getFileType() {
         return FileType.NONE;
     }
 }

@@ -21,8 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Manages addons, including loading it into the class path, and caching it all.
- *
- * @author ryderbelserion, prosavage
  */
 public class AddonManager {
 
@@ -119,8 +117,8 @@ public class AddonManager {
      * Retrieves an instance of the addon by using the class object
      *
      * @param classObject the instance
-     * @return {          @code <T extends IAddon> Optional<T>}
-     * @param <T>         the extended class
+     * @return {@code <T extends IAddon> Optional<T>}
+     * @param <T> the extended class
      */
     public <T extends IAddon> Optional<T> getAddonInstance(@NotNull final Class<T> classObject) {
         return this.loaders.values().stream().map(AddonClassLoader::getAddon).filter(Objects::nonNull).filter(addon -> addon.getClass().equals(classObject)).map(classObject::cast).findAny();
@@ -144,9 +142,9 @@ public class AddonManager {
      * Reloads an addon.
      *
      * @param addon            the addon instance
-     * @return                 {@code <T extends IAddon> IAddon}
      * @param <T>              the addon instance
      * @throws FusionException throws an exception if the addon could not be reloaded.
+     * @return {@code <T extends IAddon> IAddon}
      */
     public <T extends IAddon> IAddon reloadAddon(@NotNull final T addon) throws FusionException {
         if (addon.isEnabled()) {

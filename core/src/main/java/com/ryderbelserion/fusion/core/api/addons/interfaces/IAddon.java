@@ -9,8 +9,6 @@ import java.nio.file.Path;
 
 /**
  * The addon class, handles all things related to addons.
- *
- * @author ryderbelserion
  */
 public abstract class IAddon {
 

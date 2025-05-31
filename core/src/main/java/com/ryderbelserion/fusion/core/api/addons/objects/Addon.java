@@ -5,8 +5,6 @@ import java.util.Properties;
 
 /**
  * This holds information relating to addons that are created, It pulls information from property files.
- *
- * @author ryderbelserion
  */
 public class Addon {
 
