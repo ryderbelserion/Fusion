@@ -102,19 +102,19 @@ public class StructureBuilder {
         }
     }
 
-    public Set<BlockState> getInitialBlocks() {
+    public @NotNull Set<BlockState> getInitialBlocks() {
         return this.initialBlocks;
     }
 
-    public Set<BlockState> getStructureBlocks() {
+    public @NotNull Set<BlockState> getStructureBlocks() {
         return this.structureBlocks;
     }
 
-    public NamespacedKey getNamespacedKey() {
+    public @NotNull NamespacedKey getNamespacedKey() {
         return this.key;
     }
 
-    public List<String> getBlacklist() {
+    public @NotNull List<String> getBlacklist() {
         return new ArrayList<>();
     }
 

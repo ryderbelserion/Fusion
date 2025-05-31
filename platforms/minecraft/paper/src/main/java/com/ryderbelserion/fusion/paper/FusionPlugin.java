@@ -11,7 +11,7 @@ public class FusionPlugin {
         FusionPlugin.plugin = plugin;
     }
 
-    public static Plugin getPlugin() {
+    public static @NotNull Plugin getPlugin() {
         return plugin;
     }
 }

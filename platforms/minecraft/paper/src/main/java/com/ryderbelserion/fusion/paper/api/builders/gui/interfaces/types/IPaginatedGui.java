@@ -38,15 +38,15 @@ public interface IPaginatedGui {
 
     boolean previous();
 
-    GuiItem getPageItem(final int slot);
+    @Nullable GuiItem getPageItem(final int slot);
 
     void setPageNumber(final int pageNumber);
 
     int getCurrentPageNumber();
 
-    List<GuiItem> getItemsFromPage(final int givenPage);
+    @NotNull List<GuiItem> getItemsFromPage(final int givenPage);
 
-    Map<Integer, GuiItem> getCurrentPageItems();
+    @NotNull Map<Integer, GuiItem> getCurrentPageItems();
 
     void clearPageContents();
 

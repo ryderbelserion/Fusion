@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class ComponentBuilder {
 
-    private final FusionKyori adventure = (FusionKyori) FusionCore.Provider.get();
+    private final FusionKyori kyori = (FusionKyori) FusionCore.Provider.get();
 
     private final Map<ResolverType, List<TagResolver>> resolvers = new HashMap<>();
     private final List<String> lines = new ArrayList<>();
@@ -53,7 +53,7 @@ public class ComponentBuilder {
 
         final List<TagResolver> resolvers = this.resolvers.values().stream().flatMap(List::stream).toList();
 
-        this.lines.forEach(message -> components.add(this.adventure.color(this.target, message, placeholders, resolvers)));
+        this.lines.forEach(message -> components.add(this.kyori.color(this.target, message, placeholders, resolvers)));
 
         return components;
     }

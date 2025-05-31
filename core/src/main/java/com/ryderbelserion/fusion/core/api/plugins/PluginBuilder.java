@@ -1,6 +1,5 @@
 package com.ryderbelserion.fusion.core.api.plugins;
 
-import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.api.plugins.interfacers.IPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -11,11 +10,11 @@ import java.util.Map;
 
 public class PluginBuilder {
 
-    private final FusionCore api = FusionCore.Provider.get();
+    private final ILogger logger;
 
-    private final ILogger logger = this.api.getLogger();
-
-    private final boolean isVerbose = this.api.isVerbose();
+    public PluginBuilder(@NotNull final ILogger logger) {
+        this.logger = logger;
+    }
 
     private final Map<String, IPlugin> plugins = new HashMap<>();
 
@@ -25,12 +24,18 @@ public class PluginBuilder {
 
     public void registerPlugin(@NotNull final IPlugin plugin) {
         this.plugins.put(plugin.getName(), plugin.start());
+
+        if (plugin.isEnabled()) {
+            this.logger.warn("The plugin {} has successfully enabled.", plugin.getName());
+        }
     }
 
     public void unregisterPlugin(@NotNull final IPlugin plugin) {
         this.plugins.remove(plugin.getName());
 
         plugin.stop();
+
+        this.logger.warn("The plugin {} has successfully disabled.", plugin.getName());
     }
 
     public final boolean isEnabled(@NotNull final String name) {
@@ -41,17 +46,5 @@ public class PluginBuilder {
 
     public @NotNull final Map<String, IPlugin> getPlugins() {
         return Collections.unmodifiableMap(this.plugins);
-    }
-
-    public void printPlugins() {
-        if (this.isVerbose) {
-            getPlugins().forEach((name, plugin) -> {
-                if (plugin.isEnabled() && !name.isEmpty()) {
-                    this.logger.safe("{}: FOUND", name);
-                } else {
-                    this.logger.safe("{}: NOT FOUND", name);
-                }
-            });
-        }
     }
 }

@@ -2,6 +2,8 @@ package com.ryderbelserion.fusion.core.api.addons;
 
 import com.ryderbelserion.fusion.core.api.addons.interfaces.IAddon;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,7 +22,7 @@ public class AddonClassLoader extends URLClassLoader {
     private boolean isDisabling;
     private String name;
 
-    public AddonClassLoader(final AddonManager manager, final File file, final String group, final String name) throws FusionException, MalformedURLException {
+    public AddonClassLoader(@NotNull final AddonManager manager, @NotNull final File file, @NotNull final String group, @NotNull final String name) throws FusionException, MalformedURLException {
         super(new URL[]{file.toURI().toURL()}, manager.getClass().getClassLoader());
 
         this.manager = manager;
@@ -55,11 +57,11 @@ public class AddonClassLoader extends URLClassLoader {
     }
 
     @Override
-    protected Class<?> findClass(final String name) throws ClassNotFoundException {
+    protected Class<?> findClass(@NotNull final String name) throws ClassNotFoundException {
         return findClass(name, true);
     }
 
-    public Class<?> findClass(final String name, final boolean isGlobal) throws ClassNotFoundException {
+    public Class<?> findClass(@NotNull final String name, final boolean isGlobal) throws ClassNotFoundException {
         if (this.isDisabling()) {
             throw new ClassNotFoundException("This class loader is disabling.");
         }
@@ -102,21 +104,19 @@ public class AddonClassLoader extends URLClassLoader {
         return this.isDisabling;
     }
 
-    public AddonManager getManager() {
+    public @NotNull AddonManager getManager() {
         return this.manager;
     }
 
-    public IAddon getAddon() {
+    public @Nullable IAddon getAddon() {
         return this.addon;
     }
 
-    public String getName() {
+    public @NotNull String getName() {
         return this.name;
     }
 
-    public File getFile() {
+    public @NotNull File getFile() {
         return this.file;
     }
-
-
 }

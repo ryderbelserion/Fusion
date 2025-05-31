@@ -22,15 +22,15 @@ import java.util.Set;
 
 public interface IBaseGui {
 
-    Map<@NotNull Integer, @NotNull GuiItem> getGuiItems();
+    @NotNull Map<@NotNull Integer, @NotNull GuiItem> getGuiItems();
 
-    String getTitle();
+    @NotNull String getTitle();
 
     void setTitle(@NotNull final String title);
 
-    Component title(@NotNull final Audience audience);
+    @NotNull Component title(@NotNull final Audience audience);
 
-    Component title();
+    @NotNull Component title();
 
     int getRows();
 
@@ -38,9 +38,9 @@ public interface IBaseGui {
 
     int getSize();
 
-    GuiType getGuiType();
+    @NotNull GuiType getGuiType();
 
-    GuiFiller getFiller();
+    @NotNull GuiFiller getFiller();
 
     void close(@NotNull final Player player, @NotNull final InventoryCloseEvent.Reason reason, final boolean isDelayed);
 
@@ -102,29 +102,29 @@ public interface IBaseGui {
 
     @Nullable GuiAction<InventoryClickEvent> getSlotAction(final int slot);
 
-    GuiAction<InventoryClickEvent> getDefaultTopClickAction();
+    @Nullable GuiAction<InventoryClickEvent> getDefaultTopClickAction();
 
     void setDefaultTopClickAction(@Nullable final GuiAction<@NotNull InventoryClickEvent> defaultTopClickAction);
 
-    GuiAction<InventoryClickEvent> getPlayerInventoryAction();
+    @Nullable GuiAction<InventoryClickEvent> getPlayerInventoryAction();
 
     void setOpenGuiAction(@Nullable final GuiAction<@NotNull InventoryOpenEvent> openGuiAction);
 
-    GuiAction<InventoryClickEvent> getOutsideClickAction();
+    @Nullable GuiAction<InventoryClickEvent> getOutsideClickAction();
 
-    GuiAction<InventoryClickEvent> getDefaultClickAction();
+    @Nullable GuiAction<InventoryClickEvent> getDefaultClickAction();
 
     void setDragAction(@Nullable final GuiAction<@NotNull InventoryDragEvent> dragAction);
 
-    GuiAction<InventoryCloseEvent> getCloseGuiAction();
+    @Nullable GuiAction<InventoryCloseEvent> getCloseGuiAction();
 
     void setCloseGuiAction(@Nullable final GuiAction<@NotNull InventoryCloseEvent> closeGuiAction);
 
-    GuiAction<InventoryOpenEvent> getOpenGuiAction();
+    @Nullable GuiAction<InventoryOpenEvent> getOpenGuiAction();
 
     void setPlayerInventoryAction(@Nullable final GuiAction<@NotNull InventoryClickEvent> playerInventoryAction);
 
-    GuiAction<InventoryDragEvent> getDragAction();
+    @Nullable GuiAction<InventoryDragEvent> getDragAction();
 
     void setOutsideClickAction(@Nullable final GuiAction<@NotNull InventoryClickEvent> outsideClickAction);
 
@@ -132,7 +132,7 @@ public interface IBaseGui {
 
     void open(@NotNull final Player player);
 
-    default Set<InteractionComponent> safeCopy(@NotNull final Set<InteractionComponent> components) {
+    default @NotNull Set<InteractionComponent> safeCopy(@NotNull final Set<InteractionComponent> components) {
         return components.isEmpty() ? EnumSet.noneOf(InteractionComponent.class) : EnumSet.copyOf(components);
     }
 }

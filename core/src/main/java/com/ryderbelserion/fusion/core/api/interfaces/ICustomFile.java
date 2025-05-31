@@ -11,9 +11,8 @@ import java.util.List;
 
 public abstract class ICustomFile<A extends ICustomFile<A>> {
 
-    protected final FusionCore api = FusionCore.Provider.get();
-    protected final ILogger logger = this.api.getLogger();
-    protected final boolean isVerbose = this.api.isVerbose();
+    protected final FusionCore fusion = FusionCore.Provider.get();
+    protected final ILogger logger = this.fusion.getLogger();
 
     private final List<FileAction> actions;
     private final Path path;
@@ -37,9 +36,7 @@ public abstract class ICustomFile<A extends ICustomFile<A>> {
         try {
             Files.deleteIfExists(getPath());
 
-            if (this.isVerbose) {
-                this.logger.warn("Successfully deleted {}", getFileName());
-            }
+            this.logger.warn("Successfully deleted {}", getFileName());
         } catch (final IOException exception) {
             this.logger.warn("Failed to delete {}: {}", getPath(), exception);
         }

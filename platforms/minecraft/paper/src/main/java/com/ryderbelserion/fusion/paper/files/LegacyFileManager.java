@@ -1,11 +1,11 @@
 package com.ryderbelserion.fusion.paper.files;
 
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.files.FileType;
 import com.ryderbelserion.fusion.core.utils.FileUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -32,13 +30,12 @@ import java.util.jar.JarFile;
 
 public final class LegacyFileManager {
 
-    private final FusionCore api = FusionCore.Provider.get();
+    private final FusionCore fusion = FusionCore.Provider.get();
 
     private final Plugin plugin = FusionPlugin.getPlugin();
 
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
+    private final ILogger logger = this.fusion.getLogger();
     private final File dataFolder = this.plugin.getDataFolder();
-    private final boolean isVerbose = this.api.isVerbose();
 
     private final Map<String, LegacyCustomFile> files = new HashMap<>();
 
@@ -46,11 +43,9 @@ public final class LegacyFileManager {
 
     public LegacyFileManager() {}
 
-    public LegacyFileManager addFolder(@NotNull final String folder, @NotNull final FileType fileType) {
+    public @NotNull LegacyFileManager addFolder(@NotNull final String folder, @NotNull final FileType fileType) {
         if (folder.isBlank()) {
-            if (this.isVerbose) {
-                this.logger.warn("Cannot add the folder as the folder is empty.");
-            }
+            this.logger.warn("Cannot add the folder as the folder is empty.");
 
             return this;
         }
@@ -98,13 +93,13 @@ public final class LegacyFileManager {
         return this;
     }
 
-    public LegacyFileManager addFile(@NotNull final LegacyCustomFile customFile) {
+    public @NotNull LegacyFileManager addFile(@NotNull final LegacyCustomFile customFile) {
         this.files.put(customFile.getEffectiveName(), customFile);
         
         return this;
     }
 
-    public LegacyFileManager addFile(@NotNull final String fileName) {
+    public @NotNull LegacyFileManager addFile(@NotNull final String fileName) {
         FileType type = FileType.NONE;
 
         if (fileName.endsWith(".yml")) {
@@ -116,15 +111,13 @@ public final class LegacyFileManager {
         return addFile(fileName, null, false, type);
     }
 
-    public LegacyFileManager addFile(@NotNull final String fileName, @NotNull final FileType fileType) {
+    public @NotNull LegacyFileManager addFile(@NotNull final String fileName, @NotNull final FileType fileType) {
         return addFile(fileName, null, false, fileType);
     }
 
-    public LegacyFileManager addFile(@NotNull final String fileName, @Nullable final String folder, final boolean isDynamic, @NotNull final FileType fileType) {
+    public @NotNull LegacyFileManager addFile(@NotNull final String fileName, @Nullable final String folder, final boolean isDynamic, @NotNull final FileType fileType) {
         if (fileName.isBlank()) {
-            if (this.isVerbose) {
-                this.logger.warn("Cannot add the file as the file is null or empty.");
-            }
+            this.logger.warn("Cannot add the file as the file is null or empty.");
 
             return this;
         }
@@ -138,9 +131,7 @@ public final class LegacyFileManager {
         final File file = new File(this.dataFolder, resourcePath);
 
         if (!file.exists()) {
-            if (this.isVerbose) {
-                this.logger.warn("Successfully extracted file {} to {}", fileName, file.getPath());
-            }
+            this.logger.warn("Successfully extracted file {} to {}", fileName, file.getPath());
 
             this.plugin.saveResource(resourcePath, false);
         }
@@ -172,11 +163,9 @@ public final class LegacyFileManager {
         return this;
     }
 
-    public LegacyFileManager saveFile(@NotNull final String fileName) {
+    public @NotNull LegacyFileManager saveFile(@NotNull final String fileName) {
         if (fileName.isBlank()) {
-            if (this.isVerbose) {
-                this.logger.warn("Cannot save the file as the file is null or empty.");
-            }
+            this.logger.warn("Cannot save the file as the file is null or empty.");
 
             return this;
         }
@@ -186,9 +175,7 @@ public final class LegacyFileManager {
         final String strippedName = strip(fileName, extension);
 
         if (!this.files.containsKey(strippedName)) {
-            if (this.isVerbose) {
-                this.logger.warn("Cannot save the file as the file does not exist.");
-            }
+            this.logger.warn("Cannot save the file as the file does not exist.");
 
             return this;
         }
@@ -198,15 +185,13 @@ public final class LegacyFileManager {
         return this;
     }
 
-    public LegacyFileManager removeFile(final LegacyCustomFile customFile, final boolean purge) {
+    public @NotNull LegacyFileManager removeFile(@NotNull final LegacyCustomFile customFile, final boolean purge) {
         return removeFile(customFile.getFileName(), customFile.getFileType(), purge);
     }
 
-    public LegacyFileManager removeFile(@NotNull final String fileName, @NotNull final FileType fileType, final boolean purge) {
+    public @NotNull LegacyFileManager removeFile(@NotNull final String fileName, @NotNull final FileType fileType, final boolean purge) {
         if (fileName.isBlank()) {
-            if (this.isVerbose) {
-                this.logger.warn("Cannot remove the file as the file is null or empty.");
-            }
+            this.logger.warn("Cannot remove the file as the file is null or empty.");
 
             return this;
         }
@@ -244,7 +229,7 @@ public final class LegacyFileManager {
         return this;
     }
 
-    public LegacyFileManager reloadFiles() {
+    public @NotNull LegacyFileManager reloadFiles() {
         final List<String> forRemoval = new ArrayList<>();
 
         this.files.forEach((name, file) -> {
@@ -257,14 +242,14 @@ public final class LegacyFileManager {
 
         forRemoval.forEach(this.files::remove);
 
-        if (this.isVerbose && !forRemoval.isEmpty()) {
-            this.logger.info("{} file(s) were removed from cache, because they did not exist.", forRemoval.size());
+        if (!forRemoval.isEmpty()) {
+            this.logger.safe("{} file(s) were removed from cache, because they did not exist.", forRemoval.size());
         }
 
         return this;
     }
 
-    public LegacyFileManager init() {
+    public @NotNull LegacyFileManager init() {
         this.dataFolder.mkdirs();
 
         this.folders.forEach(this::addFolder);
@@ -272,27 +257,27 @@ public final class LegacyFileManager {
         return this;
     }
 
-    public LegacyFileManager purge() {
+    public @NotNull LegacyFileManager purge() {
         this.folders.clear();
         this.files.clear();
 
         return this;
     }
 
-    public @Nullable LegacyCustomFile getFile(final String fileName, final FileType fileType) {
+    public @Nullable LegacyCustomFile getFile(@NotNull final String fileName, @NotNull final FileType fileType) {
         return this.files.getOrDefault(strip(fileName, fileType.getExtension()), null);
     }
 
 
-    public String strip(final String fileName, final String extension) {
+    public @NotNull String strip(@NotNull final String fileName, @NotNull final String extension) {
         return fileName.replace(extension, "");
     }
 
-    public Map<String, LegacyCustomFile> getFiles() {
+    public @NotNull Map<String, LegacyCustomFile> getFiles() {
         return Collections.unmodifiableMap(this.files);
     }
 
-    public void extracts(@NotNull String input, @Nullable final Path output, final boolean replaceExisting) {
+    public void extracts(@NotNull final String input, @Nullable final Path output, final boolean replaceExisting) {
         if (output == null || input.isEmpty()) return;
 
         try (JarFile jarFile = new JarFile(Path.of(FileUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
@@ -338,24 +323,6 @@ public final class LegacyFileManager {
             }
         } catch (IOException | URISyntaxException exception) {
             throw new RuntimeException(exception);
-        }
-    }
-
-    private InputStream getResource(@NotNull final String path) {
-        try {
-            final URL url = FileUtils.class.getClassLoader().getResource(path);
-
-            if (url == null) {
-                return null;
-            }
-
-            final URLConnection connection = url.openConnection();
-
-            connection.setUseCaches(false);
-
-            return connection.getInputStream();
-        } catch (IOException exception) {
-            throw new FusionException("Failed to get resource path " + path + " out of jar", exception);
         }
     }
 }

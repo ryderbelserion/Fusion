@@ -116,7 +116,7 @@ public final class GuiFiller {
         }
     }
 
-    private List<GuiItem> repeatList(@NotNull final List<GuiItem> guiItems) {
+    private @NotNull List<GuiItem> repeatList(@NotNull final List<GuiItem> guiItems) {
         final List<GuiItem> repeated = new ArrayList<>();
 
         Collections.nCopies(this.gui.getRows() * 9, guiItems).forEach(repeated::addAll);

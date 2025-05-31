@@ -175,7 +175,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public final GuiItem getPageItem(final int slot) {
+    public @Nullable final GuiItem getPageItem(final int slot) {
         return this.currentPage.get(slot);
     }
 
@@ -190,7 +190,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public final List<GuiItem> getItemsFromPage(final int givenPage) {
+    public @NotNull final List<GuiItem> getItemsFromPage(final int givenPage) {
         final int page = givenPage - 1;
 
         final List<GuiItem> guiPage = new ArrayList<>();
@@ -206,7 +206,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public final Map<Integer, GuiItem> getCurrentPageItems() {
+    public @NotNull final Map<Integer, GuiItem> getCurrentPageItems() {
         return this.currentPage;
     }
 

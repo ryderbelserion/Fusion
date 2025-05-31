@@ -23,56 +23,54 @@ public abstract class IAbstractConfigFile<A extends IAbstractConfigFile<A, C, L>
 
     public abstract void saveConfig() throws ConfigurateException;
 
-    public String getStringValueWithDefault(final String defaultValue, final Object... path) {
+    public @NotNull String getStringValueWithDefault(@NotNull final String defaultValue, @NotNull final Object... path) {
         return "";
     }
 
-    public String getStringValue(final Object... path) {
+    public @NotNull String getStringValue(@NotNull final Object... path) {
         return getStringValueWithDefault("", path);
     }
 
-    public boolean getBooleanValueWithDefault(final boolean defaultValue, final Object... path) {
+    public boolean getBooleanValueWithDefault(final boolean defaultValue, @NotNull final Object... path) {
         return false;
     }
 
-    public boolean getBooleanValue(final Object... path) {
+    public boolean getBooleanValue(@NotNull final Object... path) {
         return getBooleanValueWithDefault(false, path);
     }
 
-    public double getDoubleValueWithDefault(final double defaultValue, final Object... path) {
+    public double getDoubleValueWithDefault(final double defaultValue, @NotNull final Object... path) {
         return -1.0;
     }
 
-    public double getDoubleValue(final Object... path) {
+    public double getDoubleValue(@NotNull final Object... path) {
         return getDoubleValueWithDefault(0.0, path);
     }
 
-    public long getLongValueWithDefault(final long defaultValue, final Object... path) {
+    public long getLongValueWithDefault(final long defaultValue, @NotNull final Object... path) {
         return -1L;
     }
 
-    public long getLongValue(final Object... path) {
+    public long getLongValue(@NotNull final Object... path) {
         return getLongValueWithDefault(0L, path);
     }
 
-    public int getIntValueWithDefault(final int defaultValue, final Object... path) {
+    public int getIntValueWithDefault(final int defaultValue, @NotNull final Object... path) {
         return -1;
     }
 
-    public int getIntValue(final Object... path) {
+    public int getIntValue(@NotNull final Object... path) {
         return getIntValueWithDefault(0, path);
     }
 
-    public List<String> getStringList(final Object... path) {
+    public @NotNull List<String> getStringList(@NotNull final Object... path) {
         return List.of();
     }
 
     @Override
-    public A load() {
+    public @NotNull A load() {
         if (isDirectory()) {
-            if (this.isVerbose) {
-                this.logger.warn("Cannot load configuration, as {} is a directory.", getFileName());
-            }
+            this.logger.warn("Cannot load configuration, as {} is a directory.", getFileName());
 
             return (A) this;
         }
@@ -89,19 +87,15 @@ public abstract class IAbstractConfigFile<A extends IAbstractConfigFile<A, C, L>
     }
 
     @Override
-    public A save() {
+    public @NotNull A save() {
         if (isDirectory()) {
-            if (this.isVerbose) {
-                this.logger.warn("Cannot save configuration, as {} is a directory.", getFileName());
-            }
+            this.logger.warn("Cannot save configuration, as {} is a directory.", getFileName());
 
             return (A) this;
         }
 
         if (this.configuration == null) {
-            if (this.isVerbose) {
-                this.logger.error("Configuration is null, cannot save {}!", getFileName());
-            }
+            this.logger.error("Configuration is null, cannot save {}!", getFileName());
 
             return (A) this;
         }
@@ -117,7 +111,7 @@ public abstract class IAbstractConfigFile<A extends IAbstractConfigFile<A, C, L>
         return (A) this;
     }
 
-    public C getConfiguration() {
+    public @NotNull C getConfiguration() {
         return this.configuration;
     }
 }

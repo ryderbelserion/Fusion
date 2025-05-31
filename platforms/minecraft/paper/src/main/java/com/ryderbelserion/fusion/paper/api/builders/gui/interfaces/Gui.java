@@ -26,15 +26,15 @@ public final class Gui extends BaseGui {
         this(Audience.empty(), title, rows, components);
     }
 
-    public static SimpleBuilder gui(@NotNull final GuiType type) {
+    public static @NotNull SimpleBuilder gui(@NotNull final GuiType type) {
         return new SimpleBuilder(type);
     }
 
-    public static SimpleBuilder gui() {
+    public static @NotNull SimpleBuilder gui() {
         return gui(GuiType.CHEST);
     }
 
-    public static PaginatedBuilder paginated() {
+    public static @NotNull PaginatedBuilder paginated() {
         return new PaginatedBuilder();
     }
 }

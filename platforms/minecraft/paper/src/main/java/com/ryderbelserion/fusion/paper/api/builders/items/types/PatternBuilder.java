@@ -21,13 +21,13 @@ public class PatternBuilder extends BaseItemBuilder<PatternBuilder> {
         this.builder = BannerPatternLayers.bannerPatternLayers();
     }
 
-    public PatternBuilder addPattern(@NotNull final Pattern pattern) {
+    public @NotNull PatternBuilder addPattern(@NotNull final Pattern pattern) {
         this.builder.add(pattern);
 
         return this;
     }
 
-    public PatternBuilder addPattern(@NotNull final String pattern, @NotNull final String dye) {
+    public @NotNull PatternBuilder addPattern(@NotNull final String pattern, @NotNull final String dye) {
         final PatternType type = ItemUtils.getPatternType(pattern.toLowerCase());
 
         if (type == null) return this;
@@ -38,7 +38,7 @@ public class PatternBuilder extends BaseItemBuilder<PatternBuilder> {
     }
 
     @Override
-    public PatternBuilder build() {
+    public @NotNull PatternBuilder build() {
         getItem().setData(DataComponentTypes.BANNER_PATTERNS, this.builder.build());
 
         return this;

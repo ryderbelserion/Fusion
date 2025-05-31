@@ -5,8 +5,8 @@ import com.destroystokyo.paper.profile.ProfileProperty;
 import com.nexomc.nexo.api.NexoItems;
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.utils.NumberUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.kyori.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builders.PlayerBuilder;
@@ -80,7 +80,7 @@ import java.util.function.Consumer;
 
 public class ItemBuilder<T extends ItemBuilder<T>> {
 
-    private final FusionPaper api = (FusionPaper) FusionCore.Provider.get();
+    private final FusionPaper fusion = (FusionPaper) FusionCore.Provider.get();
 
     private final Plugin plugin = FusionPlugin.getPlugin();
 
@@ -476,7 +476,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     public @NotNull T withType(@NotNull final String key) {
         if (key.isEmpty()) return (T) this;
 
-        switch (this.api.getItemsPlugin().toLowerCase()) {
+        switch (this.fusion.getItemsPlugin().toLowerCase()) {
             case "nexo" -> {
                 if (Support.nexo.isEnabled()) {
                     getNexo(key);
@@ -518,7 +518,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             if (data.contains("#")) {
                 final String model = data.split("#")[1];
 
-                final Optional<Number> customModelData = NumberUtils.tryParseInt(model);
+                final Optional<Number> customModelData = StringUtils.tryParseInt(model);
 
                 if (customModelData.isPresent()) {
                     data = data.replace("#" + customModelData.get(), "");
@@ -527,7 +527,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
                 }
             }
 
-            final Optional<Number> damage = NumberUtils.tryParseInt(data);
+            final Optional<Number> damage = StringUtils.tryParseInt(data);
 
             if (damage.isEmpty()) {
                 @Nullable final PotionEffectType potionEffect = ItemUtils.getPotionEffect(data);
@@ -547,7 +547,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             type = sections[0];
             final String model = sections[1];
 
-            final Optional<Number> customModelData = NumberUtils.tryParseInt(model);
+            final Optional<Number> customModelData = StringUtils.tryParseInt(model);
 
             customModelData.ifPresent(number -> setCustomModelData(number.intValue()));
         }
@@ -596,7 +596,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     public @NotNull T setCustomModelData(@NotNull final String model) {
         if (model.isEmpty()) return (T) this;
 
-        final Optional<Number> integer = NumberUtils.tryParseInt(model);
+        final Optional<Number> integer = StringUtils.tryParseInt(model);
 
         if (integer.isPresent()) {
             return setCustomModelData(integer.orElse(-1).intValue());
@@ -692,7 +692,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return addPlaceholder(placeholder, value, false);
     }
 
-    public @NotNull T setNamePlaceholders(Map<String, String> placeholders) {
+    public @NotNull T setNamePlaceholders(@NotNull final Map<String, String> placeholders) {
         placeholders.forEach(this::addNamePlaceholder);
 
         return (T) this;
@@ -702,7 +702,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return addPlaceholder(placeholder, value, true);
     }
 
-    public @NotNull T setLorePlaceholders(Map<String, String> placeholders) {
+    public @NotNull T setLorePlaceholders(@NotNull final Map<String, String> placeholders) {
         placeholders.forEach(this::addLorePlaceholder);
 
         return (T) this;
@@ -877,7 +877,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     public @NotNull T setSkull(@NotNull final String skull) {
         if (skull.isEmpty()) return (T) this;
 
-        @NotNull final HeadDatabaseAPI hdb = this.api.getApi();
+        @NotNull final HeadDatabaseAPI hdb = this.fusion.getApi();
 
         this.itemStack = hdb.isHead(skull) ? hdb.getItemHead(skull) : this.itemStack.withType(Material.PLAYER_HEAD);
 
@@ -1265,7 +1265,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return this.server.getPlayer(uuid);
     }
 
-    private CustomModelData.Builder populateData() {
+    private @NotNull CustomModelData.Builder populateData() {
         final CustomModelData.Builder data = CustomModelData.customModelData();
 
         if (this.itemStack.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
@@ -1279,7 +1279,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return data;
     }
 
-    private void getItemsAdder(final String item) {
+    private void getItemsAdder(@NotNull final String item) {
         if (!CustomStack.isInRegistry(item)) {
             return;
         }
@@ -1293,7 +1293,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         this.itemStack = builder.getItemStack();
     }
 
-    private void getOraxen(final String item) {
+    private void getOraxen(@NotNull final String item) {
         if (!OraxenItems.exists(item)) {
             return;
         }
@@ -1307,7 +1307,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         this.itemStack = builder.build();
     }
 
-    private void getNexo(final String item) {
+    private void getNexo(@NotNull final String item) {
         if (!NexoItems.exists(item)) {
             return;
         }

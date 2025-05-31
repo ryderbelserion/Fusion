@@ -25,7 +25,7 @@ public abstract class FusionKyori extends FusionCore {
     public FusionKyori(@NotNull final ComponentLogger logger, @NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
         super(path, consumer);
 
-        this.logger = new KyoriLogger(logger);
+        this.logger = new KyoriLogger(logger, this);
     }
 
     public abstract String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message);
@@ -33,7 +33,7 @@ public abstract class FusionKyori extends FusionCore {
     public abstract @NotNull String chomp(@NotNull final String message);
 
     @Override
-    public final KyoriLogger getLogger() {
+    public @NotNull final KyoriLogger getLogger() {
         return this.logger;
     }
 

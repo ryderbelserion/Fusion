@@ -2,11 +2,9 @@ package com.ryderbelserion.fusion.paper.files;
 
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.files.FileType;
-import com.ryderbelserion.fusion.paper.FusionPlugin;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
@@ -14,12 +12,9 @@ import java.util.concurrent.CompletableFuture;
 
 public final class LegacyCustomFile {
 
-    private final FusionCore api = FusionCore.Provider.get();
+    private final FusionCore fusion = FusionCore.Provider.get();
 
-    private final Plugin plugin = FusionPlugin.getPlugin();
-
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
-    private final boolean isVerbose = this.api.isVerbose();
+    private final ILogger logger = this.fusion.getLogger();
 
     private final String effectiveName;
     private final FileType fileType;
@@ -35,47 +30,39 @@ public final class LegacyCustomFile {
 
     private YamlConfiguration configuration;
 
-    public LegacyCustomFile load() {
+    public @NotNull LegacyCustomFile load() {
         if (this.fileType != FileType.YAML) {
             throw new FusionException("Only yaml files are supported by the load function.");
         }
 
         if (getFile().isDirectory()) {
-            if (this.isVerbose) {
-                this.logger.warn("Cannot load configuration, as {} is a directory.", getFileName());
-            }
+            this.logger.warn("Cannot load configuration, as {} is a directory.", getFileName());
 
             return this;
         }
 
         try {
             this.configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(this.file)).join();
-        } catch (Exception exception) {
-            if (this.isVerbose) {
-                this.logger.warn("Cannot load configuration file: {}", getFileName(), exception);
-            }
+        } catch (final Exception exception) {
+            this.logger.warn("Cannot load configuration file: {}", getFileName(), exception);
         }
 
         return this;
     }
 
-    public LegacyCustomFile save() {
+    public @NotNull LegacyCustomFile save() {
         if (this.fileType != FileType.YAML) {
             throw new FusionException("Only yaml files are supported by the save function.");
         }
 
         if (getFile().isDirectory()) {
-            if (this.isVerbose) {
-                this.logger.warn("Cannot save configuration, as {} is a directory.", getFileName());
-            }
+            this.logger.warn("Cannot save configuration, as {} is a directory.", getFileName());
 
             return this;
         }
 
         if (this.configuration == null) {
-            if (this.isVerbose) {
-                this.logger.error("Configuration is null, cannot save {}!", getFileName());
-            }
+            this.logger.error("Configuration is null, cannot save {}!", getFileName());
 
             return this;
         }
@@ -95,9 +82,7 @@ public final class LegacyCustomFile {
         final File file = getFile();
 
         if (file != null && file.exists() && file.delete()) {
-            if (this.isVerbose) {
-                this.logger.warn("Successfully deleted {}", getFileName());
-            }
+            this.logger.warn("Successfully deleted {}", getFileName());
         }
     }
 
@@ -117,19 +102,19 @@ public final class LegacyCustomFile {
         return getConfiguration() != null;
     }
 
-    public String getEffectiveName() {
+    public @NotNull String getEffectiveName() {
         return this.effectiveName;
     }
 
-    public LegacyCustomFile getInstance() {
+    public @NotNull LegacyCustomFile getInstance() {
         return this;
     }
 
-    public FileType getFileType() {
+    public @NotNull FileType getFileType() {
         return this.fileType;
     }
 
-    public String getFileName() {
+    public @NotNull String getFileName() {
         return this.file.getName();
     }
 
@@ -141,7 +126,7 @@ public final class LegacyCustomFile {
         return this.file.exists();
     }
 
-    public File getFile() {
+    public @NotNull File getFile() {
         return this.file;
     }
 }

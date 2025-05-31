@@ -30,16 +30,15 @@ import java.util.function.UnaryOperator;
  */
 public class FileManager {
 
-    /**
-     * A class responsible for handling our precious files!
-     */
-    public FileManager() {}
+    private final FusionCore core;
+    private final ILogger logger;
+    private final Path path;
 
-    private final FusionCore api = FusionCore.Provider.get();
-    private final ILogger logger = this.api.getLogger();
-    private final boolean isVerbose = this.api.isVerbose();
-    private final Path dataFolder = this.api.getPath();
-    private final int depth = this.api.getRecursionDepth();
+    public FileManager(@NotNull final FusionCore core, @NotNull final Path path, @NotNull final ILogger logger) {
+        this.logger = logger;
+        this.core = core;
+        this.path = path;
+    }
 
     private final Map<Path, ICustomFile<? extends ICustomFile<?>>> customFiles = new HashMap<>();
     private final Map<Path, FileType> folders = new HashMap<>();
@@ -56,8 +55,8 @@ public class FileManager {
      * @param actions a list of actions to define what to do
      * @return {@link FileManager}
      */
-    public FileManager init(@NotNull final List<FileAction> actions) {
-        this.dataFolder.toFile().mkdirs();
+    public @NotNull final FileManager init(@NotNull final List<FileAction> actions) {
+        this.path.toFile().mkdirs();
 
         this.folders.forEach((folder, type) -> addFolder(folder, type, actions, null));
 
@@ -74,14 +73,14 @@ public class FileManager {
      * @param options optional options to configure indentation size etc.
      * @return {@link FileManager}
      */
-    public FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
+    public @NotNull final FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
         addFolder(folder, FileType.JALU);
 
         extractFolder(folder, new ArrayList<>(actions) {{
             add(FileAction.EXTRACT);
         }});
 
-        final List<Path> files = FileUtils.getFiles(this.dataFolder.resolve(folder), ".yml", this.depth);
+        final List<Path> files = FileUtils.getFiles(this.path.resolve(folder), ".yml", this.core.getRecursionDepth());
 
         for (final Path path : files) {
             addFile(path, builder, actions, options);
@@ -98,12 +97,12 @@ public class FileManager {
      * @param options optional options to configure indentation size etc.
      * @return {@link FileManager}
      */
-    public FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
+    public @NotNull final FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
         addFolder(folder, fileType);
 
         extractFolder(folder, actions);
 
-        final List<Path> files = FileUtils.getFiles(folder, fileType.getExtension(), this.depth);
+        final List<Path> files = FileUtils.getFiles(folder, fileType.getExtension(), this.core.getRecursionDepth());
 
         for (final Path path : files) {
             addFile(path, actions, options);
@@ -119,7 +118,7 @@ public class FileManager {
      * @param fileType the type of file expected in the folder
      * @return {@link FileManager}
      */
-    public FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType) {
+    public @NotNull final FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType) {
         this.folders.putIfAbsent(folder, fileType);
 
         return this;
@@ -135,7 +134,7 @@ public class FileManager {
      * @param options optional options to configure indentation size etc.
      * @return {@link FileManager}
      */
-    public FileManager addFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
+    public @NotNull final FileManager addFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
         if (file != null && !actions.contains(FileAction.RELOAD)) { // if the reload action is not present, we load the file!
@@ -159,7 +158,7 @@ public class FileManager {
      * @param options optional options to configure indentation size etc.
      * @return {@link FileManager}
      */
-    public FileManager addFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
+    public @NotNull final FileManager addFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
         final String fileName = path.getFileName().toString();
 
         if (actions.contains(FileAction.EXTRACT) && !Files.exists(path)) {
@@ -200,21 +199,17 @@ public class FileManager {
      * @param content the content to save to the log file
      * @return {@link FileManager}
      */
-    public FileManager saveFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @NotNull final String content) {
+    public @NotNull final FileManager saveFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @NotNull final String content) {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
         if (file == null) {
-            if (this.isVerbose) {
-                this.logger.warn("Cannot write to file as the file does not exist.");
-            }
+            this.logger.warn("Cannot write to file as the file does not exist.");
 
             return this;
         }
 
         if (file.getFileType() != FileType.LOG) {
-            if (this.isVerbose) {
-                this.logger.warn("The file {} is not a log file.", file.getFileName());
-            }
+            this.logger.warn("The file {} is not a log file.", file.getFileName());
 
             return this;
         }
@@ -230,21 +225,17 @@ public class FileManager {
      * @param path the path
      * @return {@link FileManager}
      */
-    public FileManager saveFile(@NotNull final Path path) {
+    public @NotNull final FileManager saveFile(@NotNull final Path path) {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
         if (file == null) {
-            if (this.isVerbose) {
-                this.logger.warn("Cannot write to file as the file does not exist.");
-            }
+            this.logger.warn("Cannot write to file as the file does not exist.");
 
             return this;
         }
 
         if (file.getFileType() == FileType.LOG) {
-            if (this.isVerbose) {
-                this.logger.warn("Please use the correct method FileManager#saveFile(path, content) to write to log files!");
-            }
+            this.logger.warn("Please use the correct method FileManager#saveFile(path, content) to write to log files!");
 
             return this;
         }
@@ -261,7 +252,7 @@ public class FileManager {
      * @param action the action
      * @return {@link FileManager}
      */
-    public final FileManager removeFile(@NotNull final Path path, @Nullable final FileAction action) {
+    public @NotNull final FileManager removeFile(@NotNull final Path path, @Nullable final FileAction action) {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.get(path);
 
         if (action == FileAction.DELETE) {
@@ -282,7 +273,7 @@ public class FileManager {
      *
      * @return {@link FileManager}
      */
-    public FileManager purge() {
+    public @NotNull final FileManager purge() {
         this.customFiles.clear();
         this.folders.clear();
 
@@ -296,7 +287,7 @@ public class FileManager {
      * @param action the action to specify
      * @return {@link FileManager}
      */
-    public final FileManager removeFile(@NotNull final ICustomFile<? extends ICustomFile<?>> customFile, @Nullable final FileAction action) {
+    public @NotNull final FileManager removeFile(@NotNull final ICustomFile<? extends ICustomFile<?>> customFile, @Nullable final FileAction action) {
         removeFile(customFile.getPath(), action);
 
         return this;
@@ -309,8 +300,8 @@ public class FileManager {
      * @param actions the list of actions to define what to do.
      * @return {@link FileManager}
      */
-    public final FileManager extractFolder(@NotNull final Path folder, @NotNull final List<FileAction> actions) {
-        FileUtils.extract(folder.getFileName().toString(), this.dataFolder, new ArrayList<>(actions) {{
+    public @NotNull final FileManager extractFolder(@NotNull final Path folder, @NotNull final List<FileAction> actions) {
+        FileUtils.extract(folder.getFileName().toString(), this.path, new ArrayList<>(actions) {{
             add(FileAction.FOLDER);
         }});
 
@@ -325,8 +316,8 @@ public class FileManager {
      * @param action the action type
      * @return {@link FileManager}
      */
-    public FileManager extractResource(@NotNull final String path, @NotNull final String output, @NotNull final FileAction action) {
-        FileUtils.extract(path, this.dataFolder.resolve(output), new ArrayList<>() {{
+    public @NotNull final FileManager extractResource(@NotNull final String path, @NotNull final String output, @NotNull final FileAction action) {
+        FileUtils.extract(path, this.path.resolve(output), new ArrayList<>() {{
             add(action);
         }});
 
@@ -339,8 +330,8 @@ public class FileManager {
      * @param path the input/output
      * @return {@link FileManager}
      */
-    public FileManager extractResource(@NotNull final String path) {
-        FileUtils.extract(path, this.dataFolder, new ArrayList<>());
+    public @NotNull final FileManager extractResource(@NotNull final String path) {
+        FileUtils.extract(path, this.path, new ArrayList<>());
 
         return this;
     }
@@ -351,7 +342,7 @@ public class FileManager {
      * @param fileName the name of the file
      * @return {@link FileManager}
      */
-    public FileType detectFileType(@NotNull final String fileName) {
+    public @NotNull final FileType detectFileType(@NotNull final String fileName) {
         return this.fileMap.entrySet().stream().filter(entry -> fileName.endsWith(entry.getKey())).map(Map.Entry::getValue).findFirst().orElse(FileType.NONE);
     }
 
@@ -410,7 +401,7 @@ public class FileManager {
      * @param save true or false
      * @return {@link FileManager}
      */
-    public FileManager refresh(final boolean save) { // save or reload all files
+    public @NotNull final FileManager refresh(final boolean save) { // save or reload all files
         if (this.customFiles.isEmpty()) return this;
 
         final List<Path> brokenFiles = new ArrayList<>();

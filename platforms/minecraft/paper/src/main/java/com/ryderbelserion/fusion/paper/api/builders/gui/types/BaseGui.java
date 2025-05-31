@@ -16,6 +16,7 @@ import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -41,7 +42,9 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     private final Plugin plugin = FusionPlugin.getPlugin();
 
-    private final FusionKyori adventure = (FusionKyori) FusionCore.Provider.get();
+    private final Server server = this.plugin.getServer();
+
+    private final FusionKyori kyori = (FusionKyori) FusionCore.Provider.get();
 
     private final GuiFiller filler = new GuiFiller(this);
 
@@ -76,7 +79,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
         this.interactionComponents = safeCopy(components);
 
-        this.inventory = this.plugin.getServer().createInventory(this, size, title(audience));
+        this.inventory = this.server.createInventory(this, size, title(audience));
     }
 
     public BaseGui(@NotNull final String title, final int rows, @NotNull final Set<InteractionComponent> components) {
@@ -91,7 +94,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
         this.interactionComponents = safeCopy(components);
 
-        this.inventory = this.plugin.getServer().createInventory(this, guiType.getInventoryType(), title(audience));
+        this.inventory = this.server.createInventory(this, guiType.getInventoryType(), title(audience));
 
         this.guiType = guiType;
     }
@@ -101,7 +104,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public final Map<Integer, GuiItem> getGuiItems() {
+    public @NotNull final Map<Integer, GuiItem> getGuiItems() {
         return Collections.unmodifiableMap(this.guiItems);
     }
 
@@ -117,7 +120,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     @Override
     public @NotNull final Component title(@NotNull final Audience audience) {
-        return this.adventure.color(audience, this.title, new HashMap<>());
+        return this.kyori.color(audience, this.title, new HashMap<>());
     }
 
     @Override
@@ -141,12 +144,12 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public final GuiType getGuiType() {
+    public @NotNull final GuiType getGuiType() {
         return this.guiType;
     }
 
     @Override
-    public final GuiFiller getFiller() {
+    public @NotNull final GuiFiller getFiller() {
         return this.filler;
     }
 
@@ -324,7 +327,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     @Override
     public void updateTitles() {
-        this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+        this.server.getOnlinePlayers().forEach(player -> {
             final InventoryHolder inventory = player.getOpenInventory().getTopInventory().getHolder(false);
 
             if (!(inventory instanceof BaseGui)) return;

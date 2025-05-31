@@ -4,6 +4,7 @@ import com.ryderbelserion.fusion.core.api.addons.objects.Addon;
 import com.ryderbelserion.fusion.core.api.addons.objects.AddonFilter;
 import com.ryderbelserion.fusion.core.api.addons.interfaces.IAddon;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,11 +26,11 @@ public class AddonManager {
     private final Map<String, AddonClassLoader> loaders = new ConcurrentHashMap<>();
     private final Path folder;
 
-    public AddonManager(final Path path) {
+    public AddonManager(@NotNull final Path path) {
         this.folder = path.resolve("addons");
     }
 
-    public void removeAll(final Map<String, Class<?>> classes) {
+    public void removeAll(@NotNull final Map<String, Class<?>> classes) {
         classes.keySet().forEach(this.classMap::remove);
 
         for (final Class<?> object : classes.values()) {
@@ -39,11 +40,11 @@ public class AddonManager {
         }
     }
 
-    public void setClass(final String name, final Class<?> classObject) {
+    public void setClass(@NotNull final String name, @NotNull final Class<?> classObject) {
         this.classMap.put(name, classObject);
     }
 
-    public Class<?> findClass(final String name) {
+    public Class<?> findClass(@NotNull final String name) {
         Class<?> classObject = null;
 
         if (this.classMap.containsKey(name)) {
@@ -83,19 +84,19 @@ public class AddonManager {
         return this;
     }
 
-    public <T extends IAddon> Optional<T> getAddonInstance(final Class<T> classObject) {
+    public <T extends IAddon> Optional<T> getAddonInstance(@NotNull final Class<T> classObject) {
         return this.loaders.values().stream().map(AddonClassLoader::getAddon).filter(Objects::nonNull).filter(addon -> addon.getClass().equals(classObject)).map(classObject::cast).findAny();
     }
 
-    public Optional<IAddon> getAddonInstance(final String Name) {
+    public Optional<IAddon> getAddonInstance(@NotNull final String Name) {
         if (this.loaders.containsKey(Name)) {
-            return Optional.of(this.loaders.get(Name).getAddon());
+            return Optional.ofNullable(this.loaders.get(Name).getAddon());
         }
 
         return Optional.empty();
     }
 
-    public <T extends IAddon> IAddon reloadAddon(final T addon) throws FusionException {
+    public <T extends IAddon> IAddon reloadAddon(@NotNull final T addon) throws FusionException {
         if (addon.isEnabled()) {
             addon.disable();
         }
@@ -107,7 +108,9 @@ public class AddonManager {
         try (AddonClassLoader loader = this.loadAddon(file)) {
             final IAddon key = loader.getAddon();
 
-            key.enable(this.folder.resolve(key.getName()));
+            if (key != null) {
+                key.enable(this.folder.resolve(key.getName()));
+            }
 
             foundKey = key;
         } catch (final Exception exception) {
@@ -117,16 +120,16 @@ public class AddonManager {
         return foundKey;
     }
 
-    public <T extends IAddon> void unloadAddon(final Class<T> classObject) {
+    public <T extends IAddon> void unloadAddon(@NotNull final Class<T> classObject) {
         getAddonInstance(classObject).ifPresent(this::unloadAddon);
     }
 
-    public void reloadAddonConfig(final IAddon addon) {
+    public void reloadAddonConfig(@NotNull final IAddon addon) {
         addon.onDisable();
         addon.onEnable();
     }
 
-    public <T extends IAddon> void unloadAddon(final T addon) throws FusionException {
+    public <T extends IAddon> void unloadAddon(@NotNull final T addon) throws FusionException {
         if (addon.isEnabled()) {
             addon.disable();
         }
@@ -150,7 +153,7 @@ public class AddonManager {
         } catch (final IOException ignored) {}
     }
 
-    public AddonClassLoader loadAddon(final File file) throws FusionException {
+    public AddonClassLoader loadAddon(@NotNull final File file) throws FusionException {
         final Addon addon = getProperties(file);
 
         final String group = addon.getMain();
@@ -185,7 +188,7 @@ public class AddonManager {
         return loader;
     }
 
-    public Collection<IAddon> getAddons() {
+    public @NotNull Collection<IAddon> getAddons() {
         return this.loaders.values().stream().map(AddonClassLoader::getAddon).filter(Objects::nonNull).toList();
     }
 
@@ -194,7 +197,7 @@ public class AddonManager {
      *
      * @return {@link AddonManager}
      */
-    public AddonManager enableAddons() {
+    public @NotNull AddonManager enableAddons() {
         this.loaders.values().stream().map(AddonClassLoader::getAddon).filter(Objects::nonNull).filter(addOn -> !addOn.isEnabled()).forEach(addon -> addon.enable(this.folder.resolve(addon.getName())));
 
         return this;
@@ -205,7 +208,7 @@ public class AddonManager {
      *
      * @return {@link AddonManager}
      */
-    public AddonManager disableAddons() {
+    public @NotNull AddonManager disableAddons() {
         this.loaders.values().stream().map(AddonClassLoader::getAddon).filter(Objects::nonNull).filter(IAddon::isEnabled).forEach(IAddon::disable);
 
         return this;
@@ -218,7 +221,7 @@ public class AddonManager {
         this.loaders.clear();
     }
 
-    private Addon getProperties(final File file) {
+    private @NotNull Addon getProperties(@NotNull final File file) {
         final Properties properties = new Properties();
 
         try (final JarFile entry = new JarFile(file)) {

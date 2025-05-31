@@ -27,7 +27,7 @@ public class JaluCustomFile extends IAbstractConfigFile<JaluCustomFile, Settings
     }
 
     @Override
-    public SettingsManager loadConfig() {
+    public @NotNull SettingsManager loadConfig() {
         if (this.configuration == null) {
             final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(getPath(), this.loader);
 
@@ -54,7 +54,7 @@ public class JaluCustomFile extends IAbstractConfigFile<JaluCustomFile, Settings
     }
 
     @Override
-    public final FileType getFileType() {
+    public @NotNull final FileType getFileType() {
         return FileType.JALU;
     }
 }

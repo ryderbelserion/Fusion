@@ -4,8 +4,8 @@ import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
 import com.ryderbelserion.fusion.kyori.components.builders.ComponentBuilder;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.utils.NumberUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.kyori.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
@@ -61,9 +61,9 @@ import java.util.Set;
 
 public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
-    protected final Plugin plugin = FusionPlugin.getPlugin();
+    protected final FusionPaper fusion = (FusionPaper) FusionCore.Provider.get();
 
-    private final FusionPaper api = (FusionPaper) FusionCore.Provider.get();
+    protected final Plugin plugin = FusionPlugin.getPlugin();
 
     private Map<String, String> placeholders = new HashMap<>();
 
@@ -75,12 +75,12 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     private ItemType itemType;
     private ItemStack item;
 
-    public BaseItemBuilder(final ItemStack item) {
+    public BaseItemBuilder(@NotNull final ItemStack item) {
         this.itemType = item.getType().asItemType();
         this.item = item;
     }
 
-    public BaseItemBuilder(final String item) {
+    public BaseItemBuilder(@NotNull final String item) {
         withCustomItem(item);
     }
 
@@ -100,7 +100,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return new GuiItem(asItemStack(audience), null);
     }
 
-    public ItemStack asItemStack(@NotNull final Audience audience) {
+    public @NotNull ItemStack asItemStack(@NotNull final Audience audience) {
         if (this.displayName != null) {
             final ComponentBuilder builder = new ComponentBuilder(audience, this.displayName);
 
@@ -118,16 +118,16 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.item;
     }
 
-    public ItemStack asItemStack() {
+    public @NotNull ItemStack asItemStack() {
         return asItemStack(Audience.empty());
     }
 
-    public B build() {
+    public @NotNull B build() {
         return (B) this;
     }
 
-    public B withCustomItem(@NotNull final String item) {
-        switch (this.api.getItemsPlugin().toLowerCase()) {
+    public @NotNull B withCustomItem(@NotNull final String item) {
+        switch (this.fusion.getItemsPlugin().toLowerCase()) {
             case "nexo" -> {
                 if (Support.nexo.isEnabled()) {
                     getNexo(item);
@@ -186,7 +186,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B withBase64(@NotNull final String base64) {
+    public @NotNull B withBase64(@NotNull final String base64) {
         if (base64.isEmpty()) return (B) this;
 
         try {
@@ -200,7 +200,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B withType(@Nullable final ItemType type, final int amount) {
+    public @NotNull B withType(@Nullable final ItemType type, final int amount) {
         if (type == null) {
             throw new FusionException("The item type cannot be null!");
         }
@@ -214,11 +214,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B withType(@Nullable final ItemType type) {
+    public @NotNull B withType(@Nullable final ItemType type) {
         return withType(type, 1);
     }
 
-    public B addEnchantments(@NotNull final HashMap<String, Integer> enchantments) {
+    public @NotNull B addEnchantments(@NotNull final HashMap<String, Integer> enchantments) {
         for (final Map.Entry<String, Integer> entry : enchantments.entrySet()) {
             addEnchantment(entry.getKey(), entry.getValue());
         }
@@ -226,7 +226,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B addEnchantment(@NotNull final String enchant, final int level) {
+    public @NotNull B addEnchantment(@NotNull final String enchant, final int level) {
         if (enchant.isEmpty()) return (B) this;
 
         final Enchantment enchantment = ItemUtils.getEnchantment(enchant);
@@ -256,7 +256,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B removeEnchantment(@NotNull final String enchant) {
+    public @NotNull B removeEnchantment(@NotNull final String enchant) {
         if (enchant.isEmpty()) return (B) this;
 
         final Enchantment enchantment = ItemUtils.getEnchantment(enchant);
@@ -268,13 +268,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B setAmount(final int amount) {
+    public @NotNull B setAmount(final int amount) {
         this.item.setAmount(Math.max(amount, 1));
 
         return (B) this;
     }
 
-    public B setDisplayName(@Nullable final String displayName, final boolean isStatic) {
+    public @NotNull B setDisplayName(@Nullable final String displayName, final boolean isStatic) {
         this.displayName = displayName;
 
         this.isStatic = isStatic;
@@ -282,11 +282,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B setDisplayName(@Nullable final String displayName) {
+    public @NotNull B setDisplayName(@Nullable final String displayName) {
         return setDisplayName(displayName, false);
     }
 
-    public String getPlainName() {
+    public @NotNull String getPlainName() {
         Component component = Component.empty();
 
         if (this.item.hasData(DataComponentTypes.ITEM_NAME)) {
@@ -306,13 +306,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return PlainTextComponentSerializer.plainText().serializeOr(component, "");
     }
 
-    public B withDisplayLore(@NotNull final List<String> displayLore) {
+    public @NotNull B withDisplayLore(@NotNull final List<String> displayLore) {
         this.displayLore = displayLore;
 
         return (B) this;
     }
 
-    public B addDisplayLore(@NotNull final String displayLore) {
+    public @NotNull B addDisplayLore(@NotNull final String displayLore) {
         if (displayLore.isEmpty()) return (B) this;
 
         this.displayLore.add(displayLore);
@@ -320,7 +320,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public List<String> getPlainLore() {
+    public @NotNull List<String> getPlainLore() {
         final List<String> plainLore = new ArrayList<>();
 
         if (this.item.hasData(DataComponentTypes.LORE)) {
@@ -334,7 +334,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return plainLore;
     }
 
-    public B setEnchantGlint(final boolean enchantGlintOverride) {
+    public @NotNull B setEnchantGlint(final boolean enchantGlintOverride) {
         if (enchantGlintOverride && !this.item.hasData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE)) {
             this.item.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, enchantGlintOverride);
 
@@ -348,7 +348,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B removeEnchantGlint() {
+    public @NotNull B removeEnchantGlint() {
         if (!this.item.hasData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE)) {
             return (B) this;
         }
@@ -358,13 +358,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B hideToolTip() {
+    public @NotNull B hideToolTip() {
         this.item.setData(DataComponentTypes.TOOLTIP_DISPLAY, builder().hideTooltip(true).build());
 
         return (B) this;
     }
 
-    public B showToolTip() {
+    public @NotNull B showToolTip() {
         if (!this.item.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {
             return (B) this;
         }
@@ -374,7 +374,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B hideComponents(final List<String> components) {
+    public @NotNull B hideComponents(@NotNull final List<String> components) {
         for (final String component : components) {
             hideComponent(component);
         }
@@ -383,7 +383,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     // i.e. minecraft:banner_patterns without minecraft
-    public B hideComponent(final String component) {
+    public @NotNull B hideComponent(@NotNull final String component) {
         if (component.isEmpty()) return (B) this;
 
         final Optional<DataComponentType> type = ItemUtils.getDataComponentType(component);
@@ -407,7 +407,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B setUnbreakable(final boolean isUnbreakable) {
+    public @NotNull B setUnbreakable(final boolean isUnbreakable) {
         if (isUnbreakable && !this.item.hasData(DataComponentTypes.UNBREAKABLE)) {
             this.item.setData(DataComponentTypes.UNBREAKABLE);
 
@@ -421,7 +421,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B setCustomModelData(final int customModelData) {
+    public @NotNull B setCustomModelData(final int customModelData) {
         if (customModelData == -1) return (B) this;
 
         this.item.setData(DataComponentTypes.CUSTOM_MODEL_DATA, populateData().addFloat(customModelData).build());
@@ -429,10 +429,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B setCustomModelData(final String customModelData) {
+    public @NotNull B setCustomModelData(@NotNull final String customModelData) {
         if (customModelData.isEmpty()) return (B) this;
 
-        final Optional<Number> integer = NumberUtils.tryParseInt(customModelData);
+        final Optional<Number> integer = StringUtils.tryParseInt(customModelData);
 
         if (integer.isPresent()) {
             return setCustomModelData(integer.orElse(-1).intValue());
@@ -445,7 +445,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B setItemModel(@NotNull final String itemModel) {
+    public @NotNull B setItemModel(@NotNull final String itemModel) {
         if (itemModel.isEmpty()) return (B) this;
 
         this.item.setData(DataComponentTypes.ITEM_MODEL, NamespacedKey.minecraft(itemModel));
@@ -453,7 +453,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B setItemModel(@NotNull final String namespace, @NotNull final String itemModel) {
+    public @NotNull B setItemModel(@NotNull final String namespace, @NotNull final String itemModel) {
         if (namespace.isEmpty() || itemModel.isEmpty()) return (B) this;
 
         this.item.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(namespace, itemModel));
@@ -461,7 +461,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B setTrim(@NotNull final String pattern, @NotNull final String material) {
+    public @NotNull B setTrim(@NotNull final String pattern, @NotNull final String material) {
         if (pattern.isEmpty() || material.isEmpty()) return (B) this;
 
         final TrimMaterial trimMaterial = ItemUtils.getTrimMaterial(material);
@@ -484,7 +484,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B setColor(@NotNull final String value) {
+    public @NotNull B setColor(@NotNull final String value) {
         if (value.isEmpty()) return (B) this;
 
         if (isMap()) {
@@ -508,7 +508,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B setItemDamage(final int damage) {
+    public @NotNull B setItemDamage(final int damage) {
         if (damage == -1) return (B) this;
 
         this.item.setData(DataComponentTypes.DAMAGE, Math.min(damage, getType().getMaxDurability()));
@@ -516,13 +516,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public B addPlaceholder(@NotNull final String placeholder, @NotNull final String value) {
+    public @NotNull B addPlaceholder(@NotNull final String placeholder, @NotNull final String value) {
         this.placeholders.put(placeholder, value);
 
         return (B) this;
     }
 
-    public B setPlaceholders(@NotNull final Map<String, String> placeholders) {
+    public @NotNull B setPlaceholders(@NotNull final Map<String, String> placeholders) {
         this.placeholders = placeholders;
 
         return (B) this;
@@ -532,47 +532,47 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.placeholders.containsKey(placeholder);
     }
 
-    public B removePlaceholder(@NotNull final String placeholder) {
+    public @NotNull B removePlaceholder(@NotNull final String placeholder) {
         this.placeholders.remove(placeholder);
 
         return (B) this;
     }
 
-    public B withSkull(@NotNull final String skull) {
+    public @NotNull B withSkull(@NotNull final String skull) {
         if (skull.isEmpty()) return (B) this;
 
-        @NotNull final HeadDatabaseAPI hdb = this.api.getApi();
+        @NotNull final HeadDatabaseAPI hdb = this.fusion.getApi();
 
         this.item = hdb.isHead(skull) ? hdb.getItemHead(skull) : ItemType.PLAYER_HEAD.createItemStack();
 
         return (B) this;
     }
 
-    public final B setPersistentDouble(@NotNull final NamespacedKey key, final double value) {
+    public @NotNull final B setPersistentDouble(@NotNull final NamespacedKey key, final double value) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.DOUBLE, value));
 
         return (B) this;
     }
 
-    public final B setPersistentInteger(@NotNull final NamespacedKey key, final int value) {
+    public @NotNull final B setPersistentInteger(@NotNull final NamespacedKey key, final int value) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.INTEGER, value));
 
         return (B) this;
     }
 
-    public final B setPersistentBoolean(@NotNull final NamespacedKey key, final boolean value) {
+    public @NotNull final B setPersistentBoolean(@NotNull final NamespacedKey key, final boolean value) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.BOOLEAN, value));
 
         return (B) this;
     }
 
-    public final B setPersistentString(@NotNull final NamespacedKey key, @NotNull final String value) {
+    public @NotNull final B setPersistentString(@NotNull final NamespacedKey key, @NotNull final String value) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.STRING, value));
 
         return (B) this;
     }
 
-    public final B setPersistentList(@NotNull final NamespacedKey key, @NotNull final List<String> values) {
+    public @NotNull final B setPersistentList(@NotNull final NamespacedKey key, @NotNull final List<String> values) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.LIST.listTypeFrom(PersistentDataType.STRING), values));
 
         return (B) this;
@@ -598,7 +598,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.item.getPersistentDataContainer().getOrDefault(key, PersistentDataType.STRING, "");
     }
 
-    public final B removePersistentKey(@Nullable final NamespacedKey key) {
+    public @NotNull final B removePersistentKey(@Nullable final NamespacedKey key) {
         if (key == null) return (B) this;
 
         this.item.editPersistentDataContainer(container -> {
@@ -612,7 +612,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.item.getPersistentDataContainer().has(key);
     }
 
-    public FireworkBuilder asFireworkBuilder() {
+    public @NotNull final FireworkBuilder asFireworkBuilder() {
         if (!isFirework()) {
             throw new FusionException("This item type is not a firework rocket.");
         }
@@ -620,7 +620,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return new FireworkBuilder(this.item);
     }
 
-    public FireworkStarBuilder asFireworkStarBuilder() {
+    public @NotNull final FireworkStarBuilder asFireworkStarBuilder() {
         if (!isFireworkStar()) {
             throw new FusionException("This item type is not a firework star.");
         }
@@ -628,7 +628,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return new FireworkStarBuilder(this.item);
     }
 
-    public PatternBuilder asPatternBuilder() {
+    public @NotNull final PatternBuilder asPatternBuilder() {
         if (isShield() || isBanner()) {
             return new PatternBuilder(this.item);
         }
@@ -636,7 +636,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         throw new FusionException("This item type is not a shield/banner.");
     }
 
-    public SkullBuilder asSkullBuilder() {
+    public @NotNull final SkullBuilder asSkullBuilder() {
         if (!isPlayerHead()) {
             throw new FusionException("This item type is not a skull.");
         }
@@ -644,7 +644,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return new SkullBuilder(this.item);
     }
 
-    public PotionBuilder asPotionBuilder() {
+    public @NotNull final PotionBuilder asPotionBuilder() {
         if (isPotion() || isTippedArrow()) {
             return new PotionBuilder(this.item);
         }
@@ -652,7 +652,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         throw new FusionException("This item type is not a potion / tipped arrow.");
     }
 
-    public SpawnerBuilder asSpawnerBuilder() {
+    public @NotNull final SpawnerBuilder asSpawnerBuilder() {
         if (!isSpawner()) {
             throw new FusionException("This item type is not a spawner.");
         }
@@ -791,11 +791,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return getKey().value();
     }
 
-    public final String getTranslationKey() {
+    public @NotNull final String getTranslationKey() {
         return this.itemType.translationKey();
     }
 
-    public final Key getKey() {
+    public @NotNull final Key getKey() {
         return this.itemType.key();
     }
 
@@ -804,15 +804,15 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         this.itemType = this.item.getType().asItemType();
     }
 
-    protected final ItemStack getItem() {
+    protected @NotNull final ItemStack getItem() {
         return this.item;
     }
 
-    protected final ItemType getType() {
+    protected @NotNull final ItemType getType() {
         return this.itemType;
     }
 
-    private CustomModelData.Builder populateData() {
+    private @NotNull CustomModelData.Builder populateData() {
         final CustomModelData.Builder data = CustomModelData.customModelData();
 
         if (this.item.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
@@ -868,7 +868,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         setItemStack(builder.build());
     }
 
-    private TooltipDisplay.Builder builder() {
+    private @NotNull TooltipDisplay.Builder builder() {
         final TooltipDisplay.Builder builder = TooltipDisplay.tooltipDisplay();
 
         if (this.item.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {

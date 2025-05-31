@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.paper;
 
+import com.ryderbelserion.fusion.core.api.addons.AddonManager;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
@@ -41,6 +42,8 @@ public class FusionPaper extends FusionKyori {
     }
 
     public void enable(@NotNull final Plugin plugin) {
+        super.load();
+
         FusionPlugin.setPlugin(this.plugin = plugin);
 
         this.server = this.plugin.getServer();
@@ -59,13 +62,11 @@ public class FusionPaper extends FusionKyori {
         this.pluginManager.registerEvents(new GuiListener(), this.plugin);
 
         if (this.isAddonsEnabled()) {
-            this.addonManager.load().enableAddons();
+            final AddonManager addonManager = getAddonManager();
 
-            if (this.isVerbose()) {
-                final int size = this.addonManager.getAddons().size();
+            addonManager.load().enableAddons();
 
-                this.logger.warn("Successfully enabled {} addons", size);
-            }
+            this.logger.warn("Successfully enabled {} addons", addonManager.getAddons().size());
         }
     }
 

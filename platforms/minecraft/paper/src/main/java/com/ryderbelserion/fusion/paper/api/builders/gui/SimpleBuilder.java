@@ -25,7 +25,7 @@ public final class SimpleBuilder extends BaseGuiBuilder<Gui, SimpleBuilder> {
         return gui;
     }
 
-    public @NotNull SimpleBuilder setType(final GuiType guiType) {
+    public @NotNull SimpleBuilder setType(@NotNull final GuiType guiType) {
         this.guiType = guiType;
 
         return this;

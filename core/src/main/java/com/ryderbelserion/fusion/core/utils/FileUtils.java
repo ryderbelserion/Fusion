@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.core.utils;
 
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.enums.LoggerType;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.files.FileAction;
@@ -32,11 +31,11 @@ import java.util.zip.ZipOutputStream;
 
 public class FileUtils {
 
-    private static final FusionCore api = FusionCore.Provider.get();
+    private static final FusionCore fusion = FusionCore.Provider.get();
 
-    private static final Path dataFolder = api.getPath();
+    private static final Path dataFolder = fusion.getPath();
 
-    private static final ILogger logger = api.getLogger();
+    private static final ILogger logger = fusion.getLogger();
 
     /**
      * Extracts a set of files from inside src/main/resources based on the input provided.
@@ -112,7 +111,7 @@ public class FileUtils {
                 }
             }
         } catch (final URISyntaxException | IOException exception) {
-            logger.log(LoggerType.ERROR, "Failed to extract {}", folder, exception);
+            logger.error("Failed to extract {}", folder, exception);
         }
     }
 
@@ -154,7 +153,7 @@ public class FileUtils {
      * @return a list of file names without the specified extension
      */
     public static List<String> getNamesByExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension) {
-        return getNamesByExtension(folder, path, extension, api.getRecursionDepth());
+        return getNamesByExtension(folder, path, extension, fusion.getRecursionDepth());
     }
 
     /**
@@ -194,7 +193,7 @@ public class FileUtils {
      * @return a list of files without the extension
      */
     public static List<String> getNamesWithoutExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension) {
-        return getNamesWithoutExtension(folder, path, extension, api.getRecursionDepth());
+        return getNamesWithoutExtension(folder, path, extension, fusion.getRecursionDepth());
     }
 
     /**
@@ -232,11 +231,11 @@ public class FileUtils {
     }
 
     public static List<Path> getFiles(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension) {
-        return getFiles(folder.isEmpty() ? path : path.resolve(folder), extension, api.getRecursionDepth());
+        return getFiles(folder.isEmpty() ? path : path.resolve(folder), extension, fusion.getRecursionDepth());
     }
 
     public static List<Path> getFiles(@NotNull final Path path, @NotNull final String extension) {
-        return getFiles(path, extension, api.getRecursionDepth());
+        return getFiles(path, extension, fusion.getRecursionDepth());
     }
 
     /**

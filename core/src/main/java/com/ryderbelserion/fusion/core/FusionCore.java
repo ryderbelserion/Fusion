@@ -20,13 +20,9 @@ import java.util.function.Consumer;
  */
 public abstract class FusionCore {
 
-    protected final PluginBuilder pluginBuilder;
-    protected final FileManager fileManager;
     protected final SettingsManager config;
 
-    protected final AddonManager addonManager;
-
-    protected final Path path;
+    private final Path path;
 
     public FusionCore(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
         Provider.register(this);
@@ -40,10 +36,18 @@ public abstract class FusionCore {
         consumer.accept(builder); // overrides the default migration service if set in the consumer.
 
         this.config = builder.create();
+    }
 
-        this.pluginBuilder = new PluginBuilder();
+    private AddonManager addonManager;
+    private PluginBuilder pluginBuilder;
+    private FileManager fileManager;
+
+    public void load() {
+        @NotNull final ILogger logger = getLogger();
+
+        this.pluginBuilder = new PluginBuilder(logger);
+        this.fileManager = new FileManager(this, this.path, logger);
         this.addonManager = new AddonManager(this.path);
-        this.fileManager = new FileManager();
     }
 
     public ILogger getLogger() {
@@ -60,27 +64,23 @@ public abstract class FusionCore {
         this.addonManager.purge();
     }
 
-    public PluginBuilder getPluginBuilder() {
+    public @NotNull final PluginBuilder getPluginBuilder() {
         return this.pluginBuilder;
     }
 
-    public AddonManager getAddonManager() {
+    public @NotNull final AddonManager getAddonManager() {
         return this.addonManager;
     }
 
-    public FileManager getFileManager() {
+    public @NotNull final FileManager getFileManager() {
         return this.fileManager;
     }
 
-    public Path getPath() {
-        return this.path;
-    }
-
-    public String getRoundingFormat() {
+    public @NotNull String getRoundingFormat() {
         return this.config.getProperty(ConfigKeys.rounding_format);
     }
 
-    public String getNumberFormat() {
+    public @NotNull String getNumberFormat() {
         return this.config.getProperty(ConfigKeys.number_format);
     }
 
@@ -96,6 +96,10 @@ public abstract class FusionCore {
         return this.config.getProperty(ConfigKeys.addon_system);
     }
 
+    public @NotNull final Path getPath() {
+        return this.path;
+    }
+
     public static class Provider {
         private static FusionCore core = null;
 
@@ -107,7 +111,7 @@ public abstract class FusionCore {
             Provider.core = null;
         }
 
-        public static FusionCore get() {
+        public static @NotNull FusionCore get() {
             return core;
         }
     }
