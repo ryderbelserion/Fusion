@@ -126,7 +126,7 @@ public class FileUtils {
      * @return a list of file names without the specified extension
      */
     public static List<String> getNamesByExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
-        final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), extension, depth);
+        final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), List.of(extension), depth);
 
         final List<String> names = new ArrayList<>();
 
@@ -167,7 +167,7 @@ public class FileUtils {
      * @return a list of file names without the specified extension
      */
     public static List<String> getNamesWithoutExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
-        final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), extension, depth);
+        final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), List.of(extension), depth);
 
         final List<String> names = new ArrayList<>();
 
@@ -197,15 +197,15 @@ public class FileUtils {
     }
 
     /**
-     * Retrieves a list of paths from the relative path, including the given extension.
+     * Retrieves a list of paths from the relative path, including the given extensions.
      * This method searches up to the specified depth within the directory structure.
      *
      * @param path the directory to scan for files
-     * @param extension the file extension to be searched for (e.g., ".yml")
+     * @param extensions the list of file extensions to be searched for (e.g., ".yml")
      * @param depth the maximum depth level to search within subdirectories
      * @return a list of files
      */
-    public static List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth) {
+    public static List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions, final int depth) {
         final List<Path> files = new ArrayList<>();
 
         if (Files.isDirectory(path)) { // check if resolved path is a folder to loop through!
@@ -215,9 +215,11 @@ public class FileUtils {
                     public @NotNull FileVisitResult visitFile(@NotNull final Path path, @NotNull final BasicFileAttributes attributes) {
                         final String name = path.getFileName().toString();
 
-                        if (name.endsWith(extension)) {
-                            files.add(path);
-                        }
+                        extensions.forEach(extension -> {
+                            if (name.endsWith(extension)) {
+                                files.add(path);
+                            }
+                        });
 
                         return FileVisitResult.CONTINUE;
                     }
@@ -231,11 +233,28 @@ public class FileUtils {
     }
 
     public static List<Path> getFiles(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension) {
-        return getFiles(folder.isEmpty() ? path : path.resolve(folder), extension, fusion.getRecursionDepth());
+        return getFiles(folder.isEmpty() ? path : path.resolve(folder), List.of(extension), fusion.getRecursionDepth());
+    }
+
+    /**
+     * Retrieves a list of paths from the relative path, including the given extension.
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param path the directory to scan for files
+     * @param extension the file extension to be searched for (e.g., ".yml")
+     * @param depth the maximum depth level to search within subdirectories
+     * @return a list of files
+     */
+    public static List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth) {
+        return getFiles(path, List.of(extension), depth);
+    }
+
+    public static List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions) {
+        return getFiles(path, extensions, fusion.getRecursionDepth());
     }
 
     public static List<Path> getFiles(@NotNull final Path path, @NotNull final String extension) {
-        return getFiles(path, extension, fusion.getRecursionDepth());
+        return getFiles(path, List.of(extension), fusion.getRecursionDepth());
     }
 
     /**
