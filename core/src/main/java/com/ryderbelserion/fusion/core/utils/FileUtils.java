@@ -38,6 +38,12 @@ public class FileUtils {
 
     private static final ILogger logger = api.getLogger();
 
+    /**
+     * Extracts a set of files from inside src/main/resources based on the input provided.
+     *
+     * @param input   the directory in the jar to scan through
+     * @param output  the output which where to extract files to
+     */
     public static void extract(@NotNull final String input, @NotNull final Path output, @NotNull final List<FileAction> actions) {
         final Path folder = output.resolve(input);
 
@@ -110,6 +116,16 @@ public class FileUtils {
         }
     }
 
+    /**
+     * Retrieves a list of file names from the specified folder,
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param folder    the directory to scan for files
+     * @param path      the relative path which is where your folder would be
+     * @param extension the file extension to be searched for (e.g., ".yml")
+     * @param depth     the maximum depth level to search within subdirectories
+     * @return a list of file names without the specified extension
+     */
     public static List<String> getNamesByExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
         final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), extension, depth);
 
@@ -128,10 +144,29 @@ public class FileUtils {
         return names;
     }
 
+    /**
+     * Retrieves a list of file names from the specified folder,
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param folder    the directory to scan for files
+     * @param path      the relative path which is where your folder would be
+     * @param extension the file extension to be searched for (e.g., ".yml")
+     * @return a list of file names without the specified extension
+     */
     public static List<String> getNamesByExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension) {
         return getNamesByExtension(folder, path, extension, api.getRecursionDepth());
     }
 
+    /**
+     * Retrieves a list of file names from the specified folder, excluding the given extension.
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param folder    the directory to scan for files
+     * @param path      the relative path which is where your folder would be
+     * @param extension the file extension to be stripped from the file names (e.g., ".yml")
+     * @param depth     the maximum depth level to search within subdirectories
+     * @return a list of file names without the specified extension
+     */
     public static List<String> getNamesWithoutExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
         final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), extension, depth);
 
@@ -150,10 +185,27 @@ public class FileUtils {
         return names;
     }
 
+    /**
+     * Retrieves a list of file names from the specified folder, which is filtered based on the extension.
+     *
+     * @param folder    the directory to scan for files
+     * @param path      the relative path which is where your folder would be
+     * @param extension the file extension to be stripped from the file names (e.g., ".yml")
+     * @return a list of files without the extension
+     */
     public static List<String> getNamesWithoutExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension) {
         return getNamesWithoutExtension(folder, path, extension, api.getRecursionDepth());
     }
 
+    /**
+     * Retrieves a list of paths from the relative path, including the given extension.
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param path the directory to scan for files
+     * @param extension the file extension to be searched for (e.g., ".yml")
+     * @param depth the maximum depth level to search within subdirectories
+     * @return a list of files
+     */
     public static List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth) {
         final List<Path> files = new ArrayList<>();
 
@@ -187,6 +239,13 @@ public class FileUtils {
         return getFiles(path, extension, api.getRecursionDepth());
     }
 
+    /**
+     * Writes the specified content to a file using stream-based operations.
+     * This method ensures efficient file handling and data persistence.
+     *
+     * @param input  the target file where content will be written
+     * @param format the data or content to be written into the file
+     */
     public static void write(@NotNull final File input, @NotNull final String format) {
         try (final FileWriter writer = new FileWriter(input, true); final BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             bufferedWriter.write(format);

@@ -13,6 +13,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
+/**
+ * Handles the core of the library!
+ *
+ * @author ryderbelserion
+ */
 public abstract class FusionCore {
 
     protected final PluginBuilder pluginBuilder;
