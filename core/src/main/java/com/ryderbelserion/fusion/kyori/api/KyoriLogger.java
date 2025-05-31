@@ -6,11 +6,11 @@ import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 
-public class AdventureLogger implements ILogger {
+public class KyoriLogger implements ILogger {
 
     private final ComponentLogger logger;
 
-    public AdventureLogger(@NotNull final ComponentLogger logger) {
+    public KyoriLogger(@NotNull final ComponentLogger logger) {
         this.logger = logger;
     }
 
