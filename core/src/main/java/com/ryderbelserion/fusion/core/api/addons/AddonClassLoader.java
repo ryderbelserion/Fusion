@@ -4,10 +4,10 @@ import com.ryderbelserion.fusion.core.api.addons.interfaces.IAddon;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,17 +17,17 @@ public class AddonClassLoader extends URLClassLoader {
 
     private final AddonManager manager;
     private final IAddon addon;
-    private final File file;
+    private final Path path;
 
     private boolean isDisabling;
     private String name;
 
-    public AddonClassLoader(@NotNull final AddonManager manager, @NotNull final File file, @NotNull final String group, @NotNull final String name) throws FusionException, MalformedURLException {
-        super(new URL[]{file.toURI().toURL()}, manager.getClass().getClassLoader());
+    public AddonClassLoader(@NotNull final AddonManager manager, @NotNull final Path path, @NotNull final String group, @NotNull final String name) throws FusionException, MalformedURLException {
+        super(new URL[]{path.toUri().toURL()}, manager.getClass().getClassLoader());
 
         this.manager = manager;
-        this.name = !name.isBlank() ? name : file.getName();
-        this.file = file;
+        this.name = !name.isBlank() ? name : path.getFileName().toString();
+        this.path = path;
 
         Class<?> mainClass;
 
@@ -116,7 +116,7 @@ public class AddonClassLoader extends URLClassLoader {
         return this.name;
     }
 
-    public @NotNull File getFile() {
-        return this.file;
+    public @NotNull Path getPath() {
+        return this.path;
     }
 }
