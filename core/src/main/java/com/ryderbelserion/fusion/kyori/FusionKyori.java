@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.kyori;
 
 import ch.jalu.configme.SettingsManagerBuilder;
-import com.ryderbelserion.fusion.kyori.api.KyoriLogger;
+import com.ryderbelserion.fusion.kyori.components.KyoriLogger;
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.kyori.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;

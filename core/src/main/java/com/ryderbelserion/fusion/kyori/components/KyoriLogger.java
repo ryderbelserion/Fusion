@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.kyori.api;
+package com.ryderbelserion.fusion.kyori.components;
 
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.core.api.enums.LoggerType;

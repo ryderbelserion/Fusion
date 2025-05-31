@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.kyori.api.builders;
+package com.ryderbelserion.fusion.kyori.components.builders;
 
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
