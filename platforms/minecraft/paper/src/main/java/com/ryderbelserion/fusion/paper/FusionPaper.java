@@ -8,7 +8,6 @@ import com.ryderbelserion.fusion.paper.api.PluginKeys;
 import com.ryderbelserion.fusion.paper.api.builders.gui.listeners.GuiListener;
 import com.ryderbelserion.fusion.kyori.enums.Support;
 import com.ryderbelserion.fusion.paper.api.structure.StructureRegistry;
-import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
@@ -51,10 +50,6 @@ public class FusionPaper extends FusionKyori {
 
         this.registry = new StructureRegistry();
 
-        if (this.fileManager == null) {
-            this.fileManager = new LegacyFileManager();
-        }
-
         if (Support.head_database.isEnabled() && this.api == null) {
             this.api = new HeadDatabaseAPI();
         }
@@ -87,14 +82,6 @@ public class FusionPaper extends FusionKyori {
 
     public @NotNull final String getItemsPlugin() {
         return this.config.getProperty(PluginKeys.items_plugin);
-    }
-
-    public @NotNull final LegacyFileManager getLegacyFileManager() {
-        if (this.fileManager == null) {
-            throw new FusionException("An error occurred while trying to get the legacy file manager instance.");
-        }
-
-        return this.fileManager;
     }
 
     public @NotNull final StructureRegistry getRegistry() {
