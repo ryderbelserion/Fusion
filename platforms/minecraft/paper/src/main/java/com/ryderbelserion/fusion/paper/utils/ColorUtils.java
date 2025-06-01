@@ -16,9 +16,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class ColorUtils {
 
-    public static void updateTitle(@NotNull final Player player, @NotNull final String title) {
-        final ServerPlayer entityPlayer = (ServerPlayer) ((CraftHumanEntity) player).getHandle();
     public static void updateTitle(@NotNull Player player, @NotNull String title) {
+        final ServerPlayer entityPlayer = (ServerPlayer) ((CraftEntity) player).getHandle();
 
         final int containerId = entityPlayer.containerMenu.containerId;
 
