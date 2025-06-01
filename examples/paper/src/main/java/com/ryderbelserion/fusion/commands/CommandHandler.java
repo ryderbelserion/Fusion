@@ -12,7 +12,7 @@ public class CommandHandler {
 
     private final Fusion plugin = JavaPlugin.getPlugin(Fusion.class);
 
-    private final BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(plugin);
+    private final BukkitCommandManager<CommandSender> commandManager = BukkitCommandManager.create(this.plugin);
 
     public CommandHandler() {
         load();
