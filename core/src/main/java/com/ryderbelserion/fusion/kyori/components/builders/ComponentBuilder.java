@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.kyori.components.builders;
 
 import com.ryderbelserion.fusion.kyori.FusionKyori;
+import com.ryderbelserion.fusion.kyori.enums.ResolverType;
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.kyori.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
@@ -259,33 +260,5 @@ public class ComponentBuilder {
         this.lines.remove(line);
 
         return this;
-    }
-
-    /**
-     * A collection of resolver types
-     *
-     * @author ryderbelserion
-     */
-    public enum ResolverType {
-        /**
-         * Placeholder resolver type
-         */
-        PLACEHOLDER(),
-        /**
-         * Click event resolver type
-         */
-        CLICK_EVENT(),
-        /**
-         * Hover event resolver type
-         */
-        HOVER_EVENT(),
-        /**
-         * Text color resolver type
-         */
-        TEXT_COLOR(),
-        /**
-         * Generic resolver type
-         */
-        GENERIC_TYPE()
     }
 }
