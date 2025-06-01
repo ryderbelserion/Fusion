@@ -32,6 +32,8 @@ public abstract class FusionKyori extends FusionCore {
 
     public abstract @NotNull String chomp(@NotNull final String message);
 
+    public abstract boolean isPluginEnabled(String name);
+
     @Override
     public @NotNull final KyoriLogger getLogger() {
         return this.logger;

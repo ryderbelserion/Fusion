@@ -80,6 +80,11 @@ public class FusionPaper extends FusionKyori {
         return StringUtils.chomp(message);
     }
 
+    @Override
+    public final boolean isPluginEnabled(@NotNull String name) {
+        return this.pluginManager.isPluginEnabled(name);
+    }
+
     public @NotNull final String getItemsPlugin() {
         return this.config.getProperty(PluginKeys.items_plugin);
     }
