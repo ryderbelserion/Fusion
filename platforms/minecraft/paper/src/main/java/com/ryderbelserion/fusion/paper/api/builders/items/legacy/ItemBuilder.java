@@ -23,7 +23,6 @@ import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
@@ -1090,7 +1089,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
         this.itemStack.editMeta(itemMeta -> {
             if (itemMeta instanceof final SkullMeta skullMeta) {
-                final PlayerProfile profile = Bukkit.getServer().createProfile(null, "");
+                final PlayerProfile profile = this.fusion.createProfile(UUID.randomUUID(), "");
 
                 profile.setProperty(new ProfileProperty("", ""));
 
