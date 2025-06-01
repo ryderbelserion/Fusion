@@ -22,7 +22,7 @@ public abstract class FusionCore {
 
     private final Path path;
 
-    public FusionCore(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
+    protected FusionCore(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
         Provider.register(this);
 
         this.path = path;
