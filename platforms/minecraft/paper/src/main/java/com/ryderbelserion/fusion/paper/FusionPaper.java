@@ -71,8 +71,8 @@ public class FusionPaper extends FusionKyori {
     }
 
     @Override
-    public @NotNull final String parsePlaceholders(@NotNull final Audience audience, @NotNull final String input) {
-        return Support.placeholder_api.isEnabled() && audience instanceof Player player ? PlaceholderAPI.setPlaceholders(player, input) : input;
+    public @NotNull final String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message) {
+        return Support.placeholder_api.isEnabled() && audience instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
     }
 
     @Override
