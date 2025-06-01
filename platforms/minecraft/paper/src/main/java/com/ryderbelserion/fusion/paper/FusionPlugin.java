@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class FusionPlugin {
 
-    private static Plugin plugin;
+    private static Plugin plugin = null;
 
     public static void setPlugin(@NotNull final Plugin plugin) {
         FusionPlugin.plugin = plugin;
