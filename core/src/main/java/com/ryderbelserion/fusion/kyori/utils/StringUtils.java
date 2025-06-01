@@ -9,8 +9,12 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 public class StringUtils {
+
+    private static final Pattern BRACKET_PATTERN = Pattern.compile("\\{(.*?)}");
+    private static final Pattern ANGLE_PATTERN = Pattern.compile("[<>]");
 
     private static final FusionKyori kyori = (FusionKyori) FusionCore.Provider.get();
 
@@ -31,7 +35,7 @@ public class StringUtils {
     }
 
     public static @NotNull String replaceBrackets(@NotNull final String input) {
-        return input.replaceAll("\\{", "<").replaceAll("}", ">").replaceAll("<", "").replaceAll(">", "");
+        return ANGLE_PATTERN.matcher(BRACKET_PATTERN.matcher(input).replaceAll("<$1>")).replaceAll("");
     }
 
     public static @NotNull String toString(@NotNull final List<String> list) {
