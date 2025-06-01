@@ -34,11 +34,19 @@ public class StringUtils {
         }
     }
 
-    public static @NotNull String replaceBrackets(@NotNull final String input) {
-        return ANGLE_PATTERN.matcher(BRACKET_PATTERN.matcher(input).replaceAll("<$1>")).replaceAll("");
+    public static @NotNull String replaceAllBrackets(@NotNull String input) {
+        return replaceAngle(replaceBrackets(input));
     }
 
-    public static @NotNull String toString(@NotNull final List<String> list) {
+    public static @NotNull String replaceBrackets(@NotNull String input) {
+        return BRACKET_PATTERN.matcher(input).replaceAll("<$1>");
+    }
+
+    public static @NotNull String replaceAngle(@NotNull String input) {
+        return ANGLE_PATTERN.matcher(input).replaceAll("");
+    }
+
+    public static @NotNull String toString(@NotNull List<String> list) {
         if (list.isEmpty()) return "";
 
         final StringBuilder message = new StringBuilder(list.size());

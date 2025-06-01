@@ -40,9 +40,9 @@ public abstract class FusionKyori extends FusionCore {
     public @NotNull Component color(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
         final List<TagResolver> resolvers = new ArrayList<>(tags);
 
-        placeholders.forEach((placeholder, value) -> resolvers.add(Placeholder.parsed(StringUtils.replaceBrackets(placeholder).toLowerCase(), value)));
+        placeholders.forEach((placeholder, value) -> resolvers.add(Placeholder.parsed(StringUtils.replaceAllBrackets(placeholder).toLowerCase(), value)));
 
-        return AdvUtils.parse(parsePlaceholders(audience, message.replaceAll("\\{", "<").replaceAll("}", ">")), TagResolver.resolver(resolvers));
+        return AdvUtils.parse(parsePlaceholders(audience, StringUtils.replaceBrackets(message)), TagResolver.resolver(resolvers));
     }
 
     public @NotNull Component color(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
