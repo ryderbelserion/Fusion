@@ -5,6 +5,7 @@ import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.types.IPagina
 import com.ryderbelserion.fusion.paper.api.builders.gui.enums.InteractionComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     private int pageNumber = 1;
     private int pageSize;
 
-    public PaginatedGui(@NotNull final String title, final int pageSize, final int rows, @NotNull final Set<InteractionComponent> components) {
-        super(title, rows, components);
+    public PaginatedGui(@NotNull final Plugin plugin, @NotNull final String title, final int pageSize, final int rows, @NotNull final Set<InteractionComponent> components) {
+        super(plugin, title, rows, components);
 
         if (pageSize == 0) {
             calculatePageSize();
@@ -142,7 +143,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     public final int getNextPageNumber() {
         if (this.pageNumber + 1 > getMaxPages()) return this.pageNumber;
 
-        return pageNumber + 1;
+        return this.pageNumber + 1;
     }
 
     @Override
@@ -175,7 +176,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public final GuiItem getPageItem(final int slot) {
+    public @Nullable final GuiItem getPageItem(final int slot) {
         return this.currentPage.get(slot);
     }
 
@@ -190,7 +191,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public final List<GuiItem> getItemsFromPage(final int givenPage) {
+    public @NotNull final List<GuiItem> getItemsFromPage(final int givenPage) {
         final int page = givenPage - 1;
 
         final List<GuiItem> guiPage = new ArrayList<>();
@@ -206,13 +207,13 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public final Map<Integer, GuiItem> getCurrentPageItems() {
+    public @NotNull final Map<Integer, GuiItem> getCurrentPageItems() {
         return this.currentPage;
     }
 
     @Override
     public void clearPageContents() {
-        for (Map.Entry<Integer, GuiItem> entry : this.currentPage.entrySet()) {
+        for (final Map.Entry<Integer, GuiItem> entry : this.currentPage.entrySet()) {
             getInventory().setItem(entry.getKey(), null);
         }
     }

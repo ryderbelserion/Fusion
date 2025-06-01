@@ -25,7 +25,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         this.builder = ResolvableProfile.resolvableProfile();
     }
 
-    public SkullBuilder withAudience(@NotNull final Audience audience) {
+    public @NotNull SkullBuilder withAudience(@NotNull final Audience audience) {
         final UUID uuid = audience.getOrDefault(Identity.UUID, null);
 
         if (uuid == null) return this;
@@ -35,12 +35,12 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         return this;
     }
 
-    public SkullBuilder withUrl(@NotNull final String url) {
+    public @NotNull SkullBuilder withUrl(@NotNull final String url) {
         if (url.isEmpty()) return this;
 
         final String newUrl = "https://textures.minecraft.net/texture/" + url;
 
-        final PlayerProfile profile = this.plugin.getServer().createProfile(UUID.randomUUID(), null);
+        final PlayerProfile profile = this.fusion.createProfile(UUID.randomUUID(), null);
 
         profile.setProperty(new ProfileProperty("", ""));
 
@@ -48,7 +48,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
 
         try {
             textures.setSkin(URI.create(newUrl).toURL(), PlayerTextures.SkinModel.CLASSIC);
-        } catch (MalformedURLException exception) {
+        } catch (final MalformedURLException exception) {
             throw new FusionException("Skull URL is malformed", exception);
         }
 
@@ -60,7 +60,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
     }
 
     @Override
-    public SkullBuilder withBase64(@NotNull final String base64) {
+    public @NotNull SkullBuilder withBase64(@NotNull final String base64) {
         if (base64.isEmpty()) return this;
 
         this.builder.addProperty(new ProfileProperty("textures", base64));
@@ -68,7 +68,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         return this;
     }
 
-    public SkullBuilder withName(@NotNull final String playerName) {
+    public @NotNull SkullBuilder withName(@NotNull final String playerName) {
         if (playerName.isEmpty()) return this;
 
         if (playerName.length() > 16) {
@@ -81,7 +81,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
     }
 
     @Override
-    public SkullBuilder build() {
+    public @NotNull SkullBuilder build() {
         getItem().setData(DataComponentTypes.PROFILE, this.builder.build());
 
         return this;

@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.events;
 
 import com.ryderbelserion.fusion.Fusion;
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
+import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.api.events.IPaperEvent;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.event.EventHandler;

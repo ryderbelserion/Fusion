@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.adventure.utils;
+package com.ryderbelserion.fusion.kyori.utils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;

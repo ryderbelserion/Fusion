@@ -1,11 +1,13 @@
 package com.ryderbelserion.fusion.paper;
 
-import com.ryderbelserion.fusion.adventure.FusionAdventure;
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.ryderbelserion.fusion.core.api.addons.AddonManager;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.api.PluginKeys;
 import com.ryderbelserion.fusion.paper.api.builders.gui.listeners.GuiListener;
-import com.ryderbelserion.fusion.paper.api.enums.Support;
+import com.ryderbelserion.fusion.kyori.enums.Support;
 import com.ryderbelserion.fusion.paper.api.structure.StructureRegistry;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
@@ -19,17 +21,19 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
+import java.util.UUID;
 
-public class FusionPaper extends FusionAdventure {
+public class FusionPaper extends FusionKyori {
 
-    private LegacyFileManager fileManager = null;
-    private StructureRegistry registry = null;
-    private HeadDatabaseAPI api = null;
-    private Plugin plugin = null;
-    private Server server = null;
+    private LegacyFileManager fileManager;
+    private StructureRegistry registry;
+    private HeadDatabaseAPI api;
+    private Plugin plugin;
+    private Server server;
 
-    private PluginManager pluginManager = null;
+    private PluginManager pluginManager;
 
     public FusionPaper(@NotNull final ComponentLogger logger, @NotNull final Path path) {
         super(logger, path, consumer -> consumer.useDefaultMigrationService().configurationData(ConfigKeys.class, PluginKeys.class));
@@ -37,20 +41,19 @@ public class FusionPaper extends FusionAdventure {
 
     public FusionPaper(@NotNull final Plugin plugin) {
         this(plugin.getComponentLogger(), plugin.getDataPath());
-
-        enable(plugin);
     }
 
     public void enable(@NotNull final Plugin plugin) {
-        FusionPlugin.setPlugin(this.plugin = plugin);
+        load();
 
+        this.plugin = plugin;
         this.server = this.plugin.getServer();
         this.pluginManager = this.server.getPluginManager();
 
-        this.registry = new StructureRegistry();
+        this.registry = new StructureRegistry(this.plugin);
 
         if (this.fileManager == null) {
-            this.fileManager = new LegacyFileManager();
+            this.fileManager = new LegacyFileManager(this.plugin);
         }
 
         if (Support.head_database.isEnabled() && this.api == null) {
@@ -60,13 +63,11 @@ public class FusionPaper extends FusionAdventure {
         this.pluginManager.registerEvents(new GuiListener(), this.plugin);
 
         if (this.isAddonsEnabled()) {
-            this.addonManager.load().enableAddons();
+            final AddonManager addonManager = getAddonManager();
 
-            if (this.isVerbose()) {
-                final int size = this.addonManager.getAddons().size();
+            addonManager.load().enableAddons();
 
-                this.logger.warn("Successfully enabled {} addons", size);
-            }
+            this.logger.warn("Successfully enabled {} addons", addonManager.getAddons().size());
         }
     }
 
@@ -76,13 +77,23 @@ public class FusionPaper extends FusionAdventure {
     }
 
     @Override
-    public @NotNull final String parsePlaceholders(@NotNull final Audience audience, @NotNull final String input) {
-        return Support.placeholder_api.isEnabled() && audience instanceof Player player ? PlaceholderAPI.setPlaceholders(player, input) : input;
+    public @NotNull final String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message) {
+        return Support.placeholder_api.isEnabled() && audience instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
     }
 
     @Override
     public @NotNull final String chomp(@NotNull final String message) {
         return StringUtils.chomp(message);
+    }
+
+    @Override
+    public final boolean isPluginEnabled(@NotNull final String name) {
+        return this.pluginManager.isPluginEnabled(name);
+    }
+
+    @Override
+    public final PlayerProfile createProfile(@NotNull final UUID uuid, @Nullable final String name) {
+        return this.server.createProfile(uuid, name);
     }
 
     public @NotNull final String getItemsPlugin() {

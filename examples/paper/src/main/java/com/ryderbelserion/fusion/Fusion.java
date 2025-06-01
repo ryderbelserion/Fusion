@@ -4,13 +4,11 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.commands.CommandHandler;
 import com.ryderbelserion.fusion.config.Config;
-import com.ryderbelserion.fusion.core.api.events.EventBuilder;
 import com.ryderbelserion.fusion.core.files.FileAction;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.core.files.types.JsonCustomFile;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
-import com.ryderbelserion.fusion.events.CreatureSpawnEvent;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,6 +24,7 @@ public class Fusion extends JavaPlugin {
     @Override
     public void onEnable() {
         this.paper = new FusionPaper(this);
+        this.paper.enable(this);
 
         this.fileManager = this.paper.getFileManager();
 
@@ -62,10 +61,6 @@ public class Fusion extends JavaPlugin {
 
             logger.warn("Prefix: {}", config.getProperty(Config.prefix));
         }
-
-        final EventBuilder builder = this.paper.getEventBuilder();
-
-        builder.addModule(new CreatureSpawnEvent()).load();
 
         new CommandHandler();
     }

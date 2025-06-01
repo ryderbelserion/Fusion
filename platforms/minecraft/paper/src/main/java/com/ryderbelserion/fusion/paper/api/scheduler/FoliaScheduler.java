@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.scheduler;
 
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.enums.Scheduler;
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import org.bukkit.Location;
@@ -16,7 +15,7 @@ import java.util.function.Consumer;
 
 public abstract class FoliaScheduler implements Runnable {
 
-    private final Plugin plugin = FusionPlugin.getPlugin();
+    private final Plugin plugin;
 
     private final Scheduler type;
     private final Server server;
@@ -24,37 +23,38 @@ public abstract class FoliaScheduler implements Runnable {
 
     private ScheduledTask task;
 
-    public FoliaScheduler(@NotNull final Scheduler type, @NotNull final TimeUnit timeUnit) {
+    public FoliaScheduler(@NotNull final Plugin plugin, @NotNull final Scheduler type, @NotNull final TimeUnit timeUnit) {
+        this.plugin = plugin;
         this.server = this.plugin.getServer();
         this.timeUnit = timeUnit;
         this.type = type;
     }
 
-    public FoliaScheduler(@NotNull final Scheduler type) {
-        this(type, TimeUnit.SECONDS);
+    public FoliaScheduler(@NotNull final Plugin plugin, @NotNull final Scheduler type) {
+        this(plugin, type, TimeUnit.SECONDS);
     }
 
     private World world;
     private int x;
     private int z;
 
-    public FoliaScheduler(@NotNull final World world, final int x, final int z) {
-        this(Scheduler.region_scheduler, TimeUnit.SECONDS);
+    public FoliaScheduler(@NotNull final Plugin plugin, @NotNull final World world, final int x, final int z) {
+        this(plugin, Scheduler.region_scheduler, TimeUnit.SECONDS);
 
         this.world = world;
         this.x = x;
         this.z = z;
     }
 
-    public FoliaScheduler(@NotNull final Location location) {
-        this(location.getWorld(), location.getBlockX() >> 4, location.getBlockZ() >> 4);
+    public FoliaScheduler(@NotNull final Plugin plugin, @NotNull final Location location) {
+        this(plugin, location.getWorld(), location.getBlockX() >> 4, location.getBlockZ() >> 4);
     }
 
     private Runnable retired;
     private Entity entity;
 
-    public FoliaScheduler(@Nullable final Runnable retired, @NotNull final Entity entity) {
-        this(Scheduler.entity_scheduler);
+    public FoliaScheduler(@NotNull final Plugin plugin, @Nullable final Runnable retired, @NotNull final Entity entity) {
+        this(plugin, Scheduler.entity_scheduler);
 
         this.retired = retired;
         this.entity = entity;
@@ -107,23 +107,23 @@ public abstract class FoliaScheduler implements Runnable {
         return true;
     }
 
-    public ScheduledTask runDelayed(long delay) throws FusionException {
+    public ScheduledTask runDelayed(final long delay) throws FusionException {
         isScheduled();
 
         ScheduledTask task;
 
-        delay = Math.max(1, delay);
+        long maxDelay = Math.max(1, delay);
 
         switch (this.type) {
-            case global_scheduler -> task = this.server.getGlobalRegionScheduler().runDelayed(this.plugin, scheduledTask -> this.run(), delay);
-            case async_scheduler -> task = this.server.getAsyncScheduler().runDelayed(this.plugin, scheduledTask -> this.run(), delay, this.timeUnit);
-            case region_scheduler -> task = this.server.getRegionScheduler().runDelayed(this.plugin, this.world, this.x, this.z, scheduledTask -> this.run(), delay);
+            case global_scheduler -> task = this.server.getGlobalRegionScheduler().runDelayed(this.plugin, scheduledTask -> this.run(), maxDelay);
+            case async_scheduler -> task = this.server.getAsyncScheduler().runDelayed(this.plugin, scheduledTask -> this.run(), maxDelay, this.timeUnit);
+            case region_scheduler -> task = this.server.getRegionScheduler().runDelayed(this.plugin, this.world, this.x, this.z, scheduledTask -> this.run(), maxDelay);
             case entity_scheduler -> {
                 if (this.entity == null) {
                     throw new FusionException("Cannot run delayed entity task if the entity is null.");
                 }
 
-                task = this.entity.getScheduler().runDelayed(this.plugin, scheduledTask -> this.run(), this.retired, delay);
+                task = this.entity.getScheduler().runDelayed(this.plugin, scheduledTask -> this.run(), this.retired, maxDelay);
             }
 
             default -> throw new FusionException("The task type is not supported!");
@@ -155,24 +155,24 @@ public abstract class FoliaScheduler implements Runnable {
         return this.task = task;
     }
 
-    public ScheduledTask runAtFixedRate(long delay, long interval) throws FusionException {
+    public ScheduledTask runAtFixedRate(final long delay, final long interval) throws FusionException {
         isScheduled();
 
         ScheduledTask task;
 
-        delay = Math.max(1, delay);
-        interval = Math.max(1, interval);
+        long maxDelay = Math.max(1, delay);
+        long maxInterval = Math.max(1, interval);
 
         switch (this.type) {
-            case global_scheduler -> task = this.server.getGlobalRegionScheduler().runAtFixedRate(this.plugin, scheduledTask -> this.run(), delay, interval);
-            case async_scheduler -> task = this.server.getAsyncScheduler().runAtFixedRate(this.plugin, scheduledTask -> this.run(), delay, interval, this.timeUnit);
-            case region_scheduler -> task = this.server.getRegionScheduler().runAtFixedRate(this.plugin, this.world, this.x, this.z, scheduledTask -> this.run(), delay, interval);
+            case global_scheduler -> task = this.server.getGlobalRegionScheduler().runAtFixedRate(this.plugin, scheduledTask -> this.run(), maxDelay, maxInterval);
+            case async_scheduler -> task = this.server.getAsyncScheduler().runAtFixedRate(this.plugin, scheduledTask -> this.run(), maxDelay, maxInterval, this.timeUnit);
+            case region_scheduler -> task = this.server.getRegionScheduler().runAtFixedRate(this.plugin, this.world, this.x, this.z, scheduledTask -> this.run(), maxDelay, maxInterval);
             case entity_scheduler -> {
                 if (this.entity == null) {
                     throw new FusionException("Cannot run fixed rate entity task if the entity is null");
                 }
 
-                task = this.entity.getScheduler().runAtFixedRate(this.plugin, scheduledTask -> this.run(), this.retired, delay, interval);
+                task = this.entity.getScheduler().runAtFixedRate(this.plugin, scheduledTask -> this.run(), this.retired, maxDelay, maxInterval);
             }
 
             default -> throw new FusionException("The task type is not supported!");

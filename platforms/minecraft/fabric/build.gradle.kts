@@ -15,8 +15,8 @@ dependencies {
     modImplementation(libs.kyori.api)
     modImplementation(libs.kyori.text)
 
-    api(project(":fusion-adventure"))
-    shadow(project(":fusion-adventure"))
+    api(project(":fusion-core"))
+    shadow(project(":fusion-core"))
 }
 
 tasks {
@@ -25,7 +25,6 @@ tasks {
         exclude("META-INF")
 
         dependencies {
-            include(project(":fusion-adventure"))
             include(project(":fusion-core"))
         }
     }

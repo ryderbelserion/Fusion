@@ -5,27 +5,26 @@ import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.addons.AddonManager;
-import com.ryderbelserion.fusion.core.api.events.EventBuilder;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.api.plugins.PluginBuilder;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
+/**
+ * Handles the core of the library!
+ */
 public abstract class FusionCore {
 
-    protected final PluginBuilder pluginBuilder;
-    protected final EventBuilder eventBuilder;
-    protected final FileManager fileManager;
     protected final SettingsManager config;
 
-    protected final AddonManager addonManager;
+    private final Path path;
 
-    protected final Path path;
-
-    public FusionCore(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
+    protected FusionCore(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
         Provider.register(this);
 
         this.path = path;
@@ -37,20 +36,21 @@ public abstract class FusionCore {
         consumer.accept(builder); // overrides the default migration service if set in the consumer.
 
         this.config = builder.create();
+    }
 
-        this.pluginBuilder = new PluginBuilder();
+    private AddonManager addonManager;
+    private PluginBuilder pluginBuilder;
+    private FileManager fileManager;
+
+    public void load() {
+        final ILogger logger = getLogger();
+
+        this.pluginBuilder = new PluginBuilder(logger);
+        this.fileManager = new FileManager(this, this.path, logger);
         this.addonManager = new AddonManager(this.path);
-        this.eventBuilder = new EventBuilder();
-        this.fileManager = new FileManager();
     }
 
-    public <E> void registerEvent(@NotNull final E event) {
-
-    }
-
-    public ILogger getLogger() {
-        return null;
-    }
+    public @NotNull abstract ILogger getLogger();
 
     public void reload() {
         this.config.reload();
@@ -62,31 +62,27 @@ public abstract class FusionCore {
         this.addonManager.purge();
     }
 
-    public PluginBuilder getPluginBuilder() {
+    public <E> void registerEvent(@NotNull final E event) {
+
+    }
+
+    public @NotNull final PluginBuilder getPluginBuilder() {
         return this.pluginBuilder;
     }
 
-    public AddonManager getAddonManager() {
+    public @NotNull final AddonManager getAddonManager() {
         return this.addonManager;
     }
 
-    public EventBuilder getEventBuilder() {
-        return this.eventBuilder;
-    }
-
-    public FileManager getFileManager() {
+    public @NotNull final FileManager getFileManager() {
         return this.fileManager;
     }
 
-    public Path getPath() {
-        return this.path;
-    }
-
-    public String getRoundingFormat() {
+    public @NotNull String getRoundingFormat() {
         return this.config.getProperty(ConfigKeys.rounding_format);
     }
 
-    public String getNumberFormat() {
+    public @NotNull String getNumberFormat() {
         return this.config.getProperty(ConfigKeys.number_format);
     }
 
@@ -102,8 +98,12 @@ public abstract class FusionCore {
         return this.config.getProperty(ConfigKeys.addon_system);
     }
 
+    public @NotNull final Path getPath() {
+        return this.path;
+    }
+
     public static class Provider {
-        private static FusionCore core = null;
+        private static @Nullable FusionCore core;
 
         public static void register(@NotNull final FusionCore core) {
             Provider.core = core;
@@ -113,7 +113,11 @@ public abstract class FusionCore {
             Provider.core = null;
         }
 
-        public static FusionCore get() {
+        public static @NotNull FusionCore get() {
+            if (core == null) {
+                throw new FusionException("FusionCore is not initialized.");
+            }
+
             return core;
         }
     }

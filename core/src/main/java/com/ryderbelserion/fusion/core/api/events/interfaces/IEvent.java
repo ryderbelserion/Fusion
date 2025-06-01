@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.core.api.events.interfaces;
 
 import org.jetbrains.annotations.NotNull;
 
+@FunctionalInterface
 public interface IEvent {
 
     default boolean isEnabled() {

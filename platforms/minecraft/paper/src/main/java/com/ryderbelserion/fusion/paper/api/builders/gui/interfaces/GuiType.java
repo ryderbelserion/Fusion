@@ -30,7 +30,7 @@ public enum GuiType {
     }
 
     public final int getFillSize() {
-        return fillSize;
+        return this.fillSize;
     }
 
     public final int getLimit() {

@@ -30,18 +30,12 @@ fun includeProject(name: String) {
 }
 
 listOf(
-    //"platforms/discord/kord" to "kord",
-    //"platforms/discord/jda" to "jda",
+    "examples/addons/mob-addon" to "mob-addon-example",
+    "examples/paper" to "paper-example",
 
-    "platforms/minecraft/adventure" to "adventure",
     "platforms/minecraft/neoforge" to "neoforge",
     "platforms/minecraft/fabric" to "fabric",
     "platforms/minecraft/paper" to "paper",
-
-    "examples/fabric" to "examples-fabric",
-
-    "examples/addons/mob-addon" to "mob-addon",
-    "examples/paper" to "examples-paper",
 
     "core" to "core"
 ).forEach(::includeProject)

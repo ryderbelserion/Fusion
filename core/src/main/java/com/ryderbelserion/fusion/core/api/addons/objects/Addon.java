@@ -1,22 +1,41 @@
 package com.ryderbelserion.fusion.core.api.addons.objects;
 
+import org.jetbrains.annotations.NotNull;
 import java.util.Properties;
 
+/**
+ * This holds information relating to addons that are created, It pulls information from property files.
+ */
 public class Addon {
 
     private final String main;
     private final String name;
 
-    public Addon(final Properties properties) {
+    /**
+     * Builds an addon object.
+     *
+     * @param properties the properties to pull information from
+     */
+    public Addon(@NotNull final Properties properties) {
         this.main = properties.getProperty("main", "N/A");
         this.name = properties.getProperty("name", "N/A");
     }
 
-    public String getMain() {
+    /**
+     * Gets the addon domain i.e. com.ryderbelserion which is the class path.
+     *
+     * @return the addon domain
+     */
+    public @NotNull final String getMain() {
         return this.main;
     }
 
-    public String getName() {
+    /**
+     * Gets the name of the addon i.e. beans.
+     *
+     * @return the name of the addon
+     */
+    public @NotNull final String getName() {
         return this.name;
     }
 }

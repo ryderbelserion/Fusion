@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.core.utils;
 
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.enums.LoggerType;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.files.FileAction;
@@ -13,6 +12,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.file.DirectoryStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,35 +31,30 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * A set of utilities that make extracting or retrieving information about files much easier
+ */
 public class FileUtils {
 
-    private static final FusionCore api = FusionCore.Provider.get();
+    private static final FusionCore fusion = FusionCore.Provider.get();
 
-    private static final Path dataFolder = api.getPath();
+    private static final Path dataFolder = fusion.getPath();
 
-    private static final ILogger logger = api.getLogger();
+    private static final ILogger logger = fusion.getLogger();
 
+    /**
+     * Extracts a set of files from inside src/main/resources based on the input provided.
+     *
+     * @param input   the directory in the jar to scan through
+     * @param output  the output which where to extract files to
+     */
     public static void extract(@NotNull final String input, @NotNull final Path output, @NotNull final List<FileAction> actions) {
         final Path folder = output.resolve(input);
 
         if (actions.contains(FileAction.DELETE)) {
             try {
-                Files.walkFileTree(folder, new SimpleFileVisitor<>() {
-                    @Override
-                    public @NotNull FileVisitResult visitFile(@NotNull final Path file, @NotNull final BasicFileAttributes attributes) throws IOException {
-                        Files.delete(file);
-
-                        return FileVisitResult.CONTINUE;
-                    }
-
-                    @Override
-                    public @NotNull FileVisitResult postVisitDirectory(@NotNull final Path directory, final IOException exception) throws IOException {
-                        Files.delete(directory);
-
-                        return FileVisitResult.CONTINUE;
-                    }
-                });
-            } catch (IOException ignored) {}
+                Files.walkFileTree(folder, new SimplePathVisitor());
+            } catch (final IOException ignored) {}
         }
 
         if (Files.exists(folder)) {
@@ -71,7 +67,7 @@ public class FileUtils {
             try {
                 Files.createDirectories(folder);
             } catch (final IOException exception) {
-                logger.warn("Failed to create folder {}", folder, exception);
+                throw new FusionException("Failed to create folder " + folder, exception);
             }
         }
 
@@ -106,12 +102,22 @@ public class FileUtils {
                 }
             }
         } catch (final URISyntaxException | IOException exception) {
-            logger.log(LoggerType.ERROR, "Failed to extract {}", folder, exception);
+            throw new FusionException("Failed to create extract " + folder, exception);
         }
     }
 
+    /**
+     * Retrieves a list of file names from the specified folder,
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param folder    the directory to scan for files
+     * @param path      the relative path which is where your folder would be
+     * @param extension the file extension to be searched for (e.g., ".yml")
+     * @param depth     the maximum depth level to search within subdirectories
+     * @return a list of file names without the specified extension
+     */
     public static List<String> getNamesByExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
-        final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), extension, depth);
+        final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), List.of(extension), depth);
 
         final List<String> names = new ArrayList<>();
 
@@ -128,12 +134,31 @@ public class FileUtils {
         return names;
     }
 
+    /**
+     * Retrieves a list of file names from the specified folder,
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param folder    the directory to scan for files
+     * @param path      the relative path which is where your folder would be
+     * @param extension the file extension to be searched for (e.g., ".yml")
+     * @return a list of file names without the specified extension
+     */
     public static List<String> getNamesByExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension) {
-        return getNamesByExtension(folder, path, extension, api.getRecursionDepth());
+        return getNamesByExtension(folder, path, extension, fusion.getRecursionDepth());
     }
 
+    /**
+     * Retrieves a list of file names from the specified folder, excluding the given extension.
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param folder    the directory to scan for files
+     * @param path      the relative path which is where your folder would be
+     * @param extension the file extension to be stripped from the file names (e.g., ".yml")
+     * @param depth     the maximum depth level to search within subdirectories
+     * @return a list of file names without the specified extension
+     */
     public static List<String> getNamesWithoutExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth) {
-        final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), extension, depth);
+        final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), List.of(extension), depth);
 
         final List<String> names = new ArrayList<>();
 
@@ -150,11 +175,28 @@ public class FileUtils {
         return names;
     }
 
+    /**
+     * Retrieves a list of file names from the specified folder, which is filtered based on the extension.
+     *
+     * @param folder    the directory to scan for files
+     * @param path      the relative path which is where your folder would be
+     * @param extension the file extension to be stripped from the file names (e.g., ".yml")
+     * @return a list of files without the extension
+     */
     public static List<String> getNamesWithoutExtension(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension) {
-        return getNamesWithoutExtension(folder, path, extension, api.getRecursionDepth());
+        return getNamesWithoutExtension(folder, path, extension, fusion.getRecursionDepth());
     }
 
-    public static List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth) {
+    /**
+     * Retrieves a list of paths from the relative path, including the given extensions.
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param path the directory to scan for files
+     * @param extensions the list of file extensions to be searched for (e.g., ".yml")
+     * @param depth the maximum depth level to search within subdirectories
+     * @return a list of files
+     */
+    public static List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions, final int depth) {
         final List<Path> files = new ArrayList<>();
 
         if (Files.isDirectory(path)) { // check if resolved path is a folder to loop through!
@@ -164,45 +206,138 @@ public class FileUtils {
                     public @NotNull FileVisitResult visitFile(@NotNull final Path path, @NotNull final BasicFileAttributes attributes) {
                         final String name = path.getFileName().toString();
 
-                        if (name.endsWith(extension)) {
-                            files.add(path);
-                        }
+                        extensions.forEach(extension -> {
+                            if (name.endsWith(extension)) {
+                                files.add(path);
+                            }
+                        });
 
                         return FileVisitResult.CONTINUE;
                     }
                 });
             } catch (final IOException exception) {
-                logger.warn("Failed to get a list of files", exception);
+                throw new FusionException("Failed to get a list of files", exception);
             }
         }
 
         return files;
     }
 
+    /**
+     * Retrieves a list of paths from the relative path, including the given extension.
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param folder the directory to scan for files
+     * @param path the relative parent path
+     * @param extension the file extension to be searched for (e.g., ".yml")
+     * @return a list of files
+     */
     public static List<Path> getFiles(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension) {
-        return getFiles(folder.isEmpty() ? path : path.resolve(folder), extension, api.getRecursionDepth());
+        return getFiles(folder.isEmpty() ? path : path.resolve(folder), List.of(extension), fusion.getRecursionDepth());
     }
 
+    /**
+     * Retrieves a list of paths from the relative path, including the given extension.
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param path the directory to scan for files
+     * @param extension the file extension to be searched for (e.g., ".yml")
+     * @param depth the maximum depth level to search within subdirectories
+     * @return a list of files
+     */
+    public static List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth) {
+        return getFiles(path, List.of(extension), depth);
+    }
+
+    /**
+     * Retrieves a list of paths from the relative path, including the given extension.
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param path the directory to scan for files
+     * @param extensions the file extensions to be searched for (e.g., ".yml")
+     * @return a list of files
+     */
+    public static List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions) {
+        return getFiles(path, extensions, fusion.getRecursionDepth());
+    }
+
+    /**
+     * Retrieves a list of paths from the relative path, including the given extension.
+     * This method searches up to the specified depth within the directory structure.
+     *
+     * @param path the directory to scan for files
+     * @param extension the file extension to be searched for (e.g., ".yml")
+     * @return a list of files
+     */
     public static List<Path> getFiles(@NotNull final Path path, @NotNull final String extension) {
-        return getFiles(path, extension, api.getRecursionDepth());
+        return getFiles(path, List.of(extension), fusion.getRecursionDepth());
     }
 
+    /**
+     * Writes the specified content to a file using stream-based operations.
+     * This method ensures efficient file handling and data persistence.
+     *
+     * @param input  the target file where content will be written
+     * @param format the data or content to be written into the file
+     */
     public static void write(@NotNull final File input, @NotNull final String format) {
-        try (final FileWriter writer = new FileWriter(input, true); final BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
+        try (final FileWriter writer = new FileWriter(input, Charset.defaultCharset(), true); final BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             bufferedWriter.write(format);
             bufferedWriter.newLine();
             writer.flush();
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             throw new FusionException("Failed to write " + input + " to " + input, exception);
         }
     }
 
+    /**
+     * Compresses multiple files into zip folders.
+     *
+     * @param paths        the list of relative paths to compress
+     * @param directory    the directory where the zip file goes
+     * @param content      the optional string to append to the {@link StringBuilder}
+     * @param actions      the list of actions
+     * @throws IOException throws if anything breaks along the way
+     */
     public static void compress(@NotNull final List<Path> paths, @NotNull final Path directory, @NotNull final String content, @NotNull final List<FileAction> actions) throws IOException {
         for (final Path path : paths) {
             compress(path, directory, content, actions);
         }
     }
 
+    /**
+     * Deletes a directory, which never stops until all files are deleted!
+     *
+     * @param path the path to check
+     * @throws IOException throws if anything breaks along the way
+     */
+    public static void deleteDirectory(@NotNull final Path path) throws IOException {
+        if (!Files.exists(path) || !Files.isDirectory(path)) {
+            return;
+        }
+
+        try (final DirectoryStream<Path> contents = Files.newDirectoryStream(path)) {
+            for (final Path entry : contents) {
+                if (Files.isDirectory(entry)) {
+                    deleteDirectory(entry);
+                } else {
+                    Files.delete(entry);
+                }
+            }
+        }
+
+        Files.deleteIfExists(path);
+    }
+
+    /**
+     * Compresses multiple files into zip folders.
+     *
+     * @param path         the relative path to compress
+     * @param directory    the directory where the zip file goes
+     * @param content      the optional string to append to the {@link StringBuilder}
+     * @param actions      the list of actions
+     * @throws IOException throws if anything breaks along the way
+     */
     public static void compress(@NotNull final Path path, @Nullable final Path directory, @NotNull final String content, @NotNull final List<FileAction> actions) throws IOException {
         if (!Files.exists(path)) {
             return;
@@ -229,7 +364,7 @@ public class FileUtils {
                 for (final Path entry : entries) {
                     final long size = Files.size(entry);
 
-                    if (size > 0) {
+                    if (size > 0L) {
                         final ZipEntry zipEntry = new ZipEntry(entry.toString());
 
                         output.putNextEntry(zipEntry);
@@ -250,7 +385,7 @@ public class FileUtils {
 
         final long size = Files.size(path);
 
-        if (size > 0) {
+        if (size > 0L) {
             try (final ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(file))) {
                 final ZipEntry zipEntry = new ZipEntry(path.toString());
 
@@ -264,6 +399,22 @@ public class FileUtils {
 
         if (isDelete) {
             Files.deleteIfExists(path);
+        }
+    }
+
+    private static class SimplePathVisitor extends SimpleFileVisitor<Path> {
+        @Override
+        public @NotNull FileVisitResult visitFile(@NotNull final Path file, @NotNull final BasicFileAttributes attributes) throws IOException {
+            Files.delete(file);
+
+            return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public @NotNull FileVisitResult postVisitDirectory(@NotNull final Path directory, final IOException exception) throws IOException {
+            Files.delete(directory);
+
+            return FileVisitResult.CONTINUE;
         }
     }
 }

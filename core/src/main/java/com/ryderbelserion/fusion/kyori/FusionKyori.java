@@ -1,9 +1,9 @@
-package com.ryderbelserion.fusion.adventure;
+package com.ryderbelserion.fusion.kyori;
 
 import ch.jalu.configme.SettingsManagerBuilder;
-import com.ryderbelserion.fusion.adventure.api.AdventureLogger;
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
-import com.ryderbelserion.fusion.adventure.utils.StringUtils;
+import com.ryderbelserion.fusion.kyori.components.KyoriLogger;
+import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
+import com.ryderbelserion.fusion.kyori.utils.StringUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -11,38 +11,44 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 
-public abstract class FusionAdventure extends FusionCore {
+public abstract class FusionKyori extends FusionCore {
 
-    protected final AdventureLogger logger;
+    protected final KyoriLogger logger;
 
-    public FusionAdventure(@NotNull final ComponentLogger logger, @NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
+    protected FusionKyori(@NotNull final ComponentLogger logger, @NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
         super(path, consumer);
 
-        this.logger = new AdventureLogger(logger);
+        this.logger = new KyoriLogger(logger, this);
     }
 
     public abstract String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message);
 
     public abstract @NotNull String chomp(@NotNull final String message);
 
+    public abstract boolean isPluginEnabled(final String name);
+
+    public abstract <T> T createProfile(@NotNull final UUID uuid, @Nullable final String name);
+
     @Override
-    public final AdventureLogger getLogger() {
+    public @NotNull final KyoriLogger getLogger() {
         return this.logger;
     }
 
     public @NotNull Component color(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
         final List<TagResolver> resolvers = new ArrayList<>(tags);
 
-        placeholders.forEach((placeholder, value) -> resolvers.add(Placeholder.parsed(StringUtils.replaceBrackets(placeholder).toLowerCase(), value)));
+        placeholders.forEach((placeholder, value) -> resolvers.add(Placeholder.parsed(StringUtils.replaceAllBrackets(placeholder).toLowerCase(), value)));
 
-        return AdvUtils.parse(parsePlaceholders(audience, message.replaceAll("\\{", "<").replaceAll("}", ">")), TagResolver.resolver(resolvers));
+        return AdvUtils.parse(parsePlaceholders(audience, StringUtils.replaceBrackets(message)), TagResolver.resolver(resolvers));
     }
 
     public @NotNull Component color(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders) {

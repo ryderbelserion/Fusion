@@ -2,10 +2,12 @@ package com.ryderbelserion.fusion.core.api.addons;
 
 import com.ryderbelserion.fusion.core.api.addons.interfaces.IAddon;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import java.io.File;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -15,17 +17,17 @@ public class AddonClassLoader extends URLClassLoader {
 
     private final AddonManager manager;
     private final IAddon addon;
-    private final File file;
+    private final Path path;
 
     private boolean isDisabling;
     private String name;
 
-    public AddonClassLoader(final AddonManager manager, final File file, final String group, final String name) throws FusionException, MalformedURLException {
-        super(new URL[]{file.toURI().toURL()}, manager.getClass().getClassLoader());
+    public AddonClassLoader(@NotNull final AddonManager manager, @NotNull final Path path, @NotNull final String group, @NotNull final String name) throws FusionException, MalformedURLException {
+        super(new URL[]{path.toUri().toURL()}, manager.getClass().getClassLoader());
 
         this.manager = manager;
-        this.name = !name.isBlank() ? name : file.getName();
-        this.file = file;
+        this.name = name.isBlank() ? path.getFileName().toString() : name;
+        this.path = path;
 
         Class<?> mainClass;
 
@@ -34,7 +36,7 @@ public class AddonClassLoader extends URLClassLoader {
 
             this.classes.put(mainClass.getName(), mainClass);
         } catch (final ClassNotFoundException exception) {
-            throw new FusionException("Could not find main class for addon: " + name, exception);
+            throw new FusionException(String.format("Could not find main class for addon %s.", name), exception);
         }
 
         Class<? extends IAddon> addonClass;
@@ -42,7 +44,7 @@ public class AddonClassLoader extends URLClassLoader {
         try {
             addonClass = mainClass.asSubclass(IAddon.class);
         } catch (final Exception exception) {
-            throw new FusionException(group + " does not implement iAddon.", exception);
+            throw new FusionException(String.format("%s does not implement iAddon", group), exception);
         }
 
         try {
@@ -50,18 +52,18 @@ public class AddonClassLoader extends URLClassLoader {
             this.addon.setLoader(this);
             this.addon.setName(this.name = name);
         } catch (final Exception exception) {
-            throw new FusionException("Failed to load main class for addon: " + name + ".", exception);
+            throw new FusionException(String.format("Failed to load main class for addon %s", name), exception);
         }
     }
 
     @Override
-    protected Class<?> findClass(final String name) throws ClassNotFoundException {
+    protected Class<?> findClass(@NotNull final String name) throws ClassNotFoundException {
         return findClass(name, true);
     }
 
-    public Class<?> findClass(final String name, final boolean isGlobal) throws ClassNotFoundException {
+    public Class<?> findClass(@NotNull final String name, final boolean isGlobal) throws ClassNotFoundException {
         if (this.isDisabling()) {
-            throw new ClassNotFoundException("This class loader is disabling.");
+            throw new ClassNotFoundException("This class loader is disabling");
         }
 
         if (this.classes.containsKey(name)) {
@@ -102,21 +104,19 @@ public class AddonClassLoader extends URLClassLoader {
         return this.isDisabling;
     }
 
-    public AddonManager getManager() {
+    public @NotNull AddonManager getManager() {
         return this.manager;
     }
 
-    public IAddon getAddon() {
+    public @Nullable IAddon getAddon() {
         return this.addon;
     }
 
-    public String getName() {
+    public @NotNull String getName() {
         return this.name;
     }
 
-    public File getFile() {
-        return this.file;
+    public @NotNull Path getPath() {
+        return this.path;
     }
-
-
 }

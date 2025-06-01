@@ -1,9 +1,8 @@
 package com.ryderbelserion.fusion.paper.api.builders.gui.types;
 
-import com.ryderbelserion.fusion.adventure.FusionAdventure;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.paper.FusionPlugin;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
@@ -16,6 +15,7 @@ import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -39,9 +39,11 @@ import java.util.Set;
 
 public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
-    private final Plugin plugin = FusionPlugin.getPlugin();
+    private final FusionPaper paper = (FusionPaper) FusionCore.Provider.get();
 
-    private final FusionAdventure adventure = (FusionAdventure) FusionCore.Provider.get();
+    private final Plugin plugin;
+
+    private final Server server;
 
     private final GuiFiller filler = new GuiFiller(this);
 
@@ -65,7 +67,9 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     private String title;
     private int rows;
 
-    public BaseGui(@NotNull final Audience audience, @NotNull final String title, final int rows, @NotNull final Set<InteractionComponent> components) {
+    public BaseGui(@NotNull final Plugin plugin, @NotNull final Audience audience, @NotNull final String title, final int rows, @NotNull final Set<InteractionComponent> components) {
+        this.plugin = plugin;
+        this.server = this.plugin.getServer();
         this.title = title;
         this.rows = rows;
 
@@ -76,14 +80,16 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
         this.interactionComponents = safeCopy(components);
 
-        this.inventory = this.plugin.getServer().createInventory(this, size, title(audience));
+        this.inventory = this.server.createInventory(this, size, title(audience));
     }
 
-    public BaseGui(@NotNull final String title, final int rows, @NotNull final Set<InteractionComponent> components) {
-        this(Audience.empty(), title, rows, components);
+    public BaseGui(@NotNull final Plugin plugin, @NotNull final String title, final int rows, @NotNull final Set<InteractionComponent> components) {
+        this(plugin, Audience.empty(), title, rows, components);
     }
 
-    public BaseGui(@NotNull final Audience audience, @NotNull final String title, @NotNull final GuiType guiType, @NotNull final Set<InteractionComponent> components) {
+    public BaseGui(@NotNull final Plugin plugin, @NotNull final Audience audience, @NotNull final String title, @NotNull final GuiType guiType, @NotNull final Set<InteractionComponent> components) {
+        this.plugin = plugin;
+        this.server = this.plugin.getServer();
         this.title = title;
 
         this.slotActions = new LinkedHashMap<>(guiType.getLimit());
@@ -91,17 +97,17 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
         this.interactionComponents = safeCopy(components);
 
-        this.inventory = this.plugin.getServer().createInventory(this, guiType.getInventoryType(), title(audience));
+        this.inventory = this.server.createInventory(this, guiType.getInventoryType(), title(audience));
 
         this.guiType = guiType;
     }
 
-    public BaseGui(@NotNull final String title, @NotNull final GuiType guiType, @NotNull final Set<InteractionComponent> components) {
-        this(Audience.empty(), title, guiType, components);
+    public BaseGui(@NotNull final Plugin plugin, @NotNull final String title, @NotNull final GuiType guiType, @NotNull final Set<InteractionComponent> components) {
+        this(plugin, Audience.empty(), title, guiType, components);
     }
 
     @Override
-    public final Map<Integer, GuiItem> getGuiItems() {
+    public @NotNull final Map<Integer, GuiItem> getGuiItems() {
         return Collections.unmodifiableMap(this.guiItems);
     }
 
@@ -111,13 +117,13 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setTitle(@NotNull final String title) {
+    public void setTitle(@NotNull String title) {
         this.title = title;
     }
 
     @Override
     public @NotNull final Component title(@NotNull final Audience audience) {
-        return this.adventure.color(audience, this.title, new HashMap<>());
+        return this.paper.color(audience, this.title, new HashMap<>());
     }
 
     @Override
@@ -131,7 +137,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setRows(final int rows) {
+    public void setRows(int rows) {
         this.rows = rows;
     }
 
@@ -141,12 +147,12 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public final GuiType getGuiType() {
+    public @NotNull final GuiType getGuiType() {
         return this.guiType;
     }
 
     @Override
-    public final GuiFiller getFiller() {
+    public @NotNull final GuiFiller getFiller() {
         return this.filler;
     }
 
@@ -215,7 +221,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     @Override
     public void setItem(@NotNull final List<Integer> slots, @NotNull final GuiItem guiItem) {
-        for (final int slot : slots) {
+        for (int slot : slots) {
             setItem(slot, guiItem);
         }
     }
@@ -229,7 +235,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     public void addItem(final boolean expandIfFull, @NotNull final GuiItem... items) {
         final List<GuiItem> notAddedItems = new ArrayList<>();
 
-        for (final GuiItem guiItem : items) {
+        for (GuiItem guiItem : items) {
             for (int slot = 0; slot < this.rows * 9; slot++) {
                 if (this.guiItems.get(slot) != null) {
 
@@ -285,7 +291,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     @Override
     public void close(@NotNull final Player player, @NotNull final InventoryCloseEvent.Reason reason, final boolean isDelayed) {
         if (isDelayed) {
-            new FoliaScheduler(Scheduler.global_scheduler) {
+            new FoliaScheduler(this.plugin, Scheduler.global_scheduler) {
                 @Override
                 public void run() {
                     player.closeInventory(reason);
@@ -324,7 +330,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     @Override
     public void updateTitles() {
-        this.plugin.getServer().getOnlinePlayers().forEach(player -> {
+        this.server.getOnlinePlayers().forEach(player -> {
             final InventoryHolder inventory = player.getOpenInventory().getTopInventory().getHolder(false);
 
             if (!(inventory instanceof BaseGui)) return;
@@ -350,8 +356,8 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setUpdating(final boolean updating) {
-        this.isUpdating = updating;
+    public void setUpdating(final boolean isUpdating) {
+        this.isUpdating = isUpdating;
     }
 
     @Override
@@ -425,7 +431,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void open(final @NotNull Player player, final boolean purge) {
+    public void open(@NotNull final Player player, final boolean purge) {
         if (player.isSleeping()) return;
 
         if (purge) {

@@ -20,37 +20,37 @@ public class PotionBuilder extends BaseItemBuilder<PotionBuilder> {
         this.builder = PotionContents.potionContents();
     }
 
-    public PotionBuilder withPotionEffect(@NotNull final PotionEffectType potionEffectType, final int duration, final int amplifier, final boolean isAmbient, final boolean isParticles, final boolean hasIcon) {
+    public @NotNull PotionBuilder withPotionEffect(@NotNull final PotionEffectType potionEffectType, final int duration, final int amplifier, final boolean isAmbient, final boolean isParticles, final boolean hasIcon) {
         this.builder.addCustomEffect(new PotionEffect(potionEffectType, duration, amplifier).withAmbient(isAmbient).withParticles(isParticles).withIcon(hasIcon));
 
         return this;
     }
 
-    public PotionBuilder withPotionEffect(@NotNull final PotionEffectType potionEffectType, final int duration, final int amplifier) {
+    public @NotNull PotionBuilder withPotionEffect(@NotNull final PotionEffectType potionEffectType, final int duration, final int amplifier) {
         return withPotionEffect(potionEffectType, duration, amplifier, true, true, true);
     }
 
-    public PotionBuilder withPotionType(@NotNull final PotionType potionType) {
+    public @NotNull PotionBuilder withPotionType(@NotNull final PotionType potionType) {
         this.builder.potion(potionType);
 
         return this;
     }
 
-    public PotionBuilder withCustomName(@NotNull final String customName) {
+    public @NotNull PotionBuilder withCustomName(@NotNull final String customName) {
         this.builder.customName(customName);
 
         return this;
     }
 
     @Override
-    public PotionBuilder setColor(@NotNull final String value) {
+    public @NotNull PotionBuilder setColor(@NotNull final String value) {
         this.builder.customColor(ColorUtils.getColor(value));
 
         return this;
     }
 
     @Override
-    public PotionBuilder build() {
+    public @NotNull PotionBuilder build() {
         getItem().setData(DataComponentTypes.POTION_CONTENTS, this.builder.build());
 
         return this;

@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.structure;
 
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.paper.FusionPlugin;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.structure.Structure;
@@ -13,8 +12,13 @@ import java.io.IOException;
 
 public class StructureRegistry {
 
-    private final Plugin plugin = FusionPlugin.getPlugin();
-    private final StructureManager manager = this.plugin.getServer().getStructureManager();
+    private final StructureManager manager;
+    private final Plugin plugin;
+
+    public StructureRegistry(@NotNull final Plugin plugin) {
+        this.plugin = plugin;
+        this.manager = this.plugin.getServer().getStructureManager();
+    }
 
     public @Nullable Structure getStructure(@NotNull final String key) {
         return this.manager.getStructure(new NamespacedKey(this.plugin, key));
@@ -27,7 +31,7 @@ public class StructureRegistry {
 
         try {
             structure = manager.loadStructure(file);
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             throw new FusionException("Failed to load structure.", exception);
         }
 

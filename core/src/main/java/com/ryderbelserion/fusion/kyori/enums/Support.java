@@ -1,8 +1,7 @@
-package com.ryderbelserion.fusion.paper.api.enums;
+package com.ryderbelserion.fusion.kyori.enums;
 
-import com.ryderbelserion.fusion.paper.FusionPlugin;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
+import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
 
 public enum Support {
@@ -14,9 +13,7 @@ public enum Support {
     placeholder_api("PlaceholderAPI"),
     yard_watch("YardWatch");
 
-    private final Plugin plugin = FusionPlugin.getPlugin();
-
-    private final PluginManager server = this.plugin.getServer().getPluginManager();
+    private final FusionKyori kyori = (FusionKyori) FusionCore.Provider.get();
 
     private final String name;
 
@@ -25,7 +22,7 @@ public enum Support {
     }
 
     public final boolean isEnabled() {
-        return this.server.isPluginEnabled(this.name);
+        return this.kyori.isPluginEnabled(this.name);
     }
 
     public @NotNull final String getName() {

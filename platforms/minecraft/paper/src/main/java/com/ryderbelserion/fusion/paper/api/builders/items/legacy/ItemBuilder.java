@@ -3,16 +3,15 @@ package com.ryderbelserion.fusion.paper.api.builders.items.legacy;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.nexomc.nexo.api.NexoItems;
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
+import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.utils.NumberUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.kyori.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builders.PlayerBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
-import com.ryderbelserion.fusion.paper.api.enums.Support;
+import com.ryderbelserion.fusion.kyori.enums.Support;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import dev.lone.itemsadder.api.CustomStack;
@@ -24,7 +23,6 @@ import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
@@ -80,37 +78,43 @@ import java.util.function.Consumer;
 
 public class ItemBuilder<T extends ItemBuilder<T>> {
 
-    private final FusionPaper api = (FusionPaper) FusionCore.Provider.get();
-
-    private final Plugin plugin = FusionPlugin.getPlugin();
-
-    private final Server server = this.plugin.getServer();
+    private final FusionPaper fusion = (FusionPaper) FusionCore.Provider.get();
 
     private final NbtBuilder nbt = new NbtBuilder();
 
+    private final Plugin plugin;
+
+    private final Server server;
+
     private ItemStack itemStack;
 
-    public ItemBuilder() {
-        this(ItemType.STONE, 1);
+    public ItemBuilder(@NotNull final Plugin plugin) {
+        this(plugin, ItemType.STONE, 1);
     }
 
-    public ItemBuilder(@NotNull final ItemType itemType) {
-        this(itemType, 1);
+    public ItemBuilder(@NotNull final Plugin plugin, @NotNull final ItemType itemType) {
+        this(plugin, itemType, 1);
     }
 
-    public ItemBuilder(@NotNull final ItemType itemType, final int amount) {
-        this(itemType.createItemStack(amount), true);
+    public ItemBuilder(@NotNull final Plugin plugin, @NotNull final ItemType itemType, final int amount) {
+        this(plugin, itemType.createItemStack(amount), true);
     }
 
-    public ItemBuilder(@NotNull final ItemStack itemStack, final boolean createNewStack) {
+    public ItemBuilder(@NotNull final Plugin plugin, @NotNull final ItemStack itemStack, final boolean createNewStack) {
         this.itemStack = createNewStack ? itemStack.clone() : itemStack;
+
+        this.plugin = plugin;
+        this.server = this.plugin.getServer();
     }
 
-    public ItemBuilder(@NotNull final ItemBuilder<T> itemBuilder) {
-        this(itemBuilder, false);
+    public ItemBuilder(@NotNull final Plugin plugin, @NotNull final ItemBuilder<T> itemBuilder) {
+        this(plugin, itemBuilder, false);
     }
 
-    public ItemBuilder(@NotNull final ItemBuilder<T> itemBuilder, final boolean createNewStack) {
+    public ItemBuilder(@NotNull final Plugin plugin, @NotNull final ItemBuilder<T> itemBuilder, final boolean createNewStack) {
+        this.plugin = plugin;
+        this.server = this.plugin.getServer();
+
         this.itemStack = createNewStack ? itemBuilder.itemStack.clone() : itemBuilder.itemStack;
         this.isCustom = itemBuilder.isCustom;
 
@@ -194,11 +198,14 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             Material.RED_SHULKER_BOX, Material.WHITE_SHULKER_BOX, Material.PURPLE_SHULKER_BOX, Material.YELLOW_SHULKER_BOX
     );
 
-    public ItemBuilder(@NotNull final ItemStack itemStack) {
+    public ItemBuilder(@NotNull final Plugin plugin, @NotNull final ItemStack itemStack) {
+        this.plugin = plugin;
+        this.server = this.plugin.getServer();
+
         this.itemStack = itemStack;
 
         if (hasItemMeta()) {
-            final ItemMeta itemMeta = this.itemStack.getItemMeta();
+            @NotNull final ItemMeta itemMeta = this.itemStack.getItemMeta();
 
             if (itemMeta.hasDisplayName()) {
                 this.displayComponent = itemMeta.displayName();
@@ -255,7 +262,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             }
 
             if (itemMeta.hasDamageResistant()) {
-                final Tag<DamageType> tag = itemMeta.getDamageResistant();
+                @NotNull final Tag<DamageType> tag = itemMeta.getDamageResistant();
 
                 if (tag != null) {
                     this.damageTags = new ArrayList<>() {{
@@ -309,7 +316,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
     private int nutritionalValue = 0;
 
-    private float saturation = 0f;
+    private float saturation = 0.0f;
 
     private float eatSeconds = 0;
 
@@ -364,7 +371,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         this.itemStack.editMeta(itemMeta -> {
             if (consumer != null) consumer.accept(itemMeta);
 
-            String displayName = this.displayName;
+            @NotNull String displayName = this.displayName;
 
             if (!displayName.isEmpty()) {
                 if (!this.displayNamePlaceholders.isEmpty()) {
@@ -382,7 +389,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             if (!this.displayLore.isEmpty()) {
                 final boolean isEmpty = this.displayLorePlaceholders.isEmpty();
 
-                final List<Component> components = new ArrayList<>();
+                @NotNull final List<Component> components = new ArrayList<>();
 
                 for (String line : this.displayLore) {
                     if (!isEmpty) {
@@ -406,17 +413,17 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         });
 
         if (this.isHidingItemFlags) {
-            final List<ItemAttributeModifiers.Entry> values = new ArrayList<>();
+            @NotNull final List<ItemAttributeModifiers.Entry> values = new ArrayList<>();
 
             if (this.itemStack.hasData(DataComponentTypes.ATTRIBUTE_MODIFIERS)) {
-                final ItemAttributeModifiers modifier = this.itemStack.getData(DataComponentTypes.ATTRIBUTE_MODIFIERS);
+                @Nullable final ItemAttributeModifiers modifier = this.itemStack.getData(DataComponentTypes.ATTRIBUTE_MODIFIERS);
 
                 if (modifier != null) {
                     values.addAll(modifier.modifiers());
                 }
             }
 
-            final ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.itemAttributes();
+            @NotNull final ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.itemAttributes();
 
             values.forEach(modifier -> builder.addModifier(modifier.attribute(), modifier.modifier()));
 
@@ -440,17 +447,17 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return this.itemStack;
     }
 
-    public @NotNull final String toBase64() {
+    public @NotNull String toBase64() {
         return ItemUtils.toBase64(asItemStack());
     }
 
-    public @NotNull T fromBase64(@NotNull final String base64) {
-        if (base64.isEmpty()) return (T) new ItemBuilder<T>();
+    public @NotNull T fromBase64(@NotNull final Plugin plugin, @NotNull final String base64) {
+        if (base64.isEmpty()) return (T) new ItemBuilder<T>(plugin);
 
-        return (T) new ItemBuilder<T>(ItemUtils.fromBase64(base64));
+        return (T) new ItemBuilder<T>(plugin, ItemUtils.fromBase64(base64));
     }
 
-    public @NotNull T apply(final Consumer<ItemBuilder<T>> builder) {
+    public @NotNull T apply(@Nullable final Consumer<ItemBuilder<T>> builder) {
         if (builder != null) {
             builder.accept(this);
         }
@@ -476,7 +483,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     public @NotNull T withType(@NotNull final String key) {
         if (key.isEmpty()) return (T) this;
 
-        switch (this.api.getItemsPlugin().toLowerCase()) {
+        switch (this.fusion.getItemsPlugin().toLowerCase()) {
             case "nexo" -> {
                 if (Support.nexo.isEnabled()) {
                     getNexo(key);
@@ -518,7 +525,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             if (data.contains("#")) {
                 final String model = data.split("#")[1];
 
-                final Optional<Number> customModelData = NumberUtils.tryParseInt(model);
+                final Optional<Number> customModelData = StringUtils.tryParseInt(model);
 
                 if (customModelData.isPresent()) {
                     data = data.replace("#" + customModelData.get(), "");
@@ -527,7 +534,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
                 }
             }
 
-            final Optional<Number> damage = NumberUtils.tryParseInt(data);
+            final Optional<Number> damage = StringUtils.tryParseInt(data);
 
             if (damage.isEmpty()) {
                 @Nullable final PotionEffectType potionEffect = ItemUtils.getPotionEffect(data);
@@ -547,7 +554,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             type = sections[0];
             final String model = sections[1];
 
-            final Optional<Number> customModelData = NumberUtils.tryParseInt(model);
+            final Optional<Number> customModelData = StringUtils.tryParseInt(model);
 
             customModelData.ifPresent(number -> setCustomModelData(number.intValue()));
         }
@@ -596,7 +603,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     public @NotNull T setCustomModelData(@NotNull final String model) {
         if (model.isEmpty()) return (T) this;
 
-        final Optional<Number> integer = NumberUtils.tryParseInt(model);
+        final Optional<Number> integer = StringUtils.tryParseInt(model);
 
         if (integer.isPresent()) {
             return setCustomModelData(integer.orElse(-1).intValue());
@@ -692,7 +699,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return addPlaceholder(placeholder, value, false);
     }
 
-    public @NotNull T setNamePlaceholders(Map<String, String> placeholders) {
+    public @NotNull T setNamePlaceholders(@NotNull final Map<String, String> placeholders) {
         placeholders.forEach(this::addNamePlaceholder);
 
         return (T) this;
@@ -702,7 +709,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return addPlaceholder(placeholder, value, true);
     }
 
-    public @NotNull T setLorePlaceholders(Map<String, String> placeholders) {
+    public @NotNull T setLorePlaceholders(@NotNull final Map<String, String> placeholders) {
         placeholders.forEach(this::addLorePlaceholder);
 
         return (T) this;
@@ -820,11 +827,11 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return this.nbt.setItemStack(this.itemStack).getInteger(key);
     }
 
-    public @NotNull final List<String> getList(@NotNull final NamespacedKey key) {
+    public @NotNull List<String> getList(@NotNull final NamespacedKey key) {
         return this.nbt.setItemStack(this.itemStack).getList(key);
     }
 
-    public @NotNull final String getString(@NotNull final NamespacedKey key) {
+    public @NotNull String getString(@NotNull final NamespacedKey key) {
         return this.nbt.setItemStack(this.itemStack).getString(key);
     }
 
@@ -838,7 +845,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return this.nbt.setItemStack(this.itemStack).hasKey(key);
     }
 
-    public @Nullable final UUID getPlayer() {
+    public @Nullable UUID getPlayer() {
         return this.player;
     }
 
@@ -861,7 +868,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             return (T) this;
         }
 
-        this.uuid = new PlayerBuilder(player).getUniqueId();
+        this.uuid = new PlayerBuilder(this.server, player).getUniqueId();
 
         return (T) this;
     }
@@ -877,7 +884,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     public @NotNull T setSkull(@NotNull final String skull) {
         if (skull.isEmpty()) return (T) this;
 
-        @NotNull final HeadDatabaseAPI hdb = this.api.getApi();
+        @NotNull HeadDatabaseAPI hdb = this.fusion.getApi();
 
         this.itemStack = hdb.isHead(skull) ? hdb.getItemHead(skull) : this.itemStack.withType(Material.PLAYER_HEAD);
 
@@ -887,7 +894,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     public @NotNull T addEnchantment(@NotNull final String enchant, final int level, final boolean ignoreLevelCap) {
         if (this.isCustom || enchant.isEmpty() || level < 0) return (T) this;
 
-        @Nullable final Enchantment enchantment = ItemUtils.getEnchantment(enchant);
+        @Nullable Enchantment enchantment = ItemUtils.getEnchantment(enchant);
 
         if (enchantment == null) return (T) this;
 
@@ -908,7 +915,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         if (this.isCustom) return (T) this;
         if (enchant.isEmpty()) return (T) this;
 
-        @Nullable final Enchantment enchantment = ItemUtils.getEnchantment(enchant);
+        @Nullable Enchantment enchantment = ItemUtils.getEnchantment(enchant);
 
         if (enchantment == null) return (T) this;
 
@@ -938,7 +945,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T removeEnchantments(@NotNull final Set<String> enchantments) {
+    public @NotNull T removeEnchantments(@NotNull Set<String> enchantments) {
         if (this.isCustom) return (T) this;
         if (enchantments.isEmpty()) return (T) this;
 
@@ -1082,7 +1089,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
         this.itemStack.editMeta(itemMeta -> {
             if (itemMeta instanceof final SkullMeta skullMeta) {
-                final PlayerProfile profile = Bukkit.getServer().createProfile(null, "");
+                final PlayerProfile profile = this.fusion.createProfile(UUID.randomUUID(), "");
 
                 profile.setProperty(new ProfileProperty("", ""));
 
@@ -1090,7 +1097,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
                 try {
                     textures.setSkin(URI.create(this.url).toURL(), PlayerTextures.SkinModel.CLASSIC);
-                } catch (MalformedURLException exception) {
+                } catch (final MalformedURLException exception) {
                     throw new FusionException("Failed to load skull texture", exception);
                 }
 
@@ -1157,11 +1164,11 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull final String getStrippedName() {
+    public @NotNull String getStrippedName() {
         return PlainTextComponentSerializer.plainText().serialize(this.itemStack.displayName());
     }
 
-    public @NotNull final List<String> getStrippedLore() {
+    public @NotNull List<String> getStrippedLore() {
         final List<String> lore = new ArrayList<>();
 
         this.displayComponentLore.forEach(line -> lore.add(PlainTextComponentSerializer.plainText().serialize(line)));
@@ -1169,11 +1176,11 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return lore;
     }
 
-    public @NotNull final List<String> getDisplayLore() {
+    public @NotNull List<String> getDisplayLore() {
         return this.displayLore;
     }
 
-    public @NotNull final String getDisplayName() {
+    public @NotNull String getDisplayName() {
         return this.displayName;
     }
 
@@ -1181,7 +1188,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return !this.itemStack.hasItemMeta();
     }
 
-    public @NotNull final Material getType() {
+    public @NotNull Material getType() {
         return this.itemStack.getType();
     }
 
@@ -1245,7 +1252,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return this.isHidingToolTips;
     }
 
-    private @NotNull T addPlaceholder(@NotNull final String placeholder, @NotNull final String value, boolean isLore) {
+    private @NotNull T addPlaceholder(@NotNull final String placeholder, @NotNull final String value, final boolean isLore) {
         if (isLore) {
             this.displayLorePlaceholders.put(placeholder, value);
 
@@ -1265,11 +1272,11 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return this.server.getPlayer(uuid);
     }
 
-    private CustomModelData.Builder populateData() {
+    private @NotNull CustomModelData.Builder populateData() {
         final CustomModelData.Builder data = CustomModelData.customModelData();
 
         if (this.itemStack.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
-            @Nullable final CustomModelData component = this.itemStack.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
+            @Nullable CustomModelData component = this.itemStack.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
 
             if (component != null) {
                 data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
@@ -1279,7 +1286,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return data;
     }
 
-    private void getItemsAdder(final String item) {
+    private void getItemsAdder(@NotNull final String item) {
         if (!CustomStack.isInRegistry(item)) {
             return;
         }
@@ -1293,7 +1300,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         this.itemStack = builder.getItemStack();
     }
 
-    private void getOraxen(final String item) {
+    private void getOraxen(@NotNull final String item) {
         if (!OraxenItems.exists(item)) {
             return;
         }
@@ -1307,7 +1314,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         this.itemStack = builder.build();
     }
 
-    private void getNexo(final String item) {
+    private void getNexo(@NotNull final String item) {
         if (!NexoItems.exists(item)) {
             return;
         }

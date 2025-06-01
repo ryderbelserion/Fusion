@@ -18,66 +18,66 @@ public class FireworkStarBuilder extends BaseItemBuilder<FireworkStarBuilder> {
         this.builder = FireworkEffect.builder();
     }
 
-    public FireworkStarBuilder flicker(final boolean flicker) {
+    public @NotNull FireworkStarBuilder flicker(final boolean flicker) {
         this.builder.flicker(flicker);
 
         return this;
     }
 
-    public FireworkStarBuilder trail(final boolean trail) {
+    public @NotNull FireworkStarBuilder trail(final boolean trail) {
         this.builder.trail(trail);
 
         return this;
     }
 
-    public FireworkStarBuilder withColor(@NotNull final Color color) {
+    public @NotNull FireworkStarBuilder withColor(@NotNull final Color color) {
         this.builder.withColor(color);
 
         return this;
     }
 
-    public FireworkStarBuilder withColor(@NotNull final Color... colors) {
+    public @NotNull FireworkStarBuilder withColor(@NotNull final Color... colors) {
         this.builder.withColor(colors);
 
         return this;
     }
 
-    public FireworkStarBuilder withColor(@NotNull final List<Color> colors) {
+    public @NotNull FireworkStarBuilder withColor(@NotNull final List<Color> colors) {
         this.builder.withColor(colors);
 
         return this;
     }
 
-    public FireworkStarBuilder withFade(@NotNull final Color color) {
+    public @NotNull FireworkStarBuilder withFade(@NotNull final Color color) {
         this.builder.withFade(color);
 
         return this;
     }
 
-    public FireworkStarBuilder withFade(@NotNull final Color... colors) {
+    public @NotNull FireworkStarBuilder withFade(@NotNull final Color... colors) {
         this.builder.withFade(colors);
 
         return this;
     }
 
-    public FireworkStarBuilder withFade(@NotNull final List<Color> colors) {
+    public @NotNull FireworkStarBuilder withFade(@NotNull final List<Color> colors) {
         this.builder.withFade(colors);
 
         return this;
     }
 
-    public FireworkStarBuilder with(@NotNull final FireworkEffect.Type type) {
+    public @NotNull FireworkStarBuilder with(@NotNull final FireworkEffect.Type type) {
         this.builder.with(type);
 
         return this;
     }
 
-    public FireworkEffect.Builder getBuilder() {
+    public @NotNull FireworkEffect.Builder getBuilder() {
         return this.builder;
     }
 
     @Override
-    public FireworkStarBuilder build() {
+    public @NotNull FireworkStarBuilder build() {
         getItem().setData(DataComponentTypes.FIREWORK_EXPLOSION, this.builder.build());
 
         return this;

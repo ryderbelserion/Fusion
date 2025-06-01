@@ -1,13 +1,13 @@
 package com.ryderbelserion.fusion.paper.utils;
 
-import com.ryderbelserion.fusion.adventure.utils.AdvUtils;
+import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
-import org.bukkit.craftbukkit.entity.CraftHumanEntity;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.inventory.CraftContainer;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.entity.Player;
@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 public class ColorUtils {
 
     public static void updateTitle(@NotNull final Player player, @NotNull final String title) {
-        final ServerPlayer entityPlayer = (ServerPlayer) ((CraftHumanEntity) player).getHandle();
+        final ServerPlayer entityPlayer = (ServerPlayer) ((CraftEntity) player).getHandle();
 
         final int containerId = entityPlayer.containerMenu.containerId;
 
@@ -84,9 +84,9 @@ public class ColorUtils {
             return null;
         }
 
-        int red = Integer.parseInt(rgb[0]);
-        int green = Integer.parseInt(rgb[1]);
-        int blue = Integer.parseInt(rgb[2]);
+        final int red = Integer.parseInt(rgb[0]);
+        final int green = Integer.parseInt(rgb[1]);
+        final int blue = Integer.parseInt(rgb[2]);
 
         return Color.fromRGB(red, green, blue);
     }
