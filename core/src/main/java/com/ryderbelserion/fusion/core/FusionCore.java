@@ -41,16 +41,14 @@ public abstract class FusionCore {
     private FileManager fileManager;
 
     public void load() {
-        @NotNull final ILogger logger = getLogger();
+        ILogger logger = getLogger();
 
         this.pluginBuilder = new PluginBuilder(logger);
         this.fileManager = new FileManager(this, this.path, logger);
         this.addonManager = new AddonManager(this.path);
     }
 
-    public ILogger getLogger() {
-        return null;
-    }
+    public @NotNull abstract ILogger getLogger();
 
     public void reload() {
         this.config.reload();
