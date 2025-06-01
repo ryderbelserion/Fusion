@@ -38,7 +38,7 @@ public class FusionPaper extends FusionKyori {
     public FusionPaper(@NotNull final Plugin plugin) {
         this(plugin.getComponentLogger(), plugin.getDataPath());
 
-        enable(plugin);
+        this.plugin = plugin;
     }
 
     public void enable(@NotNull final Plugin plugin) {

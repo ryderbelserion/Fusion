@@ -24,6 +24,7 @@ public class Fusion extends JavaPlugin {
     @Override
     public void onEnable() {
         this.paper = new FusionPaper(this);
+        this.paper.enable(this);
 
         this.fileManager = this.paper.getFileManager();
 
