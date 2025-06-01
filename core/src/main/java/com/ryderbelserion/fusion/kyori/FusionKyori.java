@@ -22,7 +22,7 @@ public abstract class FusionKyori extends FusionCore {
 
     protected final KyoriLogger logger;
 
-    public FusionKyori(@NotNull final ComponentLogger logger, @NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
+    protected FusionKyori(@NotNull final ComponentLogger logger, @NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
         super(path, consumer);
 
         this.logger = new KyoriLogger(logger, this);
