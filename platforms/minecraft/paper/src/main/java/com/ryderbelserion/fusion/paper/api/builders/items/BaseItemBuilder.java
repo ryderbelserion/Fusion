@@ -16,7 +16,7 @@ import com.ryderbelserion.fusion.paper.api.builders.items.types.SkullBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.SpawnerBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.fireworks.FireworkBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.fireworks.FireworkStarBuilder;
-import com.ryderbelserion.fusion.paper.api.enums.Support;
+import com.ryderbelserion.fusion.kyori.enums.Support;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import dev.lone.itemsadder.api.CustomStack;

@@ -6,7 +6,7 @@ import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.api.PluginKeys;
 import com.ryderbelserion.fusion.paper.api.builders.gui.listeners.GuiListener;
-import com.ryderbelserion.fusion.paper.api.enums.Support;
+import com.ryderbelserion.fusion.kyori.enums.Support;
 import com.ryderbelserion.fusion.paper.api.structure.StructureRegistry;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;

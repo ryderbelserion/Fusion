@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.core.api.interfaces;
 
-import com.ryderbelserion.fusion.core.api.enums.LoggerType;
+import com.ryderbelserion.fusion.kyori.enums.LoggerType;
 import org.jetbrains.annotations.NotNull;
 
 /**

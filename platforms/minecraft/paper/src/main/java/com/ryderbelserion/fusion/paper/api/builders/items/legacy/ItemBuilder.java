@@ -12,7 +12,7 @@ import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builders.PlayerBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
-import com.ryderbelserion.fusion.paper.api.enums.Support;
+import com.ryderbelserion.fusion.kyori.enums.Support;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import dev.lone.itemsadder.api.CustomStack;

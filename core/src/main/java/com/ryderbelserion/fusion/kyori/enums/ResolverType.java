@@ -2,8 +2,6 @@ package com.ryderbelserion.fusion.kyori.enums;
 
 /**
  * A collection of resolver types
- *
- * @author ryderbelserion
  */
 public enum ResolverType {
     /**

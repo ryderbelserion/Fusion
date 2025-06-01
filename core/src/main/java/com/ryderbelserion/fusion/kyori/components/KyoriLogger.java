@@ -1,8 +1,8 @@
 package com.ryderbelserion.fusion.kyori.components;
 
 import com.ryderbelserion.fusion.kyori.FusionKyori;
+import com.ryderbelserion.fusion.kyori.enums.LoggerType;
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
-import com.ryderbelserion.fusion.core.api.enums.LoggerType;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
