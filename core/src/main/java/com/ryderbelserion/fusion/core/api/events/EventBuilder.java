@@ -16,7 +16,7 @@ public class EventBuilder {
     public @NotNull final EventBuilder load() {
         this.modules.forEach(module -> {
             if (module.isEnabled()) {
-                //this.api.registerEvent(module);
+                this.api.registerEvent(module);
 
                 module.start();
 
