@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class ComponentBuilder {
 
     private final FusionKyori kyori = (FusionKyori) FusionCore.Provider.get();
 
-    private final Map<ResolverType, List<TagResolver>> resolvers = new HashMap<>();
+    private final Map<ResolverType, List<TagResolver>> resolvers = new EnumMap<>(ResolverType.class);
     private final List<String> lines = new ArrayList<>();
 
     private final Audience target;
