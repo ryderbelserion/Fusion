@@ -113,7 +113,6 @@ public class GuiFiller {
             case BOTH:
                 this.fillSide(Side.LEFT, guiItems);
                 this.fillSide(Side.RIGHT, guiItems);
-            }
         }
     }
 
