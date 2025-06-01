@@ -7,7 +7,6 @@ import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.kyori.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.api.builders.items.types.PotionBuilder;
@@ -47,7 +46,6 @@ import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
@@ -62,8 +60,6 @@ import java.util.Set;
 public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     protected final FusionPaper fusion = (FusionPaper) FusionCore.Provider.get();
-
-    protected final Plugin plugin = FusionPlugin.getPlugin();
 
     private Map<String, String> placeholders = new HashMap<>();
 

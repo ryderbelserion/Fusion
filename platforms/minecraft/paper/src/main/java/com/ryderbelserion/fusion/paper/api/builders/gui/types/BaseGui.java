@@ -1,9 +1,8 @@
 package com.ryderbelserion.fusion.paper.api.builders.gui.types;
 
-import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.paper.FusionPlugin;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiFiller;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
@@ -40,11 +39,11 @@ import java.util.Set;
 
 public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
-    private final Plugin plugin = FusionPlugin.getPlugin();
+    private final FusionPaper paper = (FusionPaper) FusionCore.Provider.get();
 
-    private final Server server = this.plugin.getServer();
+    private final Plugin plugin;
 
-    private final FusionKyori kyori = (FusionKyori) FusionCore.Provider.get();
+    private final Server server;
 
     private final GuiFiller filler = new GuiFiller(this);
 
@@ -68,7 +67,9 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     private String title;
     private int rows;
 
-    public BaseGui(@NotNull Audience audience, @NotNull String title, int rows, @NotNull Set<InteractionComponent> components) {
+    public BaseGui(@NotNull Plugin plugin, @NotNull Audience audience, @NotNull String title, int rows, @NotNull Set<InteractionComponent> components) {
+        this.plugin = plugin;
+        this.server = this.plugin.getServer();
         this.title = title;
         this.rows = rows;
 
@@ -82,11 +83,13 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
         this.inventory = this.server.createInventory(this, size, title(audience));
     }
 
-    public BaseGui(@NotNull String title, int rows, @NotNull Set<InteractionComponent> components) {
-        this(Audience.empty(), title, rows, components);
+    public BaseGui(@NotNull Plugin plugin, @NotNull String title, int rows, @NotNull Set<InteractionComponent> components) {
+        this(plugin, Audience.empty(), title, rows, components);
     }
 
-    public BaseGui(@NotNull Audience audience, @NotNull String title, @NotNull GuiType guiType, @NotNull Set<InteractionComponent> components) {
+    public BaseGui(@NotNull Plugin plugin, @NotNull Audience audience, @NotNull String title, @NotNull GuiType guiType, @NotNull Set<InteractionComponent> components) {
+        this.plugin = plugin;
+        this.server = this.plugin.getServer();
         this.title = title;
 
         this.slotActions = new LinkedHashMap<>(guiType.getLimit());
@@ -99,8 +102,8 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
         this.guiType = guiType;
     }
 
-    public BaseGui(@NotNull String title, @NotNull GuiType guiType, @NotNull Set<InteractionComponent> components) {
-        this(Audience.empty(), title, guiType, components);
+    public BaseGui(@NotNull Plugin plugin, @NotNull String title, @NotNull GuiType guiType, @NotNull Set<InteractionComponent> components) {
+        this(plugin, Audience.empty(), title, guiType, components);
     }
 
     @Override
@@ -120,7 +123,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     @Override
     public @NotNull final Component title(@NotNull Audience audience) {
-        return this.kyori.color(audience, this.title, new HashMap<>());
+        return this.paper.color(audience, this.title, new HashMap<>());
     }
 
     @Override
@@ -288,7 +291,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     @Override
     public void close(@NotNull Player player, @NotNull InventoryCloseEvent.Reason reason, boolean isDelayed) {
         if (isDelayed) {
-            new FoliaScheduler(Scheduler.global_scheduler) {
+            new FoliaScheduler(this.plugin, Scheduler.global_scheduler) {
                 @Override
                 public void run() {
                     player.closeInventory(reason);

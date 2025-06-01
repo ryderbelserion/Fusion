@@ -3,7 +3,6 @@ package com.ryderbelserion.fusion.mobs;
 import com.ryderbelserion.fusion.core.api.addons.interfaces.IAddon;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.FusionPlugin;
 import java.nio.file.Path;
 
 public class MobAddon extends IAddon {
@@ -14,8 +13,6 @@ public class MobAddon extends IAddon {
 
     @Override
     public void onEnable() {
-        FusionPlugin.getPlugin().getComponentLogger().warn("This is a test!");
-
         this.logger.safe("<green>MobAddon is enabled");
 
         final Path path = this.getFolder();

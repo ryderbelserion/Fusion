@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.paper;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import com.ryderbelserion.fusion.core.api.addons.AddonManager;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
@@ -18,7 +19,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
+import java.util.UUID;
 
 public class FusionPaper extends FusionKyori {
 
@@ -75,6 +78,11 @@ public class FusionPaper extends FusionKyori {
     @Override
     public final boolean isPluginEnabled(@NotNull String name) {
         return this.pluginManager.isPluginEnabled(name);
+    }
+
+    @Override
+    public final PlayerProfile createProfile(@NotNull UUID uuid, @Nullable String name) {
+        return this.server.createProfile(uuid, name);
     }
 
     public @NotNull final String getItemsPlugin() {

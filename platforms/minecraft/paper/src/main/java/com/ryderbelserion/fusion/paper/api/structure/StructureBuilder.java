@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.structure;
 
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.paper.FusionPlugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -26,19 +25,23 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class StructureBuilder {
 
-    private final Plugin plugin = FusionPlugin.getPlugin();
-    private final Server server = this.plugin.getServer();
-    private final StructureManager manager = this.server.getStructureManager();
+    private final StructureManager manager;
+    private final Plugin plugin;
+    private final Server server;
 
     private final Set<BlockState> structureBlocks = new HashSet<>();
     private final Set<BlockState> initialBlocks = new HashSet<>();
 
+    private final @Nullable BlockVector vector;
     private final Structure structure;
-    private final BlockVector vector;
-    private final boolean isReady;
     private final NamespacedKey key;
+    private final boolean isReady;
 
-    public StructureBuilder(@NotNull final NamespacedKey key) {
+    public StructureBuilder(@NotNull Plugin plugin, @NotNull NamespacedKey key) {
+        this.plugin = plugin;
+        this.server = this.plugin.getServer();
+        this.manager = this.server.getStructureManager();
+
         this.key = key;
 
         this.structure = this.manager.loadStructure(this.key);
@@ -47,8 +50,12 @@ public class StructureBuilder {
         this.vector = this.structure != null ? this.structure.getSize() : null;
     }
 
-    public StructureBuilder(@NotNull final String keyName) {
+    public StructureBuilder(@NotNull Plugin plugin, @NotNull String keyName) {
+        this.plugin = plugin;
+        this.server = this.plugin.getServer();
+        this.manager = this.server.getStructureManager();
         this.structure = this.manager.createStructure();
+
         this.vector = null;
 
         this.key = new NamespacedKey(this.plugin, keyName);
@@ -56,7 +63,7 @@ public class StructureBuilder {
         this.isReady = false;
     }
 
-    public void saveStructure(@NotNull final File file, @Nullable final Location uno, @Nullable final Location dos, final boolean includeEntities, final boolean registerStructure) {
+    public void saveStructure(@NotNull File file, @Nullable Location uno, @Nullable Location dos, boolean includeEntities, boolean registerStructure) {
         if (uno == null || dos == null) {
             throw new FusionException("Cannot save structure as the file or one of the corners is null.");
         }
@@ -74,7 +81,7 @@ public class StructureBuilder {
         }
     }
 
-    public void removeStructure(final boolean restoreInitialBlocks) { // remove structure
+    public void removeStructure(boolean restoreInitialBlocks) { // remove structure
         if (!this.isReady) return;
 
         this.structureBlocks.forEach(state -> state.setType(Material.AIR));
@@ -94,10 +101,10 @@ public class StructureBuilder {
         try {
             populate(true, location);
 
-            this.structure.place(location, false, StructureRotation.NONE, Mirror.NONE, 0, 1F, ThreadLocalRandom.current());
+            this.structure.place(location, false, StructureRotation.NONE, Mirror.NONE, 0, 1.0F, ThreadLocalRandom.current());
 
             populate(false, location);
-        } catch (final Exception exception) {
+        } catch (Exception exception) {
             throw new FusionException("Failed to paste structure.", exception);
         }
     }
@@ -119,15 +126,15 @@ public class StructureBuilder {
     }
 
     public double getX() {
-        return this.isReady ? this.vector.getX() : 0.0;
+        return this.isReady && this.vector != null ? this.vector.getX() : 0.0;
     }
 
     public double getY() {
-        return this.isReady ? this.vector.getY() : 0.0;
+        return this.isReady && this.vector != null ? this.vector.getY() : 0.0;
     }
 
     public double getZ() {
-        return this.isReady ? this.vector.getZ() : 0.0;
+        return this.isReady && this.vector != null ? this.vector.getZ() : 0.0;
     }
 
     private void populate(boolean isInitial, @NotNull Location location) {

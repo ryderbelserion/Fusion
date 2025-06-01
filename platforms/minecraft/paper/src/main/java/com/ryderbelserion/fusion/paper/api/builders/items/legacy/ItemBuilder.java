@@ -8,7 +8,6 @@ import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.kyori.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.FusionPlugin;
 import com.ryderbelserion.fusion.paper.api.builders.PlayerBuilder;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
@@ -82,35 +81,41 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
     private final FusionPaper fusion = (FusionPaper) FusionCore.Provider.get();
 
-    private final Plugin plugin = FusionPlugin.getPlugin();
-
-    private final Server server = this.plugin.getServer();
-
     private final NbtBuilder nbt = new NbtBuilder();
+
+    private final Plugin plugin;
+
+    private final Server server;
 
     private ItemStack itemStack;
 
-    public ItemBuilder() {
-        this(ItemType.STONE, 1);
+    public ItemBuilder(@NotNull Plugin plugin) {
+        this(plugin, ItemType.STONE, 1);
     }
 
-    public ItemBuilder(@NotNull final ItemType itemType) {
-        this(itemType, 1);
+    public ItemBuilder(@NotNull Plugin plugin, @NotNull ItemType itemType) {
+        this(plugin, itemType, 1);
     }
 
-    public ItemBuilder(@NotNull final ItemType itemType, final int amount) {
-        this(itemType.createItemStack(amount), true);
+    public ItemBuilder(@NotNull Plugin plugin, @NotNull ItemType itemType, final int amount) {
+        this(plugin, itemType.createItemStack(amount), true);
     }
 
-    public ItemBuilder(@NotNull final ItemStack itemStack, final boolean createNewStack) {
+    public ItemBuilder(@NotNull Plugin plugin, @NotNull ItemStack itemStack, final boolean createNewStack) {
         this.itemStack = createNewStack ? itemStack.clone() : itemStack;
+
+        this.plugin = plugin;
+        this.server = this.plugin.getServer();
     }
 
-    public ItemBuilder(@NotNull final ItemBuilder<T> itemBuilder) {
-        this(itemBuilder, false);
+    public ItemBuilder(@NotNull Plugin plugin, @NotNull ItemBuilder<T> itemBuilder) {
+        this(plugin, itemBuilder, false);
     }
 
-    public ItemBuilder(@NotNull final ItemBuilder<T> itemBuilder, final boolean createNewStack) {
+    public ItemBuilder(@NotNull Plugin plugin, @NotNull ItemBuilder<T> itemBuilder, final boolean createNewStack) {
+        this.plugin = plugin;
+        this.server = this.plugin.getServer();
+
         this.itemStack = createNewStack ? itemBuilder.itemStack.clone() : itemBuilder.itemStack;
         this.isCustom = itemBuilder.isCustom;
 
@@ -194,7 +199,10 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             Material.RED_SHULKER_BOX, Material.WHITE_SHULKER_BOX, Material.PURPLE_SHULKER_BOX, Material.YELLOW_SHULKER_BOX
     );
 
-    public ItemBuilder(@NotNull final ItemStack itemStack) {
+    public ItemBuilder(@NotNull Plugin plugin, @NotNull ItemStack itemStack) {
+        this.plugin = plugin;
+        this.server = this.plugin.getServer();
+
         this.itemStack = itemStack;
 
         if (hasItemMeta()) {
@@ -219,8 +227,8 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
                 }
             } else if (isSpawner()) { // populates the entity type field
                 if (itemMeta instanceof final BlockStateMeta blockState) {
-                    @NotNull final CreatureSpawner creatureSpawner = (CreatureSpawner) blockState.getBlockState();
-                    @Nullable final EntityType type = creatureSpawner.getSpawnedType();
+                    @NotNull CreatureSpawner creatureSpawner = (CreatureSpawner) blockState.getBlockState();
+                    @Nullable EntityType type = creatureSpawner.getSpawnedType();
 
                     if (type != null) this.entityType = type;
                 }
@@ -230,14 +238,14 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
                 }
             } else if (isShield()) {
                 if (itemMeta instanceof final BlockStateMeta shield) {
-                    @NotNull final Banner banner = (Banner) shield.getBlockState();
+                    @NotNull Banner banner = (Banner) shield.getBlockState();
 
                     this.patterns.addAll(banner.getPatterns());
                 }
             } else if (isPlayerHead()) {
                 if (itemMeta instanceof final SkullMeta skull) {
                     if (skull.hasOwner()) {
-                        @Nullable final OfflinePlayer target = skull.getOwningPlayer();
+                        @Nullable OfflinePlayer target = skull.getOwningPlayer();
 
                         if (target != null) this.uuid = target.getUniqueId();
                     }
@@ -309,7 +317,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
     private int nutritionalValue = 0;
 
-    private float saturation = 0f;
+    private float saturation = 0.0f;
 
     private float eatSeconds = 0;
 
@@ -339,7 +347,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
     private TrimPattern trimPattern;
 
-    public @NotNull GuiItem asGuiItem(@Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
+    public @NotNull GuiItem asGuiItem(@Nullable GuiAction<@NotNull InventoryClickEvent> action) {
         return new GuiItem(asItemStack(), action);
     }
 
@@ -351,7 +359,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return asItemStack(null);
     }
 
-    public @NotNull ItemStack asItemStack(@Nullable final Consumer<ItemMeta> consumer) {
+    public @NotNull ItemStack asItemStack(@Nullable Consumer<ItemMeta> consumer) {
         if (this.isCustom) return this.itemStack;
 
         // Daisy chain it all!
@@ -440,14 +448,14 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return this.itemStack;
     }
 
-    public @NotNull final String toBase64() {
+    public @NotNull String toBase64() {
         return ItemUtils.toBase64(asItemStack());
     }
 
-    public @NotNull T fromBase64(@NotNull final String base64) {
-        if (base64.isEmpty()) return (T) new ItemBuilder<T>();
+    public @NotNull T fromBase64(@NotNull Plugin plugin, @NotNull String base64) {
+        if (base64.isEmpty()) return (T) new ItemBuilder<T>(plugin);
 
-        return (T) new ItemBuilder<T>(ItemUtils.fromBase64(base64));
+        return (T) new ItemBuilder<T>(plugin, ItemUtils.fromBase64(base64));
     }
 
     public @NotNull T apply(final Consumer<ItemBuilder<T>> builder) {
@@ -458,11 +466,11 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T withType(@Nullable final ItemType itemType) {
+    public @NotNull T withType(@Nullable ItemType itemType) {
         return withType(itemType, 1);
     }
 
-    public @NotNull T withType(@Nullable final ItemType itemType, final int amount) {
+    public @NotNull T withType(@Nullable ItemType itemType, final int amount) {
         if (itemType == null) return (T) this;
 
         final ItemStack itemStack = itemType.createItemStack(Math.max(amount, 1));
@@ -473,7 +481,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T withType(@NotNull final String key) {
+    public @NotNull T withType(@NotNull String key) {
         if (key.isEmpty()) return (T) this;
 
         switch (this.fusion.getItemsPlugin().toLowerCase()) {
@@ -530,7 +538,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             final Optional<Number> damage = StringUtils.tryParseInt(data);
 
             if (damage.isEmpty()) {
-                @Nullable final PotionEffectType potionEffect = ItemUtils.getPotionEffect(data);
+                @Nullable PotionEffectType potionEffect = ItemUtils.getPotionEffect(data);
 
                 if (potionEffect != null) {
                     this.potionEffects.add(new PotionEffect(potionEffect, 1, 1));
@@ -552,7 +560,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             customModelData.ifPresent(number -> setCustomModelData(number.intValue()));
         }
 
-        @Nullable final ItemType itemType = ItemUtils.getItemType(type);
+        @Nullable ItemType itemType = ItemUtils.getItemType(type);
 
         if (itemType == null) {
             return (T) this;
@@ -561,7 +569,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return withType(itemType);
     }
 
-    public @NotNull T setDisplayLore(@NotNull final List<String> displayLore) {
+    public @NotNull T setDisplayLore(@NotNull List<String> displayLore) {
         if (displayLore.isEmpty()) return (T) this;
 
         this.displayLore = displayLore;
@@ -569,7 +577,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T addDisplayLore(@NotNull final String displayLore) {
+    public @NotNull T addDisplayLore(@NotNull String displayLore) {
         if (displayLore.isEmpty()) return (T) this;
 
         this.displayLore.add(displayLore);
@@ -577,7 +585,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T setDisplayName(@NotNull final String displayName) {
+    public @NotNull T setDisplayName(@NotNull String displayName) {
         if (displayName.isEmpty()) return (T) this;
 
         this.displayName = displayName;
@@ -593,7 +601,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T setCustomModelData(@NotNull final String model) {
+    public @NotNull T setCustomModelData(@NotNull String model) {
         if (model.isEmpty()) return (T) this;
 
         final Optional<Number> integer = StringUtils.tryParseInt(model);
@@ -609,7 +617,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T setItemModel(@NotNull final String itemModel) {
+    public @NotNull T setItemModel(@NotNull String itemModel) {
         if (itemModel.isEmpty()) return (T) this;
 
         this.itemStack.setData(DataComponentTypes.ITEM_MODEL, NamespacedKey.minecraft(itemModel));
@@ -617,7 +625,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T setItemModel(@NotNull final String namespace, @NotNull final String itemModel) {
+    public @NotNull T setItemModel(@NotNull String namespace, @NotNull String itemModel) {
         if (namespace.isEmpty() || itemModel.isEmpty()) return (T) this;
 
         this.itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(namespace, itemModel));
@@ -642,19 +650,19 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return addDamageTag(DamageTypeTags.IS_FIRE);
     }
 
-    public @NotNull T addDamageTag(@NotNull final Tag<DamageType> tag) {
+    public @NotNull T addDamageTag(@NotNull Tag<DamageType> tag) {
         this.damageTags.add(tag);
 
         return (T) this;
     }
 
-    public @NotNull T removeDamageTag(@NotNull final Tag<DamageType> tag) {
+    public @NotNull T removeDamageTag(@NotNull Tag<DamageType> tag) {
         this.damageTags.remove(tag);
 
         return (T) this;
     }
 
-    public @NotNull T addFireworkEffect(@NotNull final FireworkEffect.Builder effect) {
+    public @NotNull T addFireworkEffect(@NotNull FireworkEffect.Builder effect) {
         if (!isFirework() && !isFireworkStar()) return (T) this;
 
         this.fireworkEffects.add(effect.build());
@@ -688,27 +696,27 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T addNamePlaceholder(@NotNull final String placeholder, @NotNull final String value) {
+    public @NotNull T addNamePlaceholder(@NotNull String placeholder, @NotNull String value) {
         return addPlaceholder(placeholder, value, false);
     }
 
-    public @NotNull T setNamePlaceholders(@NotNull final Map<String, String> placeholders) {
+    public @NotNull T setNamePlaceholders(@NotNull Map<String, String> placeholders) {
         placeholders.forEach(this::addNamePlaceholder);
 
         return (T) this;
     }
 
-    public @NotNull T addLorePlaceholder(@NotNull final String placeholder, @NotNull final String value) {
+    public @NotNull T addLorePlaceholder(@NotNull String placeholder, @NotNull String value) {
         return addPlaceholder(placeholder, value, true);
     }
 
-    public @NotNull T setLorePlaceholders(@NotNull final Map<String, String> placeholders) {
+    public @NotNull T setLorePlaceholders(@NotNull Map<String, String> placeholders) {
         placeholders.forEach(this::addLorePlaceholder);
 
         return (T) this;
     }
 
-    public @NotNull T addPattern(@NotNull final PatternType type, @NotNull final DyeColor color) {
+    public @NotNull T addPattern(@NotNull PatternType type, @NotNull DyeColor color) {
         if (!isBanner() && !isShield()) return (T) this;
 
         this.patterns.add(new Pattern(color, type));
@@ -716,7 +724,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T addPattern(@NotNull final String pattern) {
+    public @NotNull T addPattern(@NotNull String pattern) {
         if (!isBanner() && !isShield()) return (T) this;
 
         if (!pattern.contains(":")) return (T) this;
@@ -730,7 +738,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return addPattern(type, color);
     }
 
-    public @NotNull T addPatterns(@NotNull final List<String> patterns) {
+    public @NotNull T addPatterns(@NotNull List<String> patterns) {
         if (!isBanner() && !isShield()) return (T) this;
 
         patterns.forEach(this::addPattern);
@@ -738,7 +746,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T addPotionEffect(@NotNull final PotionEffectType type, final int duration, final int amplifier) {
+    public @NotNull T addPotionEffect(@NotNull PotionEffectType type, final int duration, final int amplifier) {
         if (!isArrow() && !isPotion()) return (T) this;
 
         this.potionEffects.add(new PotionEffect(type, duration, amplifier));
@@ -746,7 +754,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T setPotionType(@NotNull final PotionType potionType) {
+    public @NotNull T setPotionType(@NotNull PotionType potionType) {
         if (!isPotion()) return (T) this;
 
         this.potionType = potionType;
@@ -754,7 +762,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T setColor(@NotNull final Color color) {
+    public @NotNull T setColor(@NotNull Color color) {
         this.color = color;
 
         return (T) this;
@@ -766,7 +774,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T setEntityType(@NotNull final EntityType entityType) {
+    public @NotNull T setEntityType(@NotNull EntityType entityType) {
         this.entityType = entityType;
 
         return (T) this;
@@ -778,71 +786,71 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T setPersistentDouble(@NotNull final NamespacedKey key, final double value) {
+    public @NotNull T setPersistentDouble(@NotNull NamespacedKey key, final double value) {
         this.nbt.setItemStack(this.itemStack).setPersistentDouble(key, value);
 
         return (T) this;
     }
 
-    public @NotNull T setPersistentInteger(@NotNull final NamespacedKey key, final int value) {
+    public @NotNull T setPersistentInteger(@NotNull NamespacedKey key, final int value) {
         this.nbt.setItemStack(this.itemStack).setPersistentInteger(key, value);
 
         return (T) this;
     }
 
-    public @NotNull T setPersistentBoolean(@NotNull final NamespacedKey key, final boolean value) {
+    public @NotNull T setPersistentBoolean(@NotNull NamespacedKey key, final boolean value) {
         this.nbt.setItemStack(this.itemStack).setPersistentBoolean(key, value);
 
         return (T) this;
     }
 
-    public @NotNull T setPersistentString(@NotNull final NamespacedKey key, @NotNull final String value) {
+    public @NotNull T setPersistentString(@NotNull NamespacedKey key, @NotNull String value) {
         this.nbt.setItemStack(this.itemStack).setPersistentString(key, value);
 
         return (T) this;
     }
 
-    public @NotNull T setPersistentList(@NotNull final NamespacedKey key, @NotNull final List<String> values) {
+    public @NotNull T setPersistentList(@NotNull NamespacedKey key, @NotNull List<String> values) {
         this.nbt.setItemStack(this.itemStack).setPersistentList(key, values);
 
         return (T) this;
     }
 
-    public final boolean getBoolean(@NotNull final NamespacedKey key) {
+    public final boolean getBoolean(@NotNull NamespacedKey key) {
         return this.nbt.setItemStack(this.itemStack).getBoolean(key);
     }
 
-    public final double getDouble(@NotNull final NamespacedKey key) {
+    public final double getDouble(@NotNull NamespacedKey key) {
         return this.nbt.setItemStack(this.itemStack).getDouble(key);
     }
 
-    public final int getInteger(@NotNull final NamespacedKey key) {
+    public final int getInteger(@NotNull NamespacedKey key) {
         return this.nbt.setItemStack(this.itemStack).getInteger(key);
     }
 
-    public @NotNull final List<String> getList(@NotNull final NamespacedKey key) {
+    public @NotNull List<String> getList(@NotNull NamespacedKey key) {
         return this.nbt.setItemStack(this.itemStack).getList(key);
     }
 
-    public @NotNull final String getString(@NotNull final NamespacedKey key) {
+    public @NotNull String getString(@NotNull NamespacedKey key) {
         return this.nbt.setItemStack(this.itemStack).getString(key);
     }
 
-    public @NotNull T removePersistentKey(@Nullable final NamespacedKey key) {
+    public @NotNull T removePersistentKey(@Nullable NamespacedKey key) {
         this.nbt.setItemStack(this.itemStack).removePersistentKey(key);
 
         return (T) this;
     }
 
-    public final boolean hasKey(@NotNull final NamespacedKey key) {
+    public final boolean hasKey(@NotNull NamespacedKey key) {
         return this.nbt.setItemStack(this.itemStack).hasKey(key);
     }
 
-    public @Nullable final UUID getPlayer() {
+    public @Nullable UUID getPlayer() {
         return this.player;
     }
 
-    public @NotNull T setPlayer(@NotNull final Player player) {
+    public @NotNull T setPlayer(@NotNull Player player) {
         if (player.isEmpty()) return (T) this;
 
         this.player = player.getUniqueId();
@@ -850,7 +858,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T setPlayer(@NotNull final String player) {
+    public @NotNull T setPlayer(@NotNull String player) {
         if (player.isEmpty()) return (T) this;
 
         // This is temporary until HDB is updated, The dev of the plugin has a house now
@@ -866,7 +874,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T setSkull(@NotNull final UUID uuid) {
+    public @NotNull T setSkull(@NotNull UUID uuid) {
         if (!isPlayerHead()) return (T) this;
 
         this.uuid = uuid;
@@ -874,20 +882,20 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T setSkull(@NotNull final String skull) {
+    public @NotNull T setSkull(@NotNull String skull) {
         if (skull.isEmpty()) return (T) this;
 
-        @NotNull final HeadDatabaseAPI hdb = this.fusion.getApi();
+        @NotNull HeadDatabaseAPI hdb = this.fusion.getApi();
 
         this.itemStack = hdb.isHead(skull) ? hdb.getItemHead(skull) : this.itemStack.withType(Material.PLAYER_HEAD);
 
         return (T) this;
     }
 
-    public @NotNull T addEnchantment(@NotNull final String enchant, final int level, final boolean ignoreLevelCap) {
+    public @NotNull T addEnchantment(@NotNull String enchant, final int level, final boolean ignoreLevelCap) {
         if (this.isCustom || enchant.isEmpty() || level < 0) return (T) this;
 
-        @Nullable final Enchantment enchantment = ItemUtils.getEnchantment(enchant);
+        @Nullable Enchantment enchantment = ItemUtils.getEnchantment(enchant);
 
         if (enchantment == null) return (T) this;
 
@@ -904,11 +912,11 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T removeEnchantment(@NotNull final String enchant) {
+    public @NotNull T removeEnchantment(@NotNull String enchant) {
         if (this.isCustom) return (T) this;
         if (enchant.isEmpty()) return (T) this;
 
-        @Nullable final Enchantment enchantment = ItemUtils.getEnchantment(enchant);
+        @Nullable Enchantment enchantment = ItemUtils.getEnchantment(enchant);
 
         if (enchantment == null) return (T) this;
 
@@ -929,7 +937,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T addEnchantments(@NotNull final Map<String, Integer> enchantments, final boolean ignoreLevelCap) {
+    public @NotNull T addEnchantments(@NotNull Map<String, Integer> enchantments, final boolean ignoreLevelCap) {
         if (this.isCustom) return (T) this;
         if (enchantments.isEmpty()) return (T) this;
 
@@ -938,7 +946,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T removeEnchantments(@NotNull final Set<String> enchantments) {
+    public @NotNull T removeEnchantments(@NotNull Set<String> enchantments) {
         if (this.isCustom) return (T) this;
         if (enchantments.isEmpty()) return (T) this;
 
@@ -971,7 +979,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T applyTrim(@NotNull final String pattern, @NotNull final String material) {
+    public @NotNull T applyTrim(@NotNull String pattern, @NotNull String material) {
         if (this.isCustom) return (T) this;
         if (pattern.isEmpty() || material.isEmpty()) return (T) this;
 
@@ -984,7 +992,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return applyTrim(trimPattern, trimMaterial);
     }
 
-    public @NotNull T applyTrimPattern(@NotNull final String pattern) {
+    public @NotNull T applyTrimPattern(@NotNull String pattern) {
         if (this.isCustom) return (T) this;
         if (pattern.isEmpty()) return (T) this;
 
@@ -997,7 +1005,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T applyTrimMaterial(@NotNull final String material) {
+    public @NotNull T applyTrimMaterial(@NotNull String material) {
         if (this.isCustom) return (T) this;
         if (material.isEmpty()) return (T) this;
 
@@ -1118,7 +1126,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull T applyTrim(@NotNull final TrimPattern trimPattern, @NotNull final TrimMaterial trimMaterial) {
+    public @NotNull T applyTrim(@NotNull TrimPattern trimPattern, @NotNull TrimMaterial trimMaterial) {
         if (this.isCustom) return (T) this;
         if (!isArmor()) return (T) this;
 
@@ -1157,11 +1165,11 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    public @NotNull final String getStrippedName() {
+    public @NotNull String getStrippedName() {
         return PlainTextComponentSerializer.plainText().serialize(this.itemStack.displayName());
     }
 
-    public @NotNull final List<String> getStrippedLore() {
+    public @NotNull List<String> getStrippedLore() {
         final List<String> lore = new ArrayList<>();
 
         this.displayComponentLore.forEach(line -> lore.add(PlainTextComponentSerializer.plainText().serialize(line)));
@@ -1169,11 +1177,11 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return lore;
     }
 
-    public @NotNull final List<String> getDisplayLore() {
+    public @NotNull List<String> getDisplayLore() {
         return this.displayLore;
     }
 
-    public @NotNull final String getDisplayName() {
+    public @NotNull String getDisplayName() {
         return this.displayName;
     }
 
@@ -1181,7 +1189,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return !this.itemStack.hasItemMeta();
     }
 
-    public @NotNull final Material getType() {
+    public @NotNull Material getType() {
         return this.itemStack.getType();
     }
 
@@ -1245,7 +1253,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return this.isHidingToolTips;
     }
 
-    private @NotNull T addPlaceholder(@NotNull final String placeholder, @NotNull final String value, boolean isLore) {
+    private @NotNull T addPlaceholder(@NotNull String placeholder, @NotNull String value, boolean isLore) {
         if (isLore) {
             this.displayLorePlaceholders.put(placeholder, value);
 
@@ -1257,11 +1265,11 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return (T) this;
     }
 
-    private @NotNull OfflinePlayer getOfflinePlayer(@NotNull final UUID uuid) {
+    private @NotNull OfflinePlayer getOfflinePlayer(@NotNull UUID uuid) {
         return this.server.getOfflinePlayer(uuid);
     }
 
-    private @Nullable Player getPlayer(@NotNull final UUID uuid) {
+    private @Nullable Player getPlayer(@NotNull UUID uuid) {
         return this.server.getPlayer(uuid);
     }
 
@@ -1269,7 +1277,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         final CustomModelData.Builder data = CustomModelData.customModelData();
 
         if (this.itemStack.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
-            @Nullable final CustomModelData component = this.itemStack.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
+            @Nullable CustomModelData component = this.itemStack.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
 
             if (component != null) {
                 data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
@@ -1279,7 +1287,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return data;
     }
 
-    private void getItemsAdder(@NotNull final String item) {
+    private void getItemsAdder(@NotNull String item) {
         if (!CustomStack.isInRegistry(item)) {
             return;
         }
@@ -1293,7 +1301,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         this.itemStack = builder.getItemStack();
     }
 
-    private void getOraxen(@NotNull final String item) {
+    private void getOraxen(@NotNull String item) {
         if (!OraxenItems.exists(item)) {
             return;
         }
@@ -1307,7 +1315,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         this.itemStack = builder.build();
     }
 
-    private void getNexo(@NotNull final String item) {
+    private void getNexo(@NotNull String item) {
         if (!NexoItems.exists(item)) {
             return;
         }

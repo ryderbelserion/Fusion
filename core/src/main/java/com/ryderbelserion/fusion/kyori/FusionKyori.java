@@ -11,11 +11,13 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public abstract class FusionKyori extends FusionCore {
@@ -33,6 +35,8 @@ public abstract class FusionKyori extends FusionCore {
     public abstract @NotNull String chomp(@NotNull String message);
 
     public abstract boolean isPluginEnabled(@NotNull String name);
+
+    public abstract <T> T createProfile(@NotNull UUID uuid, @Nullable String name);
 
     @Override
     public @NotNull final KyoriLogger getLogger() {

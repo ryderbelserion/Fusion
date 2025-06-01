@@ -40,7 +40,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
 
         final String newUrl = "https://textures.minecraft.net/texture/" + url;
 
-        final PlayerProfile profile = this.plugin.getServer().createProfile(UUID.randomUUID(), null);
+        final PlayerProfile profile = this.fusion.createProfile(UUID.randomUUID(), null);
 
         profile.setProperty(new ProfileProperty("", ""));
 
