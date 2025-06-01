@@ -314,12 +314,8 @@ public class AddonManager {
     private @NotNull Addon getProperties(@NotNull final Path path) {
         final Properties properties = new Properties();
 
-        try (final FileSystem entry = FileSystems.newFileSystem(path, (ClassLoader) null)) {
-            final Path key = entry.getPath("addon.properties");
-
-            try (final InputStream stream = Files.newInputStream(key)) {
-                properties.load(stream);
-            }
+        try (final FileSystem entry = FileSystems.newFileSystem(path, (ClassLoader) null); final InputStream stream = Files.newInputStream(entry.getPath("addon.properties"))) {
+            properties.load(stream);
         } catch (final IOException exception) {
             throw new FusionException("Failed to load addon.properties", exception);
         }
