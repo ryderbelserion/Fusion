@@ -41,7 +41,7 @@ public class StringUtils {
     public static @NotNull String toString(@NotNull final List<String> list) {
         if (list.isEmpty()) return "";
 
-        final StringBuilder message = new StringBuilder();
+        final StringBuilder message = new StringBuilder(list.size());
 
         for (final String line : list) {
             message.append(line).append("\n");
