@@ -1,35 +1,31 @@
 package com.ryderbelserion.fusion.paper.api.builders;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public record PlayerBuilder(String name) {
-
-    private static @NotNull final Server server = Bukkit.getServer();
+public record PlayerBuilder(Server server, String name) {
 
     public @Nullable PlayerProfile getOfflineProfile() {
         if (this.name.isEmpty()) return null;
 
-        return CompletableFuture.supplyAsync(() -> server.createProfile(this.name)).join();
+        return CompletableFuture.supplyAsync(() -> this.server.createProfile(this.name)).join();
     }
 
     public @Nullable OfflinePlayer getOfflinePlayer() {
         if (this.name.isEmpty()) return null;
 
-        return CompletableFuture.supplyAsync(() -> server.getOfflinePlayer(this.name)).join();
+        return CompletableFuture.supplyAsync(() -> this.server.getOfflinePlayer(this.name)).join();
     }
 
     public @Nullable Player getPlayer() {
         if (this.name.isEmpty()) return null;
 
-        return server.getPlayerExact(this.name);
+        return this.server.getPlayerExact(this.name);
     }
 
     public @Nullable UUID getUniqueId() {

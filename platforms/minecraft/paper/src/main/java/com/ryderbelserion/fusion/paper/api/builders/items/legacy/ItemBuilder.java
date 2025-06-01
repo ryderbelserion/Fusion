@@ -868,7 +868,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             return (T) this;
         }
 
-        this.uuid = new PlayerBuilder(player).getUniqueId();
+        this.uuid = new PlayerBuilder(this.server, player).getUniqueId();
 
         return (T) this;
     }
