@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.core.api.enums;
+package com.ryderbelserion.fusion.kyori.enums;
 
 /**
  * Available logger types when using {@code ILogger#log(@NotNull final LoggerType type, @NotNull final String message, @NotNull final Object... args) }
