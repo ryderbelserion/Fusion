@@ -16,7 +16,7 @@ public class Addon {
      *
      * @param properties the properties to pull information from
      */
-    public Addon(@NotNull Properties properties) {
+    public Addon(@NotNull final Properties properties) {
         this.main = properties.getProperty("main", "N/A");
         this.name = properties.getProperty("name", "N/A");
     }

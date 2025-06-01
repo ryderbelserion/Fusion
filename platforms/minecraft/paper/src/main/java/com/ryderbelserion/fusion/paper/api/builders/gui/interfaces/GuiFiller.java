@@ -8,19 +8,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GuiFiller {
+public final class GuiFiller {
 
     private final BaseGui gui;
 
-    public GuiFiller(@NotNull BaseGui gui) {
+    public GuiFiller(@NotNull final BaseGui gui) {
         this.gui = gui;
     }
 
-    public void fillTop(@NotNull GuiItem guiItem) {
+    public void fillTop(@NotNull final GuiItem guiItem) {
         fillTop(Collections.singletonList(guiItem));
     }
 
-    public void fillTop(@NotNull List<GuiItem> guiItems) {
+    public void fillTop(@NotNull final List<GuiItem> guiItems) {
         final List<GuiItem> items = repeatList(guiItems);
 
         for (int i = 0; i < 9; i++) {
@@ -28,11 +28,11 @@ public class GuiFiller {
         }
     }
 
-    public void fillBottom(@NotNull GuiItem guiItem) {
+    public void fillBottom(@NotNull final GuiItem guiItem) {
         fillBottom(Collections.singletonList(guiItem));
     }
 
-    public void fillBottom(@NotNull List<GuiItem> guiItems) {
+    public void fillBottom(@NotNull final List<GuiItem> guiItems) {
         final int rows = this.gui.getRows();
         final List<GuiItem> items = repeatList(guiItems);
 
@@ -43,11 +43,11 @@ public class GuiFiller {
         }
     }
 
-    public void fillBorder(@NotNull GuiItem guiItem) {
+    public void fillBorder(@NotNull final GuiItem guiItem) {
         fillBorder(Collections.singletonList(guiItem));
     }
 
-    public void fillBorder(@NotNull List<GuiItem> guiItems) {
+    public void fillBorder(@NotNull final List<GuiItem> guiItems) {
         final int rows = this.gui.getRows();
         if (rows <= 2) return;
 
@@ -60,11 +60,11 @@ public class GuiFiller {
         }
     }
 
-    public void fillBetweenPoints(int rowFrom, int colFrom, int rowTo, int colTo, @NotNull GuiItem guiItem) {
+    public void fillBetweenPoints(final int rowFrom, final int colFrom, final int rowTo, final int colTo, @NotNull final GuiItem guiItem) {
         fillBetweenPoints(rowFrom, colFrom, rowTo, colTo, Collections.singletonList(guiItem));
     }
 
-    public void fillBetweenPoints(int rowFrom, int colFrom, int rowTo, int colTo, @NotNull List<GuiItem> guiItems) {
+    public void fillBetweenPoints(final int rowFrom, final int colFrom, final int rowTo, final int colTo, @NotNull final List<GuiItem> guiItems) {
         final int minRow = Math.min(rowFrom, rowTo);
         final int maxRow = Math.max(rowFrom, rowTo);
         final int minCol = Math.min(colFrom, colTo);
@@ -84,11 +84,11 @@ public class GuiFiller {
         }
     }
 
-    public void fill(@NotNull GuiItem guiItem) {
+    public void fill(@NotNull final GuiItem guiItem) {
         fill(Collections.singletonList(guiItem));
     }
 
-    public void fill(@NotNull List<GuiItem> guiItems) {
+    public void fill(@NotNull final List<GuiItem> guiItems) {
         if (this.gui instanceof PaginatedGui) {
             throw new FusionException("Full filling a GUI is not supported in a Paginated GUI!");
         }
@@ -104,7 +104,7 @@ public class GuiFiller {
         }
     }
 
-    public void fillSide(@NotNull Side side, @NotNull List<GuiItem> guiItems) {
+    public void fillSide(@NotNull final Side side, @NotNull final List<GuiItem> guiItems) {
         switch (side) {
             case LEFT:
                 this.fillBetweenPoints(1, 1, this.gui.getRows(), 1, guiItems);
@@ -116,7 +116,7 @@ public class GuiFiller {
         }
     }
 
-    private @NotNull List<GuiItem> repeatList(@NotNull List<GuiItem> guiItems) {
+    private @NotNull List<GuiItem> repeatList(@NotNull final List<GuiItem> guiItems) {
         final List<GuiItem> repeated = new ArrayList<>();
 
         Collections.nCopies(this.gui.getRows() * 9, guiItems).forEach(repeated::addAll);
@@ -124,7 +124,7 @@ public class GuiFiller {
         return repeated;
     }
 
-    private int getSlotFromRowCol(int row, int col) {
+    private int getSlotFromRowCol(final int row, final int col) {
         return (col + (row - 1) * 9) - 1;
     }
 

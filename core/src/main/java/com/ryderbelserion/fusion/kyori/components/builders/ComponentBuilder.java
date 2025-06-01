@@ -40,7 +40,7 @@ public class ComponentBuilder {
      * @param target the audience target
      * @param line   the lines of text for the component
      */
-    public ComponentBuilder(@NotNull Audience target, @NotNull String line) {
+    public ComponentBuilder(@NotNull final Audience target, @NotNull final String line) {
         this(target, new ArrayList<>() {{
             add(line);
         }});
@@ -52,7 +52,7 @@ public class ComponentBuilder {
      * @param target the audience target
      * @param lines  the text for the component
      */
-    public ComponentBuilder(@NotNull Audience target, @NotNull List<String> lines) {
+    public ComponentBuilder(@NotNull final Audience target, @NotNull final List<String> lines) {
         this.lines.addAll(lines);
         this.target = target;
     }
@@ -62,7 +62,7 @@ public class ComponentBuilder {
      *
      * @param lines the lines of text for the component
      */
-    public ComponentBuilder(@NotNull List<String> lines) {
+    public ComponentBuilder(@NotNull final List<String> lines) {
         this(Audience.empty(), lines);
     }
 
@@ -71,7 +71,7 @@ public class ComponentBuilder {
      *
      * @param line the text for the component
      */
-    public ComponentBuilder(@NotNull String line) {
+    public ComponentBuilder(@NotNull final String line) {
         this(Audience.empty(), line);
     }
 
@@ -81,10 +81,10 @@ public class ComponentBuilder {
      * @param placeholders a map of placeholders
      * @return {@link Component}
      */
-    public @NotNull final List<Component> asComponents(@NotNull Map<String, String> placeholders) {
-        List<Component> components = new ArrayList<>(this.lines.size());
+    public @NotNull final List<Component> asComponents(@NotNull final Map<String, String> placeholders) {
+        final List<Component> components = new ArrayList<>(this.lines.size());
 
-        List<TagResolver> resolvers = this.resolvers.values().stream().flatMap(List::stream).toList();
+        final List<TagResolver> resolvers = this.resolvers.values().stream().flatMap(List::stream).toList();
 
         this.lines.forEach(message -> components.add(this.kyori.color(this.target, message, placeholders, resolvers)));
 
@@ -97,7 +97,7 @@ public class ComponentBuilder {
      * @param placeholders a map of placeholders
      * @return {@link Component}
      */
-    public @NotNull final Component asComponent(@NotNull Map<String, String> placeholders) {
+    public @NotNull final Component asComponent(@NotNull final Map<String, String> placeholders) {
         return asComponents(placeholders).getFirst();
     }
 
@@ -127,7 +127,7 @@ public class ComponentBuilder {
      * @param action the click action type
      * @return {@link ComponentBuilder}
      */
-    public @NotNull final ComponentBuilder addClickResolver(@NotNull String key, @NotNull String value, @NotNull ClickEvent.Action action) {
+    public @NotNull final ComponentBuilder addClickResolver(@NotNull final String key, @NotNull final String value, @NotNull final ClickEvent.Action action) {
         return addResolver(ResolverType.CLICK_EVENT, key, value, action);
     }
 
@@ -138,7 +138,7 @@ public class ComponentBuilder {
      * @param value the value
      * @return {@link ComponentBuilder}
      */
-    public @NotNull final ComponentBuilder addPlaceholderResolver(@NotNull String key, @NotNull String value) {
+    public @NotNull final ComponentBuilder addPlaceholderResolver(@NotNull final String key, @NotNull final String value) {
         return addResolver(ResolverType.PLACEHOLDER, key, value, null);
     }
 
@@ -149,7 +149,7 @@ public class ComponentBuilder {
      * @param value the hover text
      * @return {@link ComponentBuilder}
      */
-    public @NotNull final ComponentBuilder addHoverResolver(@NotNull String key, @NotNull String value) {
+    public @NotNull final ComponentBuilder addHoverResolver(@NotNull final String key, @NotNull final String value) {
         return addResolver(ResolverType.HOVER_EVENT, key, value, null);
     }
 
@@ -160,7 +160,7 @@ public class ComponentBuilder {
      * @param value the color
      * @return {@link ComponentBuilder}
      */
-    public @NotNull final ComponentBuilder addColorResolver(@NotNull String key, @NotNull String value) {
+    public @NotNull final ComponentBuilder addColorResolver(@NotNull final String key, @NotNull final String value) {
         return addResolver(ResolverType.TEXT_COLOR, key, value, null);
     }
 
@@ -174,7 +174,7 @@ public class ComponentBuilder {
      * @param action the click action
      * @return {@link ComponentBuilder}
      */
-    public @NotNull final ComponentBuilder addResolver(@NotNull ResolverType type, @NotNull String key, @NotNull String value, @Nullable ClickEvent.Action action) {
+    public @NotNull final ComponentBuilder addResolver(@NotNull final ResolverType type, @NotNull final String key, @NotNull final String value, @Nullable final ClickEvent.Action action) {
         final List<TagResolver> resolvers = this.resolvers.getOrDefault(type, new ArrayList<>());
 
         switch (type) {
@@ -216,7 +216,7 @@ public class ComponentBuilder {
      * @param type the {@link ResolverType}
      * @return {@link ComponentBuilder}
      */
-    public @NotNull final ComponentBuilder addResolver(@NotNull ResolverType type, @NotNull TagResolver... tags) {
+    public @NotNull final ComponentBuilder addResolver(@NotNull final ResolverType type, @NotNull final TagResolver... tags) {
         final List<TagResolver> resolvers = this.resolvers.getOrDefault(type, new ArrayList<>());
 
         resolvers.addAll(Arrays.asList(tags));
@@ -232,7 +232,7 @@ public class ComponentBuilder {
      * @param type the {@link ResolverType}
      * @return {@link ComponentBuilder}
      */
-    public @NotNull final ComponentBuilder removeResolver(@NotNull ResolverType type) {
+    public @NotNull final ComponentBuilder removeResolver(@NotNull final ResolverType type) {
         this.resolvers.remove(type);
 
         return this;
@@ -244,7 +244,7 @@ public class ComponentBuilder {
      * @param line the line to add
      * @return {@link ComponentBuilder}
      */
-    public @NotNull final ComponentBuilder addLine(@NotNull String line) {
+    public @NotNull final ComponentBuilder addLine(@NotNull final String line) {
         this.lines.add(line);
 
         return this;
@@ -256,7 +256,7 @@ public class ComponentBuilder {
      * @param line the line to remove
      * @return {@link ComponentBuilder}
      */
-    public @NotNull final ComponentBuilder removeLine(@NotNull String line) {
+    public @NotNull final ComponentBuilder removeLine(@NotNull final String line) {
         this.lines.remove(line);
 
         return this;

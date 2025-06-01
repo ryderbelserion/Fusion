@@ -22,7 +22,7 @@ public class KyoriLogger implements ILogger {
      * @param logger instance of {@link ComponentLogger}
      * @param kyori instance of {@link FusionKyori}
      */
-    public KyoriLogger(@NotNull ComponentLogger logger, @NotNull FusionKyori kyori) {
+    public KyoriLogger(@NotNull final ComponentLogger logger, @NotNull final FusionKyori kyori) {
         this.logger = logger;
         this.kyori = kyori;
     }
@@ -35,7 +35,7 @@ public class KyoriLogger implements ILogger {
      * @param args    the args
      */
     @Override
-    public void log(@NotNull LoggerType type, @NotNull String message, @NotNull Object... args) {
+    public void log(@NotNull final LoggerType type, @NotNull final String message, @NotNull final Object... args) {
         if (!this.kyori.isVerbose()) return;
 
         final Component component = AdvUtils.parse(message);

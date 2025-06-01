@@ -24,7 +24,7 @@ public class StructureRegistry {
         return this.manager.getStructure(new NamespacedKey(this.plugin, key));
     }
 
-    public void registerStructure(@NotNull File file, @NotNull String name) {
+    public void registerStructure(@NotNull final File file, @NotNull final String name) {
         final StructureManager manager = this.manager;
 
         Structure structure;
@@ -40,7 +40,7 @@ public class StructureRegistry {
         manager.registerStructure(key, structure);
     }
 
-    public void unregisterStructure(@NotNull String name) {
+    public void unregisterStructure(@NotNull final String name) {
         if (getStructure(name) == null) return;
 
         final StructureManager manager = this.manager;

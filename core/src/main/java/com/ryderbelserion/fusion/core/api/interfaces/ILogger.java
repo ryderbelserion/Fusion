@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Handles logger messages for multiple platforms.
  */
-@FunctionalInterface
 public interface ILogger {
 
     /**
@@ -16,7 +15,7 @@ public interface ILogger {
      * @param message the message to send
      * @param args    the args
      */
-    void log(@NotNull LoggerType type, @NotNull String message, @NotNull Object... args);
+    void log(@NotNull final LoggerType type, @NotNull final String message, @NotNull final Object... args);
 
     /**
      * Sends a warning log message parsed with MiniMessage.
@@ -24,7 +23,7 @@ public interface ILogger {
      * @param message the message to send
      * @param args    the args
      */
-    default void warn(@NotNull String message, @NotNull Object... args) {
+    default void warn(@NotNull final String message, @NotNull final Object... args) {
         log(LoggerType.WARNING, message, args);
     }
 
@@ -34,7 +33,7 @@ public interface ILogger {
      * @param message the message to send
      * @param args    the args
      */
-    default void error(@NotNull String message, @NotNull Object... args) {
+    default void error(@NotNull final String message, @NotNull final Object... args) {
         log(LoggerType.ERROR, message, args);
     }
 
@@ -44,7 +43,7 @@ public interface ILogger {
      * @param message the message to send
      * @param args    the args
      */
-    default void safe(@NotNull String message,  Object... args) {
+    default void safe(@NotNull final String message, final Object... args) {
         log(LoggerType.SAFE, message, args);
     }
 }

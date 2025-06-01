@@ -27,7 +27,7 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
      * @param actions the list of file actions applied to the configuration file
      * @param options the options responsible for configuring the formatting
      */
-    public YamlCustomFile(@NotNull Path path, @NotNull List<FileAction> actions, @Nullable UnaryOperator<ConfigurationOptions> options) {
+    public YamlCustomFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
         super(path, actions, YamlConfigurationLoader.builder().defaultOptions(options != null ? options : configurationOptions -> configurationOptions).indent(2).path(path).build());
     }
 
@@ -63,7 +63,7 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
      * @param path         the path to the configuration key
      * @return the string value or the default if missing
      */
-    public @NotNull String getStringValueWithDefault(@NotNull String defaultValue, @NotNull Object... path) {
+    public @NotNull String getStringValueWithDefault(@NotNull final String defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getString(defaultValue);
     }
 
@@ -73,7 +73,7 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
      * @param path the path to the configuration key
      * @return the string value or an empty string if missing
      */
-    public @NotNull String getStringValue(@NotNull Object... path) {
+    public @NotNull String getStringValue(@NotNull final Object... path) {
         return getStringValueWithDefault("", path);
     }
 
@@ -84,7 +84,7 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
      * @param path         the path to the configuration key
      * @return the boolean value or the default if missing
      */
-    public boolean getBooleanValueWithDefault(boolean defaultValue, @NotNull Object... path) {
+    public boolean getBooleanValueWithDefault(final boolean defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getBoolean(defaultValue);
     }
 
@@ -94,7 +94,7 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
      * @param path the path to the configuration key
      * @return the boolean value or false if missing
      */
-    public boolean getBooleanValue(@NotNull Object... path) {
+    public boolean getBooleanValue(@NotNull final Object... path) {
         return getBooleanValueWithDefault(false, path);
     }
 
@@ -105,7 +105,7 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
      * @param path         the path to the configuration key
      * @return the double value or the default if missing
      */
-    public double getDoubleValueWithDefault(double defaultValue, @NotNull Object... path) {
+    public double getDoubleValueWithDefault(final double defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getDouble(defaultValue);
     }
 
@@ -115,7 +115,7 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
      * @param path the path to the configuration key
      * @return the double value or 0.0 if missing
      */
-    public double getDoubleValue(@NotNull Object... path) {
+    public double getDoubleValue(@NotNull final Object... path) {
         return getDoubleValueWithDefault(0.0, path);
     }
 
@@ -126,7 +126,7 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
      * @param path         the path to the configuration key
      * @return the long value or the default if missing
      */
-    public long getLongValueWithDefault(long defaultValue, @NotNull Object... path) {
+    public long getLongValueWithDefault(final long defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getLong(defaultValue);
     }
 
@@ -136,7 +136,7 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
      * @param path the path to the configuration key
      * @return the long value or 0L if missing
      */
-    public long getLongValue(@NotNull Object... path) {
+    public long getLongValue(@NotNull final Object... path) {
         return getLongValueWithDefault(0L, path);
     }
 
@@ -147,7 +147,7 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
      * @param path         the path to the configuration key
      * @return the integer value or the default if missing
      */
-    public int getIntValueWithDefault(int defaultValue, @NotNull Object... path) {
+    public int getIntValueWithDefault(final int defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getInt(defaultValue);
     }
 
@@ -157,7 +157,7 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
      * @param path the path to the configuration key
      * @return the integer value or 0 if missing
      */
-    public int getIntValue(@NotNull Object... path) {
+    public int getIntValue(@NotNull final Object... path) {
         return getIntValueWithDefault(0, path);
     }
 
@@ -168,18 +168,18 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
      * @return the list of string values or an empty list if missing
      */
     @Override
-    public @NotNull List<String> getStringList(@NotNull Object... path) {
-        CommentedConfigurationNode node = getConfiguration().node(path);
+    public @NotNull List<String> getStringList(@NotNull final Object... path) {
+        final CommentedConfigurationNode node = getConfiguration().node(path);
 
         try {
-            List<String> list = node.getList(String.class);
+            final List<String> list = node.getList(String.class);
 
             if (list != null) {
                 return list;
             }
 
             return List.of();
-        } catch (SerializationException exception) {
+        } catch (final SerializationException exception) {
             throw new FusionException("Failed to serialize " + node.path(), exception);
         }
     }

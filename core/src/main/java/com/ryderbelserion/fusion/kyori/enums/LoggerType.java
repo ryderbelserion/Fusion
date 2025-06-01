@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.kyori.enums;
 
 /**
- * Available logger types when using {@code ILogger#log(@NotNull LoggerType type, @NotNull String message, @NotNull Object... args) }
+ * Available logger types when using {@code ILogger#log(@NotNull final LoggerType type, @NotNull final String message, @NotNull final Object... args) }
  */
 public enum LoggerType {
     /**

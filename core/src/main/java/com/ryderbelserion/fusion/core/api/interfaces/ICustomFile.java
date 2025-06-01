@@ -22,7 +22,7 @@ public abstract class ICustomFile<A extends ICustomFile<A>> {
     private final List<FileAction> actions;
     private final Path path;
 
-    public ICustomFile(@NotNull Path path, @NotNull List<FileAction> actions) {
+    public ICustomFile(@NotNull final Path path, @NotNull final List<FileAction> actions) {
         this.actions = actions;
         this.path = path;
     }
@@ -41,7 +41,7 @@ public abstract class ICustomFile<A extends ICustomFile<A>> {
      * @param actions list of actions
      * @return {@link A}
      */
-    public @NotNull A save(String content, @NotNull List<FileAction> actions) {
+    public @NotNull A save(final String content, @NotNull final List<FileAction> actions) {
         return save();
     }
 
@@ -64,7 +64,7 @@ public abstract class ICustomFile<A extends ICustomFile<A>> {
             Files.deleteIfExists(getPath());
 
             this.logger.warn("Successfully deleted {}", getFileName());
-        } catch (IOException exception) {
+        } catch (final IOException exception) {
             this.logger.warn("Failed to delete {}: {}", getPath(), exception);
         }
 

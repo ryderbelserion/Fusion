@@ -20,7 +20,7 @@ public class PluginBuilder {
      *
      * @param logger instance of {@link ILogger}
      */
-    public PluginBuilder(@NotNull ILogger logger) {
+    public PluginBuilder(@NotNull final ILogger logger) {
         this.logger = logger;
     }
 
@@ -32,7 +32,7 @@ public class PluginBuilder {
      * @param name the name of the plugin
      * @return instance of {@link IPlugin}
      */
-    public @Nullable final IPlugin getPlugin(@NotNull String name) {
+    public @Nullable final IPlugin getPlugin(@NotNull final String name) {
         return this.plugins.get(name);
     }
 
@@ -41,7 +41,7 @@ public class PluginBuilder {
      *
      * @param plugin instance of {@link IPlugin}
      */
-    public void registerPlugin(@NotNull IPlugin plugin) {
+    public void registerPlugin(@NotNull final IPlugin plugin) {
         this.plugins.put(plugin.getName(), plugin.start());
 
         if (plugin.isEnabled()) {
@@ -54,7 +54,7 @@ public class PluginBuilder {
      *
      * @param plugin instance of {@link IPlugin}
      */
-    public void unregisterPlugin(@NotNull IPlugin plugin) {
+    public void unregisterPlugin(@NotNull final IPlugin plugin) {
         this.plugins.remove(plugin.getName());
 
         plugin.stop();
@@ -68,8 +68,8 @@ public class PluginBuilder {
      * @param name the name of the plugin
      * @return true or false
      */
-    public final boolean isEnabled(@NotNull String name) {
-        IPlugin plugin = getPlugin(name);
+    public final boolean isEnabled(@NotNull final String name) {
+        final IPlugin plugin = getPlugin(name);
 
         return plugin != null && plugin.isEnabled();
     }

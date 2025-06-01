@@ -95,7 +95,7 @@ public class StructureBuilder {
         }
     }
 
-    public void pasteStructure(@NotNull Location location) {
+    public void pasteStructure(@NotNull final Location location) {
         if (!this.isReady) return;
 
         try {
@@ -137,7 +137,7 @@ public class StructureBuilder {
         return this.isReady && this.vector != null ? this.vector.getZ() : 0.0;
     }
 
-    private void populate(boolean isInitial, @NotNull Location location) {
+    private void populate(final boolean isInitial, @NotNull final Location location) {
         for (int x = 0; x < getX(); x++) {
             for (int y = 0; y < getY(); y++) {
                 for (int z = 0; z < getZ(); z++) {

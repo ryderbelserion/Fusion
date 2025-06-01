@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 
-public class GuiListener implements Listener {
+public final class GuiListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
@@ -109,19 +109,19 @@ public class GuiListener implements Listener {
 
         final GuiAction<InventoryCloseEvent> closeAction = gui.getCloseGuiAction();
 
-        if (closeAction != null && gui.isUpdating()) closeAction.execute(event);
+        if (closeAction != null && !gui.isUpdating()) closeAction.execute(event);
     }
 
     @EventHandler
-    public void onGuiOpen(InventoryOpenEvent event) {
+    public void onGuiOpen(final InventoryOpenEvent event) {
         if (!(event.getInventory().getHolder() instanceof BaseGui gui)) return;
 
         final GuiAction<InventoryOpenEvent> openAction = gui.getOpenGuiAction();
 
-        if (openAction != null && gui.isUpdating()) openAction.execute(event);
+        if (openAction != null && !gui.isUpdating()) openAction.execute(event);
     }
 
-    private boolean isTakeItemEvent(@NotNull InventoryClickEvent event) {
+    private boolean isTakeItemEvent(@NotNull final InventoryClickEvent event) {
         Preconditions.checkNotNull(event, "event cannot be null");
 
         final Inventory inventory = event.getInventory();
@@ -136,7 +136,7 @@ public class GuiListener implements Listener {
         return action == InventoryAction.MOVE_TO_OTHER_INVENTORY || isTakeAction(action);
     }
 
-    private boolean isPlaceItemEvent(@NotNull InventoryClickEvent event) {
+    private boolean isPlaceItemEvent(@NotNull final InventoryClickEvent event) {
         Preconditions.checkNotNull(event, "event cannot be null");
 
         final Inventory inventory = event.getInventory();
@@ -152,7 +152,7 @@ public class GuiListener implements Listener {
         return isPlaceAction(action) && (clickedInventory == null || clickedInventory.getType() != InventoryType.PLAYER) && inventory.getType() != InventoryType.PLAYER;
     }
 
-    private boolean isSwapItemEvent(@NotNull InventoryClickEvent event) {
+    private boolean isSwapItemEvent(@NotNull final InventoryClickEvent event) {
         Preconditions.checkNotNull(event, "event cannot be null");
 
         final Inventory inventory = event.getInventory();
@@ -162,7 +162,7 @@ public class GuiListener implements Listener {
         return isSwapAction(action) && (clickedInventory == null || clickedInventory.getType() != InventoryType.PLAYER) && inventory.getType() != InventoryType.PLAYER;
     }
 
-    private boolean isDropItemEvent(@NotNull InventoryClickEvent event) {
+    private boolean isDropItemEvent(@NotNull final InventoryClickEvent event) {
         Preconditions.checkNotNull(event, "event cannot be null");
 
         final Inventory inventory = event.getInventory();
@@ -172,7 +172,7 @@ public class GuiListener implements Listener {
         return isDropAction(action) && (clickedInventory != null || inventory.getType() != InventoryType.PLAYER);
     }
 
-    private boolean isOtherEvent(@NotNull InventoryClickEvent event) {
+    private boolean isOtherEvent(@NotNull final InventoryClickEvent event) {
         Preconditions.checkNotNull(event, "event cannot be null");
 
         final Inventory inventory = event.getInventory();
@@ -182,7 +182,7 @@ public class GuiListener implements Listener {
         return isOtherAction(action) && (clickedInventory != null || inventory.getType() != InventoryType.PLAYER);
     }
 
-    private boolean isDraggingOnGui(@NotNull InventoryDragEvent event) {
+    private boolean isDraggingOnGui(@NotNull final InventoryDragEvent event) {
         Preconditions.checkNotNull(event, "event cannot be null");
 
         final int topSlots = event.getView().getTopInventory().getSize();
@@ -191,31 +191,31 @@ public class GuiListener implements Listener {
         return event.getRawSlots().stream().anyMatch(slot -> slot < topSlots);
     }
 
-    private boolean isTakeAction(@NotNull InventoryAction action) {
+    private boolean isTakeAction(@NotNull final InventoryAction action) {
         Preconditions.checkNotNull(action, "action cannot be null");
 
         return ITEM_TAKE_ACTIONS.contains(action);
     }
 
-    private boolean isPlaceAction(@NotNull InventoryAction action) {
+    private boolean isPlaceAction(@NotNull final InventoryAction action) {
         Preconditions.checkNotNull(action, "action cannot be null");
 
         return ITEM_PLACE_ACTIONS.contains(action);
     }
 
-    private boolean isSwapAction(@NotNull InventoryAction action) {
+    private boolean isSwapAction(@NotNull final InventoryAction action) {
         Preconditions.checkNotNull(action, "action cannot be null");
 
         return ITEM_SWAP_ACTIONS.contains(action);
     }
 
-    private boolean isDropAction(@NotNull InventoryAction action) {
+    private boolean isDropAction(@NotNull final InventoryAction action) {
         Preconditions.checkNotNull(action, "action cannot be null");
 
         return ITEM_DROP_ACTIONS.contains(action);
     }
 
-    private boolean isOtherAction(@NotNull InventoryAction action) {
+    private boolean isOtherAction(@NotNull final InventoryAction action) {
         Preconditions.checkNotNull(action, "action cannot be null");
 
         return action == InventoryAction.CLONE_STACK || action == InventoryAction.UNKNOWN;

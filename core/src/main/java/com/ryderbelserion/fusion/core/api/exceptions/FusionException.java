@@ -13,16 +13,16 @@ public final class FusionException extends IllegalStateException {
      * @param message   the message to send
      * @param exception the exception to throw
      */
-    public FusionException(@NotNull String message, @NotNull Exception exception) {
+    public FusionException(@NotNull final String message, @NotNull final Exception exception) {
         super(message, exception);
     }
 
     /**
      * Throws an illegal state exception.
      *
-     * @param s the message to send
+     * @param message the message to send
      */
-    public FusionException(@NotNull String s) {
-        super(s);
+    public FusionException(@NotNull final String message) {
+        super(message);
     }
 }

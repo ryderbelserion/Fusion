@@ -14,19 +14,19 @@ public class ItemBuilder {
         this.itemStack = new ItemStack(item);
     }
 
-    public ItemBuilder setAmount(int amount) {
+    public ItemBuilder setAmount(final int amount) {
         this.itemStack.setCount(Math.min(amount, this.itemStack.getMaxStackSize()));
 
         return this;
     }
 
-    public ItemBuilder setName(String name) {
+    public ItemBuilder setName(final String name) {
         this.itemStack.set(DataComponents.ITEM_NAME, Component.literal(name));
 
         return this;
     }
 
-    public void addInventory(Player player) {
+    public void addInventory(final Player player) {
         player.getInventory().addAndPickItem(this.itemStack);
     }
 }
