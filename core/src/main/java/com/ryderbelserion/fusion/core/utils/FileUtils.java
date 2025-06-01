@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -315,6 +316,30 @@ public class FileUtils {
         for (final Path path : paths) {
             compress(path, directory, content, actions);
         }
+    }
+
+    /**
+     * Deletes a directory, which never stops until all files are deleted!
+     *
+     * @param path the path to check
+     * @throws IOException throws if anything breaks along the way
+     */
+    public static void deleteDirectory(@NotNull final Path path) throws IOException {
+        if (!Files.exists(path) || !Files.isDirectory(path)) {
+            return;
+        }
+
+        try (final DirectoryStream<Path> contents = Files.newDirectoryStream(path)) {
+            for (final Path entry : contents) {
+                if (Files.isDirectory(entry)) {
+                    deleteDirectory(entry);
+                } else {
+                    Files.delete(entry);
+                }
+            }
+        }
+
+        Files.deleteIfExists(path);
     }
 
     /**
