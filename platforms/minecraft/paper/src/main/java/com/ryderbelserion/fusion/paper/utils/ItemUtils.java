@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Base64;
 import java.util.Optional;
 
-public final class ItemUtils {
+public class ItemUtils {
 
     private static final FusionCore fusion = FusionCore.Provider.get();
 
@@ -33,7 +33,7 @@ public final class ItemUtils {
         return RegistryAccess.registryAccess();
     }
 
-    public static @NotNull Optional<DataComponentType> getDataComponentType(@NotNull final String value) {
+    public static @NotNull Optional<DataComponentType> getDataComponentType(@NotNull String value) {
         if (value.isEmpty()) {
             logger.error("{} cannot be blank while fetching a data component.", value);
 
@@ -45,7 +45,7 @@ public final class ItemUtils {
         return Optional.ofNullable(type);
     }
 
-    public static @Nullable ItemType getItemType(@NotNull final String value) {
+    public static @Nullable ItemType getItemType(@NotNull String value) {
         if (value.isEmpty()) {
             logger.error("{} cannot be blank when fetching item types.", value);
 
@@ -63,7 +63,7 @@ public final class ItemUtils {
         return key;
     }
 
-    public static @Nullable Sound getSound(@NotNull final String value) {
+    public static @Nullable Sound getSound(@NotNull String value) {
         if (value.isEmpty()) {
             logger.error("{} cannot be blank when fetching the sound.", value);
 
@@ -81,7 +81,7 @@ public final class ItemUtils {
         return key;
     }
 
-    public static @Nullable Enchantment getEnchantment(@NotNull final String value) {
+    public static @Nullable Enchantment getEnchantment(@NotNull String value) {
         if (value.isEmpty()) {
             logger.error("{} cannot be blank when fetching the enchantment.", value);
 
@@ -99,7 +99,7 @@ public final class ItemUtils {
         return key;
     }
 
-    public static @Nullable TrimPattern getTrimPattern(@NotNull final String value) {
+    public static @Nullable TrimPattern getTrimPattern(@NotNull String value) {
         if (value.isEmpty()) {
             logger.error("{} cannot be blank when fetching the trim pattern.", value);
 
@@ -117,7 +117,7 @@ public final class ItemUtils {
         return key;
     }
 
-    public static @Nullable TrimMaterial getTrimMaterial(@NotNull final String value) {
+    public static @Nullable TrimMaterial getTrimMaterial(@NotNull String value) {
         if (value.isEmpty()) {
             logger.error("{} cannot be blank when fetching the trim material.", value);
 
@@ -135,7 +135,7 @@ public final class ItemUtils {
         return key;
     }
 
-    public static @Nullable PotionType getPotionType(@NotNull final String value) {
+    public static @Nullable PotionType getPotionType(@NotNull String value) {
         if (value.isEmpty()) {
             logger.error("{} cannot be blank when fetching the potion.", value);
 
@@ -153,7 +153,7 @@ public final class ItemUtils {
         return key;
     }
 
-    public static @Nullable PotionEffectType getPotionEffect(@NotNull final String value) {
+    public static @Nullable PotionEffectType getPotionEffect(@NotNull String value) {
         if (value.isEmpty()) {
             logger.error("{} cannot be blank when fetching the potion effect.", value);
 
@@ -171,7 +171,7 @@ public final class ItemUtils {
         return key;
     }
 
-    public static @Nullable Particle getParticleType(@NotNull final String value) {
+    public static @Nullable Particle getParticleType(@NotNull String value) {
         if (value.isEmpty()) {
             logger.error("{} cannot be blank when fetching the particle.", value);
 
@@ -189,7 +189,7 @@ public final class ItemUtils {
         return key;
     }
 
-    public static @Nullable PatternType getPatternType(@NotNull final String value) {
+    public static @Nullable PatternType getPatternType(@NotNull String value) {
         if (value.isEmpty()) {
             logger.error("{} cannot be blank when fetching banner pattern types!", value);
 
@@ -207,7 +207,7 @@ public final class ItemUtils {
         return key;
     }
 
-    public static @Nullable EntityType getEntity(@NotNull final String value) {
+    public static @Nullable EntityType getEntity(@NotNull String value) {
         if (value.isEmpty()) {
             logger.error("{} cannot be blank when fetching the entity.", value);
 
@@ -225,7 +225,7 @@ public final class ItemUtils {
         return key;
     }
 
-    public static @Nullable Attribute getAttribute(@NotNull final String value) {
+    public static @Nullable Attribute getAttribute(@NotNull String value) {
         if (value.isEmpty()) {
             logger.error("{} cannot be blank when fetching the attribute.", value);
 
@@ -243,23 +243,23 @@ public final class ItemUtils {
         return key;
     }
 
-    private static @NotNull NamespacedKey getKey(@NotNull final String value) {
+    private static @NotNull NamespacedKey getKey(@NotNull String value) {
         return NamespacedKey.minecraft(value);
     }
 
-    public static byte[] toBytes(@NotNull final ItemStack itemStack) {
+    public static byte[] toBytes(@NotNull ItemStack itemStack) {
         return itemStack.serializeAsBytes();
     }
 
-    public static @NotNull ItemStack fromBytes(final byte @NotNull [] bytes) {
+    public static @NotNull ItemStack fromBytes(byte @NotNull [] bytes) {
         return ItemStack.deserializeBytes(bytes);
     }
 
-    public static @NotNull String toBase64(@NotNull final ItemStack itemStack) {
+    public static @NotNull String toBase64(@NotNull ItemStack itemStack) {
         return Base64.getEncoder().encodeToString(itemStack.serializeAsBytes());
     }
 
-    public static @NotNull ItemStack fromBase64(@NotNull final String base64) {
+    public static @NotNull ItemStack fromBase64(@NotNull String base64) {
         return ItemStack.deserializeBytes(Base64.getDecoder().decode(base64));
     }
 }

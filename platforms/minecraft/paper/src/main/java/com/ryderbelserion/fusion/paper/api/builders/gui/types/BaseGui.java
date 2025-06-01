@@ -68,7 +68,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     private String title;
     private int rows;
 
-    public BaseGui(@NotNull final Audience audience, @NotNull final String title, final int rows, @NotNull final Set<InteractionComponent> components) {
+    public BaseGui(@NotNull Audience audience, @NotNull String title, int rows, @NotNull Set<InteractionComponent> components) {
         this.title = title;
         this.rows = rows;
 
@@ -82,11 +82,11 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
         this.inventory = this.server.createInventory(this, size, title(audience));
     }
 
-    public BaseGui(@NotNull final String title, final int rows, @NotNull final Set<InteractionComponent> components) {
+    public BaseGui(@NotNull String title, int rows, @NotNull Set<InteractionComponent> components) {
         this(Audience.empty(), title, rows, components);
     }
 
-    public BaseGui(@NotNull final Audience audience, @NotNull final String title, @NotNull final GuiType guiType, @NotNull final Set<InteractionComponent> components) {
+    public BaseGui(@NotNull Audience audience, @NotNull String title, @NotNull GuiType guiType, @NotNull Set<InteractionComponent> components) {
         this.title = title;
 
         this.slotActions = new LinkedHashMap<>(guiType.getLimit());
@@ -99,7 +99,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
         this.guiType = guiType;
     }
 
-    public BaseGui(@NotNull final String title, @NotNull final GuiType guiType, @NotNull final Set<InteractionComponent> components) {
+    public BaseGui(@NotNull String title, @NotNull GuiType guiType, @NotNull Set<InteractionComponent> components) {
         this(Audience.empty(), title, guiType, components);
     }
 
@@ -114,12 +114,12 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setTitle(@NotNull final String title) {
+    public void setTitle(@NotNull String title) {
         this.title = title;
     }
 
     @Override
-    public @NotNull final Component title(@NotNull final Audience audience) {
+    public @NotNull final Component title(@NotNull Audience audience) {
         return this.kyori.color(audience, this.title, new HashMap<>());
     }
 
@@ -134,7 +134,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setRows(final int rows) {
+    public void setRows(int rows) {
         this.rows = rows;
     }
 
@@ -154,12 +154,12 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void addInteractionComponent(@NotNull final InteractionComponent... components) {
+    public void addInteractionComponent(@NotNull InteractionComponent... components) {
         this.interactionComponents.addAll(Arrays.asList(components));
     }
 
     @Override
-    public void removeInteractionComponent(@NotNull final InteractionComponent component) {
+    public void removeInteractionComponent(@NotNull InteractionComponent component) {
         this.interactionComponents.remove(component);
     }
 
@@ -194,17 +194,17 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void giveItem(@NotNull final Player player, @NotNull final ItemStack itemStack) {
+    public void giveItem(@NotNull Player player, @NotNull ItemStack itemStack) {
         player.getInventory().addItem(itemStack);
     }
 
     @Override
-    public void giveItem(@NotNull final Player player, @NotNull final ItemStack... itemStacks) {
+    public void giveItem(@NotNull Player player, @NotNull ItemStack... itemStacks) {
         Arrays.asList(itemStacks).forEach(item -> giveItem(player, item));
     }
 
     @Override
-    public void setItem(final int slot, @NotNull final GuiItem guiItem) {
+    public void setItem(int slot, @NotNull GuiItem guiItem) {
         validateSlot(slot);
 
         this.guiItems.put(slot, guiItem);
@@ -212,27 +212,27 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setItem(final int row, final int col, @NotNull final GuiItem guiItem) {
+    public void setItem(int row, int col, @NotNull GuiItem guiItem) {
         setItem(getSlotFromRowColumn(row, col), guiItem);
     }
 
     @Override
-    public void setItem(@NotNull final List<Integer> slots, @NotNull final GuiItem guiItem) {
-        for (final int slot : slots) {
+    public void setItem(@NotNull List<Integer> slots, @NotNull GuiItem guiItem) {
+        for (int slot : slots) {
             setItem(slot, guiItem);
         }
     }
 
     @Override
-    public void addItem(@NotNull final GuiItem... items) {
+    public void addItem(@NotNull GuiItem... items) {
         addItem(false, items);
     }
 
     @Override
-    public void addItem(final boolean expandIfFull, @NotNull final GuiItem... items) {
+    public void addItem(boolean expandIfFull, @NotNull GuiItem... items) {
         final List<GuiItem> notAddedItems = new ArrayList<>();
 
-        for (final GuiItem guiItem : items) {
+        for (GuiItem guiItem : items) {
             for (int slot = 0; slot < this.rows * 9; slot++) {
                 if (this.guiItems.get(slot) != null) {
 
@@ -260,33 +260,33 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void removeItem(final int row, final int col) {
+    public void removeItem(int row, int col) {
         removeItem(getSlotFromRowColumn(row, col));
     }
 
     @Override
-    public void removeItem(final int slot) {
+    public void removeItem(int slot) {
         validateSlot(slot);
 
         this.guiItems.remove(slot);
     }
 
     @Override
-    public @Nullable final GuiItem getGuiItem(final int slot) {
+    public @Nullable final GuiItem getGuiItem(int slot) {
         return this.guiItems.get(slot);
     }
 
-    public void addSlotAction(final int slot, @Nullable final GuiAction<@NotNull InventoryClickEvent> slotAction) {
+    public void addSlotAction(int slot, @Nullable GuiAction<@NotNull InventoryClickEvent> slotAction) {
         this.slotActions.put(slot, slotAction);
     }
 
     @Override
-    public @Nullable final GuiAction<InventoryClickEvent> getSlotAction(final int slot) {
+    public @Nullable final GuiAction<InventoryClickEvent> getSlotAction(int slot) {
         return this.slotActions.get(slot);
     }
 
     @Override
-    public void close(@NotNull final Player player, @NotNull final InventoryCloseEvent.Reason reason, final boolean isDelayed) {
+    public void close(@NotNull Player player, @NotNull InventoryCloseEvent.Reason reason, boolean isDelayed) {
         if (isDelayed) {
             new FoliaScheduler(Scheduler.global_scheduler) {
                 @Override
@@ -302,22 +302,22 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void close(@NotNull final Player player, final boolean isDelayed) {
+    public void close(@NotNull Player player, boolean isDelayed) {
         close(player, InventoryCloseEvent.Reason.PLUGIN, isDelayed);
     }
 
     @Override
-    public void close(@NotNull final Player player) {
+    public void close(@NotNull Player player) {
         close(player, true);
     }
 
     @Override
-    public void updateTitle(@NotNull final Player player) {
+    public void updateTitle(@NotNull Player player) {
         ColorUtils.updateTitle(player, this.title);
     }
 
     @Override
-    public void updateInventory(@NotNull final Player player) {
+    public void updateInventory(@NotNull Player player) {
         this.inventory.clear();
 
         populate();
@@ -353,8 +353,8 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setUpdating(final boolean updating) {
-        this.isUpdating = updating;
+    public void setUpdating(boolean isUpdating) {
+        this.isUpdating = isUpdating;
     }
 
     @Override
@@ -363,7 +363,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setDefaultClickAction(@Nullable final GuiAction<@NotNull InventoryClickEvent> defaultClickAction) {
+    public void setDefaultClickAction(@Nullable GuiAction<@NotNull InventoryClickEvent> defaultClickAction) {
         this.defaultClickAction = defaultClickAction;
     }
 
@@ -373,7 +373,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setDefaultTopClickAction(@Nullable final GuiAction<@NotNull InventoryClickEvent> defaultTopClickAction) {
+    public void setDefaultTopClickAction(@Nullable GuiAction<@NotNull InventoryClickEvent> defaultTopClickAction) {
         this.defaultTopClickAction = defaultTopClickAction;
     }
 
@@ -383,7 +383,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setPlayerInventoryAction(@Nullable final GuiAction<@NotNull InventoryClickEvent> playerInventoryAction) {
+    public void setPlayerInventoryAction(@Nullable GuiAction<@NotNull InventoryClickEvent> playerInventoryAction) {
         this.playerInventoryAction = playerInventoryAction;
     }
 
@@ -393,7 +393,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setDragAction(@Nullable final GuiAction<@NotNull InventoryDragEvent> dragAction) {
+    public void setDragAction(@Nullable GuiAction<@NotNull InventoryDragEvent> dragAction) {
         this.dragAction = dragAction;
     }
 
@@ -403,7 +403,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setCloseGuiAction(@Nullable final GuiAction<@NotNull InventoryCloseEvent> closeGuiAction) {
+    public void setCloseGuiAction(@Nullable GuiAction<@NotNull InventoryCloseEvent> closeGuiAction) {
         this.closeGuiAction = closeGuiAction;
     }
 
@@ -413,7 +413,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setOpenGuiAction(@Nullable final GuiAction<@NotNull InventoryOpenEvent> openGuiAction) {
+    public void setOpenGuiAction(@Nullable GuiAction<@NotNull InventoryOpenEvent> openGuiAction) {
         this.openGuiAction = openGuiAction;
     }
 
@@ -423,12 +423,12 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void setOutsideClickAction(@Nullable final GuiAction<@NotNull InventoryClickEvent> outsideClickAction) {
+    public void setOutsideClickAction(@Nullable GuiAction<@NotNull InventoryClickEvent> outsideClickAction) {
         this.outsideClickAction = outsideClickAction;
     }
 
     @Override
-    public void open(final @NotNull Player player, final boolean purge) {
+    public void open(@NotNull Player player, boolean purge) {
         if (player.isSleeping()) return;
 
         if (purge) {
@@ -441,7 +441,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
-    public void open(@NotNull final Player player) {
+    public void open(@NotNull Player player) {
         open(player, true);
     }
 
@@ -450,25 +450,25 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
         return this.inventory;
     }
 
-    public @NotNull final GuiItem asGuiItem(@NotNull final ItemStack itemStack) {
+    public @NotNull final GuiItem asGuiItem(@NotNull ItemStack itemStack) {
         return asGuiItem(itemStack, null);
     }
 
-    public @NotNull final GuiItem asGuiItem(@NotNull final ItemStack itemStack, @Nullable final GuiAction<InventoryClickEvent> action) {
+    public @NotNull final GuiItem asGuiItem(@NotNull ItemStack itemStack, @Nullable GuiAction<InventoryClickEvent> action) {
         return new GuiItem(itemStack, action);
     }
 
     public void populate() {
-        for (final Map.Entry<Integer, GuiItem> entry : this.guiItems.entrySet()) {
+        for (Map.Entry<Integer, GuiItem> entry : this.guiItems.entrySet()) {
             this.inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
         }
     }
 
-    public final int getSlotFromRowColumn(final int row, final int col) {
+    public final int getSlotFromRowColumn(int row, int col) {
         return (col + (row - 1) * 9) - 1;
     }
 
-    private void validateSlot(final int slot) {
+    private void validateSlot(int slot) {
         final int limit = this.guiType.getLimit();
 
         if (this.guiType == GuiType.CHEST) {
@@ -480,7 +480,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
         if (slot < 0 || slot > limit) throwInvalidSlot(slot);
     }
 
-    private void throwInvalidSlot(final int slot) {
+    private void throwInvalidSlot(int slot) {
         if (this.guiType == GuiType.CHEST) {
             throw new FusionException("Slot " + slot + " is not valid for the gui type - " + this.guiType.name() + " and rows - " + this.rows + "!");
         }

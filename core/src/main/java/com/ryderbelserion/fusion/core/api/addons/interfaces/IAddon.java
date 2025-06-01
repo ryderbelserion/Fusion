@@ -43,7 +43,7 @@ public abstract class IAddon {
      *
      * @param folder the addon's folder
      */
-    public void enable(@NotNull final Path folder) {
+    public void enable(@NotNull Path folder) {
         if (this.isEnabled()) {
             throw new FusionException("Cannot enable the addon when it's already enabled");
         }
@@ -71,7 +71,7 @@ public abstract class IAddon {
      *
      * @param loader {@link AddonClassLoader}
      */
-    public void setLoader(@NotNull final AddonClassLoader loader) {
+    public void setLoader(@NotNull AddonClassLoader loader) {
         this.loader = loader;
     }
 
@@ -89,7 +89,7 @@ public abstract class IAddon {
      *
      * @param enabled true or false
      */
-    public void setEnabled(final boolean enabled) {
+    public void setEnabled(boolean enabled) {
         this.isEnabled = enabled;
     }
 
@@ -107,7 +107,7 @@ public abstract class IAddon {
      *
      * @param name the name of the addon
      */
-    public void setName(@NotNull final String name) {
+    public void setName(@NotNull String name) {
         this.name = name;
     }
 

@@ -19,7 +19,7 @@ public class LogCustomFile extends ICustomFile<LogCustomFile> {
      * @param path    the file path associated with the configuration file
      * @param actions the list of file actions applied to the configuration file
      */
-    public LogCustomFile(@NotNull final Path path, @NotNull final List<FileAction> actions) {
+    public LogCustomFile(@NotNull Path path, @NotNull List<FileAction> actions) {
         super(path, actions);
     }
 
@@ -30,13 +30,13 @@ public class LogCustomFile extends ICustomFile<LogCustomFile> {
      */
     @Override
     public @NotNull LogCustomFile load() {
-        final Path path = getPath();
+        Path path = getPath();
 
         if (Files.exists(path)) return this;
 
         try {
             Files.createFile(path);
-        } catch (final IOException exception) {
+        } catch (IOException exception) {
             throw new FusionException("Could not create file " + getFileName(), exception);
         }
 
@@ -51,13 +51,13 @@ public class LogCustomFile extends ICustomFile<LogCustomFile> {
      * @return {@link LogCustomFile}
      */
     @Override
-    public @NotNull LogCustomFile save(@NotNull final String content, @NotNull final List<FileAction> actions) {
-        final Path path = getPath();
+    public @NotNull LogCustomFile save(@NotNull String content, @NotNull List<FileAction> actions) {
+        Path path = getPath();
 
         if (actions.contains(FileAction.RELOAD)) {
             try {
                 FileUtils.compress(path, null, "", actions);
-            } catch (final IOException exception) {
+            } catch (IOException exception) {
                 throw new FusionException("Could not compress file " + getFileName(), exception);
             }
         }

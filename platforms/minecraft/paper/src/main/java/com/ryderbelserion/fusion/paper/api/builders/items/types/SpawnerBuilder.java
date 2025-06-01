@@ -9,8 +9,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class SpawnerBuilder extends BaseItemBuilder<SpawnerBuilder> {
 
-    public SpawnerBuilder(@NotNull final ItemStack itemStack) {
-        super(itemStack);
+    public SpawnerBuilder(@NotNull ItemStack item) {
+        super(item);
     }
 
     private EntityType entityType;
@@ -18,25 +18,25 @@ public class SpawnerBuilder extends BaseItemBuilder<SpawnerBuilder> {
     private int delay = 3;
     private int range = 0;
 
-    public @NotNull SpawnerBuilder withEntityType(@Nullable final EntityType entityType) {
+    public @NotNull SpawnerBuilder withEntityType(@Nullable EntityType entityType) {
         this.entityType = entityType;
 
         return this;
     }
 
-    public @NotNull SpawnerBuilder withSpawnCount(final int count) {
+    public @NotNull SpawnerBuilder withSpawnCount(int count) {
         this.count = count;
 
         return this;
     }
 
-    public @NotNull SpawnerBuilder withSpawnDelay(final int delay) {
+    public @NotNull SpawnerBuilder withSpawnDelay(int delay) {
         this.delay = delay;
 
         return this;
     }
 
-    public @NotNull SpawnerBuilder withSpawnRange(final int range) {
+    public @NotNull SpawnerBuilder withSpawnRange(int range) {
         this.range = range;
 
         return this;
@@ -48,16 +48,16 @@ public class SpawnerBuilder extends BaseItemBuilder<SpawnerBuilder> {
 
         getItem().editMeta(itemMeta -> {
             if (itemMeta instanceof CreatureSpawner spawner) {
-                if (count > 0) {
-                    spawner.setSpawnCount(count);
+                if (this.count > 0) {
+                    spawner.setSpawnCount(this.count);
                 }
 
-                if (delay > 0) {
-                    spawner.setDelay(delay);
+                if (this.delay > 0) {
+                    spawner.setDelay(this.delay);
                 }
 
-                if (range > 0) {
-                    spawner.setSpawnRange(range);
+                if (this.range > 0) {
+                    spawner.setSpawnRange(this.range);
                 }
 
                 spawner.setSpawnedType(this.entityType);

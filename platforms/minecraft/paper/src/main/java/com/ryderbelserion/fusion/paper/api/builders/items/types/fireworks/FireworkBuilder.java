@@ -14,19 +14,19 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
 
     private final Fireworks.Builder builder;
 
-    public FireworkBuilder(@NotNull final ItemStack itemStack) {
-        super(itemStack);
+    public FireworkBuilder(@NotNull ItemStack item) {
+        super(item);
 
         this.builder = Fireworks.fireworks();
     }
 
-    public @NotNull FireworkBuilder addEffect(@NotNull final FireworkEffect effect) {
+    public @NotNull FireworkBuilder addEffect(@NotNull FireworkEffect effect) {
         this.builder.addEffect(effect);
 
         return this;
     }
 
-    public @NotNull FireworkBuilder addEffect(final boolean flicker, final boolean trail, @NotNull final FireworkEffect.Type type, @Nullable final List<Color> colors, @Nullable final List<Color> fadeColors) {
+    public @NotNull FireworkBuilder addEffect(boolean flicker, boolean trail, @NotNull FireworkEffect.Type type, @Nullable List<Color> colors, @Nullable List<Color> fadeColors) {
         final FireworkStarBuilder builder = new FireworkStarBuilder(getItem());
 
         builder.flicker(flicker);
@@ -44,7 +44,7 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
         return addEffect(builder.getBuilder().build());
     }
 
-    public @NotNull FireworkBuilder withDuration(final int duration) {
+    public @NotNull FireworkBuilder withDuration(int duration) {
         this.builder.flightDuration(duration);
 
         return this;

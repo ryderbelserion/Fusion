@@ -39,7 +39,7 @@ public enum FileType {
      *
      * @param extension the file extension
      */
-    FileType(@NotNull final String extension) {
+    FileType(@NotNull String extension) {
         this.extension = extension;
     }
 

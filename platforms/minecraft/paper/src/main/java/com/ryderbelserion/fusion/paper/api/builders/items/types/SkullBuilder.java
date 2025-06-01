@@ -19,13 +19,13 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
 
     private final ResolvableProfile.Builder builder;
 
-    public SkullBuilder(@NotNull final ItemStack itemStack) {
-        super(itemStack);
+    public SkullBuilder(@NotNull ItemStack item) {
+        super(item);
 
         this.builder = ResolvableProfile.resolvableProfile();
     }
 
-    public @NotNull SkullBuilder withAudience(@NotNull final Audience audience) {
+    public @NotNull SkullBuilder withAudience(@NotNull Audience audience) {
         final UUID uuid = audience.getOrDefault(Identity.UUID, null);
 
         if (uuid == null) return this;
@@ -35,7 +35,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         return this;
     }
 
-    public @NotNull SkullBuilder withUrl(@NotNull final String url) {
+    public @NotNull SkullBuilder withUrl(@NotNull String url) {
         if (url.isEmpty()) return this;
 
         final String newUrl = "https://textures.minecraft.net/texture/" + url;
@@ -60,7 +60,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
     }
 
     @Override
-    public @NotNull SkullBuilder withBase64(@NotNull final String base64) {
+    public @NotNull SkullBuilder withBase64(@NotNull String base64) {
         if (base64.isEmpty()) return this;
 
         this.builder.addProperty(new ProfileProperty("textures", base64));
@@ -68,7 +68,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         return this;
     }
 
-    public @NotNull SkullBuilder withName(@NotNull final String playerName) {
+    public @NotNull SkullBuilder withName(@NotNull String playerName) {
         if (playerName.isEmpty()) return this;
 
         if (playerName.length() > 16) {

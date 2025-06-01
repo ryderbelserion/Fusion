@@ -33,7 +33,7 @@ public class AddonManager {
      *
      * @param path the addons folder
      */
-    public AddonManager(@NotNull final Path path) {
+    public AddonManager(@NotNull Path path) {
         this.folder = path.resolve("addons");
     }
 
@@ -42,10 +42,10 @@ public class AddonManager {
      *
      * @param classes the map of classes
      */
-    public void removeAll(@NotNull final Map<String, Class<?>> classes) {
+    public void removeAll(@NotNull Map<String, Class<?>> classes) {
         classes.keySet().forEach(this.classMap::remove);
 
-        for (final Class<?> object : classes.values()) {
+        for (Class<?> object : classes.values()) {
             if (this.classMap.containsValue(object)) {
                 throw new FusionException(String.format("Class %s did not get removed.", object.getName()));
             }
@@ -58,7 +58,7 @@ public class AddonManager {
      * @param name        the name of the class
      * @param classObject the class object
      */
-    public void setClass(@NotNull final String name, @NotNull final Class<?> classObject) {
+    public void setClass(@NotNull String name, @NotNull Class<?> classObject) {
         this.classMap.put(name, classObject);
     }
 
@@ -68,7 +68,7 @@ public class AddonManager {
      * @param name the name of the class
      * @return {@link Class}
      */
-    public Class<?> findClass(@NotNull final String name) {
+    public Class<?> findClass(@NotNull String name) {
         Class<?> classObject = null;
 
         if (this.classMap.containsKey(name)) {
@@ -76,14 +76,14 @@ public class AddonManager {
         }
 
         if (classObject == null) {
-            for (final AddonClassLoader loader : this.loaders.values()) {
+            for (AddonClassLoader loader : this.loaders.values()) {
                 try {
                     if ((classObject = loader.findClass(name, false)) != null) {
                         this.classMap.put(name, classObject);
 
                         break;
                     }
-                } catch (final Exception ignored) {}
+                } catch (Exception ignored) {}
             }
         }
 
@@ -99,7 +99,7 @@ public class AddonManager {
     public @NotNull AddonManager load() throws FusionException {
         try {
             Files.createDirectories(this.folder);
-        } catch (final IOException exception) {
+        } catch (IOException exception) {
             throw new FusionException("Could not create folder: " + this.folder, exception);
         }
 
@@ -120,7 +120,7 @@ public class AddonManager {
      * @return {@code <T extends IAddon> Optional<T>}
      * @param <T> the extended class
      */
-    public <T extends IAddon> Optional<T> getAddonInstance(@NotNull final Class<T> classObject) {
+    public <T extends IAddon> Optional<T> getAddonInstance(@NotNull Class<T> classObject) {
         return this.loaders.values().stream().map(AddonClassLoader::getAddon).filter(Objects::nonNull).filter(addon -> addon.getClass().equals(classObject)).map(classObject::cast).findAny();
     }
 
@@ -130,7 +130,7 @@ public class AddonManager {
      * @param name                     the name of the addon
      * @return {@code Optional<Addon>} an optional containing the addon instance
      */
-    public Optional<IAddon> getAddonInstance(@NotNull final String name) {
+    public Optional<IAddon> getAddonInstance(@NotNull String name) {
         if (this.loaders.containsKey(name)) {
             return Optional.ofNullable(this.loaders.get(name).getAddon());
         }
@@ -146,7 +146,7 @@ public class AddonManager {
      * @throws FusionException throws an exception if the addon could not be reloaded.
      * @return {@code <T extends IAddon> IAddon}
      */
-    public <T extends IAddon> IAddon reloadAddon(@NotNull final T addon) throws FusionException {
+    public <T extends IAddon> IAddon reloadAddon(@NotNull T addon) throws FusionException {
         if (addon.isEnabled()) {
             addon.disable();
         }
@@ -163,7 +163,7 @@ public class AddonManager {
             }
 
             foundKey = key;
-        } catch (final Exception exception) {
+        } catch (Exception exception) {
             throw new FusionException("Could not reload addon: " + addon, exception);
         }
 
@@ -177,7 +177,7 @@ public class AddonManager {
      * @param <T>              the class instance
      * @throws FusionException throws an exception if the addon could not be reloaded.
      */
-    public <T extends IAddon> void unloadAddon(@NotNull final Class<T> classObject) {
+    public <T extends IAddon> void unloadAddon(@NotNull Class<T> classObject) {
         getAddonInstance(classObject).ifPresent(this::unloadAddon);
     }
 
@@ -186,7 +186,7 @@ public class AddonManager {
      *
      * @param addon {@link IAddon}
      */
-    public void reloadAddonConfig(@NotNull final IAddon addon) {
+    public void reloadAddonConfig(@NotNull IAddon addon) {
         addon.onDisable();
         addon.onEnable();
     }
@@ -198,7 +198,7 @@ public class AddonManager {
      * @param <T>              the class instance
      * @throws FusionException throws an exception if the addon is not found.
      */
-    public <T extends IAddon> void unloadAddon(@NotNull final T addon) throws FusionException {
+    public <T extends IAddon> void unloadAddon(@NotNull T addon) throws FusionException {
         if (addon.isEnabled()) {
             addon.disable();
         }
@@ -217,9 +217,9 @@ public class AddonManager {
         classLoader.setDisabling(false);
 
         //noinspection EmptyTryBlock
-        try (final AddonClassLoader loader = this.loaders.remove(name)) {
+        try (AddonClassLoader loader = this.loaders.remove(name)) {
 
-        } catch (final IOException ignored) {}
+        } catch (IOException ignored) {}
     }
 
     /**
@@ -229,7 +229,7 @@ public class AddonManager {
      * @return {@link AddonClassLoader} the class loader
      * @throws FusionException throws an exception if the configuration is invalid, or if an addon already exists with that name.
      */
-    public @NotNull AddonClassLoader loadAddon(@NotNull final Path path) throws FusionException {
+    public @NotNull AddonClassLoader loadAddon(@NotNull Path path) throws FusionException {
         final Addon addon = getProperties(path);
 
         final String group = addon.getMain();
@@ -255,7 +255,7 @@ public class AddonManager {
 
         try {
             loader = new AddonClassLoader(this, path, group, name);
-        } catch (final Exception exception) {
+        } catch (Exception exception) {
             throw new FusionException("Failed to load " + name, exception);
         }
 
@@ -311,12 +311,12 @@ public class AddonManager {
      * @param path the relative path
      * @return {@link Addon}
      */
-    private @NotNull Addon getProperties(@NotNull final Path path) {
+    private @NotNull Addon getProperties(@NotNull Path path) {
         final Properties properties = new Properties();
 
-        try (final FileSystem entry = FileSystems.newFileSystem(path, (ClassLoader) null); final InputStream stream = Files.newInputStream(entry.getPath("addon.properties"))) {
+        try (FileSystem entry = FileSystems.newFileSystem(path, (ClassLoader) null); final InputStream stream = Files.newInputStream(entry.getPath("addon.properties"))) {
             properties.load(stream);
-        } catch (final IOException exception) {
+        } catch (IOException exception) {
             throw new FusionException("Failed to load addon.properties", exception);
         }
 

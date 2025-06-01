@@ -8,25 +8,25 @@ import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import java.util.Set;
 
-public final class Gui extends BaseGui {
+public class Gui extends BaseGui {
 
-    public Gui(@NotNull final Audience audience, @NotNull final String title, @NotNull final GuiType guiType, @NotNull final Set<InteractionComponent> components) {
+    public Gui(@NotNull Audience audience, @NotNull String title, @NotNull GuiType guiType, @NotNull Set<InteractionComponent> components) {
         super(audience, title, guiType, components);
     }
 
-    public Gui(@NotNull final String title, @NotNull final GuiType guiType, @NotNull final Set<InteractionComponent> components) {
+    public Gui(@NotNull String title, @NotNull GuiType guiType, @NotNull Set<InteractionComponent> components) {
         this(Audience.empty(), title, guiType, components);
     }
 
-    public Gui(@NotNull final Audience audience, @NotNull final String title, final int rows, @NotNull final Set<InteractionComponent> components) {
+    public Gui(@NotNull Audience audience, @NotNull String title, int rows, @NotNull Set<InteractionComponent> components) {
         super(audience, title, rows, components);
     }
 
-    public Gui(@NotNull final String title, final int rows, @NotNull final Set<InteractionComponent> components) {
+    public Gui(@NotNull String title, int rows, @NotNull Set<InteractionComponent> components) {
         this(Audience.empty(), title, rows, components);
     }
 
-    public static @NotNull SimpleBuilder gui(@NotNull final GuiType type) {
+    public static @NotNull SimpleBuilder gui(@NotNull GuiType type) {
         return new SimpleBuilder(type);
     }
 

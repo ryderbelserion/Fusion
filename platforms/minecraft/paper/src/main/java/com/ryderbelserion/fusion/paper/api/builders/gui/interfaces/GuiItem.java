@@ -7,12 +7,12 @@ import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class GuiItem {
+public class GuiItem {
 
     private GuiAction<InventoryClickEvent> action;
     private ItemStack itemStack;
 
-    public GuiItem(@NotNull final ItemStack itemStack, @Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
+    public GuiItem(@NotNull ItemStack itemStack, @Nullable GuiAction<@NotNull InventoryClickEvent> action) {
         Preconditions.checkNotNull(itemStack, "The ItemStack for the gui Item cannot be null!");
 
         if (action != null) {
@@ -22,23 +22,23 @@ public final class GuiItem {
         this.itemStack = itemStack;
     }
 
-    public GuiItem(@NotNull final ItemType itemType, @Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
+    public GuiItem(@NotNull ItemType itemType, @Nullable GuiAction<@NotNull InventoryClickEvent> action) {
         this(itemType.createItemStack(), action);
     }
 
-    public GuiItem(@NotNull final ItemStack itemStack) {
+    public GuiItem(@NotNull ItemStack itemStack) {
         this(itemStack, null);
     }
 
-    public GuiItem(@NotNull final ItemType itemType) {
+    public GuiItem(@NotNull ItemType itemType) {
         this(itemType.createItemStack(), null);
     }
 
-    public void setAction(@Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
+    public void setAction(@Nullable GuiAction<@NotNull InventoryClickEvent> action) {
         this.action = action;
     }
 
-    public void setItemStack(@NotNull final ItemStack itemStack) {
+    public void setItemStack(@NotNull ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 

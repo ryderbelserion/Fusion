@@ -27,7 +27,7 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
      * @param actions the list of file actions applied to the configuration file
      * @param options the options responsible for configuring the formatting
      */
-    public JsonCustomFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
+    public JsonCustomFile(@NotNull Path path, @NotNull List<FileAction> actions, @Nullable UnaryOperator<ConfigurationOptions> options) {
         super(path, actions, JacksonConfigurationLoader.builder().defaultOptions(options != null ? options : configurationOptions -> configurationOptions).indent(2).path(path).build());
     }
 
@@ -64,7 +64,7 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
      * @return the string value or the default if missing
      */
     @Override
-    public @NotNull String getStringValueWithDefault(@NotNull final String defaultValue, @NotNull final Object... path) {
+    public @NotNull String getStringValueWithDefault(@NotNull String defaultValue, @NotNull Object... path) {
         return getConfiguration().node(path).getString(defaultValue);
     }
 
@@ -75,7 +75,7 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
      * @return the string value or an empty string if missing
      */
     @Override
-    public @NotNull String getStringValue(@NotNull final Object... path) {
+    public @NotNull String getStringValue(@NotNull Object... path) {
         return getStringValueWithDefault("", path);
     }
 
@@ -87,7 +87,7 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
      * @return the boolean value or the default if missing
      */
     @Override
-    public boolean getBooleanValueWithDefault(final boolean defaultValue, @NotNull final Object... path) {
+    public boolean getBooleanValueWithDefault(boolean defaultValue, @NotNull Object... path) {
         return getConfiguration().node(path).getBoolean(defaultValue);
     }
 
@@ -98,7 +98,7 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
      * @return the boolean value or false if missing
      */
     @Override
-    public boolean getBooleanValue(@NotNull final Object... path) {
+    public boolean getBooleanValue(@NotNull Object... path) {
         return getBooleanValueWithDefault(false, path);
     }
 
@@ -110,7 +110,7 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
      * @return the double value or the default if missing
      */
     @Override
-    public double getDoubleValueWithDefault(final double defaultValue, @NotNull final Object... path) {
+    public double getDoubleValueWithDefault(double defaultValue, @NotNull Object... path) {
         return getConfiguration().node(path).getDouble(defaultValue);
     }
 
@@ -121,7 +121,7 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
      * @return the double value or 0.0 if missing
      */
     @Override
-    public double getDoubleValue(@NotNull final Object... path) {
+    public double getDoubleValue(@NotNull Object... path) {
         return getDoubleValueWithDefault(0.0, path);
     }
 
@@ -133,7 +133,7 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
      * @return the long value or the default if missing
      */
     @Override
-    public long getLongValueWithDefault(final long defaultValue, @NotNull final Object... path) {
+    public long getLongValueWithDefault(long defaultValue, @NotNull Object... path) {
         return getConfiguration().node(path).getLong(defaultValue);
     }
 
@@ -144,7 +144,7 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
      * @return the long value or 0L if missing
      */
     @Override
-    public long getLongValue(@NotNull final Object... path) {
+    public long getLongValue(@NotNull Object... path) {
         return getLongValueWithDefault(0L, path);
     }
 
@@ -156,7 +156,7 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
      * @return the integer value or the default if missing
      */
     @Override
-    public int getIntValueWithDefault(final int defaultValue, @NotNull final Object... path) {
+    public int getIntValueWithDefault(int defaultValue, @NotNull Object... path) {
         return getConfiguration().node(path).getInt(defaultValue);
     }
 
@@ -167,7 +167,7 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
      * @return the integer value or 0 if missing
      */
     @Override
-    public int getIntValue(@NotNull final Object... path) {
+    public int getIntValue(@NotNull Object... path) {
         return getIntValueWithDefault(0, path);
     }
 
@@ -178,18 +178,18 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
      * @return the list of string values or an empty list if missing
      */
     @Override
-    public @NotNull List<String> getStringList(@NotNull final Object... path) {
-        final BasicConfigurationNode node = getConfiguration().node(path);
+    public @NotNull List<String> getStringList(@NotNull Object... path) {
+        BasicConfigurationNode node = getConfiguration().node(path);
 
         try {
-            final List<String> list = node.getList(String.class);
+            List<String> list = node.getList(String.class);
 
             if (list != null) {
                 return list;
             }
 
             return List.of();
-        } catch (final SerializationException exception) {
+        } catch (SerializationException exception) {
             throw new FusionException("Failed to serialize " + node.path(), exception);
         }
     }

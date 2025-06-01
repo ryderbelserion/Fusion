@@ -15,19 +15,19 @@ public class PatternBuilder extends BaseItemBuilder<PatternBuilder> {
 
     private final BannerPatternLayers.Builder builder;
 
-    public PatternBuilder(@NotNull final ItemStack itemStack) {
-        super(itemStack);
+    public PatternBuilder(@NotNull ItemStack item) {
+        super(item);
 
         this.builder = BannerPatternLayers.bannerPatternLayers();
     }
 
-    public @NotNull PatternBuilder addPattern(@NotNull final Pattern pattern) {
+    public @NotNull PatternBuilder addPattern(@NotNull Pattern pattern) {
         this.builder.add(pattern);
 
         return this;
     }
 
-    public @NotNull PatternBuilder addPattern(@NotNull final String pattern, @NotNull final String dye) {
+    public @NotNull PatternBuilder addPattern(@NotNull String pattern, @NotNull String dye) {
         final PatternType type = ItemUtils.getPatternType(pattern.toLowerCase());
 
         if (type == null) return this;

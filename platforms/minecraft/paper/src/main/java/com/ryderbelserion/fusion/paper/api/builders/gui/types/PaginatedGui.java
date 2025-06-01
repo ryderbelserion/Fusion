@@ -24,7 +24,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     private int pageNumber = 1;
     private int pageSize;
 
-    public PaginatedGui(@NotNull final String title, final int pageSize, final int rows, @NotNull final Set<InteractionComponent> components) {
+    public PaginatedGui(@NotNull String title, int pageSize, int rows, @NotNull Set<InteractionComponent> components) {
         super(title, rows, components);
 
         if (pageSize == 0) {
@@ -39,24 +39,24 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public final PaginatedGui setPageSize(final int pageSize) {
+    public final PaginatedGui setPageSize(int pageSize) {
         this.pageSize = pageSize;
 
         return this;
     }
 
     @Override
-    public void addItem(@NotNull final GuiItem guiItem) {
+    public void addItem(@NotNull GuiItem guiItem) {
         this.pageItems.add(guiItem);
     }
 
     @Override
-    public void addItem(@NotNull final GuiItem... items) {
+    public void addItem(@NotNull GuiItem... items) {
         this.pageItems.addAll(Arrays.asList(items));
     }
 
     @Override
-    public void removePageItem(final int slot) {
+    public void removePageItem(int slot) {
         if (!this.currentPage.containsKey(slot)) return;
 
         final GuiItem guiItem = this.currentPage.remove(slot);
@@ -67,7 +67,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public void updatePageItem(final int slot, @NotNull final ItemStack itemStack) {
+    public void updatePageItem(int slot, @NotNull ItemStack itemStack) {
         if (!this.currentPage.containsKey(slot)) return;
 
         final GuiItem guiItem = this.currentPage.get(slot);
@@ -78,17 +78,17 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public void updatePageItem(final int row, final int col, @NotNull final ItemStack itemStack) {
+    public void updatePageItem(int row, int col, @NotNull ItemStack itemStack) {
         updatePageItem(getSlotFromRowColumn(row, col), itemStack);
     }
 
     @Override
-    public void updatePageItem(final int row, final int col, @NotNull final GuiItem guiItem) {
+    public void updatePageItem(int row, int col, @NotNull GuiItem guiItem) {
         updatePageItem(getSlotFromRowColumn(row, col), guiItem);
     }
 
     @Override
-    public void updatePageItem(final int slot, @NotNull final GuiItem guiItem) {
+    public void updatePageItem(int slot, @NotNull GuiItem guiItem) {
         if (!this.currentPage.containsKey(slot)) return;
 
         final int index = this.pageItems.indexOf(this.currentPage.get(slot));
@@ -101,22 +101,22 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public void open(@NotNull final Player player, final boolean purge) {
+    public void open(@NotNull Player player, boolean purge) {
         open(player, 1, null);
     }
 
     @Override
-    public void open(@NotNull final Player player) {
+    public void open(@NotNull Player player) {
         open(player, 1, null);
     }
 
     @Override
-    public void open(@NotNull final Player player, @NotNull final Consumer<PaginatedGui> consumer) {
+    public void open(@NotNull Player player, @NotNull Consumer<PaginatedGui> consumer) {
         open(player, 1, consumer);
     }
 
     @Override
-    public void open(@NotNull final Player player, final int openPage, @Nullable final Consumer<PaginatedGui> consumer) {
+    public void open(@NotNull Player player, int openPage, @Nullable Consumer<PaginatedGui> consumer) {
         if (player.isSleeping()) return;
 
         if (openPage <= getMaxPages() || openPage > 0) this.pageNumber = openPage;
@@ -142,7 +142,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     public final int getNextPageNumber() {
         if (this.pageNumber + 1 > getMaxPages()) return this.pageNumber;
 
-        return pageNumber + 1;
+        return this.pageNumber + 1;
     }
 
     @Override
@@ -175,12 +175,12 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public @Nullable final GuiItem getPageItem(final int slot) {
+    public @Nullable final GuiItem getPageItem(int slot) {
         return this.currentPage.get(slot);
     }
 
     @Override
-    public void setPageNumber(final int pageNumber) {
+    public void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
     }
 
@@ -190,7 +190,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public @NotNull final List<GuiItem> getItemsFromPage(final int givenPage) {
+    public @NotNull final List<GuiItem> getItemsFromPage(int givenPage) {
         final int page = givenPage - 1;
 
         final List<GuiItem> guiPage = new ArrayList<>();
@@ -218,7 +218,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public void clearPageItems(final boolean update) {
+    public void clearPageItems(boolean update) {
         this.pageItems.clear();
 
         if (update) {
@@ -284,7 +284,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     }
 
     @Override
-    public void updateInventory(@NotNull final Player player) {
+    public void updateInventory(@NotNull Player player) {
         getInventory().clear();
 
         populate();

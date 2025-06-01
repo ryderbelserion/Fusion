@@ -13,7 +13,7 @@ public class CommandItem extends BaseCommand {
     @Command("item")
     @Permission(value = "fusion.item", def = PermissionDefault.TRUE)
     @Syntax(value = "/item reload")
-    public void reload(final Player player) {
+    public void reload(Player player) {
         final ItemBuilder itemBuilder = ItemBuilder.from(ItemType.DIAMOND_SWORD).addEnchantment("sharpness", 3).hideComponent("enchantments");
 
         itemBuilder.addItemToInventory(player.getInventory());

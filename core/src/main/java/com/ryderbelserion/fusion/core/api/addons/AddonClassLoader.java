@@ -22,7 +22,7 @@ public class AddonClassLoader extends URLClassLoader {
     private boolean isDisabling;
     private String name;
 
-    public AddonClassLoader(@NotNull final AddonManager manager, @NotNull final Path path, @NotNull final String group, @NotNull final String name) throws FusionException, MalformedURLException {
+    public AddonClassLoader(@NotNull AddonManager manager, @NotNull Path path, @NotNull String group, @NotNull String name) throws FusionException, MalformedURLException {
         super(new URL[]{path.toUri().toURL()}, manager.getClass().getClassLoader());
 
         this.manager = manager;
@@ -35,7 +35,7 @@ public class AddonClassLoader extends URLClassLoader {
             mainClass = Class.forName(group, true, this);
 
             this.classes.put(mainClass.getName(), mainClass);
-        } catch (final ClassNotFoundException exception) {
+        } catch (ClassNotFoundException exception) {
             throw new FusionException("Could not find main class for addon: " + name, exception);
         }
 
@@ -43,7 +43,7 @@ public class AddonClassLoader extends URLClassLoader {
 
         try {
             addonClass = mainClass.asSubclass(IAddon.class);
-        } catch (final Exception exception) {
+        } catch (Exception exception) {
             throw new FusionException(group + " does not implement iAddon.", exception);
         }
 
@@ -51,17 +51,17 @@ public class AddonClassLoader extends URLClassLoader {
             this.addon = addonClass.getDeclaredConstructor().newInstance();
             this.addon.setLoader(this);
             this.addon.setName(this.name = name);
-        } catch (final Exception exception) {
+        } catch (Exception exception) {
             throw new FusionException("Failed to load main class for addon: " + name + ".", exception);
         }
     }
 
     @Override
-    protected Class<?> findClass(@NotNull final String name) throws ClassNotFoundException {
+    protected Class<?> findClass(@NotNull String name) throws ClassNotFoundException {
         return findClass(name, true);
     }
 
-    public Class<?> findClass(@NotNull final String name, final boolean isGlobal) throws ClassNotFoundException {
+    public Class<?> findClass(@NotNull String name,  boolean isGlobal) throws ClassNotFoundException {
         if (this.isDisabling()) {
             throw new ClassNotFoundException("This class loader is disabling.");
         }
@@ -96,7 +96,7 @@ public class AddonClassLoader extends URLClassLoader {
         this.classes.clear();
     }
 
-    public void setDisabling(final boolean isDisabling) {
+    public void setDisabling(boolean isDisabling) {
         this.isDisabling = isDisabling;
     }
 

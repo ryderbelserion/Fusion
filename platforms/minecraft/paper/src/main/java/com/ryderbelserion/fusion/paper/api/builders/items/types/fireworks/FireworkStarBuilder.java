@@ -12,61 +12,61 @@ public class FireworkStarBuilder extends BaseItemBuilder<FireworkStarBuilder> {
 
     private final FireworkEffect.Builder builder;
 
-    public FireworkStarBuilder(@NotNull final ItemStack itemStack) {
-        super(itemStack);
+    public FireworkStarBuilder(@NotNull ItemStack item) {
+        super(item);
 
         this.builder = FireworkEffect.builder();
     }
 
-    public @NotNull FireworkStarBuilder flicker(final boolean flicker) {
+    public @NotNull FireworkStarBuilder flicker(boolean flicker) {
         this.builder.flicker(flicker);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder trail(final boolean trail) {
+    public @NotNull FireworkStarBuilder trail(boolean trail) {
         this.builder.trail(trail);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder withColor(@NotNull final Color color) {
+    public @NotNull FireworkStarBuilder withColor(@NotNull Color color) {
         this.builder.withColor(color);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder withColor(@NotNull final Color... colors) {
+    public @NotNull FireworkStarBuilder withColor(@NotNull Color... colors) {
         this.builder.withColor(colors);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder withColor(@NotNull final List<Color> colors) {
+    public @NotNull FireworkStarBuilder withColor(@NotNull List<Color> colors) {
         this.builder.withColor(colors);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder withFade(@NotNull final Color color) {
+    public @NotNull FireworkStarBuilder withFade(@NotNull Color color) {
         this.builder.withFade(color);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder withFade(@NotNull final Color... colors) {
+    public @NotNull FireworkStarBuilder withFade(@NotNull Color... colors) {
         this.builder.withFade(colors);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder withFade(@NotNull final List<Color> colors) {
+    public @NotNull FireworkStarBuilder withFade(@NotNull List<Color> colors) {
         this.builder.withFade(colors);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder with(@NotNull final FireworkEffect.Type type) {
+    public @NotNull FireworkStarBuilder with(@NotNull FireworkEffect.Type type) {
         this.builder.with(type);
 
         return this;

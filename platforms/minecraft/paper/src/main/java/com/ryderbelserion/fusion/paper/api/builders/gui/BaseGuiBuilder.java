@@ -21,13 +21,13 @@ public abstract class BaseGuiBuilder<G extends BaseGui, B extends BaseGuiBuilder
 
     public abstract @NotNull G create();
 
-    public @NotNull final B setRows(final int rows) {
+    public @NotNull final B setRows(int rows) {
         this.rows = rows;
 
         return (B) this;
     }
 
-    public @NotNull final B setTitle(@NotNull final String title) {
+    public @NotNull final B setTitle(@NotNull String title) {
         this.title = title;
 
         return (B) this;
@@ -93,7 +93,7 @@ public abstract class BaseGuiBuilder<G extends BaseGui, B extends BaseGuiBuilder
         return (B) this;
     }
 
-    public @NotNull final B apply(@NotNull final Consumer<G> consumer) {
+    public @NotNull final B apply(@NotNull Consumer<G> consumer) {
         this.consumer = consumer;
 
         return (B) this;

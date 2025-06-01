@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 
-public final class PaginatedBuilder extends BaseGuiBuilder<PaginatedGui, PaginatedBuilder> {
+public class PaginatedBuilder extends BaseGuiBuilder<PaginatedGui, PaginatedBuilder> {
 
     private int pageSize = 0;
 
@@ -13,7 +13,7 @@ public final class PaginatedBuilder extends BaseGuiBuilder<PaginatedGui, Paginat
 
     @NotNull
     @Contract("_ -> this")
-    public PaginatedBuilder pageSize(final int pageSize) {
+    public PaginatedBuilder pageSize(int pageSize) {
         this.pageSize = pageSize;
 
         return this;

@@ -12,23 +12,23 @@ import java.util.function.Consumer;
 
 public interface IPaginatedGui {
 
-    PaginatedGui setPageSize(final int pageSize);
+    PaginatedGui setPageSize(int pageSize);
 
-    void addItem(@NotNull final GuiItem guiItem);
+    void addItem(@NotNull GuiItem guiItem);
 
-    void removePageItem(final int slot);
+    void removePageItem(int slot);
 
-    void updatePageItem(final int slot, @NotNull final ItemStack itemStack);
+    void updatePageItem(int slot, @NotNull ItemStack itemStack);
 
-    void updatePageItem(final int row, final int col, @NotNull final ItemStack itemStack);
+    void updatePageItem(int row, int col, @NotNull ItemStack itemStack);
 
-    void updatePageItem(final int row, final int col, @NotNull final GuiItem guiItem);
+    void updatePageItem(int row, int col, @NotNull GuiItem guiItem);
 
-    void updatePageItem(final int slot, @NotNull final GuiItem guiItem);
+    void updatePageItem(int slot, @NotNull GuiItem guiItem);
 
-    void open(@NotNull final Player player, @NotNull final Consumer<PaginatedGui> consumer);
+    void open(@NotNull Player player, @NotNull Consumer<PaginatedGui> consumer);
 
-    void open(@NotNull final Player player, final int openPage, @Nullable final Consumer<PaginatedGui> consumer);
+    void open(@NotNull Player player, int openPage, @Nullable Consumer<PaginatedGui> consumer);
 
     int getNextPageNumber();
 
@@ -38,19 +38,19 @@ public interface IPaginatedGui {
 
     boolean previous();
 
-    @Nullable GuiItem getPageItem(final int slot);
+    @Nullable GuiItem getPageItem(int slot);
 
-    void setPageNumber(final int pageNumber);
+    void setPageNumber(int pageNumber);
 
     int getCurrentPageNumber();
 
-    @NotNull List<GuiItem> getItemsFromPage(final int givenPage);
+    @NotNull List<GuiItem> getItemsFromPage(int givenPage);
 
     @NotNull Map<Integer, GuiItem> getCurrentPageItems();
 
     void clearPageContents();
 
-    void clearPageItems(final boolean update);
+    void clearPageItems(boolean update);
 
     void clearPageItems();
 

@@ -15,25 +15,25 @@ public enum GuiType {
 
     BREWING(InventoryType.BREWING, 4, 5);
 
-    private @NotNull final InventoryType inventoryType;
+    private final @NotNull InventoryType inventoryType;
     private final int limit;
     private final int fillSize;
 
-    GuiType(@NotNull final InventoryType inventoryType, final int limit, final int fillSize) {
+    GuiType(@NotNull InventoryType inventoryType, int limit, int fillSize) {
         this.inventoryType = inventoryType;
         this.limit = limit;
         this.fillSize = fillSize;
     }
 
-    public @NotNull final InventoryType getInventoryType() {
+    public @NotNull InventoryType getInventoryType() {
         return this.inventoryType;
     }
 
-    public final int getFillSize() {
-        return fillSize;
+    public int getFillSize() {
+        return this.fillSize;
     }
 
-    public final int getLimit() {
+    public int getLimit() {
         return this.limit;
     }
 }

@@ -22,22 +22,22 @@ public class CommandReload extends BaseCommand {
     @Command("reload")
     @Permission(value = "fusion.reload", def = PermissionDefault.TRUE)
     @Syntax(value = "/fusion reload")
-    public void reload(final CommandSender sender) {
+    public void reload(CommandSender sender) {
         this.fileManager.refresh(false);
 
-        final JsonCustomFile json = this.fileManager.getJsonFile(path.resolve("actions.json"));
+        final JsonCustomFile json = this.fileManager.getJsonFile(this.path.resolve("actions.json"));
 
         if (json != null) {
             this.logger.warn("Json File: {}", json.getConfiguration().node("value").getBoolean(true));
         }
 
-        final YamlCustomFile yaml = this.fileManager.getYamlFile(path.resolve("actions.yml"));
+        final YamlCustomFile yaml = this.fileManager.getYamlFile(this.path.resolve("actions.yml"));
 
         if (yaml != null) {
             this.logger.warn("Yaml File: {}", yaml.getConfiguration().node("value").getBoolean(false));
         }
 
-        final JaluCustomFile jalu = this.fileManager.getJaluFile(path.resolve("config.yml"));
+        final JaluCustomFile jalu = this.fileManager.getJaluFile(this.path.resolve("config.yml"));
 
         if (jalu != null) {
             final SettingsManager config = jalu.getConfiguration();

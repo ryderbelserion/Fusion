@@ -7,7 +7,7 @@ public class FusionPlugin {
 
     private static Plugin plugin = null;
 
-    public static void setPlugin(@NotNull final Plugin plugin) {
+    public static void setPlugin(@NotNull Plugin plugin) {
         FusionPlugin.plugin = plugin;
     }
 

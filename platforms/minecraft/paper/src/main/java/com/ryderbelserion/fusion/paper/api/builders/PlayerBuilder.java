@@ -1,11 +1,10 @@
 package com.ryderbelserion.fusion.paper.api.builders;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import com.ryderbelserion.fusion.paper.FusionPlugin;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
@@ -13,9 +12,7 @@ import java.util.concurrent.CompletableFuture;
 
 public record PlayerBuilder(String name) {
 
-    private static @NotNull final Plugin plugin = FusionPlugin.getPlugin();
-
-    private static @NotNull final Server server = plugin.getServer();
+    private static @NotNull final Server server = Bukkit.getServer();
 
     public @Nullable PlayerProfile getOfflineProfile() {
         if (this.name.isEmpty()) return null;
@@ -38,16 +35,16 @@ public record PlayerBuilder(String name) {
     public @Nullable UUID getUniqueId() {
         if (this.name.isEmpty()) return null;
 
-        final Player player = getPlayer();
+        Player player = getPlayer();
 
         if (player == null) {
-            final PlayerProfile profile = getOfflineProfile();
+            PlayerProfile profile = getOfflineProfile();
 
             if (profile != null) {
                 return profile.getId();
             }
 
-            final OfflinePlayer offlinePlayer = getOfflinePlayer();
+            OfflinePlayer offlinePlayer = getOfflinePlayer();
 
             if (offlinePlayer != null) {
                 return offlinePlayer.getUniqueId();

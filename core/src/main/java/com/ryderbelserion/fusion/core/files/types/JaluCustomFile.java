@@ -27,7 +27,7 @@ public class JaluCustomFile extends IAbstractConfigFile<JaluCustomFile, Settings
      * @param actions the list of file actions applied to the configuration file
      * @param options the options responsible for configuring the formatting
      */
-    public JaluCustomFile(@NotNull final Path path, @NotNull Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
+    public JaluCustomFile(@NotNull Path path, @NotNull Consumer<SettingsManagerBuilder> builder, @NotNull List<FileAction> actions, @Nullable YamlFileResourceOptions options) {
         super(path, actions, options == null ? YamlFileResourceOptions.builder().build() : options);
 
         this.builder = builder;
@@ -40,7 +40,7 @@ public class JaluCustomFile extends IAbstractConfigFile<JaluCustomFile, Settings
      * @param builder the loader responsible for configuration management
      * @param actions the list of file actions applied to the configuration file
      */
-    public JaluCustomFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions) {
+    public JaluCustomFile(@NotNull Path path, @NotNull Consumer<SettingsManagerBuilder> builder, @NotNull List<FileAction> actions) {
         this(path, builder, actions, null);
     }
 
@@ -54,7 +54,7 @@ public class JaluCustomFile extends IAbstractConfigFile<JaluCustomFile, Settings
     @Override
     public @NotNull SettingsManager loadConfig() {
         if (this.configuration == null) {
-            final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(getPath(), this.loader);
+            SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(getPath(), this.loader);
 
             builder.useDefaultMigrationService();
 

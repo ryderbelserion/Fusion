@@ -22,7 +22,6 @@ import java.nio.file.Path;
 
 public class FusionPaper extends FusionKyori {
 
-    private LegacyFileManager fileManager = null;
     private StructureRegistry registry = null;
     private HeadDatabaseAPI api = null;
     private Plugin plugin = null;
@@ -30,25 +29,23 @@ public class FusionPaper extends FusionKyori {
 
     private PluginManager pluginManager = null;
 
-    public FusionPaper(@NotNull final ComponentLogger logger, @NotNull final Path path) {
+    public FusionPaper(@NotNull ComponentLogger logger, @NotNull Path path) {
         super(logger, path, consumer -> consumer.useDefaultMigrationService().configurationData(ConfigKeys.class, PluginKeys.class));
     }
 
-    public FusionPaper(@NotNull final Plugin plugin) {
+    public FusionPaper(@NotNull Plugin plugin) {
         this(plugin.getComponentLogger(), plugin.getDataPath());
 
         this.plugin = plugin;
     }
 
-    public void enable(@NotNull final Plugin plugin) {
-        super.load();
-
-        FusionPlugin.setPlugin(this.plugin = plugin);
+    public void enable(@NotNull Plugin plugin) {
+        load();
 
         this.server = this.plugin.getServer();
         this.pluginManager = this.server.getPluginManager();
 
-        this.registry = new StructureRegistry();
+        this.registry = new StructureRegistry(this.plugin);
 
         if (Support.head_database.isEnabled() && this.api == null) {
             this.api = new HeadDatabaseAPI();
@@ -57,7 +54,7 @@ public class FusionPaper extends FusionKyori {
         this.pluginManager.registerEvents(new GuiListener(), this.plugin);
 
         if (this.isAddonsEnabled()) {
-            final AddonManager addonManager = getAddonManager();
+            AddonManager addonManager = getAddonManager();
 
             addonManager.load().enableAddons();
 
@@ -66,12 +63,12 @@ public class FusionPaper extends FusionKyori {
     }
 
     @Override
-    public @NotNull final String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message) {
+    public @NotNull final String parsePlaceholders(@NotNull Audience audience, @NotNull String message) {
         return Support.placeholder_api.isEnabled() && audience instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
     }
 
     @Override
-    public @NotNull final String chomp(@NotNull final String message) {
+    public @NotNull final String chomp(@NotNull String message) {
         return StringUtils.chomp(message);
     }
 

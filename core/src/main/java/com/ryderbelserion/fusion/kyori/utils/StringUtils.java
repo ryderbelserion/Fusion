@@ -18,7 +18,7 @@ public class StringUtils {
 
     private static final FusionKyori kyori = (FusionKyori) FusionCore.Provider.get();
 
-    public static @NotNull Optional<Number> tryParseInt(@NotNull final String value) {
+    public static @NotNull Optional<Number> tryParseInt(@NotNull String value) {
         try {
             return Optional.of(Integer.parseInt(value));
         } catch (NumberFormatException exception) {
@@ -26,7 +26,7 @@ public class StringUtils {
         }
     }
 
-    public static @NotNull Optional<Boolean> tryParseBoolean(@NotNull final String value) {
+    public static @NotNull Optional<Boolean> tryParseBoolean(@NotNull String value) {
         try {
             return Optional.of(Boolean.parseBoolean(value));
         } catch (NumberFormatException exception) {
@@ -49,24 +49,24 @@ public class StringUtils {
     public static @NotNull String toString(@NotNull List<String> list) {
         if (list.isEmpty()) return "";
 
-        final StringBuilder message = new StringBuilder(list.size());
+        StringBuilder message = new StringBuilder(list.size());
 
-        for (final String line : list) {
+        for (String line : list) {
             message.append(line).append("\n");
         }
 
         return kyori.chomp(message.toString());
     }
 
-    public static @NotNull String fromInteger(final int number) {
+    public static @NotNull String fromInteger(int number) {
         return NumberFormat.getIntegerInstance(Locale.US).format(number);
     }
 
-    public static @NotNull String fromDouble(final double number) {
+    public static @NotNull String fromDouble(double number) {
         return NumberFormat.getNumberInstance(Locale.US).format(number);
     }
 
-    public static @NotNull String format(final double value) {
+    public static @NotNull String format(double value) {
         final DecimalFormat decimalFormat = new DecimalFormat(kyori.getNumberFormat());
 
         decimalFormat.setRoundingMode(mode());

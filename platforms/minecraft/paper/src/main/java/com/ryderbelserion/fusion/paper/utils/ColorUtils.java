@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
-import org.bukkit.craftbukkit.entity.CraftHumanEntity;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.inventory.CraftContainer;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.entity.Player;
@@ -18,6 +18,7 @@ public class ColorUtils {
 
     public static void updateTitle(@NotNull final Player player, @NotNull final String title) {
         final ServerPlayer entityPlayer = (ServerPlayer) ((CraftHumanEntity) player).getHandle();
+    public static void updateTitle(@NotNull Player player, @NotNull String title) {
 
         final int containerId = entityPlayer.containerMenu.containerId;
 
@@ -28,7 +29,7 @@ public class ColorUtils {
         player.updateInventory();
     }
 
-    public static @NotNull DyeColor getDyeColor(@NotNull final String value) {
+    public static @NotNull DyeColor getDyeColor(@NotNull String value) {
         if (value.isEmpty()) return DyeColor.WHITE;
 
         return switch (value.toLowerCase()) {
@@ -51,7 +52,7 @@ public class ColorUtils {
         };
     }
 
-    public static @NotNull Color getColor(@NotNull final String value) {
+    public static @NotNull Color getColor(@NotNull String value) {
         if (value.isEmpty()) return Color.WHITE;
 
         return switch (value.toLowerCase()) {
@@ -75,7 +76,7 @@ public class ColorUtils {
         };
     }
 
-    public static @Nullable Color getRGB(@NotNull final String color) {
+    public static @Nullable Color getRGB(@NotNull String color) {
         if (color.isEmpty()) return null;
 
         final String[] rgb = color.split(",");

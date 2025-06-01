@@ -26,15 +26,15 @@ public interface IBaseGui {
 
     @NotNull String getTitle();
 
-    void setTitle(@NotNull final String title);
+    void setTitle(@NotNull String title);
 
-    @NotNull Component title(@NotNull final Audience audience);
+    @NotNull Component title(@NotNull Audience audience);
 
     @NotNull Component title();
 
     int getRows();
 
-    void setRows(final int rows);
+    void setRows(int rows);
 
     int getSize();
 
@@ -42,15 +42,15 @@ public interface IBaseGui {
 
     @NotNull GuiFiller getFiller();
 
-    void close(@NotNull final Player player, @NotNull final InventoryCloseEvent.Reason reason, final boolean isDelayed);
+    void close(@NotNull Player player, @NotNull InventoryCloseEvent.Reason reason, boolean isDelayed);
 
-    void close(@NotNull final Player player, final boolean isDelayed);
+    void close(@NotNull Player player, boolean isDelayed);
 
-    void close(@NotNull final Player player);
+    void close(@NotNull Player player);
 
-    void updateTitle(@NotNull final Player player);
+    void updateTitle(@NotNull Player player);
 
-    void updateInventory(@NotNull final Player player);
+    void updateInventory(@NotNull Player player);
 
     void updateTitles();
 
@@ -58,11 +58,11 @@ public interface IBaseGui {
 
     boolean isUpdating();
 
-    void setUpdating(final boolean isUpdating);
+    void setUpdating(boolean isUpdating);
 
-    void addInteractionComponent(@NotNull final InteractionComponent... components);
+    void addInteractionComponent(@NotNull InteractionComponent... components);
 
-    void removeInteractionComponent(@NotNull final InteractionComponent component);
+    void removeInteractionComponent(@NotNull InteractionComponent component);
 
     boolean canPerformOtherActions();
 
@@ -76,63 +76,63 @@ public interface IBaseGui {
 
     boolean canDropItems();
 
-    void giveItem(@NotNull final Player player, @NotNull final ItemStack itemStack);
+    void giveItem(@NotNull Player player, @NotNull ItemStack itemStack);
 
-    void giveItem(@NotNull final Player player, @NotNull final ItemStack... itemStacks);
+    void giveItem(@NotNull Player player, @NotNull ItemStack... itemStacks);
 
-    void setItem(final int slot, @NotNull final GuiItem guiItem);
+    void setItem(int slot, @NotNull GuiItem guiItem);
 
-    void setItem(final int row, final int col, @NotNull final GuiItem guiItem);
+    void setItem(int row, int col, @NotNull GuiItem guiItem);
 
-    void setItem(@NotNull final List<Integer> slots, @NotNull final GuiItem guiItem);
+    void setItem(@NotNull List<Integer> slots, @NotNull GuiItem guiItem);
 
-    void addItem(@NotNull final GuiItem... items);
+    void addItem(@NotNull GuiItem... items);
 
-    void addItem(final boolean expandIfFull, @NotNull final GuiItem... items);
+    void addItem(boolean expandIfFull, @NotNull GuiItem... items);
 
-    void removeItem(final int row, final int col);
+    void removeItem(int row, int col);
 
-    void removeItem(final int slot);
+    void removeItem(int slot);
 
-    void setDefaultClickAction(@Nullable final GuiAction<@NotNull InventoryClickEvent> defaultClickAction);
+    void setDefaultClickAction(@Nullable GuiAction<@NotNull InventoryClickEvent> defaultClickAction);
 
-    @Nullable GuiItem getGuiItem(final int slot);
+    @Nullable GuiItem getGuiItem(int slot);
 
-    void addSlotAction(final int slot, @Nullable final GuiAction<@NotNull InventoryClickEvent> slotAction);
+    void addSlotAction(int slot, @Nullable GuiAction<@NotNull InventoryClickEvent> slotAction);
 
-    @Nullable GuiAction<InventoryClickEvent> getSlotAction(final int slot);
+    @Nullable GuiAction<InventoryClickEvent> getSlotAction(int slot);
 
     @Nullable GuiAction<InventoryClickEvent> getDefaultTopClickAction();
 
-    void setDefaultTopClickAction(@Nullable final GuiAction<@NotNull InventoryClickEvent> defaultTopClickAction);
+    void setDefaultTopClickAction(@Nullable GuiAction<@NotNull InventoryClickEvent> defaultTopClickAction);
 
     @Nullable GuiAction<InventoryClickEvent> getPlayerInventoryAction();
 
-    void setOpenGuiAction(@Nullable final GuiAction<@NotNull InventoryOpenEvent> openGuiAction);
+    void setOpenGuiAction(@Nullable GuiAction<@NotNull InventoryOpenEvent> openGuiAction);
 
     @Nullable GuiAction<InventoryClickEvent> getOutsideClickAction();
 
     @Nullable GuiAction<InventoryClickEvent> getDefaultClickAction();
 
-    void setDragAction(@Nullable final GuiAction<@NotNull InventoryDragEvent> dragAction);
+    void setDragAction(@Nullable GuiAction<@NotNull InventoryDragEvent> dragAction);
 
     @Nullable GuiAction<InventoryCloseEvent> getCloseGuiAction();
 
-    void setCloseGuiAction(@Nullable final GuiAction<@NotNull InventoryCloseEvent> closeGuiAction);
+    void setCloseGuiAction(@Nullable GuiAction<@NotNull InventoryCloseEvent> closeGuiAction);
 
     @Nullable GuiAction<InventoryOpenEvent> getOpenGuiAction();
 
-    void setPlayerInventoryAction(@Nullable final GuiAction<@NotNull InventoryClickEvent> playerInventoryAction);
+    void setPlayerInventoryAction(@Nullable GuiAction<@NotNull InventoryClickEvent> playerInventoryAction);
 
     @Nullable GuiAction<InventoryDragEvent> getDragAction();
 
-    void setOutsideClickAction(@Nullable final GuiAction<@NotNull InventoryClickEvent> outsideClickAction);
+    void setOutsideClickAction(@Nullable GuiAction<@NotNull InventoryClickEvent> outsideClickAction);
 
-    void open(@NotNull final Player player, final boolean purge);
+    void open(@NotNull Player player, boolean purge);
 
-    void open(@NotNull final Player player);
+    void open(@NotNull Player player);
 
-    default @NotNull Set<InteractionComponent> safeCopy(@NotNull final Set<InteractionComponent> components) {
+    default @NotNull Set<InteractionComponent> safeCopy(@NotNull Set<InteractionComponent> components) {
         return components.isEmpty() ? EnumSet.noneOf(InteractionComponent.class) : EnumSet.copyOf(components);
     }
 }

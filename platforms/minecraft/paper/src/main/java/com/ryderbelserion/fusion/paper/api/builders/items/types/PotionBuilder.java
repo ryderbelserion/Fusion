@@ -14,36 +14,36 @@ public class PotionBuilder extends BaseItemBuilder<PotionBuilder> {
 
     private final PotionContents.Builder builder;
 
-    public PotionBuilder(@NotNull final ItemStack itemStack) {
-        super(itemStack);
+    public PotionBuilder(@NotNull ItemStack item) {
+        super(item);
 
         this.builder = PotionContents.potionContents();
     }
 
-    public @NotNull PotionBuilder withPotionEffect(@NotNull final PotionEffectType potionEffectType, final int duration, final int amplifier, final boolean isAmbient, final boolean isParticles, final boolean hasIcon) {
+    public @NotNull PotionBuilder withPotionEffect(@NotNull PotionEffectType potionEffectType, int duration, int amplifier, boolean isAmbient, boolean isParticles, boolean hasIcon) {
         this.builder.addCustomEffect(new PotionEffect(potionEffectType, duration, amplifier).withAmbient(isAmbient).withParticles(isParticles).withIcon(hasIcon));
 
         return this;
     }
 
-    public @NotNull PotionBuilder withPotionEffect(@NotNull final PotionEffectType potionEffectType, final int duration, final int amplifier) {
+    public @NotNull PotionBuilder withPotionEffect(@NotNull PotionEffectType potionEffectType, int duration, int amplifier) {
         return withPotionEffect(potionEffectType, duration, amplifier, true, true, true);
     }
 
-    public @NotNull PotionBuilder withPotionType(@NotNull final PotionType potionType) {
+    public @NotNull PotionBuilder withPotionType(@NotNull PotionType potionType) {
         this.builder.potion(potionType);
 
         return this;
     }
 
-    public @NotNull PotionBuilder withCustomName(@NotNull final String customName) {
+    public @NotNull PotionBuilder withCustomName(@NotNull String customName) {
         this.builder.customName(customName);
 
         return this;
     }
 
     @Override
-    public @NotNull PotionBuilder setColor(@NotNull final String value) {
+    public @NotNull PotionBuilder setColor(@NotNull String value) {
         this.builder.customColor(ColorUtils.getColor(value));
 
         return this;

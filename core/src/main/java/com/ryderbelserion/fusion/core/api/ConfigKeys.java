@@ -9,8 +9,8 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 public class ConfigKeys implements SettingsHolder {
 
     @Override
-    public void registerComments(final CommentsConfiguration comments) {
-        comments.setComment("settings", "Configure the library bundled with the plugin.");
+    public void registerComments(CommentsConfiguration conf) {
+        conf.setComment("settings", "Configure the library bundled with the plugin.");
     }
 
     @Comment({

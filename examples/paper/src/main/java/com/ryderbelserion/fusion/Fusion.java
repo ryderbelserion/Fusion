@@ -28,7 +28,7 @@ public class Fusion extends JavaPlugin {
 
         this.fileManager = this.paper.getFileManager();
 
-        final Path path = getDataPath();
+        Path path = getDataPath();
 
         this.fileManager.addFile(path.resolve("config.yml"), builder -> builder.useDefaultMigrationService().configurationData(Config.class), new ArrayList<>(), YamlFileResourceOptions.builder()
                 .charset(Charset.defaultCharset()).indentationSize(2).build());
@@ -40,24 +40,24 @@ public class Fusion extends JavaPlugin {
             add(FileAction.EXTRACT);
         }}, configurationOptions -> configurationOptions.header("This is a header for a json file!"));
 
-        final ComponentLogger logger = getComponentLogger();
+        ComponentLogger logger = getComponentLogger();
 
-        final JsonCustomFile json = this.fileManager.getJsonFile(path.resolve("actions.json"));
+        JsonCustomFile json = this.fileManager.getJsonFile(path.resolve("actions.json"));
 
         if (json != null) {
             logger.warn("Json File: {}", json.getConfiguration().node("value").getBoolean(true));
         }
 
-        final YamlCustomFile yaml = this.fileManager.getYamlFile(path.resolve("actions.yml"));
+        YamlCustomFile yaml = this.fileManager.getYamlFile(path.resolve("actions.yml"));
 
         if (yaml != null) {
             logger.warn("Yaml File: {}", yaml.getConfiguration().node("value").getBoolean(false));
         }
 
-        final JaluCustomFile jalu = this.fileManager.getJaluFile(path.resolve("config.yml"));
+        JaluCustomFile jalu = this.fileManager.getJaluFile(path.resolve("config.yml"));
 
         if (jalu != null) {
-            final SettingsManager config = jalu.getConfiguration();
+            SettingsManager config = jalu.getConfiguration();
 
             logger.warn("Prefix: {}", config.getProperty(Config.prefix));
         }

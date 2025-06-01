@@ -75,16 +75,16 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     private ItemType itemType;
     private ItemStack item;
 
-    public BaseItemBuilder(@NotNull final ItemStack item) {
+    public BaseItemBuilder(@NotNull ItemStack item) {
         this.itemType = item.getType().asItemType();
         this.item = item;
     }
 
-    public BaseItemBuilder(@NotNull final String item) {
+    public BaseItemBuilder(@NotNull String item) {
         withCustomItem(item);
     }
 
-    public @NotNull GuiItem asGuiItem(@Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
+    public @NotNull GuiItem asGuiItem(@Nullable GuiAction<@NotNull InventoryClickEvent> action) {
         return new GuiItem(asItemStack(), action);
     }
 
@@ -92,23 +92,23 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return new GuiItem(asItemStack(), null);
     }
 
-    public @NotNull GuiItem asGuiItem(@NotNull final Audience audience, @Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
+    public @NotNull GuiItem asGuiItem(@NotNull Audience audience, @Nullable GuiAction<@NotNull InventoryClickEvent> action) {
         return new GuiItem(asItemStack(audience), action);
     }
 
-    public @NotNull GuiItem asGuiItem(@NotNull final Audience audience) {
+    public @NotNull GuiItem asGuiItem(@NotNull Audience audience) {
         return new GuiItem(asItemStack(audience), null);
     }
 
-    public @NotNull ItemStack asItemStack(@NotNull final Audience audience) {
+    public @NotNull ItemStack asItemStack(@NotNull Audience audience) {
         if (this.displayName != null) {
-            final ComponentBuilder builder = new ComponentBuilder(audience, this.displayName);
+            ComponentBuilder builder = new ComponentBuilder(audience, this.displayName);
 
             this.item.setData(this.isStatic ? DataComponentTypes.ITEM_NAME : DataComponentTypes.CUSTOM_NAME, builder.asComponent(this.placeholders));
         }
 
         if (!this.displayLore.isEmpty()) {
-            final ComponentBuilder builder = new ComponentBuilder(audience, this.displayLore);
+            ComponentBuilder builder = new ComponentBuilder(audience, this.displayLore);
 
             this.item.setData(DataComponentTypes.LORE, ItemLore.lore(builder.asComponents(this.placeholders)));
         }
@@ -126,7 +126,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B withCustomItem(@NotNull final String item) {
+    public @NotNull B withCustomItem(@NotNull String item) {
         switch (this.fusion.getItemsPlugin().toLowerCase()) {
             case "nexo" -> {
                 if (Support.nexo.isEnabled()) {
@@ -186,7 +186,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B withBase64(@NotNull final String base64) {
+    public @NotNull B withBase64(@NotNull String base64) {
         if (base64.isEmpty()) return (B) this;
 
         try {
@@ -200,12 +200,12 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B withType(@Nullable final ItemType type, final int amount) {
+    public @NotNull B withType(@Nullable ItemType type, int amount) {
         if (type == null) {
             throw new FusionException("The item type cannot be null!");
         }
 
-        final ItemStack itemStack = type.createItemStack(Math.max(amount, 1));
+        ItemStack itemStack = type.createItemStack(Math.max(amount, 1));
 
         setItemStack(this.item == null ? itemStack : this.item.withType(itemStack.getType()));
 
@@ -214,22 +214,22 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B withType(@Nullable final ItemType type) {
+    public @NotNull B withType(@Nullable ItemType type) {
         return withType(type, 1);
     }
 
-    public @NotNull B addEnchantments(@NotNull final HashMap<String, Integer> enchantments) {
-        for (final Map.Entry<String, Integer> entry : enchantments.entrySet()) {
+    public @NotNull B addEnchantments(@NotNull Map<String, Integer> enchantments) {
+        for (Map.Entry<String, Integer> entry : enchantments.entrySet()) {
             addEnchantment(entry.getKey(), entry.getValue());
         }
 
         return (B) this;
     }
 
-    public @NotNull B addEnchantment(@NotNull final String enchant, final int level) {
+    public @NotNull B addEnchantment(@NotNull String enchant, int level) {
         if (enchant.isEmpty()) return (B) this;
 
-        final Enchantment enchantment = ItemUtils.getEnchantment(enchant);
+        Enchantment enchantment = ItemUtils.getEnchantment(enchant);
 
         if (enchantment == null) return (B) this;
 
@@ -256,7 +256,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B removeEnchantment(@NotNull final String enchant) {
+    public @NotNull B removeEnchantment(@NotNull String enchant) {
         if (enchant.isEmpty()) return (B) this;
 
         final Enchantment enchantment = ItemUtils.getEnchantment(enchant);
@@ -268,13 +268,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setAmount(final int amount) {
+    public @NotNull B setAmount(int amount) {
         this.item.setAmount(Math.max(amount, 1));
 
         return (B) this;
     }
 
-    public @NotNull B setDisplayName(@Nullable final String displayName, final boolean isStatic) {
+    public @NotNull B setDisplayName(@Nullable String displayName, boolean isStatic) {
         this.displayName = displayName;
 
         this.isStatic = isStatic;
@@ -282,7 +282,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setDisplayName(@Nullable final String displayName) {
+    public @NotNull B setDisplayName(@Nullable String displayName) {
         return setDisplayName(displayName, false);
     }
 
@@ -290,29 +290,29 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         Component component = Component.empty();
 
         if (this.item.hasData(DataComponentTypes.ITEM_NAME)) {
-            final Component item_name = this.item.getData(DataComponentTypes.ITEM_NAME);
+            final Component itemName = this.item.getData(DataComponentTypes.ITEM_NAME);
 
-            if (item_name != null) {
-                component = item_name;
+            if (itemName != null) {
+                component = itemName;
             }
         } else if (this.item.hasData(DataComponentTypes.CUSTOM_NAME)) {
-            final Component custom_name = this.item.getData(DataComponentTypes.CUSTOM_NAME);
+            final Component customName = this.item.getData(DataComponentTypes.CUSTOM_NAME);
 
-            if (custom_name != null) {
-                component = custom_name;
+            if (customName != null) {
+                component = customName;
             }
         }
 
         return PlainTextComponentSerializer.plainText().serializeOr(component, "");
     }
 
-    public @NotNull B withDisplayLore(@NotNull final List<String> displayLore) {
+    public @NotNull B withDisplayLore(@NotNull List<String> displayLore) {
         this.displayLore = displayLore;
 
         return (B) this;
     }
 
-    public @NotNull B addDisplayLore(@NotNull final String displayLore) {
+    public @NotNull B addDisplayLore(@NotNull String displayLore) {
         if (displayLore.isEmpty()) return (B) this;
 
         this.displayLore.add(displayLore);
@@ -334,7 +334,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return plainLore;
     }
 
-    public @NotNull B setEnchantGlint(final boolean enchantGlintOverride) {
+    public @NotNull B setEnchantGlint(boolean enchantGlintOverride) {
         if (enchantGlintOverride && !this.item.hasData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE)) {
             this.item.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, enchantGlintOverride);
 
@@ -374,8 +374,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B hideComponents(@NotNull final List<String> components) {
-        for (final String component : components) {
+    public @NotNull B hideComponents(@NotNull List<String> components) {
+        for (String component : components) {
             hideComponent(component);
         }
 
@@ -383,7 +383,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     // i.e. minecraft:banner_patterns without minecraft
-    public @NotNull B hideComponent(@NotNull final String component) {
+    public @NotNull B hideComponent(@NotNull String component) {
         if (component.isEmpty()) return (B) this;
 
         final Optional<DataComponentType> type = ItemUtils.getDataComponentType(component);
@@ -407,7 +407,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setUnbreakable(final boolean isUnbreakable) {
+    public @NotNull B setUnbreakable(boolean isUnbreakable) {
         if (isUnbreakable && !this.item.hasData(DataComponentTypes.UNBREAKABLE)) {
             this.item.setData(DataComponentTypes.UNBREAKABLE);
 
@@ -421,7 +421,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setCustomModelData(final int customModelData) {
+    public @NotNull B setCustomModelData(int customModelData) {
         if (customModelData == -1) return (B) this;
 
         this.item.setData(DataComponentTypes.CUSTOM_MODEL_DATA, populateData().addFloat(customModelData).build());
@@ -429,7 +429,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setCustomModelData(@NotNull final String customModelData) {
+    public @NotNull B setCustomModelData(@NotNull String customModelData) {
         if (customModelData.isEmpty()) return (B) this;
 
         final Optional<Number> integer = StringUtils.tryParseInt(customModelData);
@@ -445,7 +445,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setItemModel(@NotNull final String itemModel) {
+    public @NotNull B setItemModel(@NotNull String itemModel) {
         if (itemModel.isEmpty()) return (B) this;
 
         this.item.setData(DataComponentTypes.ITEM_MODEL, NamespacedKey.minecraft(itemModel));
@@ -453,7 +453,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setItemModel(@NotNull final String namespace, @NotNull final String itemModel) {
+    public @NotNull B setItemModel(@NotNull String namespace, @NotNull String itemModel) {
         if (namespace.isEmpty() || itemModel.isEmpty()) return (B) this;
 
         this.item.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(namespace, itemModel));
@@ -461,7 +461,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setTrim(@NotNull final String pattern, @NotNull final String material) {
+    public @NotNull B setTrim(@NotNull String pattern, @NotNull String material) {
         if (pattern.isEmpty() || material.isEmpty()) return (B) this;
 
         final TrimMaterial trimMaterial = ItemUtils.getTrimMaterial(material);
@@ -484,7 +484,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setColor(@NotNull final String value) {
+    public @NotNull B setColor(@NotNull String value) {
         if (value.isEmpty()) return (B) this;
 
         if (isMap()) {
@@ -508,7 +508,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setItemDamage(final int damage) {
+    public @NotNull B setItemDamage(int damage) {
         if (damage == -1) return (B) this;
 
         this.item.setData(DataComponentTypes.DAMAGE, Math.min(damage, getType().getMaxDurability()));
@@ -516,29 +516,29 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B addPlaceholder(@NotNull final String placeholder, @NotNull final String value) {
+    public @NotNull B addPlaceholder(@NotNull String placeholder, @NotNull String value) {
         this.placeholders.put(placeholder, value);
 
         return (B) this;
     }
 
-    public @NotNull B setPlaceholders(@NotNull final Map<String, String> placeholders) {
+    public @NotNull B setPlaceholders(@NotNull Map<String, String> placeholders) {
         this.placeholders = placeholders;
 
         return (B) this;
     }
 
-    public boolean hasPlaceholder(@NotNull final String placeholder) {
+    public boolean hasPlaceholder(@NotNull String placeholder) {
         return this.placeholders.containsKey(placeholder);
     }
 
-    public @NotNull B removePlaceholder(@NotNull final String placeholder) {
+    public @NotNull B removePlaceholder(@NotNull String placeholder) {
         this.placeholders.remove(placeholder);
 
         return (B) this;
     }
 
-    public @NotNull B withSkull(@NotNull final String skull) {
+    public @NotNull B withSkull(@NotNull String skull) {
         if (skull.isEmpty()) return (B) this;
 
         @NotNull final HeadDatabaseAPI hdb = this.fusion.getApi();
@@ -548,57 +548,57 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull final B setPersistentDouble(@NotNull final NamespacedKey key, final double value) {
+    public @NotNull final B setPersistentDouble(@NotNull NamespacedKey key, double value) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.DOUBLE, value));
 
         return (B) this;
     }
 
-    public @NotNull final B setPersistentInteger(@NotNull final NamespacedKey key, final int value) {
+    public @NotNull final B setPersistentInteger(@NotNull NamespacedKey key, int value) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.INTEGER, value));
 
         return (B) this;
     }
 
-    public @NotNull final B setPersistentBoolean(@NotNull final NamespacedKey key, final boolean value) {
+    public @NotNull final B setPersistentBoolean(@NotNull NamespacedKey key, boolean value) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.BOOLEAN, value));
 
         return (B) this;
     }
 
-    public @NotNull final B setPersistentString(@NotNull final NamespacedKey key, @NotNull final String value) {
+    public @NotNull final B setPersistentString(@NotNull NamespacedKey key, @NotNull String value) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.STRING, value));
 
         return (B) this;
     }
 
-    public @NotNull final B setPersistentList(@NotNull final NamespacedKey key, @NotNull final List<String> values) {
+    public @NotNull final B setPersistentList(@NotNull NamespacedKey key, @NotNull List<String> values) {
         this.item.editPersistentDataContainer(container -> container.set(key, PersistentDataType.LIST.listTypeFrom(PersistentDataType.STRING), values));
 
         return (B) this;
     }
 
-    public final boolean getBoolean(@NotNull final NamespacedKey key) {
+    public final boolean getBoolean(@NotNull NamespacedKey key) {
         return this.item.getPersistentDataContainer().getOrDefault(key, PersistentDataType.BOOLEAN, false);
     }
 
-    public final double getDouble(@NotNull final NamespacedKey key) {
+    public final double getDouble(@NotNull NamespacedKey key) {
         return this.item.getPersistentDataContainer().getOrDefault(key, PersistentDataType.DOUBLE, 0.0);
     }
 
-    public final int getInteger(@NotNull final NamespacedKey key) {
+    public final int getInteger(@NotNull NamespacedKey key) {
         return this.item.getPersistentDataContainer().getOrDefault(key, PersistentDataType.INTEGER, 0);
     }
 
-    public @NotNull final List<String> getList(@NotNull final NamespacedKey key) {
+    public @NotNull final List<String> getList(@NotNull NamespacedKey key) {
         return this.item.getPersistentDataContainer().getOrDefault(key, PersistentDataType.LIST.strings(), Collections.emptyList());
     }
 
-    public @NotNull final String getString(@NotNull final NamespacedKey key) {
+    public @NotNull final String getString(@NotNull NamespacedKey key) {
         return this.item.getPersistentDataContainer().getOrDefault(key, PersistentDataType.STRING, "");
     }
 
-    public @NotNull final B removePersistentKey(@Nullable final NamespacedKey key) {
+    public @NotNull final B removePersistentKey(@Nullable NamespacedKey key) {
         if (key == null) return (B) this;
 
         this.item.editPersistentDataContainer(container -> {
@@ -608,7 +608,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public final boolean hasKey(@NotNull final NamespacedKey key) {
+    public final boolean hasKey(@NotNull NamespacedKey key) {
         return this.item.getPersistentDataContainer().has(key);
     }
 
@@ -660,19 +660,19 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return new SpawnerBuilder(this.item);
     }
 
-    public void setItemToInventory(@NotNull final Audience audience, @NotNull final Inventory inventory, final int slot) {
+    public void setItemToInventory(@NotNull Audience audience, @NotNull Inventory inventory, int slot) {
         inventory.setItem(slot, asItemStack(audience));
     }
 
-    public void addItemToInventory(@NotNull final Audience audience, @NotNull final Inventory inventory) {
+    public void addItemToInventory(@NotNull Audience audience, @NotNull Inventory inventory) {
         inventory.addItem(asItemStack(audience));
     }
 
-    public void setItemToInventory(@NotNull final Inventory inventory, final int slot) {
+    public void setItemToInventory(@NotNull Inventory inventory, int slot) {
         setItemToInventory(Audience.empty(), inventory, slot);
     }
 
-    public void addItemToInventory(@NotNull final Inventory inventory) {
+    public void addItemToInventory(@NotNull Inventory inventory) {
         addItemToInventory(Audience.empty(), inventory);
     }
 
@@ -799,7 +799,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.itemType.key();
     }
 
-    protected final void setItemStack(@NotNull final ItemStack item) {
+    protected final void setItemStack(@NotNull ItemStack item) {
         this.item = item;
         this.itemType = this.item.getType().asItemType();
     }
@@ -826,7 +826,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return data;
     }
 
-    private void getItemsAdder(@NotNull final String item) {
+    private void getItemsAdder(@NotNull String item) {
         if (!CustomStack.isInRegistry(item)) {
             return;
         }
@@ -840,7 +840,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         setItemStack(builder.getItemStack());
     }
 
-    private void getOraxen(@NotNull final String item) {
+    private void getOraxen(@NotNull String item) {
         if (!OraxenItems.exists(item)) {
             return;
         }
@@ -854,7 +854,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         setItemStack(builder.build());
     }
 
-    private void getNexo(@NotNull final String item) {
+    private void getNexo(@NotNull String item) {
         if (!NexoItems.exists(item)) {
             return;
         }
@@ -883,7 +883,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return builder;
     }
 
-    private void setItem(@NotNull final String item) {
+    private void setItem(@NotNull String item) {
         final ItemType itemType = ItemUtils.getItemType(item);
 
         if (itemType != null) {

@@ -22,12 +22,12 @@ public abstract class FusionCore {
 
     private final Path path;
 
-    protected FusionCore(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
+    protected FusionCore(@NotNull Path path, @NotNull Consumer<SettingsManagerBuilder> consumer) {
         Provider.register(this);
 
         this.path = path;
 
-        final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(this.path.resolve("fusion.yml"), YamlFileResourceOptions.builder().charset(StandardCharsets.UTF_8).indentationSize(2).build());
+        SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(this.path.resolve("fusion.yml"), YamlFileResourceOptions.builder().charset(StandardCharsets.UTF_8).indentationSize(2).build());
 
         builder.useDefaultMigrationService();
 
@@ -99,7 +99,7 @@ public abstract class FusionCore {
     public static class Provider {
         private static FusionCore core = null;
 
-        public static void register(@NotNull final FusionCore core) {
+        public static void register(@NotNull FusionCore core) {
             Provider.core = core;
         }
 

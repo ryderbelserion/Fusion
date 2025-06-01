@@ -5,27 +5,27 @@ import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiType;
 import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 
-public final class SimpleBuilder extends BaseGuiBuilder<Gui, SimpleBuilder> {
+public class SimpleBuilder extends BaseGuiBuilder<Gui, SimpleBuilder> {
 
     private GuiType guiType;
 
-    public SimpleBuilder(@NotNull final GuiType guiType) {
+    public SimpleBuilder(@NotNull GuiType guiType) {
         this.guiType = guiType;
     }
 
     @Override
     public @NotNull Gui create() {
-        final Gui gui;
+        Gui gui;
 
         gui = this.guiType == null || this.guiType == GuiType.CHEST ? new Gui(getTitle(), getRows(), getInteractionComponents()) : new Gui(getTitle(), this.guiType, getInteractionComponents());
 
-        final Consumer<Gui> consumer = getConsumer();
+        Consumer<Gui> consumer = getConsumer();
         if (consumer != null) consumer.accept(gui);
 
         return gui;
     }
 
-    public @NotNull SimpleBuilder setType(@NotNull final GuiType guiType) {
+    public @NotNull SimpleBuilder setType(@NotNull GuiType guiType) {
         this.guiType = guiType;
 
         return this;

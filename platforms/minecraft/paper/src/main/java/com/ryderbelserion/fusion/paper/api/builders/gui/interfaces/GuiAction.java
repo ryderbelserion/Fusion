@@ -6,6 +6,6 @@ import org.jetbrains.annotations.NotNull;
 @FunctionalInterface
 public interface GuiAction<T extends Event> {
 
-    void execute(@NotNull final T event);
+    void execute(@NotNull T event);
 
 }

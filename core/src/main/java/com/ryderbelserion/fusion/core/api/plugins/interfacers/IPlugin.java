@@ -39,7 +39,7 @@ public interface IPlugin {
      * @param uuid the uuid to check
      * @return true or false
      */
-    default boolean isVanished(@NotNull final UUID uuid) {
+    default boolean isVanished(@NotNull UUID uuid) {
         return false;
     }
 
@@ -50,7 +50,7 @@ public interface IPlugin {
      * @param target the target who is being ignored
      * @return true or false
      */
-    default boolean isIgnored(@NotNull final UUID uuid, @NotNull final UUID target) {
+    default boolean isIgnored(@NotNull UUID uuid, @NotNull UUID target) {
         return false;
     }
 
@@ -60,7 +60,7 @@ public interface IPlugin {
      * @param uuid the uuid to check
      * @return true or false
      */
-    default boolean isMuted(@NotNull final UUID uuid) {
+    default boolean isMuted(@NotNull UUID uuid) {
         return false;
     }
 
@@ -70,7 +70,7 @@ public interface IPlugin {
      * @param uuid the uuid to check
      * @return true or false
      */
-    default boolean isAfk(@NotNull final UUID uuid) {
+    default boolean isAfk(@NotNull UUID uuid) {
         return false;
     }
 
@@ -87,7 +87,7 @@ public interface IPlugin {
      * @param <V> whatever I want
      * @param <T> whatever I want
      */
-    default <V, T> T getData(@Nullable final V key) {
+    default <V, T> T getData(@Nullable V key) {
         return null;
     }
 
