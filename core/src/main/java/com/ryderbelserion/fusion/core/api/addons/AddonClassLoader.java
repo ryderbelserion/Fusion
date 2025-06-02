@@ -36,7 +36,7 @@ public class AddonClassLoader extends URLClassLoader {
 
             this.classes.put(mainClass.getName(), mainClass);
         } catch (final ClassNotFoundException exception) {
-            throw new FusionException(String.format("Could not find main class for addon %s.", name), exception);
+            throw new FusionException(String.format("Could not find main class for addon %s!", name), exception);
         }
 
         Class<? extends IAddon> addonClass;
@@ -44,7 +44,7 @@ public class AddonClassLoader extends URLClassLoader {
         try {
             addonClass = mainClass.asSubclass(IAddon.class);
         } catch (final Exception exception) {
-            throw new FusionException(String.format("%s does not implement iAddon", group), exception);
+            throw new FusionException(String.format("%s does not implement iAddon!", group), exception);
         }
 
         try {
@@ -52,7 +52,7 @@ public class AddonClassLoader extends URLClassLoader {
             this.addon.setLoader(this);
             this.addon.setName(this.name = name);
         } catch (final Exception exception) {
-            throw new FusionException(String.format("Failed to load main class for addon %s", name), exception);
+            throw new FusionException(String.format("Failed to load main class for addon %s!", name), exception);
         }
     }
 
@@ -63,7 +63,7 @@ public class AddonClassLoader extends URLClassLoader {
 
     public Class<?> findClass(@NotNull final String name, final boolean isGlobal) throws ClassNotFoundException {
         if (this.isDisabling()) {
-            throw new ClassNotFoundException("This class loader is disabling");
+            throw new ClassNotFoundException("This class loader is disabling!");
         }
 
         if (this.classes.containsKey(name)) {
@@ -89,7 +89,7 @@ public class AddonClassLoader extends URLClassLoader {
 
     public void removeClasses() {
         if (!this.isDisabling()) {
-            throw new FusionException("Cannot remove class when the loader isn't disabling...");
+            throw new FusionException("Cannot remove class when the loader isn't disabling!");
         }
 
         this.manager.removeAll(this.classes);

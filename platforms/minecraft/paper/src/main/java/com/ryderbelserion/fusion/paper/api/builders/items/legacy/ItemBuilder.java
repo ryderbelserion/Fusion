@@ -262,7 +262,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             }
 
             if (itemMeta.hasDamageResistant()) {
-                @NotNull final Tag<DamageType> tag = itemMeta.getDamageResistant();
+                @Nullable final Tag<DamageType> tag = itemMeta.getDamageResistant();
 
                 if (tag != null) {
                     this.damageTags = new ArrayList<>() {{
@@ -1098,7 +1098,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
                 try {
                     textures.setSkin(URI.create(this.url).toURL(), PlayerTextures.SkinModel.CLASSIC);
                 } catch (final MalformedURLException exception) {
-                    throw new FusionException("Failed to load skull texture", exception);
+                    throw new FusionException("Failed to load skull texture!", exception);
                 }
 
                 profile.setTextures(textures);
@@ -1294,7 +1294,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         final CustomStack builder = CustomStack.getInstance(item);
 
         if (builder == null) {
-            throw new FusionException("The id " + item + " is not a valid ItemsAdder item!");
+            throw new FusionException(String.format("The id %s is not a valid ItemsAdder item!", item));
         }
 
         this.itemStack = builder.getItemStack();
@@ -1308,7 +1308,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         final io.th0rgal.oraxen.items.ItemBuilder builder = OraxenItems.getItemById(item);
 
         if (builder == null) {
-            throw new FusionException("The id " + item + " is not a valid Oraxen item!");
+            throw new FusionException(String.format("The id %s is not a valid Oraxen item!", item));
         }
 
         this.itemStack = builder.build();
@@ -1322,7 +1322,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         final com.nexomc.nexo.items.ItemBuilder builder = NexoItems.itemFromId(item);
 
         if (builder == null) {
-            throw new FusionException("The id " + item + " is not a valid Nexo item!");
+            throw new FusionException(String.format("The id %s is not a valid Nexo item!", item));
         }
 
         this.itemStack = builder.build();

@@ -217,6 +217,6 @@ public abstract class FoliaScheduler implements Runnable {
     }
 
     private void isScheduled() throws FusionException {
-        if (this.task != null) throw new FusionException("The task is already scheduled as " + this.task.hashCode());
+        if (this.task != null) throw new FusionException(String.format("The task is already scheduled as %s", this.task.hashCode()));
     }
 }

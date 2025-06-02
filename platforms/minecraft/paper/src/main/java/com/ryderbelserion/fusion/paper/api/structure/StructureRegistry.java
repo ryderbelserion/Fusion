@@ -32,7 +32,7 @@ public class StructureRegistry {
         try {
             structure = manager.loadStructure(file);
         } catch (final IOException exception) {
-            throw new FusionException("Failed to load structure.", exception);
+            throw new FusionException("Failed to load structure!", exception);
         }
 
         final NamespacedKey key = new NamespacedKey(this.plugin, name);

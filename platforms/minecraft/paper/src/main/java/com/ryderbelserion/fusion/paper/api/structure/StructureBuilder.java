@@ -65,7 +65,7 @@ public class StructureBuilder {
 
     public void saveStructure(@NotNull final File file, @Nullable final Location uno, @Nullable final Location dos, final boolean includeEntities, final boolean registerStructure) {
         if (uno == null || dos == null) {
-            throw new FusionException("Cannot save structure as the file or one of the corners is null.");
+            throw new FusionException("Cannot save structure as the file or one of the corners is null!");
         }
 
         this.structure.fill(uno, dos, includeEntities);
@@ -73,7 +73,7 @@ public class StructureBuilder {
         try {
             this.manager.saveStructure(file, this.structure);
         } catch (final IOException exception) {
-            throw new FusionException("Failed to save structure.", exception);
+            throw new FusionException("Failed to save structure!", exception);
         }
 
         if (registerStructure) {
@@ -105,7 +105,7 @@ public class StructureBuilder {
 
             populate(false, location);
         } catch (final Exception exception) {
-            throw new FusionException("Failed to paste structure.", exception);
+            throw new FusionException("Failed to paste structure!", exception);
         }
     }
 

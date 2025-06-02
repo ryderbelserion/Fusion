@@ -485,9 +485,9 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     private void throwInvalidSlot(final int slot) {
         if (this.guiType == GuiType.CHEST) {
-            throw new FusionException("Slot " + slot + " is not valid for the gui type - " + this.guiType.name() + " and rows - " + this.rows + "!");
+            throw new FusionException(String.format("Slot %s is not valid for the gui type %s and rows %s!", slot, this.guiType.name(), this.rows));
         }
 
-        throw new FusionException("Slot " + slot + " is not valid for the gui type - " + this.guiType.name() + "!");
+        throw new FusionException(String.format("Slot %s is not valid for the gui type %s!", slot, this.guiType.name()));
     }
 }

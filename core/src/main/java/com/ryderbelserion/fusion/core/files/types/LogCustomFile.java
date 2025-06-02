@@ -37,7 +37,7 @@ public class LogCustomFile extends ICustomFile<LogCustomFile> {
         try {
             Files.createFile(path);
         } catch (final IOException exception) {
-            throw new FusionException("Could not create file " + getFileName(), exception);
+            throw new FusionException(String.format("Could not create file %s!", getFileName()), exception);
         }
 
         return this;
@@ -58,7 +58,7 @@ public class LogCustomFile extends ICustomFile<LogCustomFile> {
             try {
                 FileUtils.compress(path, null, "", actions);
             } catch (final IOException exception) {
-                throw new FusionException("Could not compress file " + getFileName(), exception);
+                throw new FusionException(String.format("Could not compress file %s!", getFileName()), exception);
             }
         }
 

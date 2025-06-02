@@ -64,9 +64,9 @@ public abstract class ICustomFile<A extends ICustomFile<A>> {
         try {
             Files.deleteIfExists(getPath());
 
-            this.logger.warn("Successfully deleted {}", getFileName());
+            this.logger.warn("Successfully deleted {}!", getFileName());
         } catch (final IOException exception) {
-            throw new FusionException("Failed to delete " + getPath(), exception);
+            throw new FusionException(String.format("Failed to delete %s!", getPath()), exception);
         }
 
         return (A) this;

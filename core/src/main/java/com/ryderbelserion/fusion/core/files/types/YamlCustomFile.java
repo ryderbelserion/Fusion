@@ -180,7 +180,7 @@ public class YamlCustomFile extends IAbstractConfigFile<YamlCustomFile, Commente
 
             return List.of();
         } catch (final SerializationException exception) {
-            throw new FusionException("Failed to serialize " + node.path(), exception);
+            throw new FusionException(String.format("Failed to serialize %s!", node.path()), exception);
         }
     }
 

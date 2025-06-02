@@ -100,7 +100,7 @@ public class AddonManager {
         try {
             Files.createDirectories(this.folder);
         } catch (final IOException exception) {
-            throw new FusionException(String.format("Could not create folder %s", this.folder), exception);
+            throw new FusionException(String.format("Could not create folder %s!", this.folder), exception);
         }
 
         final List<Path> addons = FileUtils.getFiles(this.folder, List.of(
@@ -164,7 +164,7 @@ public class AddonManager {
 
             foundKey = key;
         } catch (final Exception exception) {
-            throw new FusionException(String.format("Could not reload addon %s", addon), exception);
+            throw new FusionException(String.format("Could not reload addon %s!", addon), exception);
         }
 
         return foundKey;
@@ -256,7 +256,7 @@ public class AddonManager {
         try {
             loader = new AddonClassLoader(this, path, group, name);
         } catch (final Exception exception) {
-            throw new FusionException(String.format("Failed to load %s", name), exception);
+            throw new FusionException(String.format("Failed to load %s!", name), exception);
         }
 
         this.loaders.put(name, loader);
@@ -317,7 +317,7 @@ public class AddonManager {
         try (final FileSystem entry = FileSystems.newFileSystem(path, (ClassLoader) null); final InputStream stream = Files.newInputStream(entry.getPath("addon.properties"))) {
             properties.load(stream);
         } catch (final IOException exception) {
-            throw new FusionException("Failed to load addon.properties", exception);
+            throw new FusionException("Failed to load addon.properties!", exception);
         }
 
         return new Addon(properties);

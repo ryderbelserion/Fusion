@@ -195,7 +195,7 @@ public abstract class IAbstractConfigFile<A extends IAbstractConfigFile<A, C, L>
             try {
                 return loadConfig();
             } catch (final ConfigurateException exception) {
-                throw new FusionException(String.format("Failed to load configuration file %s", getFileName()), exception);
+                throw new FusionException(String.format("Failed to load configuration file %s!", getFileName()), exception);
             }
         }).join();
 
@@ -225,7 +225,7 @@ public abstract class IAbstractConfigFile<A extends IAbstractConfigFile<A, C, L>
             try {
                 saveConfig();
             } catch (final ConfigurateException exception) {
-                throw new FusionException(String.format("Failed to save configuration file %s", getFileName()), exception);
+                throw new FusionException(String.format("Failed to save configuration file %s!", getFileName()), exception);
             }
         });
 

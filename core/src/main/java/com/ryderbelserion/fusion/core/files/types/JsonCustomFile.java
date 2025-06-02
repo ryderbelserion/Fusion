@@ -190,7 +190,7 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
 
             return List.of();
         } catch (final SerializationException exception) {
-            throw new FusionException("Failed to serialize " + node.path(), exception);
+            throw new FusionException(String.format("Failed to serialize %s!", node.path()), exception);
         }
     }
 

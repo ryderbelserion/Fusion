@@ -132,7 +132,7 @@ public class LegacyFileManager {
         switch (fileType) {
             case NBT -> {
                 if (this.files.containsKey(strippedName)) {
-                    throw new FusionException("The file '" + strippedName + "' already exists.");
+                    throw new FusionException(String.format("The file '%s' already exists.", strippedName));
                 }
 
                 this.files.put(strippedName, new LegacyCustomFile(fileType, file, isDynamic));

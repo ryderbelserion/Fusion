@@ -49,7 +49,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         try {
             textures.setSkin(URI.create(newUrl).toURL(), PlayerTextures.SkinModel.CLASSIC);
         } catch (final MalformedURLException exception) {
-            throw new FusionException("Skull URL is malformed", exception);
+            throw new FusionException("Skull URL is malformed!", exception);
         }
 
         profile.setTextures(textures);

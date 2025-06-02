@@ -32,7 +32,9 @@ public class LegacyCustomFile {
 
     public @NotNull final LegacyCustomFile load() {
         if (this.fileType != FileType.YAML) {
-            throw new FusionException("Only yaml files are supported by the load function.");
+            this.logger.error("Only yaml files are supported by the load function.");
+
+            return this;
         }
 
         if (getFile().isDirectory()) {
@@ -44,7 +46,7 @@ public class LegacyCustomFile {
         try {
             this.configuration = CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(this.file)).join();
         } catch (final Exception exception) {
-            throw new FusionException("Cannot load configuration file " + getFileName(), exception);
+            throw new FusionException(String.format("Cannot load configuration file %s!", getFileName()), exception);
         }
 
         return this;
@@ -52,7 +54,9 @@ public class LegacyCustomFile {
 
     public @NotNull final LegacyCustomFile save() {
         if (this.fileType != FileType.YAML) {
-            throw new FusionException("Only yaml files are supported by the save function.");
+            this.logger.error("Only yaml files are supported by the save function.");
+
+            return this;
         }
 
         if (getFile().isDirectory()) {
@@ -71,7 +75,7 @@ public class LegacyCustomFile {
             try {
                 this.configuration.save(this.file);
             } catch (final Exception exception) {
-                throw new FusionException("Cannot save configuration file " + getFileName(), exception);
+                throw new FusionException(String.format("Cannot save configuration file %s!", getFileName()), exception);
             }
         });
 
@@ -82,7 +86,7 @@ public class LegacyCustomFile {
         final File file = getFile();
 
         if (file.exists() && file.delete()) {
-            this.logger.warn("Successfully deleted {}", getFileName());
+            this.logger.warn("Successfully deleted {}!", getFileName());
         }
     }
 
