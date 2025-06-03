@@ -25,7 +25,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
     private final FusionPaper paper = (FusionPaper) FusionCore.Provider.get();
 
-    private final Plugin plugin;
+    private final JavaPlugin plugin;
 
     private final Server server;
 
@@ -67,7 +67,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     private String title;
     private int rows;
 
-    public BaseGui(@NotNull final Plugin plugin, @NotNull final Audience audience, @NotNull final String title, final int rows, @NotNull final Set<InteractionComponent> components) {
+    public BaseGui(@NotNull final JavaPlugin plugin, @NotNull final Audience audience, @NotNull final String title, final int rows, @NotNull final Set<InteractionComponent> components) {
         this.plugin = plugin;
         this.server = this.plugin.getServer();
         this.title = title;
@@ -83,11 +83,11 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
         this.inventory = this.server.createInventory(this, size, title(audience));
     }
 
-    public BaseGui(@NotNull final Plugin plugin, @NotNull final String title, final int rows, @NotNull final Set<InteractionComponent> components) {
+    public BaseGui(@NotNull final JavaPlugin plugin, @NotNull final String title, final int rows, @NotNull final Set<InteractionComponent> components) {
         this(plugin, Audience.empty(), title, rows, components);
     }
 
-    public BaseGui(@NotNull final Plugin plugin, @NotNull final Audience audience, @NotNull final String title, @NotNull final GuiType guiType, @NotNull final Set<InteractionComponent> components) {
+    public BaseGui(@NotNull final JavaPlugin plugin, @NotNull final Audience audience, @NotNull final String title, @NotNull final GuiType guiType, @NotNull final Set<InteractionComponent> components) {
         this.plugin = plugin;
         this.server = this.plugin.getServer();
         this.title = title;
@@ -102,7 +102,7 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
         this.guiType = guiType;
     }
 
-    public BaseGui(@NotNull final Plugin plugin, @NotNull final String title, @NotNull final GuiType guiType, @NotNull final Set<InteractionComponent> components) {
+    public BaseGui(@NotNull final JavaPlugin plugin, @NotNull final String title, @NotNull final GuiType guiType, @NotNull final Set<InteractionComponent> components) {
         this(plugin, Audience.empty(), title, guiType, components);
     }
 

@@ -2,16 +2,16 @@ package com.ryderbelserion.fusion.paper.api.builders.gui;
 
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.Gui;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiType;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 
-public class SimpleBuilder extends BaseGuiBuilder<Gui, SimpleBuilder> {
+public final class SimpleBuilder extends BaseGuiBuilder<Gui, SimpleBuilder> {
 
-    private final Plugin plugin;
+    private final JavaPlugin plugin;
     private GuiType guiType;
 
-    public SimpleBuilder(@NotNull final Plugin plugin, @NotNull final GuiType guiType) {
+    public SimpleBuilder(@NotNull final JavaPlugin plugin, @NotNull final GuiType guiType) {
         this.guiType = guiType;
         this.plugin = plugin;
     }

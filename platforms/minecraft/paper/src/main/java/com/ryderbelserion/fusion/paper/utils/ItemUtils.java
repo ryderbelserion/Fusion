@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Base64;
 import java.util.Optional;
 
-public final class ItemUtils {
+public class ItemUtils {
 
     private static final FusionCore fusion = FusionCore.Provider.get();
 

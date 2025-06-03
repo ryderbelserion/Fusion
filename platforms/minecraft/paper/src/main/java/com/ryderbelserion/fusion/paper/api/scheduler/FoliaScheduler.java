@@ -7,7 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 
 public abstract class FoliaScheduler implements Runnable {
 
-    private final Plugin plugin;
+    private final JavaPlugin plugin;
 
     private final Scheduler type;
     private final Server server;
@@ -23,14 +23,14 @@ public abstract class FoliaScheduler implements Runnable {
 
     private ScheduledTask task;
 
-    public FoliaScheduler(@NotNull final Plugin plugin, @NotNull final Scheduler type, @NotNull final TimeUnit timeUnit) {
+    public FoliaScheduler(@NotNull final JavaPlugin plugin, @NotNull final Scheduler type, @NotNull final TimeUnit timeUnit) {
         this.plugin = plugin;
         this.server = this.plugin.getServer();
         this.timeUnit = timeUnit;
         this.type = type;
     }
 
-    public FoliaScheduler(@NotNull final Plugin plugin, @NotNull final Scheduler type) {
+    public FoliaScheduler(@NotNull final JavaPlugin plugin, @NotNull final Scheduler type) {
         this(plugin, type, TimeUnit.SECONDS);
     }
 
@@ -38,7 +38,7 @@ public abstract class FoliaScheduler implements Runnable {
     private int x;
     private int z;
 
-    public FoliaScheduler(@NotNull final Plugin plugin, @NotNull final World world, final int x, final int z) {
+    public FoliaScheduler(@NotNull final JavaPlugin plugin, @NotNull final World world, final int x, final int z) {
         this(plugin, Scheduler.region_scheduler, TimeUnit.SECONDS);
 
         this.world = world;
@@ -46,14 +46,14 @@ public abstract class FoliaScheduler implements Runnable {
         this.z = z;
     }
 
-    public FoliaScheduler(@NotNull final Plugin plugin, @NotNull final Location location) {
+    public FoliaScheduler(@NotNull final JavaPlugin plugin, @NotNull final Location location) {
         this(plugin, location.getWorld(), location.getBlockX() >> 4, location.getBlockZ() >> 4);
     }
 
     private Runnable retired;
     private Entity entity;
 
-    public FoliaScheduler(@NotNull final Plugin plugin, @Nullable final Runnable retired, @NotNull final Entity entity) {
+    public FoliaScheduler(@NotNull final JavaPlugin plugin, @Nullable final Runnable retired, @NotNull final Entity entity) {
         this(plugin, Scheduler.entity_scheduler);
 
         this.retired = retired;

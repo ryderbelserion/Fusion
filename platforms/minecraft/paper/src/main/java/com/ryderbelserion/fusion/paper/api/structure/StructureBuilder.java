@@ -9,7 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.structure.Structure;
 import org.bukkit.structure.StructureManager;
 import org.bukkit.util.BlockVector;
@@ -26,7 +26,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class StructureBuilder {
 
     private final StructureManager manager;
-    private final Plugin plugin;
+    private final JavaPlugin plugin;
     private final Server server;
 
     private final Set<BlockState> structureBlocks = new HashSet<>();
@@ -37,7 +37,7 @@ public class StructureBuilder {
     private final NamespacedKey key;
     private final boolean isReady;
 
-    public StructureBuilder(@NotNull final Plugin plugin, @NotNull final NamespacedKey key) {
+    public StructureBuilder(@NotNull final JavaPlugin plugin, @NotNull final NamespacedKey key) {
         this.plugin = plugin;
         this.server = this.plugin.getServer();
         this.manager = this.server.getStructureManager();
@@ -50,7 +50,7 @@ public class StructureBuilder {
         this.vector = this.structure != null ? this.structure.getSize() : null;
     }
 
-    public StructureBuilder(@NotNull final Plugin plugin, @NotNull final String keyName) {
+    public StructureBuilder(@NotNull final JavaPlugin plugin, @NotNull final String keyName) {
         this.plugin = plugin;
         this.server = this.plugin.getServer();
         this.manager = this.server.getStructureManager();

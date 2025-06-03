@@ -5,7 +5,7 @@ import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.types.IPagina
 import com.ryderbelserion.fusion.paper.api.builders.gui.enums.InteractionComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class PaginatedGui extends BaseGui implements IPaginatedGui {
     private int pageNumber = 1;
     private int pageSize;
 
-    public PaginatedGui(@NotNull final Plugin plugin, @NotNull final String title, final int pageSize, final int rows, @NotNull final Set<InteractionComponent> components) {
+    public PaginatedGui(@NotNull final JavaPlugin plugin, @NotNull final String title, final int pageSize, final int rows, @NotNull final Set<InteractionComponent> components) {
         super(plugin, title, rows, components);
 
         if (pageSize == 0) {

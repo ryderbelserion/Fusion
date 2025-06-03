@@ -18,8 +18,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
@@ -30,7 +30,7 @@ public class FusionPaper extends FusionKyori {
     private LegacyFileManager fileManager;
     private StructureRegistry registry;
     private HeadDatabaseAPI api;
-    private Plugin plugin;
+    private JavaPlugin plugin;
     private Server server;
 
     private PluginManager pluginManager;
@@ -39,11 +39,11 @@ public class FusionPaper extends FusionKyori {
         super(logger, path, consumer -> consumer.useDefaultMigrationService().configurationData(ConfigKeys.class, PluginKeys.class));
     }
 
-    public FusionPaper(@NotNull final Plugin plugin) {
+    public FusionPaper(@NotNull final JavaPlugin plugin) {
         this(plugin.getComponentLogger(), plugin.getDataPath());
     }
 
-    public void enable(@NotNull final Plugin plugin) {
+    public void enable(@NotNull final JavaPlugin plugin) {
         load();
 
         this.plugin = plugin;

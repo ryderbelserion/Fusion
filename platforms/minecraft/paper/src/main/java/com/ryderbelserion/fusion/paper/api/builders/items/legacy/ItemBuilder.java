@@ -56,7 +56,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -82,36 +82,36 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
 
     private final NbtBuilder nbt = new NbtBuilder();
 
-    private final Plugin plugin;
+    private final JavaPlugin plugin;
 
     private final Server server;
 
     private ItemStack itemStack;
 
-    public ItemBuilder(@NotNull final Plugin plugin) {
+    public ItemBuilder(@NotNull final JavaPlugin plugin) {
         this(plugin, ItemType.STONE, 1);
     }
 
-    public ItemBuilder(@NotNull final Plugin plugin, @NotNull final ItemType itemType) {
+    public ItemBuilder(@NotNull final JavaPlugin plugin, @NotNull final ItemType itemType) {
         this(plugin, itemType, 1);
     }
 
-    public ItemBuilder(@NotNull final Plugin plugin, @NotNull final ItemType itemType, final int amount) {
+    public ItemBuilder(@NotNull final JavaPlugin plugin, @NotNull final ItemType itemType, final int amount) {
         this(plugin, itemType.createItemStack(amount), true);
     }
 
-    public ItemBuilder(@NotNull final Plugin plugin, @NotNull final ItemStack itemStack, final boolean createNewStack) {
+    public ItemBuilder(@NotNull final JavaPlugin plugin, @NotNull final ItemStack itemStack, final boolean createNewStack) {
         this.itemStack = createNewStack ? itemStack.clone() : itemStack;
 
         this.plugin = plugin;
         this.server = this.plugin.getServer();
     }
 
-    public ItemBuilder(@NotNull final Plugin plugin, @NotNull final ItemBuilder<T> itemBuilder) {
+    public ItemBuilder(@NotNull final JavaPlugin plugin, @NotNull final ItemBuilder<T> itemBuilder) {
         this(plugin, itemBuilder, false);
     }
 
-    public ItemBuilder(@NotNull final Plugin plugin, @NotNull final ItemBuilder<T> itemBuilder, final boolean createNewStack) {
+    public ItemBuilder(@NotNull final JavaPlugin plugin, @NotNull final ItemBuilder<T> itemBuilder, final boolean createNewStack) {
         this.plugin = plugin;
         this.server = this.plugin.getServer();
 
@@ -198,7 +198,7 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
             Material.RED_SHULKER_BOX, Material.WHITE_SHULKER_BOX, Material.PURPLE_SHULKER_BOX, Material.YELLOW_SHULKER_BOX
     );
 
-    public ItemBuilder(@NotNull final Plugin plugin, @NotNull final ItemStack itemStack) {
+    public ItemBuilder(@NotNull final JavaPlugin plugin, @NotNull final ItemStack itemStack) {
         this.plugin = plugin;
         this.server = this.plugin.getServer();
 
@@ -451,10 +451,10 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
         return ItemUtils.toBase64(asItemStack());
     }
 
-    public @NotNull T fromBase64(@NotNull final Plugin plugin, @NotNull final String base64) {
-        if (base64.isEmpty()) return (T) new ItemBuilder<T>(plugin);
+    public @NotNull T fromBase64(@NotNull final String base64) {
+        if (base64.isEmpty()) return (T) new ItemBuilder<T>(this.plugin);
 
-        return (T) new ItemBuilder<T>(plugin, ItemUtils.fromBase64(base64));
+        return (T) new ItemBuilder<T>(this.plugin, ItemUtils.fromBase64(base64));
     }
 
     public @NotNull T apply(@Nullable final Consumer<ItemBuilder<T>> builder) {

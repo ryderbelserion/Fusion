@@ -6,7 +6,7 @@ import com.ryderbelserion.fusion.core.files.FileAction;
 import com.ryderbelserion.fusion.core.files.FileType;
 import com.ryderbelserion.fusion.core.utils.FileUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
@@ -28,9 +28,9 @@ public class LegacyFileManager {
 
     private final Map<String, FileType> folders = new HashMap<>();
 
-    private final Plugin plugin;
+    private final JavaPlugin plugin;
 
-    public LegacyFileManager(@NotNull final Plugin plugin) {
+    public LegacyFileManager(@NotNull final JavaPlugin plugin) {
         this.plugin = plugin;
     }
 

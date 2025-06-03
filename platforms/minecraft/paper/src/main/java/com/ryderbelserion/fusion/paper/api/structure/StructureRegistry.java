@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.paper.api.structure;
 
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import org.bukkit.NamespacedKey;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.structure.Structure;
 import org.bukkit.structure.StructureManager;
 import org.jetbrains.annotations.NotNull;
@@ -13,9 +13,9 @@ import java.io.IOException;
 public class StructureRegistry {
 
     private final StructureManager manager;
-    private final Plugin plugin;
+    private final JavaPlugin plugin;
 
-    public StructureRegistry(@NotNull final Plugin plugin) {
+    public StructureRegistry(@NotNull final JavaPlugin plugin) {
         this.plugin = plugin;
         this.manager = this.plugin.getServer().getStructureManager();
     }
