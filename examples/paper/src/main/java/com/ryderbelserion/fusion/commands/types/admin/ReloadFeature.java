@@ -1,27 +1,29 @@
-package com.ryderbelserion.fusion.commands.types;
+package com.ryderbelserion.fusion.commands.types.admin;
 
 import ch.jalu.configme.SettingsManager;
+import com.ryderbelserion.fusion.commands.AnnotationFeature;
 import com.ryderbelserion.fusion.config.Config;
 import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
-import dev.triumphteam.cmd.bukkit.annotation.Permission;
-import dev.triumphteam.cmd.core.annotations.Command;
-import dev.triumphteam.cmd.core.annotations.Syntax;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.command.CommandSender;
-import org.bukkit.permissions.PermissionDefault;
-import java.nio.file.Path;
+import org.incendo.cloud.annotations.AnnotationParser;
+import org.incendo.cloud.annotations.Command;
+import org.incendo.cloud.annotations.CommandDescription;
+import org.incendo.cloud.annotations.Permission;
+import org.jetbrains.annotations.NotNull;
 
-public class CommandReload extends BaseCommand {
+public class ReloadFeature extends AnnotationFeature {
 
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
+    @Override
+    public void registerFeature(@NotNull final AnnotationParser<CommandSourceStack> parser) {
+        parser.parse(this);
+    }
 
-    private final Path path = this.plugin.getDataPath();
-
-    @Command("reload")
-    @Permission(value = "fusion.reload", def = PermissionDefault.TRUE)
-    @Syntax(value = "/fusion reload")
-    public void reload(final CommandSender sender) {
+    @Command("fusion reload")
+    @CommandDescription("Reloads the plugin!")
+    @Permission(value = "fusion.reload", mode = Permission.Mode.ANY_OF)
+    public void tem(final CommandSender sender) {
         this.fileManager.refresh(false);
 
         final YamlCustomFile yaml = this.fileManager.getYamlFile(path.resolve("actions.yml"));

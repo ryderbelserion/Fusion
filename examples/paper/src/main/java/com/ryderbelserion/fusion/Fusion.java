@@ -1,16 +1,14 @@
 package com.ryderbelserion.fusion;
 
-import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
-import com.ryderbelserion.fusion.commands.CommandHandler;
+import com.ryderbelserion.fusion.commands.BaseCommand;
 import com.ryderbelserion.fusion.config.Config;
 import com.ryderbelserion.fusion.core.files.FileAction;
 import com.ryderbelserion.fusion.core.files.FileManager;
-import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
-import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.incendo.cloud.execution.ExecutionCoordinator;
+import org.incendo.cloud.paper.PaperCommandManager;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -39,23 +37,9 @@ public class Fusion extends JavaPlugin {
             add(FileAction.EXTRACT);
         }}, configurationOptions -> configurationOptions.header("This is a header for a json file!"));
 
-        final ComponentLogger logger = getComponentLogger();
-
-        final YamlCustomFile yaml = this.fileManager.getYamlFile(path.resolve("actions.yml"));
-
-        if (yaml != null) {
-            logger.warn("Yaml File: {}", yaml.getConfiguration().node("value").getBoolean(false));
-        }
-
-        final JaluCustomFile jalu = this.fileManager.getJaluFile(path.resolve("config.yml"));
-
-        if (jalu != null) {
-            final SettingsManager config = jalu.getConfiguration();
-
-            logger.warn("Prefix: {}", config.getProperty(Config.prefix));
-        }
-
-        new CommandHandler();
+        new BaseCommand(PaperCommandManager.builder()
+                .executionCoordinator(ExecutionCoordinator.simpleCoordinator())
+                .buildOnEnable(this));
     }
 
     @Override

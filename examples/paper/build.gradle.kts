@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.triumph.cmds)
+    implementation(libs.bundles.cloud.paper)
 
     api(project(":fusion-paper"))
 }
