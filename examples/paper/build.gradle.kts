@@ -10,8 +10,6 @@ repositories {
     maven("https://repo.nexomc.com/snapshots")
 
     maven("https://repo.oraxen.com/releases")
-
-    maven("https://maven.devs.beer")
 }
 
 dependencies {

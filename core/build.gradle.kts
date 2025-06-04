@@ -5,12 +5,16 @@ plugins {
 
 project.group = "${rootProject.name}.core"
 
+repositories {
+    maven("https://libraries.minecraft.net")
+}
+
 dependencies {
     compileOnly(libs.bundles.adventure)
 
     compileOnly(libs.configurate.yaml)
 
-    api(libs.configurate.json)
+    compileOnly(libs.brigadier)
 
     api(libs.jalu)
 }

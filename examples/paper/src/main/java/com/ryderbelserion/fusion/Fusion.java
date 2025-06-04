@@ -7,7 +7,6 @@ import com.ryderbelserion.fusion.config.Config;
 import com.ryderbelserion.fusion.core.files.FileAction;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
-import com.ryderbelserion.fusion.core.files.types.JsonCustomFile;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -41,12 +40,6 @@ public class Fusion extends JavaPlugin {
         }}, configurationOptions -> configurationOptions.header("This is a header for a json file!"));
 
         final ComponentLogger logger = getComponentLogger();
-
-        final JsonCustomFile json = this.fileManager.getJsonFile(path.resolve("actions.json"));
-
-        if (json != null) {
-            logger.warn("Json File: {}", json.getConfiguration().node("value").getBoolean(true));
-        }
 
         final YamlCustomFile yaml = this.fileManager.getYamlFile(path.resolve("actions.yml"));
 

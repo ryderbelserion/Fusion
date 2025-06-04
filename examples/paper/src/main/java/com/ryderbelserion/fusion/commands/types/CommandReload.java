@@ -3,7 +3,6 @@ package com.ryderbelserion.fusion.commands.types;
 import ch.jalu.configme.SettingsManager;
 import com.ryderbelserion.fusion.config.Config;
 import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
-import com.ryderbelserion.fusion.core.files.types.JsonCustomFile;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import dev.triumphteam.cmd.bukkit.annotation.Permission;
 import dev.triumphteam.cmd.core.annotations.Command;
@@ -24,12 +23,6 @@ public class CommandReload extends BaseCommand {
     @Syntax(value = "/fusion reload")
     public void reload(final CommandSender sender) {
         this.fileManager.refresh(false);
-
-        final JsonCustomFile json = this.fileManager.getJsonFile(path.resolve("actions.json"));
-
-        if (json != null) {
-            this.logger.warn("Json File: {}", json.getConfiguration().node("value").getBoolean(true));
-        }
 
         final YamlCustomFile yaml = this.fileManager.getYamlFile(path.resolve("actions.yml"));
 
