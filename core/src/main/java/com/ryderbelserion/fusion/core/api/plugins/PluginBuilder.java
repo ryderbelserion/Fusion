@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.core.api.plugins;
 
+import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.api.plugins.interfacers.IPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -13,16 +14,13 @@ import java.util.Map;
  */
 public class PluginBuilder {
 
-    private final ILogger logger;
+    private final FusionCore core = FusionCore.Provider.get();
+    private final ILogger logger = this.core.getLogger();
 
     /**
      * The default constructor for {@link PluginBuilder}.
-     *
-     * @param logger instance of {@link ILogger}
      */
-    public PluginBuilder(@NotNull final ILogger logger) {
-        this.logger = logger;
-    }
+    public PluginBuilder() {}
 
     private final Map<String, IPlugin> plugins = new HashMap<>();
 

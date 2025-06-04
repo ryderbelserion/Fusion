@@ -43,11 +43,9 @@ public abstract class FusionCore {
     private FileManager fileManager;
 
     public void load() {
-        final ILogger logger = getLogger();
-
-        this.pluginBuilder = new PluginBuilder(logger);
-        this.fileManager = new FileManager(this, this.path, logger);
-        this.addonManager = new AddonManager(this.path);
+        this.pluginBuilder = new PluginBuilder();
+        this.addonManager = new AddonManager();
+        this.fileManager = new FileManager();
     }
 
     public @NotNull abstract ILogger getLogger();

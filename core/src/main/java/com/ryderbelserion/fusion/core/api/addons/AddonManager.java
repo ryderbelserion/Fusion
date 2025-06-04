@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.core.api.addons;
 
+import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.addons.objects.Addon;
 import com.ryderbelserion.fusion.core.api.addons.interfaces.IAddon;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
@@ -24,17 +25,19 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class AddonManager {
 
+    private final FusionCore core = FusionCore.Provider.get();
+
+    private final Path path = this.core.getPath();
+
     private final Map<String, Class<?>> classMap = new ConcurrentHashMap<>();
     private final Map<String, AddonClassLoader> loaders = new ConcurrentHashMap<>();
     private final Path folder;
 
     /**
      * The default constructor to create an instance of {@link AddonManager}
-     *
-     * @param path the addons folder
      */
-    public AddonManager(@NotNull final Path path) {
-        this.folder = path.resolve("addons");
+    public AddonManager() {
+        this.folder = this.path.resolve("addons");
     }
 
     /**

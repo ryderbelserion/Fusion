@@ -28,22 +28,14 @@ import java.util.function.UnaryOperator;
  */
 public class FileManager {
 
-    private final FusionCore core;
-    private final ILogger logger;
-    private final Path path;
+    private final FusionCore core = FusionCore.Provider.get();
+    private final ILogger logger = this.core.getLogger();
+    private final Path path = this.core.getPath();
 
     /**
-     * Constructs a {@code FileManager} with an instance of {@link FusionCore}, path, and {@link ILogger}.
-     *
-     * @param core   the {@link FusionCore} instance
-     * @param path   the {@link Path}
-     * @param logger the {@link ILogger} instance
+     * Constructs an empty {@code FileManager}.
      */
-    public FileManager(@NotNull final FusionCore core, @NotNull final Path path, @NotNull final ILogger logger) {
-        this.logger = logger;
-        this.core = core;
-        this.path = path;
-    }
+    public FileManager() {}
 
     private final Map<Path, ICustomFile<? extends ICustomFile<?>>> customFiles = new HashMap<>();
     private final Map<Path, FileType> folders = new HashMap<>();
