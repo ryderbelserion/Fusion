@@ -53,8 +53,18 @@ public abstract class FusionCore {
 
     public @NotNull abstract URL getClassPath();
 
-    public void reload() {
+    public void reload(final boolean isHotReload) {
         this.config.reload();
+
+        if (this.isAddonsEnabled()) {
+            this.addonManager.getAddons().forEach(addon -> {
+                if (isHotReload) {
+                    this.addonManager.reloadAddon(addon);
+                } else {
+                    this.addonManager.reloadAddonConfig(addon);
+                }
+            });
+        }
     }
 
     public void disable() {
