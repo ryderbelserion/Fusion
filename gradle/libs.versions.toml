@@ -65,8 +65,8 @@ brigadier = { module = "com.mojang:brigadier", version.ref = "brigadier" }
 # https://cloud.incendo.org/
 cloud-annotations = { module = "org.incendo:cloud-annotations", version.ref = "cloud-release" }
 cloud-extras = { module = "org.incendo:cloud-minecraft-extras", version.ref = "cloud-beta" }
+cloud-core = { module = "org.incendo:cloud-core", version.ref = "cloud-release" }
 cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-beta" }
-cloud-core = { module = "org.incendo:cloud-core", version.ref = "cloud-release"}
 
 # https://fabricmc.net/develop/
 fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabric-api" }
@@ -155,5 +155,8 @@ paper = [
     "run-paper"
 ]
 
-# Cloud Paper API
-cloud-paper = ["cloud-annotations", "cloud-extras", "cloud-paper"]
+cloud-paper = [
+    "cloud-annotations",
+    "cloud-extras",
+    "cloud-paper"
+]
