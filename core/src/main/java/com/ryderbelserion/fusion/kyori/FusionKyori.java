@@ -33,13 +33,17 @@ public abstract class FusionKyori extends FusionCore {
 
     public abstract String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message);
 
-    public abstract <T> T createProfile(@NotNull final UUID uuid, @Nullable final String name);
+    public <T> @Nullable T createProfile(@NotNull final UUID uuid, @Nullable final String name) {
+        return null;
+    }
 
     public abstract @NotNull String chomp(@NotNull final String message);
 
     public abstract CommandManager getCommandManager();
 
-    public abstract boolean isPluginEnabled(final String name);
+    public boolean isPluginEnabled(final String name) {
+        return false;
+    }
 
     @Override
     public @NotNull final KyoriLogger getLogger() {

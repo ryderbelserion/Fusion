@@ -5,7 +5,6 @@ import com.ryderbelserion.fusion.core.api.addons.AddonManager;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.kyori.commands.CommandManager;
 import com.ryderbelserion.fusion.paper.api.PluginKeys;
 import com.ryderbelserion.fusion.paper.api.builders.gui.listeners.GuiListener;
 import com.ryderbelserion.fusion.kyori.enums.Support;
@@ -83,7 +82,7 @@ public class FusionPaper extends FusionKyori {
     }
 
     @Override
-    public <E> void registerEvent(@NotNull E event) {
+    public <E> void registerEvent(@NotNull final E event) {
         this.pluginManager.registerEvents((Listener) event, this.plugin);
     }
 
@@ -108,7 +107,7 @@ public class FusionPaper extends FusionKyori {
     }
 
     @Override
-    public final PlayerProfile createProfile(@NotNull final UUID uuid, @Nullable final String name) {
+    public @NotNull final PlayerProfile createProfile(@NotNull final UUID uuid, @Nullable final String name) {
         return this.server.createProfile(uuid, name);
     }
 
