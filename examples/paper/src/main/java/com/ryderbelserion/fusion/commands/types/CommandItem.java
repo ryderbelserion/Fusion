@@ -2,36 +2,21 @@ package com.ryderbelserion.fusion.commands.types;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.Fusion;
-import com.ryderbelserion.fusion.core.files.FileManager;
-import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
-import com.ryderbelserion.fusion.paper.api.commands.PaperCommandManager;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperCommand;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import java.nio.file.Path;
 import java.util.List;
 
 public class CommandItem extends AbstractPaperCommand {
 
     private final Fusion plugin = JavaPlugin.getPlugin(Fusion.class);
-
-    private final FusionPaper paper = this.plugin.getPaper();
-
-    private final PaperCommandManager manager = this.paper.getCommandManager();
-
-    private final FileManager fileManager = this.plugin.getFileManager();
-
-    private final ComponentLogger logger = this.plugin.getComponentLogger();
-
-    private final Path path = this.plugin.getDataPath();
 
     @Override
     public void execute(@NotNull final AbstractPaperContext context) {
@@ -48,6 +33,8 @@ public class CommandItem extends AbstractPaperCommand {
                 .addPlaceholder("{name}", player.getName());
 
         itemBuilder.addItemToInventory(player.getInventory());
+
+        player.sendRichMessage("<green>Item added to inventory!");
     }
 
     @Override
@@ -57,12 +44,13 @@ public class CommandItem extends AbstractPaperCommand {
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> build() {
-        return literal().createBuilder().build();
-    }
+        return Commands.literal("item")
+                .requires(this::requirement)
+                .executes(context -> {
+                    execute(new AbstractPaperContext(context));
 
-    @Override
-    public void unregister() {
-        this.manager.unregisterPermissions(getPermissions());
+                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+                }).build();
     }
 
     @Override
@@ -73,16 +61,5 @@ public class CommandItem extends AbstractPaperCommand {
     @Override
     public @NotNull final List<String> getPermissions() {
         return List.of("fusion.item");
-    }
-
-    @Override
-    public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("item")
-                .requires(this::requirement)
-                .executes(context -> {
-                    execute(new AbstractPaperContext(context));
-
-                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                }).build();
     }
 }

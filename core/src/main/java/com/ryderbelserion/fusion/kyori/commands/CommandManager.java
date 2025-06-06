@@ -6,4 +6,6 @@ public abstract class CommandManager<S, A> {
 
     public abstract void enable(@NotNull final A root);
 
+    public abstract void disable();
+
 }

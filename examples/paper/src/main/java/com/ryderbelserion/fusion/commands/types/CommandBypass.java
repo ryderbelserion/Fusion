@@ -6,8 +6,6 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.Fusion;
 import com.ryderbelserion.fusion.enums.BypassType;
-import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.api.commands.PaperCommandManager;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperCommand;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -23,10 +21,6 @@ public class CommandBypass extends AbstractPaperCommand {
     private final Fusion plugin = JavaPlugin.getPlugin(Fusion.class);
 
     private final ComponentLogger logger = this.plugin.getComponentLogger();
-
-    private final FusionPaper paper = this.plugin.getPaper();
-
-    private final PaperCommandManager manager = this.paper.getCommandManager();
 
     @Override
     public void execute(@NotNull final AbstractPaperContext context) {
@@ -46,32 +40,10 @@ public class CommandBypass extends AbstractPaperCommand {
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> build() {
-        return literal().createBuilder().build();
-    }
-
-    @Override
-    public void unregister() {
-        this.manager.unregisterPermissions(getPermissions());
-    }
-
-    @Override
-    public @NotNull final PermissionDefault getPermissionMode() {
-        return PermissionDefault.OP;
-    }
-
-    @Override
-    public @NotNull final List<String> getPermissions() {
-        return List.of("fusion.bypass");
-    }
-
-    @Override
-    public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
         final LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("bypass").requires(this::requirement);
 
         final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = Commands.argument("bypass_type", StringArgumentType.string()).suggests((ctx, builder) -> {
             for (final BypassType value : BypassType.values()) {
-                this.logger.warn("Name: {}", value.getName());
-
                 builder.suggest(value.getName());
             }
 
@@ -83,5 +55,15 @@ public class CommandBypass extends AbstractPaperCommand {
         });
 
         return root.then(arg1).build();
+    }
+
+    @Override
+    public @NotNull final PermissionDefault getPermissionMode() {
+        return PermissionDefault.OP;
+    }
+
+    @Override
+    public @NotNull final List<String> getPermissions() {
+        return List.of("fusion.bypass");
     }
 }

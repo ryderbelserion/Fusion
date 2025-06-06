@@ -13,13 +13,9 @@ public abstract class AbstractCommand<S, D, P, A extends AbstractContext<S, P>> 
 
     public abstract boolean requirement(@NotNull final S sender);
 
-    public abstract LiteralCommandNode<S> build();
-
-    public abstract void unregister();
+    public abstract @NotNull LiteralCommandNode<S> build();
 
     public abstract D getPermissionMode();
-
-    public abstract @NotNull LiteralCommandNode<S> literal();
 
     public @NotNull List<String> getPermissions() {
         return List.of();

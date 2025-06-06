@@ -38,16 +38,27 @@ public class PaperCommandManager extends CommandManager<CommandSourceStack, Abst
 
             registerPermissions(command.getPermissionMode(), command.getPermissions());
 
+            this.commands.add(command);
+
             final LiteralCommandNode<CommandSourceStack> root = command.build();
 
             command.getChildren().forEach(child -> {
                 registerPermissions(child.getPermissionMode(), child.getPermissions());
+
+                this.commands.add(child);
 
                 root.addChild(child.build());
             });
 
             registry.register(root);
         });
+    }
+
+    @Override
+    public void disable() {
+        for (final AbstractPaperCommand command : this.commands) {
+            unregisterPermissions(command.getPermissions());
+        }
     }
 
     public void unregisterPermissions(@NotNull final List<String> permissions) {

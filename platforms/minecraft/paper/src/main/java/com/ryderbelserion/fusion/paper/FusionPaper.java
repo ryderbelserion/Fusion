@@ -77,6 +77,13 @@ public class FusionPaper extends FusionKyori {
     }
 
     @Override
+    public void disable() {
+        super.disable();
+
+        this.commandManager.disable();
+    }
+
+    @Override
     public @NotNull URL getClassPath() {
         return this.plugin.getClass().getProtectionDomain().getCodeSource().getLocation();
     }

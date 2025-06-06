@@ -5,8 +5,6 @@ import com.ryderbelserion.fusion.Fusion;
 import com.ryderbelserion.fusion.commands.types.CommandBypass;
 import com.ryderbelserion.fusion.commands.types.CommandItem;
 import com.ryderbelserion.fusion.commands.types.CommandReload;
-import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.api.commands.PaperCommandManager;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperCommand;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -20,10 +18,6 @@ public class BaseCommand extends AbstractPaperCommand {
 
     private final Fusion plugin = JavaPlugin.getPlugin(Fusion.class);
 
-    private final FusionPaper paper = this.plugin.getPaper();
-
-    private final PaperCommandManager manager = this.paper.getCommandManager();
-
     @Override
     public void execute(@NotNull final AbstractPaperContext context) {
         context.getPlayer().sendRichMessage("<red>This is the base command!");
@@ -36,12 +30,13 @@ public class BaseCommand extends AbstractPaperCommand {
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> build() {
-        return literal().createBuilder().build();
-    }
+        return Commands.literal("fusion")
+                .requires(this::requirement)
+                .executes(context -> {
+                    execute(new AbstractPaperContext(context));
 
-    @Override
-    public void unregister() {
-        this.manager.unregisterPermissions(getPermissions());
+                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+                }).build();
     }
 
     @Override
@@ -52,17 +47,6 @@ public class BaseCommand extends AbstractPaperCommand {
     @Override
     public @NotNull final List<String> getPermissions() {
         return List.of("fusion.use");
-    }
-
-    @Override
-    public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("fusion")
-                .requires(this::requirement)
-                .executes(context -> {
-                    execute(new AbstractPaperContext(context));
-
-                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                }).build();
     }
 
     @Override
