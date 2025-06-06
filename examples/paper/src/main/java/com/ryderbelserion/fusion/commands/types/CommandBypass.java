@@ -12,6 +12,7 @@ import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperCommand
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -21,13 +22,21 @@ public class CommandBypass extends AbstractPaperCommand {
 
     private final Fusion plugin = JavaPlugin.getPlugin(Fusion.class);
 
+    private final ComponentLogger logger = this.plugin.getComponentLogger();
+
     private final FusionPaper paper = this.plugin.getPaper();
 
     private final PaperCommandManager manager = this.paper.getCommandManager();
 
     @Override
     public void execute(@NotNull final AbstractPaperContext context) {
+        if (!context.isPlayer()) {
+            context.getCommandSender().sendRichMessage("<red>You must be a player to use this command!</red>");
 
+            return;
+        }
+
+        context.getPlayer().sendRichMessage("<green>You succeeded!</green>");
     }
 
     @Override
@@ -61,6 +70,8 @@ public class CommandBypass extends AbstractPaperCommand {
 
         final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = Commands.argument("bypass_type", StringArgumentType.string()).suggests((ctx, builder) -> {
             for (final BypassType value : BypassType.values()) {
+                this.logger.warn("Name: {}", value.getName());
+
                 builder.suggest(value.getName());
             }
 

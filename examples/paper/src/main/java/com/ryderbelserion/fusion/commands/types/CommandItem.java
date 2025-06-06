@@ -36,7 +36,7 @@ public class CommandItem extends AbstractPaperCommand {
     @Override
     public void execute(@NotNull final AbstractPaperContext context) {
         if (!context.isPlayer()) {
-            context.getSource().getSender().sendRichMessage("<red>You must be a player to use this command!</red>");
+            context.getCommandSender().sendRichMessage("<red>You must be a player to use this command!</red>");
 
             return;
         }
@@ -44,7 +44,7 @@ public class CommandItem extends AbstractPaperCommand {
         final Player player = context.getPlayer();
 
         final ItemBuilder itemBuilder = ItemBuilder.from(ItemType.DIAMOND_SWORD).setDisplayName("<red>{name}, <yes>").addEnchantment("sharpness", 3).hideComponent("enchantments")
-                .addPlaceholder("<yes>", player.getUniqueId().toString())
+                .addPlaceholder("<yes>", "this is yes")
                 .addPlaceholder("{name}", player.getName());
 
         itemBuilder.addItemToInventory(player.getInventory());
