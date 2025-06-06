@@ -61,7 +61,7 @@ public class CommandReload extends AbstractPaperCommand {
     }
 
     @Override
-    public LiteralCommandNode<CommandSourceStack> build() {
+    public @NotNull final LiteralCommandNode<CommandSourceStack> build() {
         this.manager.registerPermissions(PermissionDefault.OP, getPermissions());
 
         return literal().createBuilder().build();
@@ -73,7 +73,7 @@ public class CommandReload extends AbstractPaperCommand {
     }
 
     @Override
-    public String[] getPermissions() {
+    public @NotNull final String[] getPermissions() {
         return new String[]{"fusion.use"};
     }
 

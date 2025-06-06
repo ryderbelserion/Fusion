@@ -2,6 +2,8 @@ package com.ryderbelserion.fusion.commands;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.Fusion;
+import com.ryderbelserion.fusion.commands.types.CommandItem;
+import com.ryderbelserion.fusion.commands.types.CommandReload;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.api.commands.PaperCommandManager;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperCommand;
@@ -12,6 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import java.util.List;
 
 public class BaseCommand extends AbstractPaperCommand {
 
@@ -23,7 +26,7 @@ public class BaseCommand extends AbstractPaperCommand {
 
     @Override
     public void execute(@NotNull final AbstractPaperContext context) {
-
+        context.getPlayer().sendRichMessage("<red>This is the base command!");
     }
 
     @Override
@@ -34,7 +37,7 @@ public class BaseCommand extends AbstractPaperCommand {
     }
 
     @Override
-    public LiteralCommandNode<CommandSourceStack> build() {
+    public @NotNull final LiteralCommandNode<CommandSourceStack> build() {
         this.manager.registerPermissions(PermissionDefault.OP, getPermissions());
 
         return literal().createBuilder().build();
@@ -46,7 +49,7 @@ public class BaseCommand extends AbstractPaperCommand {
     }
 
     @Override
-    public String[] getPermissions() {
+    public @NotNull final String[] getPermissions() {
         return new String[]{"fusion.use"};
     }
 
@@ -59,5 +62,10 @@ public class BaseCommand extends AbstractPaperCommand {
 
                     return com.mojang.brigadier.Command.SINGLE_SUCCESS;
                 }).build();
+    }
+
+    @Override
+    public @NotNull final List<AbstractPaperCommand> getChildren() {
+        return List.of(new CommandReload(), new CommandItem());
     }
 }

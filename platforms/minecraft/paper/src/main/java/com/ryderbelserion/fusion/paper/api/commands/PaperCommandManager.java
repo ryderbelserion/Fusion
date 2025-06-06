@@ -3,6 +3,7 @@ package com.ryderbelserion.fusion.paper.api.commands;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.kyori.commands.CommandManager;
 import com.ryderbelserion.fusion.kyori.enums.PermissionMode;
+import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
@@ -16,10 +17,13 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
-public class PaperCommandManager extends CommandManager<CommandSourceStack> {
+public class PaperCommandManager extends CommandManager<CommandSourceStack, AbstractPaperCommand> {
+
+    private final Set<AbstractPaperCommand> commands = new HashSet<>();
 
     private final LifecycleEventManager<@NotNull Plugin> lifecycle;
 
@@ -63,11 +67,13 @@ public class PaperCommandManager extends CommandManager<CommandSourceStack> {
     }
 
     @Override
-    public void enable(@NotNull final LiteralCommandNode<CommandSourceStack> root, @NotNull final List<LiteralCommandNode<CommandSourceStack>> children) {
-        this.lifecycle.registerEventHandler(LifecycleEvents.COMMANDS, command -> {
-            final Commands registry = command.registrar();
+    public void enable(@NotNull final AbstractPaperCommand command) {
+        this.lifecycle.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            final Commands registry = event.registrar();
 
-            children.forEach(root::addChild);
+            final LiteralCommandNode<CommandSourceStack> root = command.build();
+
+            command.getChildren().forEach(child -> root.addChild(child.build()));
 
             registry.register(root);
         });

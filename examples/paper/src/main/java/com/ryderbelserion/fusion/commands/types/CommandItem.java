@@ -35,6 +35,12 @@ public class CommandItem extends AbstractPaperCommand {
 
     @Override
     public void execute(@NotNull final AbstractPaperContext context) {
+        if (!context.isPlayer()) {
+            context.getSource().getSender().sendRichMessage("<red>You must be a player to use this command!</red>");
+
+            return;
+        }
+
         final Player player = context.getPlayer();
 
         final ItemBuilder itemBuilder = ItemBuilder.from(ItemType.DIAMOND_SWORD).setDisplayName("<red>{name}, <yes>").addEnchantment("sharpness", 3).hideComponent("enchantments")
@@ -52,7 +58,7 @@ public class CommandItem extends AbstractPaperCommand {
     }
 
     @Override
-    public LiteralCommandNode<CommandSourceStack> build() {
+    public @NotNull final LiteralCommandNode<CommandSourceStack> build() {
         this.manager.registerPermissions(PermissionDefault.OP, getPermissions());
 
         return literal().createBuilder().build();
@@ -64,7 +70,7 @@ public class CommandItem extends AbstractPaperCommand {
     }
 
     @Override
-    public String[] getPermissions() {
+    public @NotNull final String[] getPermissions() {
         return new String[]{"fusion.item"};
     }
 
