@@ -2,8 +2,6 @@ package com.ryderbelserion.fusion;
 
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.commands.BaseCommand;
-import com.ryderbelserion.fusion.commands.types.CommandItem;
-import com.ryderbelserion.fusion.commands.types.CommandReload;
 import com.ryderbelserion.fusion.config.Config;
 import com.ryderbelserion.fusion.core.files.FileAction;
 import com.ryderbelserion.fusion.core.files.FileManager;
@@ -13,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Fusion extends JavaPlugin {
 
