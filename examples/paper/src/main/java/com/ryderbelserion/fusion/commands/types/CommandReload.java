@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.commands.types;
 
 import ch.jalu.configme.SettingsManager;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.Fusion;
 import com.ryderbelserion.fusion.config.Config;
@@ -18,9 +19,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class CommandReload extends AbstractPaperCommand {
+
+    private static final Pattern PATTERN = Pattern.compile("\\{prefix}");
 
     private final Fusion plugin = JavaPlugin.getPlugin(Fusion.class);
 
@@ -38,33 +44,42 @@ public class CommandReload extends AbstractPaperCommand {
     public void execute(@NotNull final AbstractPaperContext context) {
         this.fileManager.refresh(false);
 
+        final CommandSender sender = context.getCommandSender();
+
         final YamlCustomFile yaml = this.fileManager.getYamlFile(path.resolve("actions.yml"));
 
-        if (yaml != null) {
-            this.logger.warn("Yaml File: {}", yaml.getConfiguration().node("value").getBoolean(false));
-        }
+        String prefix = "";
 
         final JaluCustomFile jalu = this.fileManager.getJaluFile(path.resolve("config.yml"));
 
         if (jalu != null) {
             final SettingsManager config = jalu.getConfiguration();
 
-            this.logger.warn("Prefix: {}", config.getProperty(Config.prefix));
+            prefix = config.getProperty(Config.prefix);
+        }
+
+        if (yaml != null) {
+            final CommentedConfigurationNode config = yaml.getConfiguration();
+
+            if (config.node("value").getBoolean(false)) {
+                sender.sendRichMessage(PATTERN.matcher("{prefix} <yellow>The config option is true!").replaceAll(prefix));
+            }
         }
     }
 
     @Override
     public final boolean requirement(@NotNull final CommandSourceStack source) {
-        final CommandSender sender = source.getSender();
-
-        return this.manager.hasPermission(source, getPermissionMode(), getPermissions());
+        return source.getSender().hasPermission(getPermissions().getFirst());
     }
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> build() {
-        this.manager.registerPermissions(PermissionDefault.OP, getPermissions());
-
         return literal().createBuilder().build();
+    }
+
+    @Override
+    public @NotNull final PermissionDefault getPermissionMode() {
+        return PermissionDefault.OP;
     }
 
     @Override
@@ -73,8 +88,8 @@ public class CommandReload extends AbstractPaperCommand {
     }
 
     @Override
-    public @NotNull final String[] getPermissions() {
-        return new String[]{"fusion.use"};
+    public @NotNull final List<String> getPermissions() {
+        return List.of("fusion.reload");
     }
 
     @Override
@@ -84,7 +99,7 @@ public class CommandReload extends AbstractPaperCommand {
                 .executes(context -> {
                     execute(new AbstractPaperContext(context));
 
-                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+                    return Command.SINGLE_SUCCESS;
                 }).build();
     }
 }

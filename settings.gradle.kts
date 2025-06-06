@@ -31,11 +31,11 @@ fun includeProject(name: String) {
 
 listOf(
     "examples/addons/mob-addon" to "mob-addon-example",
-    "examples/fabric" to "fabric-example",
+    //"examples/fabric" to "fabric-example",
     "examples/paper" to "paper-example",
 
     "platforms/minecraft/neoforge" to "neoforge",
-    "platforms/minecraft/fabric" to "fabric",
+    //"platforms/minecraft/fabric" to "fabric",
     "platforms/minecraft/paper" to "paper",
 
     "core" to "core"

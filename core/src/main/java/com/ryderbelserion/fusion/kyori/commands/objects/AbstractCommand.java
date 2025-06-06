@@ -3,11 +3,11 @@ package com.ryderbelserion.fusion.kyori.commands.objects;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.fusion.kyori.enums.PermissionMode;
 import org.jetbrains.annotations.NotNull;
+import java.util.List;
 import java.util.UUID;
 
-public abstract class AbstractCommand<S, P, A extends AbstractContext<S, P>> {
+public abstract class AbstractCommand<S, D, P, A extends AbstractContext<S, P>> {
 
     public abstract void execute(@NotNull final A context);
 
@@ -17,14 +17,12 @@ public abstract class AbstractCommand<S, P, A extends AbstractContext<S, P>> {
 
     public abstract void unregister();
 
+    public abstract D getPermissionMode();
+
     public abstract @NotNull LiteralCommandNode<S> literal();
 
-    public @NotNull String[] getPermissions() {
-        return new String[0];
-    }
-
-    public @NotNull PermissionMode getPermissionMode() {
-        return PermissionMode.ANY_OF;
+    public @NotNull List<String> getPermissions() {
+        return List.of();
     }
 
     public @NotNull final Suggestions supplyIntegers(@NotNull final SuggestionsBuilder builder, final int min, final int max) {

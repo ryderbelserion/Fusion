@@ -13,8 +13,6 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.bundles.cloud.paper)
-
     api(project(":fusion-paper"))
 }
 

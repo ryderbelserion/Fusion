@@ -1,10 +1,11 @@
-package com.ryderbelserion.fusion.commands;
+package com.ryderbelserion.fusion.commands.types;
 
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.Fusion;
-import com.ryderbelserion.fusion.commands.types.CommandBypass;
-import com.ryderbelserion.fusion.commands.types.CommandItem;
-import com.ryderbelserion.fusion.commands.types.CommandReload;
+import com.ryderbelserion.fusion.enums.BypassType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.api.commands.PaperCommandManager;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperCommand;
@@ -16,7 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
-public class BaseCommand extends AbstractPaperCommand {
+public class CommandBypass extends AbstractPaperCommand {
 
     private final Fusion plugin = JavaPlugin.getPlugin(Fusion.class);
 
@@ -26,7 +27,7 @@ public class BaseCommand extends AbstractPaperCommand {
 
     @Override
     public void execute(@NotNull final AbstractPaperContext context) {
-        context.getPlayer().sendRichMessage("<red>This is the base command!");
+
     }
 
     @Override
@@ -51,22 +52,25 @@ public class BaseCommand extends AbstractPaperCommand {
 
     @Override
     public @NotNull final List<String> getPermissions() {
-        return List.of("fusion.use");
+        return List.of("fusion.bypass");
     }
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("fusion")
-                .requires(this::requirement)
-                .executes(context -> {
-                    execute(new AbstractPaperContext(context));
+        final LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("bypass").requires(this::requirement);
 
-                    return com.mojang.brigadier.Command.SINGLE_SUCCESS;
-                }).build();
-    }
+        final RequiredArgumentBuilder<CommandSourceStack, String> arg1 = Commands.argument("bypass_type", StringArgumentType.string()).suggests((ctx, builder) -> {
+            for (final BypassType value : BypassType.values()) {
+                builder.suggest(value.getName());
+            }
 
-    @Override
-    public @NotNull final List<AbstractPaperCommand> getChildren() {
-        return List.of(new CommandReload(), new CommandItem(), new CommandBypass());
+            return builder.buildFuture();
+        }).executes(context -> {
+            execute(new AbstractPaperContext(context));
+
+            return com.mojang.brigadier.Command.SINGLE_SUCCESS;
+        });
+
+        return root.then(arg1).build();
     }
 }

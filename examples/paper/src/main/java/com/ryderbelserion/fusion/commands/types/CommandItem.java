@@ -11,13 +11,13 @@ import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperContext
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
+import java.util.List;
 
 public class CommandItem extends AbstractPaperCommand {
 
@@ -52,15 +52,11 @@ public class CommandItem extends AbstractPaperCommand {
 
     @Override
     public final boolean requirement(@NotNull final CommandSourceStack source) {
-        final CommandSender sender = source.getSender();
-
-        return this.manager.hasPermission(source, getPermissionMode(), getPermissions());
+        return source.getSender().hasPermission(getPermissions().getFirst());
     }
 
     @Override
     public @NotNull final LiteralCommandNode<CommandSourceStack> build() {
-        this.manager.registerPermissions(PermissionDefault.OP, getPermissions());
-
         return literal().createBuilder().build();
     }
 
@@ -70,8 +66,13 @@ public class CommandItem extends AbstractPaperCommand {
     }
 
     @Override
-    public @NotNull final String[] getPermissions() {
-        return new String[]{"fusion.item"};
+    public @NotNull final PermissionDefault getPermissionMode() {
+        return PermissionDefault.OP;
+    }
+
+    @Override
+    public @NotNull final List<String> getPermissions() {
+        return List.of("fusion.item");
     }
 
     @Override

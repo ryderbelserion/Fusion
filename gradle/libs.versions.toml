@@ -22,10 +22,6 @@ jalu = "1.4.3" # https://github.com/AuthMe/ConfigMe
 logback = "1.5.18" # https://github.com/qos-ch/logback
 jda = "5.5.1" # https://github.com/discord-jda/JDA
 
-## Cloud API
-cloud-release = "2.0.0"
-cloud-beta = "2.0.0-beta.10"
-
 # https://fabricmc.net/develop/
 fabric-api = "0.124.2+1.21.5"
 fabric-loader = "0.16.14"
@@ -59,12 +55,6 @@ minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft
 
 # https://minecraft.net
 brigadier = { module = "com.mojang:brigadier", version.ref = "brigadier" }
-
-# https://cloud.incendo.org/
-cloud-annotations = { module = "org.incendo:cloud-annotations", version.ref = "cloud-release" }
-cloud-extras = { module = "org.incendo:cloud-minecraft-extras", version.ref = "cloud-beta" }
-cloud-core = { module = "org.incendo:cloud-core", version.ref = "cloud-release" }
-cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-beta" }
 
 # https://fabricmc.net/develop/
 fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabric-api" }
@@ -148,10 +138,4 @@ build = [
 paper = [
     "paperweight",
     "run-paper"
-]
-
-cloud-paper = [
-    "cloud-annotations",
-    "cloud-extras",
-    "cloud-paper"
 ]

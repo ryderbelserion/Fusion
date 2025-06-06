@@ -18,9 +18,4 @@ public class FabricCommandManager extends CommandManager<CommandSourceStack, Abs
             command.getChildren().forEach(node -> root.addChild(node.build()));
         });
     }
-
-    @Override
-    public boolean hasPermission(@NotNull final CommandSourceStack stack, @NotNull final PermissionMode mode, @NotNull final String[] permissions) { //todo() implement permission support on fabric
-        return false;
-    }
 }
