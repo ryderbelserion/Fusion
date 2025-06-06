@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.fabric.api.commands;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.kyori.commands.CommandManager;
+import com.ryderbelserion.fusion.kyori.enums.PermissionMode;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -19,5 +20,10 @@ public class FabricCommandManager extends CommandManager<CommandSourceStack> {
 
             children.forEach(node::addChild);
         });
+    }
+
+    @Override
+    public boolean hasPermission(@NotNull final CommandSourceStack stack, @NotNull final PermissionMode mode, @NotNull final String[] permissions) { //todo() implement permission support on fabric
+        return false;
     }
 }

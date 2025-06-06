@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.kyori;
 
 import ch.jalu.configme.SettingsManagerBuilder;
+import com.ryderbelserion.fusion.kyori.commands.CommandManager;
 import com.ryderbelserion.fusion.kyori.components.KyoriLogger;
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.kyori.utils.StringUtils;
@@ -32,11 +33,13 @@ public abstract class FusionKyori extends FusionCore {
 
     public abstract String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message);
 
+    public abstract <T> T createProfile(@NotNull final UUID uuid, @Nullable final String name);
+
     public abstract @NotNull String chomp(@NotNull final String message);
 
-    public abstract boolean isPluginEnabled(final String name);
+    public abstract CommandManager getCommandManager();
 
-    public abstract <T> T createProfile(@NotNull final UUID uuid, @Nullable final String name);
+    public abstract boolean isPluginEnabled(final String name);
 
     @Override
     public @NotNull final KyoriLogger getLogger() {

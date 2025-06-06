@@ -6,17 +6,16 @@ import com.ryderbelserion.fusion.config.Config;
 import com.ryderbelserion.fusion.core.files.FileAction;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.api.commands.PaperCommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.incendo.cloud.execution.ExecutionCoordinator;
-import org.incendo.cloud.paper.PaperCommandManager;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class Fusion extends JavaPlugin {
 
-    private FusionPaper paper;
     private FileManager fileManager;
+    private FusionPaper paper;
 
     @Override
     public void onEnable() {
@@ -37,9 +36,9 @@ public class Fusion extends JavaPlugin {
             add(FileAction.EXTRACT);
         }}, configurationOptions -> configurationOptions.header("This is a header for a json file!"));
 
-        new BaseCommand(PaperCommandManager.builder()
-                .executionCoordinator(ExecutionCoordinator.simpleCoordinator())
-                .buildOnEnable(this));
+        final PaperCommandManager commandManager = this.paper.getCommandManager();
+
+        commandManager.enable(new BaseCommand().build(), new ArrayList<>());
     }
 
     @Override

@@ -13,7 +13,7 @@ public class AbstractPaperContext extends AbstractContext<CommandSourceStack, Pl
     }
 
     @Override
-    public final Player getPlayer() {
+    public @NotNull final Player getPlayer() {
         return (Player) getSource().getSender();
     }
 

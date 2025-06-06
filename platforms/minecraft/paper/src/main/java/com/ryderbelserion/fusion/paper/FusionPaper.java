@@ -5,9 +5,11 @@ import com.ryderbelserion.fusion.core.api.addons.AddonManager;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.kyori.commands.CommandManager;
 import com.ryderbelserion.fusion.paper.api.PluginKeys;
 import com.ryderbelserion.fusion.paper.api.builders.gui.listeners.GuiListener;
 import com.ryderbelserion.fusion.kyori.enums.Support;
+import com.ryderbelserion.fusion.paper.api.commands.PaperCommandManager;
 import com.ryderbelserion.fusion.paper.api.structure.StructureRegistry;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
@@ -28,6 +30,7 @@ import java.util.UUID;
 
 public class FusionPaper extends FusionKyori {
 
+    private PaperCommandManager commandManager;
     private LegacyFileManager fileManager;
     private StructureRegistry registry;
     private HeadDatabaseAPI api;
@@ -56,6 +59,8 @@ public class FusionPaper extends FusionKyori {
         if (this.fileManager == null) {
             this.fileManager = new LegacyFileManager(this.plugin);
         }
+
+        this.commandManager = new PaperCommandManager(this.plugin);
 
         if (Support.head_database.isEnabled() && this.api == null) {
             this.api = new HeadDatabaseAPI();
@@ -90,6 +95,11 @@ public class FusionPaper extends FusionKyori {
     @Override
     public @NotNull final String chomp(@NotNull final String message) {
         return StringUtils.chomp(message);
+    }
+
+    @Override
+    public @NotNull final PaperCommandManager getCommandManager() {
+        return this.commandManager;
     }
 
     @Override
