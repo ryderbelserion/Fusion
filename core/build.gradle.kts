@@ -16,5 +16,7 @@ dependencies {
 
     compileOnly(libs.brigadier)
 
+    api(libs.configurate.json)
+
     api(libs.jalu)
 }

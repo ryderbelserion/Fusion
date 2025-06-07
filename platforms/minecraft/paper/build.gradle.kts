@@ -15,7 +15,8 @@ repositories {
 
 dependencies {
     api(project(":fusion-core")) {
-        exclude("org.yaml", "snakeyaml")
+        exclude("com.google.errorprone", "error_prone_annotations")
+        exclude("org.spongepowered", "configurate-core")
     }
 
     compileOnly(libs.bundles.shared)

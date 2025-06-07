@@ -62,7 +62,7 @@ fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.r
 fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = "fabric-loader" }
 
 # https://github.com/SpongePowered/Configurate
-configurate-json = { module = "org.spongepowered:configurate-jackson", version.ref = "configurate" }
+configurate-json = { module = "org.spongepowered:configurate-gson", version.ref = "configurate" }
 configurate-yaml = { module = "org.spongepowered:configurate-yaml", version.ref = "configurate" }
 
 # https://github.com/PaperMC/paperweight
