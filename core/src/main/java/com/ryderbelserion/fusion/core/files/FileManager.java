@@ -6,6 +6,7 @@ import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.core.api.interfaces.ICustomFile;
+import com.ryderbelserion.fusion.core.files.types.JsonCustomFile;
 import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.core.utils.FileUtils;
@@ -176,6 +177,7 @@ public class FileManager {
 
         switch (fileType) {
             case YAML -> customFile = new YamlCustomFile(path, actions, options).load();
+            case JSON -> customFile = new JsonCustomFile(path, actions, options).load();
             case LOG -> customFile = new LogCustomFile(path, actions).load();
             default -> {}
         }
