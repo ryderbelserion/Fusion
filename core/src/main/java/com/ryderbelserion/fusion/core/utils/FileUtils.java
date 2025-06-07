@@ -71,7 +71,7 @@ public class FileUtils {
             }
         }
 
-        try (final JarFile jar = new JarFile(Path.of(fusion.getClassPath().toURI()).toFile())) {
+        try (final JarFile jar = new JarFile(Path.of(FusionCore.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
             final Enumeration<JarEntry> entries = jar.entries();
 
             while (entries.hasMoreElements()) {

@@ -23,7 +23,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.UUID;
 
@@ -83,11 +82,6 @@ public class FusionPaper extends FusionKyori {
         super.disable();
 
         this.commandManager.disable();
-    }
-
-    @Override
-    public @NotNull URL getClassPath() {
-        return this.plugin.getClass().getProtectionDomain().getCodeSource().getLocation();
     }
 
     @Override

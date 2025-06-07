@@ -11,7 +11,6 @@ import com.ryderbelserion.fusion.core.api.plugins.PluginBuilder;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.function.Consumer;
@@ -58,8 +57,6 @@ public abstract class FusionCore {
     }
 
     public @NotNull abstract ILogger getLogger();
-
-    public @NotNull abstract URL getClassPath();
 
     public void reload(final boolean isHotReload) {
         this.config.reload();

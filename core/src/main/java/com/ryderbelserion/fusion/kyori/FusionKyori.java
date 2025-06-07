@@ -33,10 +33,6 @@ public abstract class FusionKyori extends FusionCore {
 
     public abstract String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message);
 
-    public <T> @Nullable T createProfile(@NotNull final UUID uuid, @Nullable final String name) {
-        return null;
-    }
-
     public abstract @NotNull String chomp(@NotNull final String message);
 
     public abstract CommandManager getCommandManager();
@@ -48,6 +44,10 @@ public abstract class FusionKyori extends FusionCore {
     @Override
     public @NotNull final KyoriLogger getLogger() {
         return this.logger;
+    }
+
+    public <T> @Nullable T createProfile(@NotNull final UUID uuid, @Nullable final String name) {
+        return null;
     }
 
     public @NotNull Component color(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
