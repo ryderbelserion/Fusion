@@ -40,15 +40,17 @@ public class FusionPaper extends FusionKyori {
 
     public FusionPaper(@NotNull final ComponentLogger logger, @NotNull final Path path) {
         super(logger, path, consumer -> consumer.useDefaultMigrationService().configurationData(ConfigKeys.class, PluginKeys.class));
+
+        load();
     }
 
     public FusionPaper(@NotNull final JavaPlugin plugin) {
         this(plugin.getComponentLogger(), plugin.getDataPath());
+
+        load();
     }
 
     public void enable(@NotNull final JavaPlugin plugin) {
-        load();
-
         this.plugin = plugin;
         this.server = this.plugin.getServer();
         this.pluginManager = this.server.getPluginManager();
