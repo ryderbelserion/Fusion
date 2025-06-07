@@ -88,15 +88,25 @@ public class ItemUtils {
             return null;
         }
 
-        @Nullable final Enchantment key = getRegistryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(getKey(value));
+        // this checks if colon is included, colon represents a namespace.
+        // if the colon is not found, we default to the minecraft namespace.
+        final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
+            logger.error("{} is not a valid enchantment key.", value);
+
+            return null;
+        }
+
+        @Nullable final Enchantment enchantment = getRegistryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(key);
+
+        if (enchantment == null) {
             logger.error("{} is not a valid enchantment.", value);
 
             return null;
         }
 
-        return key;
+        return enchantment;
     }
 
     public static @Nullable TrimPattern getTrimPattern(@NotNull final String value) {
