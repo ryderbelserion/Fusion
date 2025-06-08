@@ -21,43 +21,16 @@ public abstract class AbstractCommand<S, D, P, A extends AbstractContext<S, P>> 
         return List.of();
     }
 
-    public @NotNull final Suggestions supplyIntegers(@NotNull final SuggestionsBuilder builder, final int min, final int max) {
-        for (int count = min; count <= max; ++count) {
-            builder.suggest(count);
-        }
+    public abstract Suggestions supplyIntegers(@NotNull final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip);
 
-        return builder.build();
-    }
+    public abstract Suggestions supplyDoubles(@NotNull final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip);
 
-    public @NotNull final Suggestions supplyDoubles(@NotNull final SuggestionsBuilder builder, final int min, final int max) {
-        int count = min;
+    public abstract Suggestions supplyStrings(@NotNull final SuggestionsBuilder builder, final int min, final int max, @NotNull final String tooltip);
 
-        while (count <= max) {
-            builder.suggest(String.valueOf(count / 10.0));
+    public abstract Suggestions supplyIntegers(@NotNull final SuggestionsBuilder builder, @NotNull final String tooltip);
 
-            count++;
-        }
+    public abstract Suggestions supplyDoubles(@NotNull final SuggestionsBuilder builder, @NotNull final String tooltip);
 
-        return builder.build();
-    }
+    public abstract Suggestions supplyStrings(@NotNull final SuggestionsBuilder builder, @NotNull final String tooltip);
 
-    public @NotNull final Suggestions supplyStrings(@NotNull final SuggestionsBuilder builder, final int min, final int max) {
-        for (int count = min; count <= max; ++count) {
-            builder.suggest(UUID.randomUUID().toString().replace("-", "").substring(0, 8));
-        }
-
-        return builder.build();
-    }
-
-    public @NotNull final Suggestions supplyIntegers(@NotNull final SuggestionsBuilder builder) {
-        return supplyIntegers(builder, 1, 64);
-    }
-
-    public @NotNull final Suggestions supplyDoubles(@NotNull final SuggestionsBuilder builder) {
-        return supplyDoubles(builder, 0, 64);
-    }
-
-    public @NotNull final Suggestions supplyStrings(@NotNull final SuggestionsBuilder builder) {
-        return supplyStrings(builder, 1, 8);
-    }
 }
