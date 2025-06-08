@@ -51,7 +51,7 @@ public class PaperCommandManager extends CommandManager<CommandSourceStack, Abst
                 root.addChild(child.build());
             });
 
-            registry.register(root, aliases);
+            registry.register(root, description, aliases);
         });
     }
 
