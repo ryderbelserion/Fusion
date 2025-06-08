@@ -13,6 +13,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +33,7 @@ public class PaperCommandManager extends CommandManager<CommandSourceStack, Abst
     }
 
     @Override
-    public void enable(@NotNull final AbstractPaperCommand command) {
+    public void enable(@NotNull final AbstractPaperCommand command, @Nullable final String description, @NotNull final List<String> aliases) {
         this.lifecycle.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands registry = event.registrar();
 
@@ -50,7 +51,7 @@ public class PaperCommandManager extends CommandManager<CommandSourceStack, Abst
                 root.addChild(child.build());
             });
 
-            registry.register(root);
+            registry.register(root, aliases);
         });
     }
 

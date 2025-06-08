@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Fusion extends JavaPlugin {
 
@@ -38,7 +39,7 @@ public class Fusion extends JavaPlugin {
 
         final PaperCommandManager commandManager = this.paper.getCommandManager();
 
-        commandManager.enable(new BaseCommand());
+        commandManager.enable(new BaseCommand(), "The base command for Fusion!", List.of());
     }
 
     @Override
