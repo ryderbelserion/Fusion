@@ -3,6 +3,7 @@ package com.ryderbelserion.fusion.paper.files;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.files.FileAction;
+import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.files.FileType;
 import com.ryderbelserion.fusion.core.utils.FileUtils;
 import com.ryderbelserion.fusion.core.FusionCore;
@@ -10,6 +11,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -45,42 +48,22 @@ public class LegacyFileManager {
             this.folders.put(folder, fileType);
         }
 
-        final File directory = new File(this.dataFolder, folder);
+        final Path dataPath = this.dataFolder.toPath();
 
-        if (!directory.exists()) {
-            directory.mkdirs();
+        extractFolder(dataPath.resolve(folder), new ArrayList<>());
 
-            FileUtils.extract(directory.getName(), this.dataFolder.toPath(), new ArrayList<>() {{
-                add(FileAction.FOLDER);
-            }});
-        }
-
-        final File[] contents = directory.listFiles();
-
-        if (contents == null) return this;
+        final List<Path> files = FileUtils.getFiles(dataPath.resolve(folder), ".yml", 2);
 
         final String extension = fileType.getExtension();
 
-        for (final File file : contents) {
-            if (file.isDirectory()) {
-                final String[] files = file.list();
+        for (final Path path : files) {
+            final String fileName = path.getFileName().toString();
 
-                if (files == null) continue;
+            this.logger.warn("Adding file: " + folder + File.separator + fileName);
 
-                for (final String fileName : files) {
-                    if (!fileName.endsWith(extension)) continue; // just in case people are weird
+            if (!fileName.endsWith(extension)) continue;
 
-                    addFile(fileName, folder + File.separator + file.getName(), true, fileType);
-                }
-
-                continue;
-            }
-
-            final String fileName = file.getName();
-
-            if (!fileName.endsWith(extension)) continue; // just in case people are weird
-
-            addFile(fileName, folder, true, fileType);
+            addFile(fileName, folder + File.separator + fileName, true, fileType);
         }
 
         return this;
@@ -121,12 +104,12 @@ public class LegacyFileManager {
 
         final String resourcePath = folder != null ? folder + File.separator + fileName : fileName;
 
-        final File file = new File(this.dataFolder, resourcePath);
+        final Path file = this.dataFolder.toPath().resolve(resourcePath);
 
-        if (!file.exists()) {
-            this.logger.warn("Successfully extracted file {} to {}", fileName, file.getPath());
+        if (!Files.exists(file)) {
+            this.logger.warn("Successfully extracted file {} to {}", fileName, file);
 
-            this.plugin.saveResource(resourcePath, false);
+            FileUtils.extract(file.getFileName().toString(), file.getParent(), new ArrayList<>());
         }
 
         switch (fileType) {
@@ -135,7 +118,7 @@ public class LegacyFileManager {
                     throw new FusionException(String.format("The file '%s' already exists.", strippedName));
                 }
 
-                this.files.put(strippedName, new LegacyCustomFile(fileType, file, isDynamic));
+                this.files.put(strippedName, new LegacyCustomFile(fileType, file.toFile(), isDynamic));
             }
 
             case YAML -> {
@@ -145,7 +128,7 @@ public class LegacyFileManager {
                     return this;
                 }
 
-                this.files.put(strippedName, new LegacyCustomFile(fileType, file, isDynamic).load());
+                this.files.put(strippedName, new LegacyCustomFile(fileType, file.toFile(), isDynamic).load());
             }
 
             //case JSON -> throw new FusionException("The file type with extension " + extension + " is not currently supported.");
@@ -267,5 +250,20 @@ public class LegacyFileManager {
 
     public @NotNull final Map<String, LegacyCustomFile> getFiles() {
         return Collections.unmodifiableMap(this.files);
+    }
+
+    /**
+     * Extracts a folder with a specified list of actions.
+     *
+     * @param folder the folder to extract
+     * @param actions the list of actions to define what to do.
+     * @return {@link LegacyFileManager}
+     */
+    public @NotNull final LegacyFileManager extractFolder(@NotNull final Path folder, @NotNull final List<FileAction> actions) {
+        actions.add(FileAction.EXTRACT_FOLDER);
+
+        FileUtils.extract(folder.getFileName().toString(), this.dataFolder.toPath(), actions);
+
+        return this;
     }
 }

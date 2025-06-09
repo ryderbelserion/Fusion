@@ -75,7 +75,7 @@ public class FileManager {
         addFolder(folder, FileType.JALU);
 
         extractFolder(folder, new ArrayList<>(actions) {{
-            add(FileAction.EXTRACT);
+            add(FileAction.EXTRACT_FOLDER);
         }});
 
         final List<Path> files = FileUtils.getFiles(this.path.resolve(folder), ".yml", this.core.getRecursionDepth());
@@ -159,7 +159,7 @@ public class FileManager {
     public @NotNull final FileManager addFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
         final String fileName = path.getFileName().toString();
 
-        if (actions.contains(FileAction.EXTRACT) && !Files.exists(path)) {
+        if (!Files.exists(path)) { // always extract if it does not exist.
             FileUtils.extract(fileName, path.getParent(), actions);
         }
 
@@ -299,9 +299,9 @@ public class FileManager {
      * @return {@link FileManager}
      */
     public @NotNull final FileManager extractFolder(@NotNull final Path folder, @NotNull final List<FileAction> actions) {
-        FileUtils.extract(folder.getFileName().toString(), this.path, new ArrayList<>(actions) {{
-            add(FileAction.FOLDER);
-        }});
+        actions.add(FileAction.EXTRACT_FOLDER);
+
+        FileUtils.extract(folder.getFileName().toString(), this.path, actions);
 
         return this;
     }

@@ -17,6 +17,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDate;
@@ -49,27 +50,35 @@ public class FileUtils {
      * @param output  the output which where to extract files to
      */
     public static void extract(@NotNull final String input, @NotNull final Path output, @NotNull final List<FileAction> actions) {
-        final Path folder = output.resolve(input);
+        final Path content = output.resolve(input);
 
         if (actions.contains(FileAction.DELETE)) {
             try {
-                Files.walkFileTree(folder, new SimplePathVisitor());
+                Files.walkFileTree(content, new SimplePathVisitor());
             } catch (final IOException ignored) {}
         }
 
-        if (Files.exists(folder)) {
+        if (Files.exists(content)) {
             return;
         }
 
-        final boolean isFolder = actions.contains(FileAction.FOLDER);
+        final boolean isFolder = actions.contains(FileAction.EXTRACT_FOLDER);
 
-        if (isFolder) {
+        if (isFolder && Files.isDirectory(content)) {
             try {
-                Files.createDirectories(folder);
+                Files.createDirectories(content);
             } catch (final IOException exception) {
-                throw new FusionException("Failed to create folder " + folder, exception);
+                throw new FusionException("Failed to create folder " + content, exception);
             }
         }
+
+        final String parentName = content.getParent().getFileName().toString();
+        final String fileName = content.getFileName().toString();
+        final Path value = Paths.get(parentName).resolve(fileName);
+
+        final boolean isFile = actions.contains(FileAction.EXTRACT_FILE);
+
+        final String text = isFile ? value.toString().replace("\\", "/") : input;
 
         try (final JarFile jar = new JarFile(Path.of(FusionCore.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
             final Enumeration<JarEntry> entries = jar.entries();
@@ -79,30 +88,42 @@ public class FileUtils {
 
                 final String entryName = entry.getName();
 
-                if (entryName.endsWith(".class") || entryName.startsWith("META-INF") || !entryName.startsWith(input)) { // exclude .class, and META-INF before checking input
+                if (entryName.endsWith(".class") || entryName.startsWith("META-INF")) { // exclude .class, and META-INF
                     continue;
+                }
+
+                if (isFile) {
+                    if (!entryName.equals(text)) {
+                        continue;
+                    }
+                } else {
+                    if (!entryName.startsWith(text)) {
+                        continue;
+                    }
                 }
 
                 final boolean isDirectory = entry.isDirectory();
 
-                final Path entryPath = output.resolve(entryName);
-
+                final Path target = isFile ? output.resolve(input) : output.resolve(entryName);
+                
                 if (isDirectory) {
-                    Files.createDirectories(entryPath);
+                    Files.createDirectories(target);
 
                     continue;
                 }
 
                 try (final InputStream stream = jar.getInputStream(entry)) {
-                    if (isFolder) {
-                        Files.createDirectories(entryPath.getParent());
+                    final Path parent = target.getParent();
+
+                    if (isFile || isFolder && !Files.exists(parent)) {
+                        Files.createDirectories(parent);
                     }
 
-                    Files.copy(stream, entryPath);
+                    Files.copy(stream, target);
                 }
             }
         } catch (final URISyntaxException | IOException exception) {
-            throw new FusionException("Failed to create extract " + folder, exception);
+            throw new FusionException("Failed to extract " + text, exception);
         }
     }
 

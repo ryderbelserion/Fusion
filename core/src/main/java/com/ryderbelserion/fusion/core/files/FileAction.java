@@ -6,21 +6,23 @@ package com.ryderbelserion.fusion.core.files;
 public enum FileAction {
 
     /**
-     * Deletes a file if specified.
+     * Tells the FileManager or extraction utils that this is a folder to be extracted.
      */
-    DELETE,
+    EXTRACT_FOLDER,
     /**
-     * Tells the FileManager or extraction utils that this is a folder.
+     * Tells the FileManager or extraction utils that this is a folder where I specify a file to be extracted.
+     * i.e. path.resolve("cache").resolve("ores.json")
      */
-    FOLDER,
+    EXTRACT_FILE,
+    //EXTRACT,
     /**
      * Tells the FileManager that we are reloading, and have a niche use case.
      */
     RELOAD,
     /**
-     * Tells the FileManager we need to extract!
+     * Deletes a file if specified.
      */
-    EXTRACT,
+    DELETE,
     /**
      * Tells the FileManager that the file is not dynamic.
      */

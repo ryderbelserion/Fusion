@@ -5,6 +5,7 @@ import com.ryderbelserion.fusion.commands.BaseCommand;
 import com.ryderbelserion.fusion.config.Config;
 import com.ryderbelserion.fusion.core.files.FileAction;
 import com.ryderbelserion.fusion.core.files.FileManager;
+import com.ryderbelserion.fusion.core.files.FileType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.api.commands.PaperCommandManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,15 +28,27 @@ public class Fusion extends JavaPlugin {
 
         final Path path = getDataPath();
 
-        this.fileManager.addFile(path.resolve("config.yml"), builder -> builder.useDefaultMigrationService().configurationData(Config.class), new ArrayList<>(), YamlFileResourceOptions.builder()
-                .charset(Charset.defaultCharset()).indentationSize(2).build());
+        /*FileUtils.extract("ores.json", path.resolve("cache"), new ArrayList<>() {{
+            add(FileAction.EXTRACT_FILE);
+        }});
 
-        this.fileManager.addFile(path.resolve("actions.yml"), new ArrayList<>() {{
-            add(FileAction.EXTRACT);
-        }}, configurationOptions -> configurationOptions.header("This is a header for a yaml file!"));
-        this.fileManager.addFile(path.resolve("actions.json"), new ArrayList<>() {{
-            add(FileAction.EXTRACT);
-        }}, configurationOptions -> configurationOptions.header("This is a header for a json file!"));
+        FileUtils.extract("actions.json", path, new ArrayList<>());*/
+
+        this.fileManager.addFile(path.resolve("config.yml"),
+                builder -> builder.useDefaultMigrationService().configurationData(Config.class),
+                new ArrayList<>(),
+                YamlFileResourceOptions.builder().charset(Charset.defaultCharset()).indentationSize(2).build());
+
+        this.fileManager.addFile(path.resolve("actions.yml"), new ArrayList<>(), null);
+        this.fileManager.addFile(path.resolve("actions.json"), new ArrayList<>(), null);
+
+        this.fileManager.addFile(path.resolve("cache").resolve("ores.json"), new ArrayList<>() {{
+            add(FileAction.EXTRACT_FILE);
+        }}, null);
+
+        this.paper.getLegacyFileManager().addFolder("crates", FileType.YAML);
+
+        //this.fileManager.addFolder(path.resolve("crates"), FileType.YAML, new ArrayList<>(), null);
 
         final PaperCommandManager commandManager = this.paper.getCommandManager();
 
