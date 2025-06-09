@@ -1,10 +1,7 @@
 package com.ryderbelserion.fusion.core.files;
 
-import ch.jalu.configme.SettingsManagerBuilder;
-import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
-import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.core.api.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.core.files.types.JsonCustomFile;
 import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
@@ -20,7 +17,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 /**
@@ -61,32 +57,6 @@ public class FileManager {
         return this;
     }
 
-    // ConfigMe
-    /**
-     * Adds a folder which will be mapping ConfigMe
-     *
-     * @param folder the folder to extract/map
-     * @param builder the object mapped classes for the configs
-     * @param actions a list of actions to define what to do
-     * @param options optional options to configure indentation size etc.
-     * @return {@link FileManager}
-     */
-    public @NotNull final FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
-        addFolder(folder, FileType.JALU);
-
-        extractFolder(folder, new ArrayList<>(actions) {{
-            add(FileAction.EXTRACT_FOLDER);
-        }});
-
-        final List<Path> files = FileUtils.getFiles(this.path.resolve(folder), ".yml", this.core.getRecursionDepth());
-
-        for (final Path path : files) {
-            addFile(path, builder, actions, options);
-        }
-
-        return this;
-    }
-
     /**
      * Adds a folder which is used to map Configurate yaml/jackson.
      *
@@ -118,32 +88,6 @@ public class FileManager {
      */
     public @NotNull final FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType) {
         this.folders.putIfAbsent(folder, fileType);
-
-        return this;
-    }
-
-    // ConfigMe
-    /**
-     * Adds a path which will be mapping ConfigMe or reload if already present.
-     *
-     * @param path the path to extract/map
-     * @param builder the object mapped classes for the configs
-     * @param actions a list of actions to define what to do
-     * @param options optional options to configure indentation size etc.
-     * @return {@link FileManager}
-     */
-    public @NotNull final FileManager addFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
-        final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
-
-        if (file != null && !actions.contains(FileAction.RELOAD)) { // if the reload action is not present, we load the file!
-            file.load();
-
-            return this;
-        }
-
-        final JaluCustomFile jalu = new JaluCustomFile(path, builder, actions, options);
-
-        this.customFiles.putIfAbsent(path, jalu.load());
 
         return this;
     }
@@ -365,13 +309,13 @@ public class FileManager {
     }
 
     /**
-     * Fetches a {@link JaluCustomFile} from the cache.
+     * Fetches a {@link JsonCustomFile} from the cache.
      *
      * @param path the path in the cache
-     * @return {@link JaluCustomFile}
+     * @return {@link JsonCustomFile}
      */
-    public @Nullable final JaluCustomFile getJaluFile(@NotNull final Path path) {
-        return (JaluCustomFile) getCustomFile(path);
+    public @Nullable final JsonCustomFile getJsonFile(@NotNull final Path path) {
+        return (JsonCustomFile) getCustomFile(path);
     }
 
     /**

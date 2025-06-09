@@ -1,41 +1,43 @@
 package com.ryderbelserion.fusion.core;
 
-import ch.jalu.configme.SettingsManager;
-import ch.jalu.configme.SettingsManagerBuilder;
-import ch.jalu.configme.resource.YamlFileResourceOptions;
-import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.addons.AddonManager;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.api.plugins.PluginBuilder;
 import com.ryderbelserion.fusion.core.files.FileManager;
+import com.ryderbelserion.fusion.core.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.nio.charset.StandardCharsets;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.ConfigurateException;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.nio.file.Path;
-import java.util.function.Consumer;
+import java.util.ArrayList;
 
 /**
  * Handles the core of the library!
  */
 public abstract class FusionCore {
 
-    protected final SettingsManager config;
+    protected final YamlConfigurationLoader loader;
+    protected CommentedConfigurationNode config;
 
     private final Path path;
 
-    protected FusionCore(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
+    protected FusionCore(@NotNull final Path path) {
         Provider.register(this);
 
         this.path = path;
 
-        final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(this.path.resolve("fusion.yml"), YamlFileResourceOptions.builder().charset(StandardCharsets.UTF_8).indentationSize(2).build());
-
-        builder.useDefaultMigrationService();
-
-        consumer.accept(builder); // overrides the default migration service if set in the consumer.
-
-        this.config = builder.create();
+        FileUtils.extract("fusion.yml", this.path, new ArrayList<>());
+        
+        this.loader = YamlConfigurationLoader.builder().path(this.path.resolve("fusion.yml")).build();
+        
+        try {
+            this.config = this.loader.load();
+        } catch (final ConfigurateException exception) {
+            throw new FusionException("Failed to load fusion.yml", exception);
+        }
     }
 
     private AddonManager addonManager;
@@ -59,7 +61,13 @@ public abstract class FusionCore {
     public @NotNull abstract ILogger getLogger();
 
     public void reload(final boolean isHotReload) {
-        this.config.reload();
+        FileUtils.extract("fusion.yml", this.path, new ArrayList<>()); // extract if they delete it.
+
+        try {
+            this.config = this.loader.load();
+        } catch (final ConfigurateException exception) {
+            throw new FusionException("Failed to load fusion.yml", exception);
+        }
 
         if (this.isAddonsEnabled()) {
             this.addonManager.getAddons().forEach(addon -> {
@@ -95,23 +103,23 @@ public abstract class FusionCore {
     }
 
     public @NotNull String getRoundingFormat() {
-        return this.config.getProperty(ConfigKeys.rounding_format);
+        return this.config.node("settings", "rounding").getString("");
     }
 
     public @NotNull String getNumberFormat() {
-        return this.config.getProperty(ConfigKeys.number_format);
+        return this.config.node("settings", "number_format").getString("");
     }
 
     public int getRecursionDepth() {
-        return this.config.getProperty(ConfigKeys.recursion_depth);
+        return this.config.node("settings", "recursion_depth").getInt(1);
     }
 
     public boolean isVerbose() {
-        return this.config.getProperty(ConfigKeys.is_verbose);
+        return this.config.node("settings", "is_verbose").getBoolean(false);
     }
 
     public boolean isAddonsEnabled() {
-        return this.config.getProperty(ConfigKeys.addon_system);
+        return this.config.node("settings", "addon_system").getBoolean(false);
     }
 
     public @NotNull final Path getPath() {

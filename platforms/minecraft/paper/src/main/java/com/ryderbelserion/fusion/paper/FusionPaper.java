@@ -3,9 +3,7 @@ package com.ryderbelserion.fusion.paper;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.ryderbelserion.fusion.core.api.addons.AddonManager;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
-import com.ryderbelserion.fusion.core.api.ConfigKeys;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.paper.api.PluginKeys;
 import com.ryderbelserion.fusion.paper.api.builders.gui.listeners.GuiListener;
 import com.ryderbelserion.fusion.kyori.enums.Support;
 import com.ryderbelserion.fusion.paper.api.commands.PaperCommandManager;
@@ -38,7 +36,7 @@ public class FusionPaper extends FusionKyori {
     private PluginManager pluginManager;
 
     public FusionPaper(@NotNull final ComponentLogger logger, @NotNull final Path path) {
-        super(logger, path, consumer -> consumer.useDefaultMigrationService().configurationData(ConfigKeys.class, PluginKeys.class));
+        super(logger, path);
 
         load();
     }
@@ -115,7 +113,7 @@ public class FusionPaper extends FusionKyori {
     }
 
     public @NotNull final String getItemsPlugin() {
-        return this.config.getProperty(PluginKeys.items_plugin);
+        return this.config.node("settings", "custom-items-plugin").getString("None");
     }
 
     public @NotNull final LegacyFileManager getLegacyFileManager() {

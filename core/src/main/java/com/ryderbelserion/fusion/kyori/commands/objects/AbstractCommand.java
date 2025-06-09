@@ -5,7 +5,6 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
-import java.util.UUID;
 
 public abstract class AbstractCommand<S, D, P, A extends AbstractContext<S, P>> {
 

@@ -1,6 +1,5 @@
 package com.ryderbelserion.fusion.kyori;
 
-import ch.jalu.configme.SettingsManagerBuilder;
 import com.ryderbelserion.fusion.kyori.commands.CommandManager;
 import com.ryderbelserion.fusion.kyori.components.KyoriLogger;
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
@@ -19,14 +18,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 public abstract class FusionKyori extends FusionCore {
 
     protected final KyoriLogger logger;
 
-    protected FusionKyori(@NotNull final ComponentLogger logger, @NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
-        super(path, consumer);
+    protected FusionKyori(@NotNull final ComponentLogger logger, @NotNull final Path path) {
+        super(path);
 
         this.logger = new KyoriLogger(logger, this);
     }

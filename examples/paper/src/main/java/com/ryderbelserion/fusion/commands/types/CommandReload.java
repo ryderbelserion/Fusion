@@ -1,12 +1,9 @@
 package com.ryderbelserion.fusion.commands.types;
 
-import ch.jalu.configme.SettingsManager;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.Fusion;
-import com.ryderbelserion.fusion.config.Config;
 import com.ryderbelserion.fusion.core.files.FileManager;
-import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperCommand;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperContext;
@@ -40,14 +37,6 @@ public class CommandReload extends AbstractPaperCommand {
         final YamlCustomFile yaml = this.fileManager.getYamlFile(path.resolve("actions.yml"));
 
         String prefix = "";
-
-        final JaluCustomFile jalu = this.fileManager.getJaluFile(path.resolve("config.yml"));
-
-        if (jalu != null) {
-            final SettingsManager config = jalu.getConfiguration();
-
-            prefix = config.getProperty(Config.prefix);
-        }
 
         if (yaml != null) {
             final CommentedConfigurationNode config = yaml.getConfiguration();
