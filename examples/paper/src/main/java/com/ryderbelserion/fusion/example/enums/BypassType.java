@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.enums;
+package com.ryderbelserion.fusion.example.enums;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;

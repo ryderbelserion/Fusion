@@ -1,5 +1,5 @@
 name: 'Fusion'
-main: 'com.ryderbelserion.fusion.Fusion'
+main: 'com.ryderbelserion.fusion.example.Fusion'
 
 description: 'I would like nuclear fusion to become a practical power source.'
 api-version: '1.21.5'

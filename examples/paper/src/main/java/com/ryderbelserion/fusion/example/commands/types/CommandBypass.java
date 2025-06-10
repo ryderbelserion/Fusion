@@ -1,11 +1,11 @@
-package com.ryderbelserion.fusion.commands.types;
+package com.ryderbelserion.fusion.example.commands.types;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.fusion.Fusion;
-import com.ryderbelserion.fusion.enums.BypassType;
+import com.ryderbelserion.fusion.example.Fusion;
+import com.ryderbelserion.fusion.example.enums.BypassType;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperCommand;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;

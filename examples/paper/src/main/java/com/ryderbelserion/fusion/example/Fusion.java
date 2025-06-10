@@ -1,6 +1,6 @@
-package com.ryderbelserion.fusion;
+package com.ryderbelserion.fusion.example;
 
-import com.ryderbelserion.fusion.commands.BaseCommand;
+import com.ryderbelserion.fusion.example.commands.BaseCommand;
 import com.ryderbelserion.fusion.core.files.FileAction;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.files.FileType;

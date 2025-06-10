@@ -1,8 +1,8 @@
-package com.ryderbelserion.fusion.commands.types;
+package com.ryderbelserion.fusion.example.commands.types;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.fusion.Fusion;
+import com.ryderbelserion.fusion.example.Fusion;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperCommand;

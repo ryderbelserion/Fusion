@@ -1,6 +1,6 @@
-package com.ryderbelserion.fusion.events;
+package com.ryderbelserion.fusion.example.events;
 
-import com.ryderbelserion.fusion.Fusion;
+import com.ryderbelserion.fusion.example.Fusion;
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.paper.api.events.IPaperEvent;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
