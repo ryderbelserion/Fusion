@@ -16,5 +16,7 @@ dependencies {
 
     compileOnly(libs.brigadier)
 
-    api(libs.configurate.json)
+    api(libs.configurate.json) { // gson is present literally everywhere
+        exclude("com.google.code.gson", "gson")
+    }
 }
