@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
@@ -28,6 +29,10 @@ public abstract class FusionCore {
         Provider.register(this);
 
         this.path = path;
+
+        if (!Files.exists(path)) {
+            this.path.toFile().mkdirs();
+        }
 
         FileUtils.extract("fusion.yml", this.path, new ArrayList<>());
         
