@@ -26,4 +26,8 @@ tasks {
     shadowJar {
         exclude("fusion.yml")
     }
+
+    jar {
+        exclude("fusion.yml")
+    }
 }
