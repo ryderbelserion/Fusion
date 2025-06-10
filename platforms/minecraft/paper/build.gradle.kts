@@ -21,3 +21,9 @@ dependencies {
 
     compileOnly(libs.bundles.shared)
 }
+
+tasks {
+    shadowJar {
+        exclude("fusion.yml")
+    }
+}
