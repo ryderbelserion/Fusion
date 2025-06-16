@@ -13,6 +13,7 @@ import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.kyori.enums.Support;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
+import com.ryderbelserion.fusion.paper.utils.HeadUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import dev.lone.itemsadder.api.CustomStack;
 import io.papermc.paper.datacomponent.DataComponentTypes;
@@ -884,9 +885,21 @@ public class ItemBuilder<T extends ItemBuilder<T>> {
     public @NotNull T setSkull(@NotNull final String skull) {
         if (skull.isEmpty()) return (T) this;
 
-        @NotNull HeadDatabaseAPI hdb = this.fusion.getApi();
+        final HeadUtils utils = this.fusion.getHeadUtils();
 
-        this.itemStack = hdb.isHead(skull) ? hdb.getItemHead(skull) : this.itemStack.withType(Material.PLAYER_HEAD);
+        ItemStack itemStack = null;
+
+        if (utils != null) {
+            final HeadDatabaseAPI api = utils.getApi();
+
+            if (api.isHead(skull)) {
+                itemStack = api.getItemHead(skull);
+            }
+        } else {
+            itemStack = this.itemStack.withType(Material.PLAYER_HEAD);
+        }
+
+        this.itemStack = itemStack;
 
         return (T) this;
     }

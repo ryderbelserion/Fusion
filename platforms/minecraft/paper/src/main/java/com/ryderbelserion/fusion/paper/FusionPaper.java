@@ -9,8 +9,8 @@ import com.ryderbelserion.fusion.kyori.enums.Support;
 import com.ryderbelserion.fusion.paper.api.commands.PaperCommandManager;
 import com.ryderbelserion.fusion.paper.api.structure.StructureRegistry;
 import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
-import me.arcaniax.hdb.api.HeadDatabaseAPI;
-import me.clip.placeholderapi.PlaceholderAPI;
+import com.ryderbelserion.fusion.paper.utils.HeadUtils;
+import com.ryderbelserion.fusion.paper.utils.PapiUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +29,8 @@ public class FusionPaper extends FusionKyori {
     private PaperCommandManager commandManager;
     private LegacyFileManager fileManager;
     private StructureRegistry registry;
-    private HeadDatabaseAPI api;
+    private HeadUtils headUtils;
+    private PapiUtils papiUtils;
     private JavaPlugin plugin;
     private Server server;
 
@@ -60,8 +61,13 @@ public class FusionPaper extends FusionKyori {
 
         this.commandManager = new PaperCommandManager(this.plugin);
 
-        if (Support.head_database.isEnabled() && this.api == null) {
-            this.api = new HeadDatabaseAPI();
+        if (Support.head_database.isEnabled() && this.headUtils == null) {
+            this.headUtils = new HeadUtils();
+            this.headUtils.init();
+        }
+
+        if (Support.placeholder_api.isEnabled() && this.papiUtils == null) {
+            this.papiUtils = new PapiUtils();
         }
 
         this.pluginManager.registerEvents(new GuiListener(), this.plugin);
@@ -89,7 +95,7 @@ public class FusionPaper extends FusionKyori {
 
     @Override
     public @NotNull final String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message) {
-        return Support.placeholder_api.isEnabled() && audience instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
+        return Support.placeholder_api.isEnabled() && audience instanceof Player player ? this.papiUtils.parse(player, message) : message;
     }
 
     @Override
@@ -132,11 +138,7 @@ public class FusionPaper extends FusionKyori {
         return this.registry;
     }
 
-    public @NotNull final HeadDatabaseAPI getApi() {
-        if (this.api == null) {
-            throw new FusionException("HeadDatabaseAPI is not initialized.");
-        }
-
-        return this.api;
+    public @Nullable final HeadUtils getHeadUtils() {
+        return this.headUtils;
     }
 }

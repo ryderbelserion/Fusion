@@ -17,6 +17,7 @@ import com.ryderbelserion.fusion.paper.api.builders.items.types.fireworks.Firewo
 import com.ryderbelserion.fusion.paper.api.builders.items.types.fireworks.FireworkStarBuilder;
 import com.ryderbelserion.fusion.kyori.enums.Support;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
+import com.ryderbelserion.fusion.paper.utils.HeadUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import dev.lone.itemsadder.api.CustomStack;
 import io.papermc.paper.datacomponent.DataComponentType;
@@ -537,9 +538,19 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public @NotNull B withSkull(@NotNull final String skull) {
         if (skull.isEmpty()) return (B) this;
 
-        @NotNull final HeadDatabaseAPI hdb = this.fusion.getApi();
+        final HeadUtils utils = this.fusion.getHeadUtils();
 
-        this.item = hdb.isHead(skull) ? hdb.getItemHead(skull) : ItemType.PLAYER_HEAD.createItemStack();
+        ItemStack item = ItemType.PLAYER_HEAD.createItemStack();
+
+        if (utils != null) {
+            @NotNull final HeadDatabaseAPI api = utils.getApi();
+
+            if (api.isHead(skull)) {
+                item = api.getItemHead(skull);
+            }
+        }
+
+        this.item = item;
 
         return (B) this;
     }
