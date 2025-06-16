@@ -168,7 +168,7 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
      * @return the list of string values or an empty list if missing
      */
     @Override
-    public @NotNull final List<String> getStringList(@NotNull final Object... path) {
+    public @NotNull final List<String> getStringList(@NotNull final List<String> defaultValue, @NotNull final Object... path) {
         final BasicConfigurationNode node = getConfiguration().node(path);
 
         try {
@@ -178,7 +178,7 @@ public class JsonCustomFile extends IAbstractConfigFile<JsonCustomFile, BasicCon
                 return list;
             }
 
-            return List.of();
+            return defaultValue;
         } catch (final SerializationException exception) {
             throw new FusionException(String.format("Failed to serialize %s!", node.path()), exception);
         }

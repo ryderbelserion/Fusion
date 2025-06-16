@@ -171,11 +171,22 @@ public abstract class IAbstractConfigFile<A extends IAbstractConfigFile<A, C, L>
     /**
      * Retrieves a list of string values from the configuration.
      *
+     * @param defaultValue the default value to return if the key is not found
+     * @param path the path to the configuration key
+     * @return the list of string values or an empty list if missing
+     */
+    public @NotNull List<String> getStringList(@NotNull final List<String> defaultValue, @NotNull final Object... path) {
+        return List.of();
+    }
+
+    /**
+     * Retrieves a list of string values from the configuration.
+     *
      * @param path the path to the configuration key
      * @return the list of string values or an empty list if missing
      */
     public @NotNull List<String> getStringList(@NotNull final Object... path) {
-        return List.of();
+        return getStringList(List.of(), path);
     }
 
     /**
