@@ -3,10 +3,12 @@ package com.ryderbelserion.fusion.example.commands.types;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.example.Fusion;
 import com.ryderbelserion.fusion.paper.api.builders.items.ItemBuilder;
+import com.ryderbelserion.fusion.paper.api.builders.items.types.SpawnerBuilder;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperCommand;
 import com.ryderbelserion.fusion.paper.api.commands.objects.AbstractPaperContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.permissions.PermissionDefault;
@@ -33,6 +35,10 @@ public class CommandItem extends AbstractPaperCommand {
                 .addPlaceholder("{name}", player.getName());
 
         itemBuilder.addItemToInventory(player.getInventory());
+
+        final @NotNull SpawnerBuilder spawnerItem = ItemBuilder.from(ItemType.SPAWNER).asSpawnerBuilder();
+
+        spawnerItem.withEntityType(EntityType.CREEPER).withSpawnCount(10).withSpawnDelay(20).withSpawnRange(5).build().addItemToInventory(player.getInventory());
 
         player.sendRichMessage("<green>Item added to inventory!");
     }

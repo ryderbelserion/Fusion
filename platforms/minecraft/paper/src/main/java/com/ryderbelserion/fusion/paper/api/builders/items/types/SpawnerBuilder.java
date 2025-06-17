@@ -4,6 +4,7 @@ import com.ryderbelserion.fusion.paper.api.builders.items.BaseItemBuilder;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,7 +48,9 @@ public class SpawnerBuilder extends BaseItemBuilder<SpawnerBuilder> {
         if (this.entityType == null) return this;
 
         getItem().editMeta(itemMeta -> {
-            if (itemMeta instanceof CreatureSpawner spawner) {
+            if (itemMeta instanceof BlockStateMeta state) {
+                final CreatureSpawner spawner = (CreatureSpawner) state.getBlockState();
+
                 if (this.count > 0) {
                     spawner.setSpawnCount(this.count);
                 }
@@ -61,6 +64,9 @@ public class SpawnerBuilder extends BaseItemBuilder<SpawnerBuilder> {
                 }
 
                 spawner.setSpawnedType(this.entityType);
+
+                // re-set to the block state
+                state.setBlockState(spawner);
             }
         });
 
