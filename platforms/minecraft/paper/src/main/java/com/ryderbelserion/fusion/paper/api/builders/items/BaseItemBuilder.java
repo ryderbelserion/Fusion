@@ -238,11 +238,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             if (enchantments != null) {
                 builder.addAll(enchantments.enchantments());
             }
-        } else if (this.item.hasData(DataComponentTypes.ENCHANTMENTS)) {
-            final ItemEnchantments enchantments = this.item.getData(DataComponentTypes.ENCHANTMENTS);
+        } else {
+            final Map<Enchantment, Integer> enchantments = this.item.getEnchantments();
 
-            if (enchantments != null) {
-                builder.addAll(enchantments.enchantments());
+            if (!enchantments.isEmpty()) {
+                builder.addAll(enchantments);
             }
         }
 
