@@ -52,15 +52,25 @@ public class ItemUtils {
             return null;
         }
 
-        @Nullable final ItemType key = getRegistryAccess().getRegistry(RegistryKey.ITEM).get(getKey(value));
+        // this checks if colon is included, colon represents a namespace.
+        // if the colon is not found, we default to the minecraft namespace.
+        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid item type.", value);
+            logger.error("{} is not a valid item key.", value);
 
             return null;
         }
 
-        return key;
+        @Nullable final ItemType itemType = getRegistryAccess().getRegistry(RegistryKey.ITEM).get(getKey(value));
+
+        if (itemType == null) {
+            logger.error("{} is not a valid item type.", key.asString());
+
+            return null;
+        }
+
+        return itemType;
     }
 
     public static @Nullable Sound getSound(@NotNull final String value) {
@@ -70,15 +80,25 @@ public class ItemUtils {
             return null;
         }
 
-        @Nullable final Sound key = getRegistryAccess().getRegistry(RegistryKey.SOUND_EVENT).get(getKey(value));
+        // this checks if colon is included, colon represents a namespace.
+        // if the colon is not found, we default to the minecraft namespace.
+        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid sound.", value);
+            logger.error("{} is not a valid sound key.", value);
 
             return null;
         }
 
-        return key;
+        @Nullable final Sound sound = getRegistryAccess().getRegistry(RegistryKey.SOUND_EVENT).get(getKey(value));
+
+        if (sound == null) {
+            logger.error("{} is not a valid sound.", key.asString());
+
+            return null;
+        }
+
+        return sound;
     }
 
     public static @Nullable Enchantment getEnchantment(@NotNull final String value) {
@@ -90,7 +110,7 @@ public class ItemUtils {
 
         // this checks if colon is included, colon represents a namespace.
         // if the colon is not found, we default to the minecraft namespace.
-        final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
+        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
             logger.error("{} is not a valid enchantment key.", value);
@@ -101,7 +121,7 @@ public class ItemUtils {
         @Nullable final Enchantment enchantment = getRegistryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(key);
 
         if (enchantment == null) {
-            logger.error("{} is not a valid enchantment.", value);
+            logger.error("{} is not a valid enchantment.", key.asString());
 
             return null;
         }
@@ -116,15 +136,25 @@ public class ItemUtils {
             return null;
         }
 
-        @Nullable final TrimPattern key = getRegistryAccess().getRegistry(RegistryKey.TRIM_PATTERN).get(getKey(value));
+        // this checks if colon is included, colon represents a namespace.
+        // if the colon is not found, we default to the minecraft namespace.
+        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid trim pattern.", value);
+            logger.error("{} is not a valid trim pattern key.", value);
 
             return null;
         }
 
-        return key;
+        @Nullable final TrimPattern trimPattern = getRegistryAccess().getRegistry(RegistryKey.TRIM_PATTERN).get(getKey(value));
+
+        if (trimPattern == null) {
+            logger.error("{} is not a valid trim pattern.", key.asString());
+
+            return null;
+        }
+
+        return trimPattern;
     }
 
     public static @Nullable TrimMaterial getTrimMaterial(@NotNull final String value) {
@@ -134,15 +164,25 @@ public class ItemUtils {
             return null;
         }
 
-        @Nullable final TrimMaterial key = getRegistryAccess().getRegistry(RegistryKey.TRIM_MATERIAL).get(getKey(value));
+        // this checks if colon is included, colon represents a namespace.
+        // if the colon is not found, we default to the minecraft namespace.
+        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid trim material.", value);
+            logger.error("{} is not a valid trim material key.", value);
 
             return null;
         }
 
-        return key;
+        @Nullable final TrimMaterial trimMaterial = getRegistryAccess().getRegistry(RegistryKey.TRIM_MATERIAL).get(getKey(value));
+
+        if (trimMaterial == null) {
+            logger.error("{} is not a valid trim material.", key.asString());
+
+            return null;
+        }
+
+        return trimMaterial;
     }
 
     public static @Nullable PotionType getPotionType(@NotNull final String value) {
@@ -152,15 +192,25 @@ public class ItemUtils {
             return null;
         }
 
-        @Nullable final PotionType key = getRegistryAccess().getRegistry(RegistryKey.POTION).get(getKey(value));
+        // this checks if colon is included, colon represents a namespace.
+        // if the colon is not found, we default to the minecraft namespace.
+        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid potion.", value);
+            logger.error("{} is not a valid potion type key.", value);
 
             return null;
         }
 
-        return key;
+        @Nullable final PotionType potionType = getRegistryAccess().getRegistry(RegistryKey.POTION).get(getKey(value));
+
+        if (potionType == null) {
+            logger.error("{} is not a valid potion.", key.asString());
+
+            return null;
+        }
+
+        return potionType;
     }
 
     public static @Nullable PotionEffectType getPotionEffect(@NotNull final String value) {
@@ -170,15 +220,25 @@ public class ItemUtils {
             return null;
         }
 
-        @Nullable final PotionEffectType key = getRegistryAccess().getRegistry(RegistryKey.MOB_EFFECT).get(getKey(value));
+        // this checks if colon is included, colon represents a namespace.
+        // if the colon is not found, we default to the minecraft namespace.
+        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid potion effect.", value);
+            logger.error("{} is not a valid potion effect key.", value);
 
             return null;
         }
 
-        return key;
+        @Nullable final PotionEffectType potionEffectType = getRegistryAccess().getRegistry(RegistryKey.MOB_EFFECT).get(getKey(value));
+
+        if (potionEffectType == null) {
+            logger.error("{} is not a valid potion effect.", key.asString());
+
+            return null;
+        }
+
+        return potionEffectType;
     }
 
     public static @Nullable Particle getParticleType(@NotNull final String value) {
@@ -188,15 +248,25 @@ public class ItemUtils {
             return null;
         }
 
-        @Nullable final Particle key = getRegistryAccess().getRegistry(RegistryKey.PARTICLE_TYPE).get(getKey(value));
+        // this checks if colon is included, colon represents a namespace.
+        // if the colon is not found, we default to the minecraft namespace.
+        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid particle.", value);
+            logger.error("{} is not a valid potion type key.", value);
 
             return null;
         }
 
-        return key;
+        @Nullable final Particle particle = getRegistryAccess().getRegistry(RegistryKey.PARTICLE_TYPE).get(getKey(value));
+
+        if (particle == null) {
+            logger.error("{} is not a valid particle.", key.asString());
+
+            return null;
+        }
+
+        return particle;
     }
 
     public static @Nullable PatternType getPatternType(@NotNull final String value) {
@@ -206,15 +276,25 @@ public class ItemUtils {
             return null;
         }
 
-        @Nullable final PatternType key = getRegistryAccess().getRegistry(RegistryKey.BANNER_PATTERN).get(getKey(value));
+        // this checks if colon is included, colon represents a namespace.
+        // if the colon is not found, we default to the minecraft namespace.
+        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid banner pattern.", value);
+            logger.error("{} is not a valid potion type key.", value);
 
             return null;
         }
 
-        return key;
+        @Nullable final PatternType patternType = getRegistryAccess().getRegistry(RegistryKey.BANNER_PATTERN).get(getKey(value));
+
+        if (patternType == null) {
+            logger.error("{} is not a valid banner pattern.", key.asString());
+
+            return null;
+        }
+
+        return patternType;
     }
 
     public static @Nullable EntityType getEntity(@NotNull final String value) {
@@ -224,15 +304,25 @@ public class ItemUtils {
             return null;
         }
 
-        @Nullable final EntityType key = getRegistryAccess().getRegistry(RegistryKey.ENTITY_TYPE).get(getKey(value));
+        // this checks if colon is included, colon represents a namespace.
+        // if the colon is not found, we default to the minecraft namespace.
+        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid entity.", value);
+            logger.error("{} is not a valid potion type key.", value);
 
             return null;
         }
 
-        return key;
+        @Nullable final EntityType entityType = getRegistryAccess().getRegistry(RegistryKey.ENTITY_TYPE).get(getKey(value));
+
+        if (entityType == null) {
+            logger.error("{} is not a valid entity.", key.asString());
+
+            return null;
+        }
+
+        return entityType;
     }
 
     public static @Nullable Attribute getAttribute(@NotNull final String value) {
@@ -242,15 +332,25 @@ public class ItemUtils {
             return null;
         }
 
-        @Nullable final Attribute key = getRegistryAccess().getRegistry(RegistryKey.ATTRIBUTE).get(getKey(value));
+        // this checks if colon is included, colon represents a namespace.
+        // if the colon is not found, we default to the minecraft namespace.
+        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid attribute.", value);
+            logger.error("{} is not a valid potion type key.", value);
 
             return null;
         }
 
-        return key;
+        @Nullable final Attribute attribute = getRegistryAccess().getRegistry(RegistryKey.ATTRIBUTE).get(getKey(value));
+
+        if (attribute == null) {
+            logger.error("{} is not a valid attribute.", key.asString());
+
+            return null;
+        }
+
+        return attribute;
     }
 
     private static @NotNull NamespacedKey getKey(@NotNull final String value) {
