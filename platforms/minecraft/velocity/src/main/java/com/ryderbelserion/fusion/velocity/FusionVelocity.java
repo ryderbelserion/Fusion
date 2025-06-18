@@ -18,8 +18,8 @@ public class FusionVelocity extends FusionKyori {
         load();
     }
 
-    public void enable(@NotNull final ProxyServer server, @NotNull final String rootCommand) {
-        this.commandManager = new VelocityCommandManager(server.getCommandManager(), server.getClass(), rootCommand);
+    public void enable(@NotNull final ProxyServer server, @NotNull final Object fusion, @NotNull final String rootCommand) {
+        this.commandManager = new VelocityCommandManager(server.getCommandManager(), fusion, rootCommand);
     }
 
     @Override

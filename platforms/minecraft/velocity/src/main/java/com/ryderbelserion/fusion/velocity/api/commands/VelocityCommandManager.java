@@ -2,9 +2,9 @@ package com.ryderbelserion.fusion.velocity.api.commands;
 
 import com.ryderbelserion.fusion.kyori.commands.CommandManager;
 import com.ryderbelserion.fusion.velocity.api.commands.objects.AbstractVelocityCommand;
+import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandMeta;
 import com.velocitypowered.api.command.CommandSource;
-import com.velocitypowered.api.proxy.ProxyServer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
@@ -12,10 +12,10 @@ import java.util.List;
 public class VelocityCommandManager extends CommandManager<CommandSource, AbstractVelocityCommand> {
 
     private final com.velocitypowered.api.command.CommandManager commandManager;
-    private final Class<? extends ProxyServer> classObject;
+    private final Object classObject;
     private final String root;
 
-    public VelocityCommandManager(@NotNull final com.velocitypowered.api.command.CommandManager commandManager, @NotNull final Class<? extends ProxyServer> classObject, @NotNull final String root) {
+    public VelocityCommandManager(@NotNull final com.velocitypowered.api.command.CommandManager commandManager, @NotNull final Object classObject, @NotNull final String root) {
         this.commandManager = commandManager;
         this.classObject = classObject;
         this.root = root;
@@ -28,7 +28,11 @@ public class VelocityCommandManager extends CommandManager<CommandSource, Abstra
                 .plugin(this.classObject)
                 .build();
 
-        this.commandManager.register(commandMeta, command.build());
+        final BrigadierCommand brigadierCommand = command.build();
+
+        command.getChildren().forEach(child -> brigadierCommand.getNode().addChild(child.build().getNode()));
+
+        this.commandManager.register(commandMeta, brigadierCommand);
     }
 
     @Override
