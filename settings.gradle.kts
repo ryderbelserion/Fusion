@@ -34,6 +34,7 @@ listOf(
     //"examples/fabric" to "fabric-example",
     "examples/paper" to "paper-example",
 
+    "platforms/minecraft/velocity" to "velocity",
     "platforms/minecraft/neoforge" to "neoforge",
     //"platforms/minecraft/fabric" to "fabric",
     "platforms/minecraft/paper" to "paper",

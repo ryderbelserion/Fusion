@@ -1,30 +1,25 @@
-package com.ryderbelserion.fusion.paper.api.commands.objects;
+package com.ryderbelserion.fusion.velocity.api.commands.objects;
 
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.commands.objects.AbstractCommand;
-import io.papermc.paper.command.brigadier.CommandSourceStack;
-import io.papermc.paper.command.brigadier.MessageComponentSerializer;
-import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionDefault;
+import com.velocitypowered.api.command.BrigadierCommand;
+import com.velocitypowered.api.command.CommandSource;
+import com.velocitypowered.api.command.VelocityBrigadierMessage;
+import com.velocitypowered.api.proxy.Player;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class AbstractPaperCommand extends AbstractCommand<CommandSourceStack, LiteralCommandNode<CommandSourceStack>, Player, AbstractPaperContext> {
+public abstract class AbstractVelocityCommand extends AbstractCommand<CommandSource, BrigadierCommand, Player, AbstractVelocityContext> {
 
     private final FusionKyori kyori = (FusionKyori) FusionCore.Provider.get();
 
-    public @NotNull List<AbstractPaperCommand> getChildren() {
+    public @NotNull List<AbstractVelocityCommand> getChildren() {
         return new ArrayList<>();
-    }
-
-    public @NotNull PermissionDefault getPermissionDefault() {
-        return PermissionDefault.OP;
     }
 
     @Override
@@ -33,7 +28,7 @@ public abstract class AbstractPaperCommand extends AbstractCommand<CommandSource
             if (tooltip.isEmpty()) {
                 builder.suggest(count);
             } else {
-                builder.suggest(count, MessageComponentSerializer.message().serialize(this.kyori.color(tooltip)));
+                builder.suggest(count, VelocityBrigadierMessage.tooltip(this.kyori.color(tooltip)));
             }
         }
 
@@ -48,7 +43,7 @@ public abstract class AbstractPaperCommand extends AbstractCommand<CommandSource
             if (tooltip.isEmpty()) {
                 builder.suggest(String.valueOf(count / 10.0));
             } else {
-                builder.suggest(String.valueOf(count / 10.0), MessageComponentSerializer.message().serialize(this.kyori.color(tooltip)));
+                builder.suggest(String.valueOf(count / 10.0), VelocityBrigadierMessage.tooltip(this.kyori.color(tooltip)));
             }
 
             count++;
@@ -65,7 +60,7 @@ public abstract class AbstractPaperCommand extends AbstractCommand<CommandSource
             if (tooltip.isEmpty()) {
                 builder.suggest(uuid);
             } else {
-                builder.suggest(uuid, MessageComponentSerializer.message().serialize(this.kyori.color(tooltip)));
+                builder.suggest(uuid, VelocityBrigadierMessage.tooltip(this.kyori.color(tooltip)));
             }
         }
 

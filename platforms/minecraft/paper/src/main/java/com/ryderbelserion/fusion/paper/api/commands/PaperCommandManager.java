@@ -37,14 +37,14 @@ public class PaperCommandManager extends CommandManager<CommandSourceStack, Abst
         this.lifecycle.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands registry = event.registrar();
 
-            registerPermissions(command.getPermissionMode(), command.getPermissions());
+            registerPermissions(command.getPermissionDefault(), command.getPermissions());
 
             this.commands.add(command);
 
             final LiteralCommandNode<CommandSourceStack> root = command.build();
 
             command.getChildren().forEach(child -> {
-                registerPermissions(child.getPermissionMode(), child.getPermissions());
+                registerPermissions(child.getPermissionDefault(), child.getPermissions());
 
                 this.commands.add(child);
 

@@ -58,7 +58,7 @@ public class CommandBypass extends AbstractPaperCommand {
     }
 
     @Override
-    public @NotNull final PermissionDefault getPermissionMode() {
+    public @NotNull final PermissionDefault getPermissionDefault() {
         return PermissionDefault.OP;
     }
 

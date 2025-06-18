@@ -2,19 +2,16 @@ package com.ryderbelserion.fusion.kyori.commands.objects;
 
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
-public abstract class AbstractCommand<S, D, P, A extends AbstractContext<S, P>> {
+public abstract class AbstractCommand<S, L, P, A extends AbstractContext<S, P>> {
 
     public abstract void execute(@NotNull final A context);
 
     public abstract boolean requirement(@NotNull final S sender);
 
-    public abstract @NotNull LiteralCommandNode<S> build();
-
-    public abstract D getPermissionMode();
+    public abstract @NotNull L build();
 
     public @NotNull List<String> getPermissions() {
         return List.of();
