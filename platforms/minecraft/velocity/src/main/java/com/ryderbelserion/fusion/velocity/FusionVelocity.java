@@ -34,7 +34,7 @@ public class FusionVelocity extends FusionKyori {
     }
 
     @Override
-    public @NotNull final CommandManager getCommandManager() {
-        return null;
+    public @NotNull final VelocityCommandManager getCommandManager() {
+        return this.commandManager;
     }
 }
