@@ -5,6 +5,7 @@ import com.ryderbelserion.fusion.velocity.api.commands.VelocityCommandManager;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 
@@ -29,7 +30,7 @@ public class FusionVelocity extends FusionKyori {
 
     @Override
     public @NotNull final String chomp(@NotNull final String message) {
-        return message;
+        return StringUtils.chomp(message);
     }
 
     @Override

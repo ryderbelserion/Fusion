@@ -13,6 +13,8 @@ dependencies {
         exclude("org.spongepowered", "configurate-core")
     }
 
+    implementation(libs.apache.commons)
+
     compileOnly(libs.velocity)
     annotationProcessor(libs.velocity)
 }
