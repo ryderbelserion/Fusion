@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.example.commands;
 
 import com.mojang.brigadier.Command;
-import com.ryderbelserion.fusion.example.commands.types.CommandPlugins;
 import com.ryderbelserion.fusion.example.commands.types.CommandReload;
 import com.ryderbelserion.fusion.velocity.api.commands.objects.AbstractVelocityCommand;
 import com.ryderbelserion.fusion.velocity.api.commands.objects.AbstractVelocityContext;
@@ -46,6 +45,6 @@ public class BaseCommand extends AbstractVelocityCommand {
 
     @Override
     public @NotNull final List<AbstractVelocityCommand> getChildren() {
-        return List.of(new CommandReload(), new CommandPlugins(this.server));
+        return List.of(new CommandReload());
     }
 }
