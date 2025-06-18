@@ -9,7 +9,7 @@ configurate = "4.2.0" # https://github.com/SpongePowered/Configurate
 annotations = "24.1.0" # https://github.com/JetBrains/java-annotations
 
 ## Kyori
-adventure = "4.21.0" # https://github.com/KyoriPowered/adventure
+adventure = "4.22.0" # https://github.com/KyoriPowered/adventure
 
 ## Minecraft
 minecraft = "1.21.6" # https://minecraft.net
