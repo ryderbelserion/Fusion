@@ -2,7 +2,7 @@ name: 'Fusion'
 main: 'com.ryderbelserion.fusion.example.Fusion'
 
 description: 'I would like nuclear fusion to become a practical power source.'
-api-version: '1.21.5'
+api-version: '1.21.6'
 version: '1.0.0'
 
 folia-supported: true
