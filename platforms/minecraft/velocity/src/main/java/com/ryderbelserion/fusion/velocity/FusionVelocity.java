@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.velocity;
 
 import com.ryderbelserion.fusion.kyori.FusionKyori;
-import com.ryderbelserion.fusion.kyori.commands.CommandManager;
 import com.ryderbelserion.fusion.velocity.api.commands.VelocityCommandManager;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.audience.Audience;
