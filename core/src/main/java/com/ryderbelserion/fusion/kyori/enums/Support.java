@@ -1,19 +1,19 @@
 package com.ryderbelserion.fusion.kyori.enums;
 
-import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
 
 public enum Support {
 
-    oraxen("Oraxen"),
-    nexo("Nexo"),
-    items_adder("ItemsAdder"),
-    head_database("HeadDatabase"),
     placeholder_api("PlaceholderAPI"),
-    yard_watch("YardWatch");
+    head_database("HeadDatabase"),
+    items_adder("ItemsAdder"),
+    yard_watch("YardWatch"),
+    oraxen("Oraxen"),
+    nexo("Nexo");
 
-    private final FusionKyori kyori = (FusionKyori) FusionCore.Provider.get();
+    private final FusionKyori kyori = (FusionKyori) FusionProvider.get();
 
     private final String name;
 

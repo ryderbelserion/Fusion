@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.kyori.components;
 
+import com.ryderbelserion.fusion.core.api.enums.LoggerType;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
@@ -10,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Handles logger messages for multiple platforms.
  */
-public class KyoriLogger implements ILogger {
+public class KyoriLogger extends ILogger {
 
     private final ComponentLogger logger;
     private final FusionKyori kyori;
@@ -35,6 +36,8 @@ public class KyoriLogger implements ILogger {
      */
     @Override
     public void log(@NotNull final LoggerType type, @NotNull final String message, @NotNull final Throwable throwable) {
+        if (!this.kyori.isVerbose()) return;
+
         final Component component = AdvUtils.parse(message);
 
         switch (type) {

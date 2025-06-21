@@ -3,9 +3,9 @@ package com.ryderbelserion.fusion.paper.api.builders.items.legacy;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.nexomc.nexo.api.NexoItems;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.kyori.utils.AdvUtils;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.kyori.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.api.builders.PlayerBuilder;
@@ -79,7 +79,7 @@ import java.util.function.Consumer;
 
 public class ItemBuilder<T extends ItemBuilder<T>> {
 
-    private final FusionPaper fusion = (FusionPaper) FusionCore.Provider.get();
+    private final FusionPaper fusion = (FusionPaper) FusionProvider.get();
 
     private final NbtBuilder nbt = new NbtBuilder();
 

@@ -2,9 +2,9 @@ package com.ryderbelserion.fusion.paper.api.builders.items;
 
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.kyori.components.builders.ComponentBuilder;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.kyori.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
@@ -60,7 +60,7 @@ import java.util.Set;
 
 public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
-    protected final FusionPaper fusion = (FusionPaper) FusionCore.Provider.get();
+    protected final FusionPaper fusion = (FusionPaper) FusionProvider.get();
 
     private Map<String, String> placeholders = new HashMap<>();
 

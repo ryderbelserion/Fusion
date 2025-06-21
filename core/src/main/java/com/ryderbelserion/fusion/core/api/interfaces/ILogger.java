@@ -1,11 +1,12 @@
 package com.ryderbelserion.fusion.core.api.interfaces;
 
+import com.ryderbelserion.fusion.core.api.enums.LoggerType;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Handles logger messages for multiple platforms.
  */
-public interface ILogger {
+public abstract class ILogger {
 
     /**
      * Sends a log message parsed with MiniMessage.
@@ -14,7 +15,7 @@ public interface ILogger {
      * @param message   the message to send
      * @param throwable the throwable
      */
-    void log(@NotNull final LoggerType type, @NotNull final String message, @NotNull final Throwable throwable);
+    public abstract void log(@NotNull final LoggerType type, @NotNull final String message, @NotNull final Throwable throwable);
 
     /**
      * Sends a log message parsed with MiniMessage.
@@ -23,7 +24,7 @@ public interface ILogger {
      * @param message the message to send
      * @param args    the args
      */
-    void log(@NotNull final LoggerType type, @NotNull final String message, @NotNull final Object... args);
+    public abstract void log(@NotNull final LoggerType type, @NotNull final String message, @NotNull final Object... args);
 
     /**
      * Sends a warning log message parsed with MiniMessage.
@@ -31,7 +32,7 @@ public interface ILogger {
      * @param message   the message to send
      * @param throwable the throwable
      */
-    default void warn(@NotNull final String message, @NotNull final Throwable throwable) {
+    public void warn(@NotNull final String message, @NotNull final Throwable throwable) {
         log(LoggerType.WARNING, message, throwable);
     }
 
@@ -41,7 +42,7 @@ public interface ILogger {
      * @param message   the message to send
      * @param throwable the throwable
      */
-    default void error(@NotNull final String message, @NotNull final Throwable throwable) {
+    public void error(@NotNull final String message, @NotNull final Throwable throwable) {
         log(LoggerType.ERROR, message, throwable);
     }
 
@@ -51,7 +52,7 @@ public interface ILogger {
      * @param message   the message to send
      * @param throwable the throwable
      */
-    default void safe(@NotNull final String message, @NotNull final Throwable throwable) {
+    public void safe(@NotNull final String message, @NotNull final Throwable throwable) {
         log(LoggerType.SAFE, message, throwable);
     }
 
@@ -61,7 +62,7 @@ public interface ILogger {
      * @param message the message to send
      * @param args    the args
      */
-    default void warn(@NotNull final String message, @NotNull final Object... args) {
+    public void warn(@NotNull final String message, @NotNull final Object... args) {
         log(LoggerType.WARNING, message, args);
     }
 
@@ -71,7 +72,7 @@ public interface ILogger {
      * @param message the message to send
      * @param args    the args
      */
-    default void error(@NotNull final String message, @NotNull final Object... args) {
+    public void error(@NotNull final String message, @NotNull final Object... args) {
         log(LoggerType.ERROR, message, args);
     }
 
@@ -81,25 +82,7 @@ public interface ILogger {
      * @param message the message to send
      * @param args    the args
      */
-    default void safe(@NotNull final String message, final Object... args) {
+    public void safe(@NotNull final String message, final Object... args) {
         log(LoggerType.SAFE, message, args);
-    }
-
-    /**
-     * Available logger types when using {@code ILogger#log(@NotNull final LoggerType type, @NotNull final String message, @NotNull final Object... args) }
-     */
-    enum LoggerType {
-        /**
-         * Safe logging type!
-         */
-        SAFE,
-        /**
-         * Shady logging type!
-         */
-        WARNING,
-        /**
-         * WEEWOO WEEWOO
-         */
-        ERROR
     }
 }

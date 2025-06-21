@@ -3,7 +3,7 @@ package com.ryderbelserion.fusion.paper.api.commands.objects;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.commands.objects.AbstractCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public abstract class AbstractPaperCommand extends AbstractCommand<CommandSourceStack, LiteralCommandNode<CommandSourceStack>, Player, AbstractPaperContext> {
 
-    private final FusionKyori kyori = (FusionKyori) FusionCore.Provider.get();
+    private final FusionKyori kyori = (FusionKyori) FusionProvider.get();
 
     public @NotNull List<AbstractPaperCommand> getChildren() {
         return new ArrayList<>();

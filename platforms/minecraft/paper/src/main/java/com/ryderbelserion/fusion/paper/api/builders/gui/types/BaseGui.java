@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.api.builders.gui.types;
 
-import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
@@ -39,7 +39,7 @@ import java.util.Set;
 
 public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
 
-    private final FusionPaper paper = (FusionPaper) FusionCore.Provider.get();
+    private final FusionPaper paper = (FusionPaper) FusionProvider.get();
 
     private final JavaPlugin plugin;
 

@@ -2,9 +2,9 @@ package com.ryderbelserion.fusion.velocity.api.commands.objects;
 
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.kyori.FusionKyori;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.kyori.commands.objects.AbstractCommand;
+import com.ryderbelserion.fusion.velocity.FusionVelocity;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.VelocityBrigadierMessage;
@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public abstract class AbstractVelocityCommand extends AbstractCommand<CommandSource, BrigadierCommand, Player, AbstractVelocityContext> {
 
-    private final FusionKyori kyori = (FusionKyori) FusionCore.Provider.get();
+    private final FusionVelocity fusion = (FusionVelocity) FusionProvider.get();
 
     public @NotNull List<AbstractVelocityCommand> getChildren() {
         return new ArrayList<>();
@@ -28,7 +28,7 @@ public abstract class AbstractVelocityCommand extends AbstractCommand<CommandSou
             if (tooltip.isEmpty()) {
                 builder.suggest(count);
             } else {
-                builder.suggest(count, VelocityBrigadierMessage.tooltip(this.kyori.color(tooltip)));
+                builder.suggest(count, VelocityBrigadierMessage.tooltip(this.fusion.color(tooltip)));
             }
         }
 
@@ -43,7 +43,7 @@ public abstract class AbstractVelocityCommand extends AbstractCommand<CommandSou
             if (tooltip.isEmpty()) {
                 builder.suggest(String.valueOf(count / 10.0));
             } else {
-                builder.suggest(String.valueOf(count / 10.0), VelocityBrigadierMessage.tooltip(this.kyori.color(tooltip)));
+                builder.suggest(String.valueOf(count / 10.0), VelocityBrigadierMessage.tooltip(this.fusion.color(tooltip)));
             }
 
             count++;
@@ -60,7 +60,7 @@ public abstract class AbstractVelocityCommand extends AbstractCommand<CommandSou
             if (tooltip.isEmpty()) {
                 builder.suggest(uuid);
             } else {
-                builder.suggest(uuid, VelocityBrigadierMessage.tooltip(this.kyori.color(tooltip)));
+                builder.suggest(uuid, VelocityBrigadierMessage.tooltip(this.fusion.color(tooltip)));
             }
         }
 

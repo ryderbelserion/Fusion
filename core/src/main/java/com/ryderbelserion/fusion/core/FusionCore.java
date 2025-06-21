@@ -7,7 +7,6 @@ import com.ryderbelserion.fusion.core.api.plugins.PluginBuilder;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
@@ -26,7 +25,7 @@ public abstract class FusionCore {
     private final Path path;
 
     protected FusionCore(@NotNull final Path path) {
-        Provider.register(this);
+        FusionProvider.register(this);
 
         this.path = path;
 
@@ -86,7 +85,7 @@ public abstract class FusionCore {
     }
 
     public void disable() {
-        Provider.unregister();
+        FusionProvider.unregister();
 
         this.addonManager.purge();
     }
@@ -129,25 +128,5 @@ public abstract class FusionCore {
 
     public @NotNull final Path getPath() {
         return this.path;
-    }
-
-    public static class Provider {
-        private static @Nullable FusionCore core;
-
-        public static void register(@NotNull final FusionCore core) {
-            Provider.core = core;
-        }
-
-        public static void unregister() {
-            Provider.core = null;
-        }
-
-        public static @NotNull FusionCore get() {
-            if (core == null) {
-                throw new FusionException("FusionCore is not initialized.");
-            }
-
-            return core;
-        }
     }
 }

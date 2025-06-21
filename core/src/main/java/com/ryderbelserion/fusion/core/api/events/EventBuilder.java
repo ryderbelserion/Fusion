@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.core.api.events;
 
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.events.interfaces.IEvent;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class EventBuilder {
 
-    private final FusionCore api = FusionCore.Provider.get();
+    private final FusionCore api = FusionProvider.get();
 
     private final List<IEvent> modules = new ArrayList<>();
 

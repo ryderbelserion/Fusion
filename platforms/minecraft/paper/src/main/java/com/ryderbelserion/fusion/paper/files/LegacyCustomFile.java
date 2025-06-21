@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.paper.files;
 
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
@@ -12,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class LegacyCustomFile {
 
-    private final FusionCore api = FusionCore.Provider.get();
+    private final FusionCore api = FusionProvider.get();
 
     private final ILogger logger = this.api.getLogger();
 

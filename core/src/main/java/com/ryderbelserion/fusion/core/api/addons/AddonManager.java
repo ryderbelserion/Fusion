@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.core.api.addons;
 
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.addons.objects.Addon;
 import com.ryderbelserion.fusion.core.api.addons.interfaces.IAddon;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
@@ -25,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class AddonManager {
 
-    private final FusionCore core = FusionCore.Provider.get();
+    private final FusionCore core = FusionProvider.get();
 
     private final Path path = this.core.getPath();
 

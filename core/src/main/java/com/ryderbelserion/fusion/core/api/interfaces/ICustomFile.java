@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.core.api.interfaces;
 
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.files.FileType;
 import com.ryderbelserion.fusion.core.files.FileAction;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public abstract class ICustomFile<A extends ICustomFile<A>> {
 
-    protected final FusionCore fusion = FusionCore.Provider.get();
+    protected final FusionCore fusion = FusionProvider.get();
     protected final ILogger logger = this.fusion.getLogger();
 
     private final List<FileAction> actions;

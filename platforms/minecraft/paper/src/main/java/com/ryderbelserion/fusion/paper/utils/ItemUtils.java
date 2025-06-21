@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.paper.utils;
 
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.registry.RegistryAccess;
@@ -25,7 +26,7 @@ import java.util.Optional;
 
 public class ItemUtils {
 
-    private static final FusionCore fusion = FusionCore.Provider.get();
+    private static final FusionCore fusion = FusionProvider.get();
 
     private static final ILogger logger = fusion.getLogger();
 

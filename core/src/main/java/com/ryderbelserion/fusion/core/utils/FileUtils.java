@@ -1,8 +1,8 @@
 package com.ryderbelserion.fusion.core.utils;
 
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.files.FileAction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,11 +37,9 @@ import java.util.zip.ZipOutputStream;
  */
 public class FileUtils {
 
-    private static final FusionCore fusion = FusionCore.Provider.get();
+    private static final FusionCore fusion = FusionProvider.get();
 
     private static final Path dataFolder = fusion.getPath();
-
-    private static final ILogger logger = fusion.getLogger();
 
     /**
      * Extracts a set of files from inside src/main/resources based on the input provided.

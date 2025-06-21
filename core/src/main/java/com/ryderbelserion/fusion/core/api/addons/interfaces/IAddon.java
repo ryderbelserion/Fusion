@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.core.api.addons.interfaces;
 
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.addons.AddonClassLoader;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
@@ -12,7 +13,7 @@ import java.nio.file.Path;
  */
 public abstract class IAddon {
 
-    protected final FusionCore fusion = FusionCore.Provider.get();
+    protected final FusionCore fusion = FusionProvider.get();
 
     private AddonClassLoader loader;
     private boolean isEnabled;

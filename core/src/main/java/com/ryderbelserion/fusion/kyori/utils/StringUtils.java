@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.kyori.utils;
 
-import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
 import java.math.RoundingMode;
@@ -16,7 +16,7 @@ public class StringUtils {
     private static final Pattern BRACKET_PATTERN = Pattern.compile("\\{(.*?)}");
     private static final Pattern ANGLE_PATTERN = Pattern.compile("[<>]");
 
-    private static final FusionKyori kyori = (FusionKyori) FusionCore.Provider.get();
+    private static final FusionKyori kyori = (FusionKyori) FusionProvider.get();
 
     public static @NotNull Optional<Number> tryParseInt(@NotNull final String value) {
         try {
