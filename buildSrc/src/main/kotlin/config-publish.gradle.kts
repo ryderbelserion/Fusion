@@ -7,15 +7,15 @@ plugins {
 
 tasks {
     javadoc {
-        val name = rootProject.name.replaceFirstChar { it.uppercase() }
+        val name = rootProject.name
         val options = options as StandardJavadocDocletOptions
 
         options.encoding = Charsets.UTF_8.name()
         options.overview("src/main/javadoc/overview.html")
         options.use()
         options.isDocFilesSubDirs = true
-        options.windowTitle("$name ${rootProject.version} API Documentation")
-        options.docTitle("<h1>$name ${rootProject.version} API</h1>")
+        options.windowTitle("$name ${project.version} API Documentation")
+        options.docTitle("<h1>$name ${project.version} API</h1>")
         options.bottom("Copyright © 2025 Ryder Belserion")
         options.linkSource(true)
         options.addBooleanOption("html5", true)
@@ -25,7 +25,7 @@ tasks {
         publications {
             create<MavenPublication>("maven") {
                 groupId = rootProject.group as String
-                artifactId = project.name
+                artifactId = "${rootProject.name.lowercase()}-${project.name}"
 
                 from(components["java"])
             }

@@ -7,36 +7,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = "fusion"
+rootProject.name = "Fusion"
 
-fun includeProject(pair: Pair<String, String>): Unit = includeProject(pair.first, pair.second)
-
-fun includeProject(name: String, block: ProjectDescriptor.() -> Unit) {
-    include(name)
-    project(":$name").apply(block)
-}
-
-fun includeProject(path: String, name: String) {
-    includeProject(name) {
-        this.name = "${rootProject.name}-$name"
-        this.projectDir = File(path)
-    }
-}
-
-fun includeProject(name: String) {
-    includeProject(name) {
-        this.name = "${rootProject.name}-$name"
-    }
-}
-
-listOf(
-    "examples/addons/mob-addon" to "mob-addon-example",
-    //"examples/fabric" to "fabric-example",
-    "examples/paper" to "paper-example",
-
-    "platforms/minecraft/neoforge" to "neoforge",
-    //"platforms/minecraft/fabric" to "fabric",
-    "platforms/minecraft/paper" to "paper",
-
-    "core" to "core"
-).forEach(::includeProject)
+include("velocity", "neoforge", "common", "addons", "fabric", "paper")
