@@ -49,7 +49,7 @@ public class FusionPaper extends FusionCommon {
         this.registry = new StructureRegistry(this.plugin);
 
         if (this.fileManager == null) {
-            this.fileManager = new LegacyFileManager(this.plugin);
+            this.fileManager = new LegacyFileManager();
         }
 
         this.commandManager = new PaperCommandManager(this.plugin);

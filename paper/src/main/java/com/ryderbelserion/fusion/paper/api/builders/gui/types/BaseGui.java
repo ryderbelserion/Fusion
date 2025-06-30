@@ -315,8 +315,13 @@ public abstract class BaseGui implements InventoryHolder, Listener, IBaseGui {
     }
 
     @Override
+    public void updateTitle(@NotNull final Player player, @NotNull final Map<String, String> placeholders) {
+        ColorUtils.updateTitle(player, this.title, placeholders);
+    }
+
+    @Override
     public void updateTitle(@NotNull final Player player) {
-        ColorUtils.updateTitle(player, this.title);
+        updateTitle(player, new HashMap<>());
     }
 
     @Override

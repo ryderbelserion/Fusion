@@ -7,7 +7,6 @@ import com.ryderbelserion.fusion.common.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.common.api.enums.FileAction;
 import com.ryderbelserion.fusion.common.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.common.api.utils.FileUtils;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
@@ -31,11 +30,7 @@ public class LegacyFileManager {
 
     private final Map<String, FileType> folders = new HashMap<>();
 
-    private final JavaPlugin plugin;
-
-    public LegacyFileManager(@NotNull final JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
+    public LegacyFileManager() {}
 
     public @NotNull final LegacyFileManager addFolder(@NotNull final String folder, @NotNull final FileType fileType) {
         if (folder.isBlank()) {

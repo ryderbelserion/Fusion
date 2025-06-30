@@ -48,6 +48,8 @@ public interface IBaseGui {
 
     void close(@NotNull final Player player);
 
+    void updateTitle(@NotNull final Player player, @NotNull final Map<String, String> placeholders);
+
     void updateTitle(@NotNull final Player player);
 
     void updateInventory(@NotNull final Player player);

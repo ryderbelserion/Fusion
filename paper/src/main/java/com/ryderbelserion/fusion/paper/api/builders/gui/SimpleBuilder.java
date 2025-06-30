@@ -23,6 +23,7 @@ public final class SimpleBuilder extends BaseGuiBuilder<Gui, SimpleBuilder> {
         gui = this.guiType == null || this.guiType == GuiType.CHEST ? new Gui(this.plugin, getTitle(), getRows(), getInteractionComponents()) : new Gui(this.plugin, getTitle(), this.guiType, getInteractionComponents());
 
         Consumer<Gui> consumer = getConsumer();
+
         if (consumer != null) consumer.accept(gui);
 
         return gui;

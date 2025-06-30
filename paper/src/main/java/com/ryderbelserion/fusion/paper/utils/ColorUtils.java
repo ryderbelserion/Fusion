@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.utils;
 
-import com.ryderbelserion.fusion.common.api.utils.AdvUtils;
+import com.ryderbelserion.fusion.common.FusionProvider;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,19 +13,25 @@ import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ColorUtils {
 
-    public static void updateTitle(@NotNull final Player player, @NotNull final String title) {
+    public static void updateTitle(@NotNull final Player player, @NotNull final String title, @NotNull final Map<String, String> placeholders) {
         final ServerPlayer entityPlayer = (ServerPlayer) ((CraftEntity) player).getHandle();
 
         final int containerId = entityPlayer.containerMenu.containerId;
 
         final MenuType<?> windowType = CraftContainer.getNotchInventoryType(player.getOpenInventory().getTopInventory());
 
-        entityPlayer.connection.send(new ClientboundOpenScreenPacket(containerId, windowType, CraftChatMessage.fromJSON(JSONComponentSerializer.json().serialize(AdvUtils.parse(title)))));
+        entityPlayer.connection.send(new ClientboundOpenScreenPacket(containerId, windowType, CraftChatMessage.fromJSON(JSONComponentSerializer.json().serialize(FusionProvider.get().color(player, title, placeholders)))));
 
         player.updateInventory();
+    }
+
+    public static void updateTitle(@NotNull final Player player, @NotNull final String title) {
+        updateTitle(player, title, new HashMap<>());
     }
 
     public static @NotNull DyeColor getDyeColor(@NotNull final String value) {
