@@ -1,7 +1,5 @@
 pluginManagement {
     repositories {
-        maven("https://maven.fabricmc.net/")
-
         gradlePluginPortal()
         mavenCentral()
     }
@@ -9,4 +7,24 @@ pluginManagement {
 
 rootProject.name = "Fusion"
 
-include("velocity", "neoforge", "core", "addons", "fabric", "paper")
+listOf(
+    "velocity",
+    "paper",
+    "core",
+
+    // stand alone
+    "addons"
+).forEach {
+    includeProject(it)
+}
+
+fun includeProject(name: String) {
+    includeProject(name) {
+        this.name = "${rootProject.name.lowercase()}-$name"
+    }
+}
+
+fun includeProject(name: String, block: ProjectDescriptor.() -> Unit) {
+    include(name)
+    project(":$name").apply(block)
+}

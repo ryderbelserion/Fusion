@@ -15,7 +15,7 @@ dependencies {
     annotationProcessor(libs.velocity)
     compileOnly(libs.velocity)
 
-    api(project(":core"))
+    api(project(":fusion-core"))
 }
 
 tasks {
