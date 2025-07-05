@@ -25,7 +25,7 @@ tasks {
         publications {
             create<MavenPublication>("maven") {
                 groupId = rootProject.group as String
-                artifactId = "${rootProject.name.lowercase()}-${project.name}"
+                artifactId = project.name
 
                 from(components["java"])
             }
