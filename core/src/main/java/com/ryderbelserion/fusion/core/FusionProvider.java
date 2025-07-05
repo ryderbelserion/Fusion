@@ -20,7 +20,6 @@ public class FusionProvider {
         FusionProvider.api = null;
     }
 
-    @ApiStatus.Internal
     public static @NotNull FusionCore get() {
         if (api == null) {
             throw new FusionException("Fusion API is not yet initialized.");

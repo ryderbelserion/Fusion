@@ -29,4 +29,9 @@ public class FusionVelocity extends FusionCore {
     public @NotNull final FusionCommandManager getCommandManager() {
         return this.commandManager;
     }
+
+    @Override
+    public @NotNull final String chomp(@NotNull final String message) {
+        return message;
+    }
 }

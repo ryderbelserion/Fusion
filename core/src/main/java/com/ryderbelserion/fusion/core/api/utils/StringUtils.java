@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -16,6 +17,18 @@ public class StringUtils {
     private static final Pattern ANGLE_PATTERN = Pattern.compile("[<>]");
 
     private static final FusionCore fusion = FusionProvider.get();
+
+    public static @NotNull String toString(@NotNull final List<String> list) {
+        if (list.isEmpty()) return "";
+
+        final StringBuilder message = new StringBuilder(list.size());
+
+        for (final String line : list) {
+            message.append(line).append("\n");
+        }
+
+        return fusion.chomp(message.toString());
+    }
 
     public static @NotNull Optional<Number> tryParseInt(@NotNull final String value) {
         try {

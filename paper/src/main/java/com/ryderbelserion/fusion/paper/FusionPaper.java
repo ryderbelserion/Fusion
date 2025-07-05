@@ -12,6 +12,7 @@ import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -76,6 +77,11 @@ public class FusionPaper extends FusionCore {
     @Override
     public @NotNull final PaperCommandManager getCommandManager() {
         return this.commandManager;
+    }
+
+    @Override
+    public @NotNull final String chomp(@NotNull final String message) {
+        return StringUtils.chomp(message);
     }
 
     @Override

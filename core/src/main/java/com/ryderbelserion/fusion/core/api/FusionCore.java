@@ -68,6 +68,8 @@ public abstract class FusionCore {
 
     public abstract ICommandManager getCommandManager();
 
+    public abstract String chomp(@NotNull final String message);
+
     public boolean isPluginEnabled(final String name) {
         return false;
     }
