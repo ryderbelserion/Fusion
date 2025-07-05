@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.fabric;
 
-import com.ryderbelserion.fusion.common.api.FusionCommon;
+import com.ryderbelserion.fusion.core.api.FusionCommon;
 import com.ryderbelserion.fusion.fabric.api.commands.FabricCommandManager;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;

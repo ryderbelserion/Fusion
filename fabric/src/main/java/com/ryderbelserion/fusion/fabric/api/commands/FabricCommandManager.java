@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.fabric.api.commands;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.fusion.common.api.commands.ICommandManager;
+import com.ryderbelserion.fusion.core.api.commands.ICommandManager;
 import com.ryderbelserion.fusion.fabric.api.commands.objects.FabricCommand;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandSourceStack;

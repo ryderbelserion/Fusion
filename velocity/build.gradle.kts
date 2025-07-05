@@ -12,14 +12,10 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.configurate.json) {
-        exclude("com.google.code.gson", "gson") // gson is present literally everywhere
-    }
-
     annotationProcessor(libs.velocity)
     compileOnly(libs.velocity)
 
-    api(project(":common"))
+    api(project(":core"))
 }
 
 tasks {

@@ -1,12 +1,12 @@
 package com.ryderbelserion.fusion.paper.files;
 
-import com.ryderbelserion.fusion.common.api.FusionCommon;
-import com.ryderbelserion.fusion.common.FusionProvider;
-import com.ryderbelserion.fusion.common.api.enums.FileType;
-import com.ryderbelserion.fusion.common.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.common.api.enums.FileAction;
-import com.ryderbelserion.fusion.common.api.interfaces.ILogger;
-import com.ryderbelserion.fusion.common.api.utils.FileUtils;
+import com.ryderbelserion.fusion.core.api.FusionCommon;
+import com.ryderbelserion.fusion.core.FusionProvider;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.enums.FileAction;
+import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
+import com.ryderbelserion.fusion.core.api.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;

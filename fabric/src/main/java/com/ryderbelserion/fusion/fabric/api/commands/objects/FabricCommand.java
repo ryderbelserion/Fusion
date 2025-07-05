@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.fabric.api.commands.objects;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.fusion.common.api.commands.objects.ICommand;
+import com.ryderbelserion.fusion.core.api.commands.objects.ICommand;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;

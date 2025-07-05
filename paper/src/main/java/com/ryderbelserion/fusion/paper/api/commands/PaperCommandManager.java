@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.paper.api.commands;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.ryderbelserion.fusion.common.api.commands.ICommandManager;
+import com.ryderbelserion.fusion.core.api.commands.ICommandManager;
 import com.ryderbelserion.fusion.paper.api.commands.objects.PaperCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;

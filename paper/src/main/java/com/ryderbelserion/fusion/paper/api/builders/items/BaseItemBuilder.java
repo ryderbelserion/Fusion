@@ -2,10 +2,10 @@ package com.ryderbelserion.fusion.paper.api.builders.items;
 
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
-import com.ryderbelserion.fusion.common.FusionProvider;
-import com.ryderbelserion.fusion.common.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.common.api.utils.StringUtils;
-import com.ryderbelserion.fusion.common.api.enums.Support;
+import com.ryderbelserion.fusion.core.FusionProvider;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.utils.StringUtils;
+import com.ryderbelserion.fusion.core.api.enums.Support;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.fusion.paper.api.builders.gui.interfaces.GuiItem;

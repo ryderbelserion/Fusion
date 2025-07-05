@@ -17,8 +17,8 @@ dependencies {
     modImplementation(libs.kyori.api)
     modImplementation(libs.kyori.text)
 
-    api(project(":common"))
-    shadow(project(":common"))
+    api(project(":core"))
+    shadow(project(":core"))
 }
 
 tasks {
@@ -27,7 +27,7 @@ tasks {
         exclude("META-INF")
 
         dependencies {
-            include(project(":common"))
+            include(project(":core"))
         }
     }
 

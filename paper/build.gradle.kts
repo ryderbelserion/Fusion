@@ -22,7 +22,7 @@ dependencies {
 
     compileOnly(libs.bundles.shared)
 
-    api(project(":common"))
+    api(project(":core"))
 }
 
 tasks {

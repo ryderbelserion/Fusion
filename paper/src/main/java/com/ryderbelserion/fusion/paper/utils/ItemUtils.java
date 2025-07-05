@@ -1,8 +1,8 @@
 package com.ryderbelserion.fusion.paper.utils;
 
-import com.ryderbelserion.fusion.common.api.FusionCommon;
-import com.ryderbelserion.fusion.common.FusionProvider;
-import com.ryderbelserion.fusion.common.api.interfaces.ILogger;
+import com.ryderbelserion.fusion.core.api.FusionCommon;
+import com.ryderbelserion.fusion.core.FusionProvider;
+import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;

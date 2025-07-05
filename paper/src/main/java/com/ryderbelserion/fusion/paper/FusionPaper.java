@@ -1,9 +1,9 @@
 package com.ryderbelserion.fusion.paper;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import com.ryderbelserion.fusion.common.api.FusionCommon;
-import com.ryderbelserion.fusion.common.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.common.api.enums.Support;
+import com.ryderbelserion.fusion.core.api.FusionCommon;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.enums.Support;
 import com.ryderbelserion.fusion.paper.api.builders.gui.listeners.GuiListener;
 import com.ryderbelserion.fusion.paper.api.commands.PaperCommandManager;
 import com.ryderbelserion.fusion.paper.api.structure.StructureRegistry;

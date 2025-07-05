@@ -9,4 +9,4 @@ pluginManagement {
 
 rootProject.name = "Fusion"
 
-include("velocity", "neoforge", "common", "addons", "fabric", "paper")
+include("velocity", "neoforge", "core", "addons", "fabric", "paper")
