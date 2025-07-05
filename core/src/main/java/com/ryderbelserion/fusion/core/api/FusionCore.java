@@ -36,8 +36,9 @@ public abstract class FusionCore {
     protected CommentedConfigurationNode config;
 
     private final IPluginManager pluginManager;
-    private final IFileManager fileManager;
     private final ILogger logger;
+
+    private final FileManager fileManager;
     private final Path path;
 
     public FusionCore(@NotNull final ComponentLogger logger, @NotNull final Path path) {
@@ -132,7 +133,7 @@ public abstract class FusionCore {
         return this.config;
     }
 
-    public @NotNull final IFileManager getFileManager() {
+    public @NotNull final FileManager getFileManager() {
         return this.fileManager;
     }
 
