@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.core.api.interfaces;
 
-import com.ryderbelserion.fusion.core.api.FusionCommon;
+import com.ryderbelserion.fusion.core.api.FusionCore;
 import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.FileAction;
 import com.ryderbelserion.fusion.core.api.enums.FileType;
@@ -19,7 +19,7 @@ import java.util.function.UnaryOperator;
  */
 public abstract class IFileManager {
 
-    protected final FusionCommon fusion = FusionProvider.get();
+    protected final FusionCore fusion = FusionProvider.get();
     protected final ILogger logger = this.fusion.getLogger();
     protected final Path path = this.fusion.getPath();
 

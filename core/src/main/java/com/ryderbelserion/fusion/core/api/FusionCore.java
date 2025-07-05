@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public abstract class FusionCommon {
+public abstract class FusionCore {
 
     protected YamlConfigurationLoader loader;
     protected CommentedConfigurationNode config;
@@ -40,7 +40,7 @@ public abstract class FusionCommon {
     private final ILogger logger;
     private final Path path;
 
-    public FusionCommon(@NotNull final ComponentLogger logger, @NotNull final Path path) {
+    public FusionCore(@NotNull final ComponentLogger logger, @NotNull final Path path) {
         FusionProvider.register(this);
 
         if (!Files.exists(path)) {

@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.velocity;
 
-import com.ryderbelserion.fusion.core.api.FusionCommon;
+import com.ryderbelserion.fusion.core.api.FusionCore;
 import com.ryderbelserion.fusion.velocity.api.commands.FusionCommandManager;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.audience.Audience;
@@ -8,7 +8,7 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 
-public class FusionVelocity extends FusionCommon {
+public class FusionVelocity extends FusionCore {
 
     private FusionCommandManager commandManager;
 

@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.core.api.utils;
 
 import com.ryderbelserion.fusion.core.FusionProvider;
-import com.ryderbelserion.fusion.core.api.FusionCommon;
+import com.ryderbelserion.fusion.core.api.FusionCore;
 import com.ryderbelserion.fusion.core.api.enums.FileAction;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import org.jetbrains.annotations.NotNull;
@@ -37,7 +37,7 @@ import java.util.zip.ZipOutputStream;
  */
 public class FileUtils {
 
-    private static final FusionCommon fusion = FusionProvider.get();
+    private static final FusionCore fusion = FusionProvider.get();
 
     private static final Path dataFolder = fusion.getPath();
 
@@ -78,7 +78,7 @@ public class FileUtils {
 
         final String text = isFile ? value.toString().replace("\\", "/") : input;
 
-        try (final JarFile jar = new JarFile(Path.of(FusionCommon.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
+        try (final JarFile jar = new JarFile(Path.of(FusionCore.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
             final Enumeration<JarEntry> entries = jar.entries();
 
             while (entries.hasMoreElements()) {

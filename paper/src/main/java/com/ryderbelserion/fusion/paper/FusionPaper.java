@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.paper;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import com.ryderbelserion.fusion.core.api.FusionCommon;
+import com.ryderbelserion.fusion.core.api.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.enums.Support;
 import com.ryderbelserion.fusion.paper.api.builders.gui.listeners.GuiListener;
@@ -22,7 +22,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.UUID;
 
-public class FusionPaper extends FusionCommon {
+public class FusionPaper extends FusionCore {
 
     private PaperCommandManager commandManager;
     private LegacyFileManager fileManager;

@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.core.api.enums;
 
 import com.ryderbelserion.fusion.core.FusionProvider;
-import com.ryderbelserion.fusion.core.api.FusionCommon;
+import com.ryderbelserion.fusion.core.api.FusionCore;
 import org.jetbrains.annotations.NotNull;
 
 public enum Support {
@@ -13,7 +13,7 @@ public enum Support {
     oraxen("Oraxen"),
     nexo("Nexo");
 
-    private final FusionCommon fusion = FusionProvider.get();
+    private final FusionCore fusion = FusionProvider.get();
 
     private final String name;
 

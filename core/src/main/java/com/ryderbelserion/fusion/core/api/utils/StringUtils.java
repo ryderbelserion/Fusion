@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.core.api.utils;
 
 import com.ryderbelserion.fusion.core.FusionProvider;
-import com.ryderbelserion.fusion.core.api.FusionCommon;
+import com.ryderbelserion.fusion.core.api.FusionCore;
 import org.jetbrains.annotations.NotNull;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -15,7 +15,7 @@ public class StringUtils {
     private static final Pattern BRACKET_PATTERN = Pattern.compile("\\{(.*?)}");
     private static final Pattern ANGLE_PATTERN = Pattern.compile("[<>]");
 
-    private static final FusionCommon fusion = FusionProvider.get();
+    private static final FusionCore fusion = FusionProvider.get();
 
     public static @NotNull Optional<Number> tryParseInt(@NotNull final String value) {
         try {

@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.core;
 
-import com.ryderbelserion.fusion.core.api.FusionCommon;
+import com.ryderbelserion.fusion.core.api.FusionCore;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
 import net.kyori.adventure.text.Component;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class FusionLogger extends ILogger {
 
-    private final FusionCommon fusion = FusionProvider.get();
+    private final FusionCore fusion = FusionProvider.get();
 
     private final ComponentLogger logger;
 

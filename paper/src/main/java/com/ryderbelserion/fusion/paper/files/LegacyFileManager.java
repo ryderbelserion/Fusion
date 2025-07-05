@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.files;
 
-import com.ryderbelserion.fusion.core.api.FusionCommon;
+import com.ryderbelserion.fusion.core.api.FusionCore;
 import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.FileType;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class LegacyFileManager {
 
-    private final FusionCommon api = FusionProvider.get();
+    private final FusionCore api = FusionProvider.get();
 
     private final ILogger logger = this.api.getLogger();
 

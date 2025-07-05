@@ -1,13 +1,13 @@
 package com.ryderbelserion.fusion.fabric;
 
-import com.ryderbelserion.fusion.core.api.FusionCommon;
+import com.ryderbelserion.fusion.core.api.FusionCore;
 import com.ryderbelserion.fusion.fabric.api.commands.FabricCommandManager;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 
-public class FusionFabric extends FusionCommon {
+public class FusionFabric extends FusionCore {
 
     private final FabricCommandManager manager;
 
