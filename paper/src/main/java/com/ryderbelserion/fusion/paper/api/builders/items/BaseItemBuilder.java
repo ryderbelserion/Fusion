@@ -752,6 +752,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         add(ItemType.NETHERITE_CHESTPLATE.key().asString());
         add(ItemType.NETHERITE_LEGGINGS.key().asString());
         add(ItemType.NETHERITE_BOOTS.key().asString());
+
+        add(ItemType.TURTLE_HELMET.key().asString());
     }};
 
     private static final Set<String> leather_items = new HashSet<>() {{
