@@ -5,7 +5,7 @@ import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.FileAction;
 import com.ryderbelserion.fusion.core.api.enums.FileType;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,7 +20,7 @@ import java.util.List;
 public abstract class ICustomFile<A extends ICustomFile<A>> {
 
     protected final FusionCore fusion = FusionProvider.get();
-    protected final ILogger logger = this.fusion.getLogger();
+    protected final ComponentLogger logger = this.fusion.getLogger();
 
     private final List<FileAction> actions;
     private final Path path;

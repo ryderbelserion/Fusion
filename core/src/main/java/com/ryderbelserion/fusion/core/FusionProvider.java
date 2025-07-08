@@ -8,23 +8,23 @@ import org.jetbrains.annotations.Nullable;
 
 public class FusionProvider {
 
-    private static @Nullable FusionCore api;
+    private static @Nullable FusionCore core;
 
     @ApiStatus.Internal
-    public static void register(@NotNull final FusionCore api) {
-        FusionProvider.api = api;
+    public static void register(@NotNull final FusionCore core) {
+        FusionProvider.core = core;
     }
 
     @ApiStatus.Internal
     public static void unregister() {
-        FusionProvider.api = null;
+        FusionProvider.core = null;
     }
 
     public static @NotNull FusionCore get() {
-        if (api == null) {
+        if (core == null) {
             throw new FusionException("Fusion API is not yet initialized.");
         }
 
-        return api;
+        return core;
     }
 }

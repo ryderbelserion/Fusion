@@ -1,12 +1,9 @@
 package com.ryderbelserion.fusion.core.api;
 
-import com.ryderbelserion.fusion.core.FusionLogger;
 import com.ryderbelserion.fusion.core.plugins.FusionPluginManager;
 import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.commands.ICommandManager;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
-import com.ryderbelserion.fusion.core.api.interfaces.plugins.IPluginManager;
 import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
 import com.ryderbelserion.fusion.core.api.utils.FileUtils;
 import com.ryderbelserion.fusion.core.api.utils.StringUtils;
@@ -34,13 +31,16 @@ public abstract class FusionCore {
     protected YamlConfigurationLoader loader;
     protected CommentedConfigurationNode config;
 
-    private final IPluginManager pluginManager;
-    private final ILogger logger;
+    private final FusionPluginManager pluginManager;
+    private final ComponentLogger logger;
 
     private final FileManager fileManager;
     private final Path path;
 
     public FusionCore(@NotNull final ComponentLogger logger, @NotNull final Path path) {
+        this.logger = logger;
+        this.path = path;
+
         FusionProvider.register(this);
 
         if (!Files.exists(path)) {
@@ -56,9 +56,6 @@ public abstract class FusionCore {
         } catch (final ConfigurateException exception) {
             throw new FusionException("Failed to load fusion.yml", exception);
         }
-
-        this.logger = new FusionLogger(logger);
-        this.path = path;
 
         this.pluginManager = new FusionPluginManager();
         this.fileManager = new FileManager();
@@ -106,13 +103,49 @@ public abstract class FusionCore {
         messages.forEach(message -> sendMessage(audience, message, placeholders));
     }
 
+    /**
+     * Sends a log message parsed with MiniMessage.
+     *
+     * @param type      the name of the logger level
+     * @param message   the message to send
+     * @param throwable the throwable
+     */
+    public void log(@NotNull final String type, @NotNull final String message, @NotNull final Throwable throwable) {
+        if (!this.isVerbose()) return;
+
+        final Component component = AdvUtils.parse(message);
+
+        switch (type) {
+            case "info" -> this.logger.info(component, throwable);
+            case "error" -> this.logger.error(component, throwable);
+            case "warm" -> this.logger.warn(component, throwable);
+        }
+    }
+
+    /**
+     * Sends a log message parsed with MiniMessage.
+     *
+     * @param type    the name of the logger level
+     * @param message the message to send
+     * @param args    the args
+     */
+    public void log(@NotNull final String type, @NotNull final String message, @NotNull final Object... args) {
+        if (!this.isVerbose()) return;
+
+        final Component component = AdvUtils.parse(message);
+
+        switch (type) {
+            case "info" -> this.logger.info(component, args);
+            case "error" -> this.logger.error(component, args);
+            case "warm" -> this.logger.warn(component, args);
+        }
+    }
+
     public void enable() {
 
     }
 
     public void reload() {
-        FileUtils.extract("fusion.yml", getPath(), new ArrayList<>()); // extract if they delete it.
-
         try {
             this.config = this.loader.load();
         } catch (final ConfigurateException exception) {
@@ -125,11 +158,15 @@ public abstract class FusionCore {
     }
 
     public @NotNull final FusionPluginManager getPluginManager() {
-        return (FusionPluginManager) this.pluginManager;
+        return this.pluginManager;
     }
 
     public @NotNull final CommentedConfigurationNode getConfig() {
         return this.config;
+    }
+
+    public @NotNull final ComponentLogger getLogger() {
+        return this.logger;
     }
 
     public @NotNull final FileManager getFileManager() {
@@ -142,10 +179,6 @@ public abstract class FusionCore {
 
     public @NotNull final String getNumberFormat() {
         return this.config.node("settings", "number_format").getString("");
-    }
-
-    public @NotNull final ILogger getLogger() {
-        return this.logger;
     }
 
     public @NotNull final Path getPath() {

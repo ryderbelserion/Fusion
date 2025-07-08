@@ -43,6 +43,8 @@ public class FusionPaper extends FusionCore {
     }
 
     public void enable(@NotNull final JavaPlugin plugin) {
+        super.enable();
+
         this.plugin = plugin;
         this.server = this.plugin.getServer();
         this.pluginManager = this.server.getPluginManager();

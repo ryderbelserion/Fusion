@@ -1,0 +1,8 @@
+name: 'CrazyCrates'
+main: 'com.ryderbelserion.CrazyCrates'
+
+version: '1.0.0'
+api-version: '1.21.7'
+description: 'A test plugin'
+
+folia-supported: true

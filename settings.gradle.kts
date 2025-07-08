@@ -12,6 +12,9 @@ listOf(
     "paper",
     "core",
 
+    // test plugin
+    "plugin",
+
     // stand alone
     "addons"
 ).forEach {

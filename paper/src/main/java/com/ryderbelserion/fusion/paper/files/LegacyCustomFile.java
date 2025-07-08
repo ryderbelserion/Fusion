@@ -4,7 +4,7 @@ import com.ryderbelserion.fusion.core.api.FusionCore;
 import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.FileType;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,7 +15,7 @@ public class LegacyCustomFile {
 
     private final FusionCore api = FusionProvider.get();
 
-    private final ILogger logger = this.api.getLogger();
+    private final ComponentLogger logger = this.api.getLogger();
 
     private final String effectiveName;
     private final FileType fileType;

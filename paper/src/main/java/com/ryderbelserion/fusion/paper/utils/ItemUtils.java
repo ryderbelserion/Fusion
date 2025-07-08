@@ -2,10 +2,10 @@ package com.ryderbelserion.fusion.paper.utils;
 
 import com.ryderbelserion.fusion.core.api.FusionCore;
 import com.ryderbelserion.fusion.core.FusionProvider;
-import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -28,7 +28,7 @@ public class ItemUtils {
 
     private static final FusionCore fusion = FusionProvider.get();
 
-    private static final ILogger logger = fusion.getLogger();
+    private static final ComponentLogger logger = fusion.getLogger();
 
     public static @NotNull RegistryAccess getRegistryAccess() {
         return RegistryAccess.registryAccess();

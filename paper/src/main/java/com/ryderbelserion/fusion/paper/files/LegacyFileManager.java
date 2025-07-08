@@ -5,8 +5,8 @@ import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.FileType;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.enums.FileAction;
-import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.api.utils.FileUtils;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.File;
@@ -22,7 +22,7 @@ public class LegacyFileManager {
 
     private final FusionCore api = FusionProvider.get();
 
-    private final ILogger logger = this.api.getLogger();
+    private final ComponentLogger logger = this.api.getLogger();
 
     private final File dataFolder = this.api.getPath().toFile();
 
@@ -214,7 +214,7 @@ public class LegacyFileManager {
         forRemoval.forEach(this.files::remove);
 
         if (!forRemoval.isEmpty()) {
-            this.logger.safe("{} file(s) were removed from cache, because they did not exist.", forRemoval.size());
+            this.logger.info("{} file(s) were removed from cache, because they did not exist.", forRemoval.size());
         }
 
         return this;
