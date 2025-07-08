@@ -17,6 +17,9 @@ adventure = "4.23.0" # https://github.com/KyoriPowered/adventure
 minecraft = "1.21.7" # https://minecraft.net
 brigadier = "1.3.10" # https://minecraft.net
 
+## Generic
+jalu = "1.4.3" # https://github.com/AuthMe/ConfigMe
+
 ## Discord
 logback = "1.5.18" # https://github.com/qos-ch/logback
 jda = "5.5.1" # https://github.com/discord-jda/JDA
@@ -94,6 +97,9 @@ kyori-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.
 kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }
 kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
+
+# https://github.com/AuthMe/ConfigMe
+jalu = { module = "ch.jalu:configme", version.ref = "jalu" }
 
 [bundles]
 adventure = [

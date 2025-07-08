@@ -12,6 +12,10 @@ public enum FileType {
      */
     YAML(".yml"),
     /**
+     * Files that end with .yml, but are made by ConfigMe
+     */
+    JALU(".yml"),
+    /**
      * Files with the extension .json
      */
     JSON(".json"),

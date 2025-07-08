@@ -10,8 +10,13 @@ repositories {
 }
 
 dependencies {
-    compileOnlyApi(libs.bundles.adventure)
-    compileOnlyApi(libs.configurate.json)
-    compileOnlyApi(libs.configurate.yaml)
-    compileOnlyApi(libs.brigadier)
+    compileOnly(libs.bundles.adventure)
+
+    compileOnly(libs.configurate.yaml)
+
+    compileOnly(libs.brigadier)
+
+    api(libs.configurate.json)
+
+    api(libs.jalu)
 }
