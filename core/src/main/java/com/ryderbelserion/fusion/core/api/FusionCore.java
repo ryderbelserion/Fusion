@@ -5,7 +5,6 @@ import com.ryderbelserion.fusion.core.plugins.FusionPluginManager;
 import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.commands.ICommandManager;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.api.interfaces.IFileManager;
 import com.ryderbelserion.fusion.core.api.interfaces.ILogger;
 import com.ryderbelserion.fusion.core.api.interfaces.plugins.IPluginManager;
 import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
@@ -50,7 +49,7 @@ public abstract class FusionCore {
 
         FileUtils.extract("fusion.yml", path, new ArrayList<>());
 
-        this.loader = YamlConfigurationLoader.builder().path(path.resolve("fusion.yml")).build();
+        this.loader = YamlConfigurationLoader.builder().defaultOptions(options -> options.shouldCopyDefaults(true)).path(path.resolve("fusion.yml")).build();
 
         try {
             this.config = this.loader.load();
