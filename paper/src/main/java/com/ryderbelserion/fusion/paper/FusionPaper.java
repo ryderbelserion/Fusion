@@ -4,10 +4,11 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.ryderbelserion.fusion.core.api.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.enums.Support;
+import com.ryderbelserion.fusion.core.api.utils.keys.ConfigKeys;
 import com.ryderbelserion.fusion.paper.api.builders.gui.listeners.GuiListener;
 import com.ryderbelserion.fusion.paper.api.commands.PaperCommandManager;
 import com.ryderbelserion.fusion.paper.api.structure.StructureRegistry;
-import com.ryderbelserion.fusion.paper.files.LegacyFileManager;
+import com.ryderbelserion.fusion.paper.utils.keys.PluginKeys;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
@@ -26,7 +27,7 @@ import java.util.UUID;
 public class FusionPaper extends FusionCore {
 
     private PaperCommandManager commandManager;
-    private LegacyFileManager fileManager;
+    //private LegacyFileManager fileManager;
     private StructureRegistry registry;
     private HeadDatabaseAPI api;
     private JavaPlugin plugin;
@@ -35,7 +36,7 @@ public class FusionPaper extends FusionCore {
     private PluginManager pluginManager;
 
     public FusionPaper(@NotNull final ComponentLogger logger, @NotNull final Path path) {
-        super(logger, path);
+        super(logger, path, consumer -> consumer.useDefaultMigrationService().configurationData(ConfigKeys.class, PluginKeys.class));
     }
 
     public FusionPaper(@NotNull final JavaPlugin plugin) {
@@ -51,9 +52,9 @@ public class FusionPaper extends FusionCore {
 
         this.registry = new StructureRegistry(this.plugin);
 
-        if (this.fileManager == null) {
-            this.fileManager = new LegacyFileManager();
-        }
+        //if (this.fileManager == null) {
+        //    this.fileManager = new LegacyFileManager();
+        //}
 
         this.commandManager = new PaperCommandManager(this.plugin);
 
@@ -97,16 +98,16 @@ public class FusionPaper extends FusionCore {
     }
 
     public @NotNull final String getItemsPlugin() {
-        return this.getConfig().node("settings", "custom-items-plugin").getString("None");
+        return this.config.getProperty(PluginKeys.items_plugin);
     }
 
-    public @NotNull final LegacyFileManager getLegacyFileManager() {
-        if (this.fileManager == null) {
-            throw new FusionException("An error occurred while trying to get the legacy file manager instance.");
-        }
+    //public @NotNull final LegacyFileManager getLegacyFileManager() {
+    //    if (this.fileManager == null) {
+    //        throw new FusionException("An error occurred while trying to get the legacy file manager instance.");
+    //    }
 
-        return this.fileManager;
-    }
+    //    return this.fileManager;
+    //}
 
     public @NotNull final StructureRegistry getRegistry() {
         if (this.registry == null) {

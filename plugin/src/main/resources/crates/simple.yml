@@ -1,0 +1,4 @@
+# Plugin settings
+settings:
+  # true or false
+  enabled: false
