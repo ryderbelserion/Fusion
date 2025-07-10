@@ -1,6 +1,11 @@
 package com.ryderbelserion.fusion.paper.api.structure;
 
+import com.ryderbelserion.fusion.core.FusionProvider;
+import com.ryderbelserion.fusion.core.api.enums.FileAction;
+import com.ryderbelserion.fusion.core.api.enums.FileType;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.files.FileManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -24,6 +29,10 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class StructureBuilder {
+
+    private final FusionPaper fusion = (FusionPaper) FusionProvider.get();
+
+    private final FileManager fileManager = this.fusion.getFileManager();
 
     private final StructureManager manager;
     private final JavaPlugin plugin;
@@ -72,6 +81,10 @@ public class StructureBuilder {
 
         try {
             this.manager.saveStructure(file, this.structure);
+
+            this.fileManager.addFile(file.toPath(), FileType.NBT, new ArrayList<>() {{
+                add(FileAction.MANUALLY_SAVED);
+            }}, null);
         } catch (final IOException exception) {
             throw new FusionException("Failed to save structure!", exception);
         }
@@ -99,11 +112,11 @@ public class StructureBuilder {
         if (!this.isReady) return;
 
         try {
-            populate(true, location);
+            populate(true, location); // stores initial blocks
 
             this.structure.place(location, false, StructureRotation.NONE, Mirror.NONE, 0, 1.0F, ThreadLocalRandom.current());
 
-            populate(false, location);
+            populate(false, location); // stores structure blocks
         } catch (final Exception exception) {
             throw new FusionException("Failed to paste structure!", exception);
         }
