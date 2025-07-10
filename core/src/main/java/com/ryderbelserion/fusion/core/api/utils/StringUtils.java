@@ -75,6 +75,6 @@ public class StringUtils {
     }
 
     public static @NotNull RoundingMode mode() {
-        return RoundingMode.valueOf(fusion.getRoundedFormat().toUpperCase());
+        return RoundingMode.valueOf(fusion.getRoundingFormat().toUpperCase());
     }
 }

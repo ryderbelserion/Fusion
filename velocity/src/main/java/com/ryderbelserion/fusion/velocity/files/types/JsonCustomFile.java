@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.core.files.types;
+package com.ryderbelserion.fusion.velocity.files.types;
 
 import com.ryderbelserion.fusion.core.api.enums.FileAction;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;

@@ -1,13 +1,14 @@
 package com.ryderbelserion.fusion.core.api;
 
+import ch.jalu.configme.SettingsManager;
+import ch.jalu.configme.SettingsManagerBuilder;
+import ch.jalu.configme.resource.YamlFileResourceOptions;
+import com.ryderbelserion.fusion.core.api.utils.keys.ConfigKeys;
 import com.ryderbelserion.fusion.core.plugins.FusionPluginManager;
 import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.commands.ICommandManager;
-import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
-import com.ryderbelserion.fusion.core.api.utils.FileUtils;
 import com.ryderbelserion.fusion.core.api.utils.StringUtils;
-import com.ryderbelserion.fusion.core.files.FileManager;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -15,9 +16,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.configurate.CommentedConfigurationNode;
-import org.spongepowered.configurate.ConfigurateException;
-import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -25,19 +24,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public abstract class FusionCore {
 
-    protected YamlConfigurationLoader loader;
-    protected CommentedConfigurationNode config;
+    protected final SettingsManager config;
 
     private final FusionPluginManager pluginManager;
     private final ComponentLogger logger;
 
-    private final FileManager fileManager;
     private final Path path;
 
-    public FusionCore(@NotNull final ComponentLogger logger, @NotNull final Path path) {
+    public FusionCore(@NotNull final ComponentLogger logger, @NotNull final Path path, @Nullable final Consumer<SettingsManagerBuilder> consumer) {
         this.logger = logger;
         this.path = path;
 
@@ -47,18 +45,18 @@ public abstract class FusionCore {
             path.toFile().mkdirs();
         }
 
-        FileUtils.extract("fusion.yml", path, new ArrayList<>());
+        // create fusion.yml
+        final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(this.path.resolve("fusion.yml"), YamlFileResourceOptions.builder().charset(StandardCharsets.UTF_8).indentationSize(2).build());
 
-        this.loader = YamlConfigurationLoader.builder().defaultOptions(options -> options.shouldCopyDefaults(true)).path(path.resolve("fusion.yml")).build();
+        builder.useDefaultMigrationService(); // use default migration service
 
-        try {
-            this.config = this.loader.load();
-        } catch (final ConfigurateException exception) {
-            throw new FusionException("Failed to load fusion.yml", exception);
+        if (consumer != null) { // overrides the default migration service if set in the consumer.
+            consumer.accept(builder);
         }
 
+        this.config = builder.create();
+
         this.pluginManager = new FusionPluginManager();
-        this.fileManager = new FileManager();
     }
 
     public abstract String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message);
@@ -118,7 +116,7 @@ public abstract class FusionCore {
         switch (type) {
             case "info" -> this.logger.info(component, throwable);
             case "error" -> this.logger.error(component, throwable);
-            case "warm" -> this.logger.warn(component, throwable);
+            case "warn" -> this.logger.warn(component, throwable);
         }
     }
 
@@ -137,20 +135,16 @@ public abstract class FusionCore {
         switch (type) {
             case "info" -> this.logger.info(component, args);
             case "error" -> this.logger.error(component, args);
-            case "warm" -> this.logger.warn(component, args);
+            case "warn" -> this.logger.warn(component, args);
         }
     }
 
     public void enable() {
-
+        this.path.toFile().mkdirs();
     }
 
     public void reload() {
-        try {
-            this.config = this.loader.load();
-        } catch (final ConfigurateException exception) {
-            throw new FusionException("Failed to load fusion.yml", exception);
-        }
+        this.config.reload();
     }
 
     public void disable() {
@@ -161,35 +155,27 @@ public abstract class FusionCore {
         return this.pluginManager;
     }
 
-    public @NotNull final CommentedConfigurationNode getConfig() {
-        return this.config;
-    }
-
     public @NotNull final ComponentLogger getLogger() {
         return this.logger;
     }
 
-    public @NotNull final FileManager getFileManager() {
-        return this.fileManager;
-    }
-
-    public @NotNull final String getRoundedFormat() {
-        return this.config.node("settings", "rounding").getString("");
+    public @NotNull final String getRoundingFormat() {
+        return this.config.getProperty(ConfigKeys.rounding_format);
     }
 
     public @NotNull final String getNumberFormat() {
-        return this.config.node("settings", "number_format").getString("");
+        return this.config.getProperty(ConfigKeys.number_format);
+    }
+
+    public boolean isVerbose() {
+        return this.config.getProperty(ConfigKeys.is_verbose);
+    }
+
+    public int getDepth() {
+        return this.config.getProperty(ConfigKeys.recursion_depth);
     }
 
     public @NotNull final Path getPath() {
         return this.path;
-    }
-
-    public final boolean isVerbose() {
-        return this.config.node("settings", "is_verbose").getBoolean(false);
-    }
-
-    public final int getDepth() {
-        return this.config.node("settings", "recursion_depth").getInt(1);
     }
 }

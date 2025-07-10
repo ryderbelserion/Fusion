@@ -191,6 +191,6 @@ public class YamlCustomFile extends IConfigFile<YamlCustomFile, CommentedConfigu
      */
     @Override
     public @NotNull final FileType getFileType() {
-        return FileType.YAML;
+        return FileType.CONFIGURATE;
     }
 }

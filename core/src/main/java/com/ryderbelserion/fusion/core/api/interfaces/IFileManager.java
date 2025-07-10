@@ -59,7 +59,7 @@ public abstract class IFileManager {
      * @param options optional options to configure indentation size etc.
      * @return {@link IFileManager}
      */
-    public abstract @NotNull IFileManager addFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options);
+    public abstract @NotNull IFileManager addFile(@NotNull final Path path, @NotNull final FileType fileType, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options);
 
     /**
      * Saves contents at the given path i.e. a log file.
@@ -138,14 +138,6 @@ public abstract class IFileManager {
      * @return {@link IFileManager}
      */
     public abstract @NotNull IFileManager refresh(final boolean save);
-
-    /**
-     * Detects the file type.
-     *
-     * @param fileName the name of the file
-     * @return {@link IFileManager}
-     */
-    public abstract @NotNull FileType detectFileType(@NotNull final String fileName);
 
     /**
      * Fetches a generic custom file.

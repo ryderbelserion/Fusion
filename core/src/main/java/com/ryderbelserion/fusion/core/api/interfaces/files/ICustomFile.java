@@ -66,9 +66,9 @@ public abstract class ICustomFile<A extends ICustomFile<A>> {
         try {
             Files.deleteIfExists(getPath());
 
-            this.logger.warn("Successfully deleted {}!", getFileName());
+            this.fusion.log("info", "Successfully deleted {}!", getFileName());
         } catch (final IOException exception) {
-            throw new FusionException(String.format("Failed to delete %s!", getPath()), exception);
+            this.fusion.log("error", "Failed to delete {}! Exception: {}", getFileName(), exception.getMessage());
         }
 
         return (A) this;
@@ -90,6 +90,15 @@ public abstract class ICustomFile<A extends ICustomFile<A>> {
      */
     public @NotNull String getFileName() {
         return this.path.getFileName().toString();
+    }
+
+    /**
+     * Retrieves a prettified version of the file name.
+     *
+     * @return the name
+     */
+    public @NotNull String getPrettyName() {
+        return getFileName().replace(getFileType().getExtension(), "");
     }
 
     /**
@@ -117,6 +126,15 @@ public abstract class ICustomFile<A extends ICustomFile<A>> {
      */
     public boolean isStatic() {
         return this.actions.contains(FileAction.STATIC_FILE);
+    }
+
+    /**
+     * Gets a list of file actions
+     *
+     * @return list of file actions
+     */
+    public @NotNull List<FileAction> getActions() {
+        return this.actions;
     }
 
     /**
