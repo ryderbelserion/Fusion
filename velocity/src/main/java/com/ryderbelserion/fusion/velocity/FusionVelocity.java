@@ -13,7 +13,7 @@ public class FusionVelocity extends FusionCore {
     private FusionCommandManager commandManager;
 
     public FusionVelocity(@NotNull final ComponentLogger logger, @NotNull final Path path) {
-        super(logger, path);
+        super(logger, path, null);
     }
 
     public void enable(@NotNull final ProxyServer server, @NotNull final Object fusion, @NotNull final String rootCommand) {

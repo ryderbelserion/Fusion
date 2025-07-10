@@ -8,9 +8,13 @@ import org.jetbrains.annotations.NotNull;
 public enum FileType {
 
     /**
-     * Files with the extension .yml
+     * Files that end with .yml, but are built with Configurate which is by SpongePowered
      */
-    YAML(".yml"),
+    CONFIGURATE(".yml"),
+    /**
+     * Files that end with .yml, but are built using YamlConfiguration supplied by Paper
+     */
+    PAPER(".yml"),
     /**
      * Files that end with .yml, but are made by ConfigMe
      */

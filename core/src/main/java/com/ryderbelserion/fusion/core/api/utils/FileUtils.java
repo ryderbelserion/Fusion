@@ -122,8 +122,6 @@ public class FileUtils {
             }
         } catch (final URISyntaxException | IOException exception) {
             fusion.log("warn", "Failed to extract file {}, {}", text, exception);
-
-            //throw new FusionException("Failed to extract " + text, exception);
         }
     }
 

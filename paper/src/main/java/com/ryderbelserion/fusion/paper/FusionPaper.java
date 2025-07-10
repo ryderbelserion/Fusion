@@ -8,6 +8,7 @@ import com.ryderbelserion.fusion.core.api.utils.keys.ConfigKeys;
 import com.ryderbelserion.fusion.paper.api.builders.gui.listeners.GuiListener;
 import com.ryderbelserion.fusion.paper.api.commands.PaperCommandManager;
 import com.ryderbelserion.fusion.paper.api.structure.StructureRegistry;
+import com.ryderbelserion.fusion.paper.files.FileManager;
 import com.ryderbelserion.fusion.paper.utils.keys.PluginKeys;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -27,8 +28,8 @@ import java.util.UUID;
 public class FusionPaper extends FusionCore {
 
     private PaperCommandManager commandManager;
-    //private LegacyFileManager fileManager;
     private StructureRegistry registry;
+    private FileManager fileManager;
     private HeadDatabaseAPI api;
     private JavaPlugin plugin;
     private Server server;
@@ -52,9 +53,9 @@ public class FusionPaper extends FusionCore {
 
         this.registry = new StructureRegistry(this.plugin);
 
-        //if (this.fileManager == null) {
-        //    this.fileManager = new LegacyFileManager();
-        //}
+        if (this.fileManager == null) {
+            this.fileManager = new FileManager();
+        }
 
         this.commandManager = new PaperCommandManager(this.plugin);
 
@@ -101,13 +102,13 @@ public class FusionPaper extends FusionCore {
         return this.config.getProperty(PluginKeys.items_plugin);
     }
 
-    //public @NotNull final LegacyFileManager getLegacyFileManager() {
-    //    if (this.fileManager == null) {
-    //        throw new FusionException("An error occurred while trying to get the legacy file manager instance.");
-    //    }
+    public @NotNull final FileManager getFileManager() {
+        if (this.fileManager == null) {
+            throw new FusionException("An error occurred while trying to get the legacy file manager instance.");
+        }
 
-    //    return this.fileManager;
-    //}
+        return this.fileManager;
+    }
 
     public @NotNull final StructureRegistry getRegistry() {
         if (this.registry == null) {

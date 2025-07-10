@@ -1,14 +1,13 @@
-package com.ryderbelserion.fusion.core.files;
+package com.ryderbelserion.fusion.velocity.files;
 
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
-import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.core.api.enums.FileAction;
 import com.ryderbelserion.fusion.core.api.enums.FileType;
 import com.ryderbelserion.fusion.core.api.interfaces.IFileManager;
-import com.ryderbelserion.fusion.core.api.utils.FileUtils;
 import com.ryderbelserion.fusion.core.api.interfaces.files.ICustomFile;
-import com.ryderbelserion.fusion.core.files.types.JsonCustomFile;
+import com.ryderbelserion.fusion.core.api.utils.FileUtils;
+import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import org.jetbrains.annotations.NotNull;
@@ -30,14 +29,8 @@ import java.util.function.UnaryOperator;
  */
 public class FileManager extends IFileManager {
 
-    private final Map<Path, ICustomFile<? extends ICustomFile<?>>> customFiles = new HashMap<>();
-    private final Map<Path, FileType> folders = new HashMap<>();
-
-    private static final Map<String, FileType> fileMap = Map.of(
-            ".yml", FileType.YAML,
-            ".json", FileType.JSON,
-            ".log", FileType.LOG
-    );
+    protected final Map<Path, ICustomFile<? extends ICustomFile<?>>> customFiles = new HashMap<>();
+    protected final Map<Path, FileType> folders = new HashMap<>();
 
     /**
      * Loads all folders manually added using FileManager#addFolder, usually used when you don't care to specify what you want.
@@ -88,6 +81,7 @@ public class FileManager extends IFileManager {
      * @param options optional options to configure indentation size etc.
      * @return {@link FileManager}
      */
+    @Override
     public @NotNull final FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
         addFolder(folder, fileType);
 
@@ -96,7 +90,7 @@ public class FileManager extends IFileManager {
         final List<Path> files = FileUtils.getFiles(folder, fileType.getExtension(), this.fusion.getDepth());
 
         for (final Path path : files) {
-            addFile(path, actions, options);
+            addFile(path, fileType, actions, options);
         }
 
         return this;
@@ -109,6 +103,7 @@ public class FileManager extends IFileManager {
      * @param fileType the type of file expected in the folder
      * @return {@link FileManager}
      */
+    @Override
     public @NotNull final FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType) {
         this.folders.putIfAbsent(folder, fileType);
 
@@ -149,7 +144,8 @@ public class FileManager extends IFileManager {
      * @param options optional options to configure indentation size etc.
      * @return {@link FileManager}
      */
-    public @NotNull final FileManager addFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
+    @Override
+    public @NotNull final FileManager addFile(@NotNull final Path path, @NotNull final FileType fileType, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
         final String fileName = path.getFileName().toString();
 
         if (!Files.exists(path)) { // always extract if it does not exist.
@@ -164,13 +160,10 @@ public class FileManager extends IFileManager {
             return this;
         }
 
-        final FileType fileType = detectFileType(fileName);
-
         ICustomFile<? extends ICustomFile<?>> customFile = null;
 
         switch (fileType) {
-            case YAML -> customFile = new YamlCustomFile(path, actions, options).load();
-            case JSON -> customFile = new JsonCustomFile(path, actions, options).load();
+            case CONFIGURATE -> customFile = new YamlCustomFile(path, actions, options).load();
             case LOG -> customFile = new LogCustomFile(path, actions).load();
             default -> {}
         }
@@ -190,6 +183,7 @@ public class FileManager extends IFileManager {
      * @param content the content to save to the log file
      * @return {@link FileManager}
      */
+    @Override
     public @NotNull final FileManager saveFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @NotNull final String content) {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
@@ -216,6 +210,7 @@ public class FileManager extends IFileManager {
      * @param path the path
      * @return {@link FileManager}
      */
+    @Override
     public @NotNull final FileManager saveFile(@NotNull final Path path) {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
@@ -243,6 +238,7 @@ public class FileManager extends IFileManager {
      * @param action the action
      * @return {@link FileManager}
      */
+    @Override
     public @NotNull final FileManager removeFile(@NotNull final Path path, @Nullable final FileAction action) {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.get(path);
 
@@ -333,24 +329,13 @@ public class FileManager extends IFileManager {
     }
 
     /**
-     * Detects the file type.
-     *
-     * @param fileName the name of the file
-     * @return {@link FileManager}
-     */
-    @Override
-    public @NotNull final FileType detectFileType(@NotNull final String fileName) {
-        return fileMap.entrySet().stream().filter(entry -> fileName.endsWith(entry.getKey())).map(Map.Entry::getValue).findFirst().orElse(FileType.NONE);
-    }
-
-    /**
      * Fetches a generic custom file.
      *
      * @param path the path in the cache
      * @return {@link ICustomFile}
      */
     @Override
-    public final @Nullable ICustomFile<? extends ICustomFile<?>> getCustomFile(@NotNull final Path path) {
+    public @Nullable final ICustomFile<? extends ICustomFile<?>> getCustomFile(@NotNull final Path path) {
         return getCustomFiles().getOrDefault(path, null);
     }
 
@@ -360,7 +345,7 @@ public class FileManager extends IFileManager {
      * @param path the path in the cache
      * @return {@link YamlCustomFile}
      */
-    public @Nullable final YamlCustomFile getYamlFile(@NotNull final Path path) {
+    public @Nullable final YamlCustomFile getConfigurateFile(@NotNull final Path path) {
         return (YamlCustomFile) getCustomFile(path);
     }
 
@@ -372,16 +357,6 @@ public class FileManager extends IFileManager {
      */
     public @Nullable final JaluCustomFile getJaluFile(@NotNull final Path path) {
         return (JaluCustomFile) getCustomFile(path);
-    }
-
-    /**
-     * Fetches a {@link JsonCustomFile} from the cache.
-     *
-     * @param path the path in the cache
-     * @return {@link JsonCustomFile}
-     */
-    public @Nullable final JsonCustomFile getJsonFile(@NotNull final Path path) {
-        return (JsonCustomFile) getCustomFile(path);
     }
 
     /**

@@ -9,7 +9,6 @@ import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.commands.ICommandManager;
 import com.ryderbelserion.fusion.core.api.utils.AdvUtils;
 import com.ryderbelserion.fusion.core.api.utils.StringUtils;
-import com.ryderbelserion.fusion.core.files.FileManager;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
@@ -34,10 +33,9 @@ public abstract class FusionCore {
     private final FusionPluginManager pluginManager;
     private final ComponentLogger logger;
 
-    private final FileManager fileManager;
     private final Path path;
 
-    public FusionCore(@NotNull final ComponentLogger logger, @NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> consumer) {
+    public FusionCore(@NotNull final ComponentLogger logger, @NotNull final Path path, @Nullable final Consumer<SettingsManagerBuilder> consumer) {
         this.logger = logger;
         this.path = path;
 
@@ -52,12 +50,13 @@ public abstract class FusionCore {
 
         builder.useDefaultMigrationService(); // use default migration service
 
-        consumer.accept(builder); // overrides the default migration service if set in the consumer.
+        if (consumer != null) { // overrides the default migration service if set in the consumer.
+            consumer.accept(builder);
+        }
 
         this.config = builder.create();
 
         this.pluginManager = new FusionPluginManager();
-        this.fileManager = new FileManager();
     }
 
     public abstract String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message);
@@ -141,7 +140,7 @@ public abstract class FusionCore {
     }
 
     public void enable() {
-
+        this.path.toFile().mkdirs();
     }
 
     public void reload() {
@@ -158,10 +157,6 @@ public abstract class FusionCore {
 
     public @NotNull final ComponentLogger getLogger() {
         return this.logger;
-    }
-
-    public @NotNull final FileManager getFileManager() {
-        return this.fileManager;
     }
 
     public @NotNull final String getRoundingFormat() {

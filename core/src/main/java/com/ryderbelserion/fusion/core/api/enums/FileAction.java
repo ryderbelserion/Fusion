@@ -25,5 +25,9 @@ public enum FileAction {
     /**
      * Tells the FileManager that the file is not dynamic.
      */
-    STATIC_FILE
+    STATIC_FILE,
+    /**
+     * Tells the FileManager not to extract as the file does not exist in src/main/resources
+     */
+    MANUALLY_SAVED,
 }

@@ -3,7 +3,7 @@ package com.ryderbelserion.fusion.core.api.interfaces.files;
 import com.ryderbelserion.fusion.core.api.enums.FileAction;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.configurate.ConfigurateException;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -50,18 +50,18 @@ public abstract class IConfigFile<A extends IConfigFile<A, C, L>, C, L> extends 
      * <p>This method retrieves the configuration file and initializes its contents.</p>
      *
      * @return the loaded configuration instance
-     * @throws ConfigurateException if an error occurs during the loading process
+     * @throws IOException if an error occurs during the loading process
      */
-    public abstract @NotNull C loadConfig() throws ConfigurateException;
+    public abstract @NotNull C loadConfig() throws IOException;
 
     /**
      * Saves the current configuration.
      *
      * <p>This method writes changes back to the configuration file.</p>
      *
-     * @throws ConfigurateException if an error occurs while saving
+     * @throws IOException if an error occurs while saving
      */
-    public abstract void saveConfig() throws ConfigurateException;
+    public abstract void saveConfig() throws IOException;
 
     /**
      * Retrieves a string value from the configuration with a specified default.
@@ -205,7 +205,7 @@ public abstract class IConfigFile<A extends IConfigFile<A, C, L>, C, L> extends 
         this.configuration = CompletableFuture.supplyAsync(() -> {
             try {
                 return loadConfig();
-            } catch (final ConfigurateException exception) {
+            } catch (final IOException exception) {
                 throw new FusionException(String.format("Failed to load configuration file %s!", getFileName()), exception);
             }
         }).join();
@@ -235,7 +235,7 @@ public abstract class IConfigFile<A extends IConfigFile<A, C, L>, C, L> extends 
         CompletableFuture.runAsync(() -> {
             try {
                 saveConfig();
-            } catch (final ConfigurateException exception) {
+            } catch (final IOException exception) {
                 throw new FusionException(String.format("Failed to save configuration file %s!", getFileName()), exception);
             }
         });
