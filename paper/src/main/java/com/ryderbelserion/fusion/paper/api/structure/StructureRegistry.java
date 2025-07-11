@@ -27,17 +27,17 @@ public class StructureRegistry {
     public void registerStructure(@NotNull final File file, @NotNull final String name) {
         final StructureManager manager = this.manager;
 
-        Structure structure;
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return manager.loadStructure(path.toFile());
+            } catch (final IOException exception) {
+                throw new FusionException("Failed to load structure!", exception);
+            }
+        }).thenAccept(structure -> {
+            final NamespacedKey key = new NamespacedKey(this.plugin, name);
 
-        try {
-            structure = manager.loadStructure(file);
-        } catch (final IOException exception) {
-            throw new FusionException("Failed to load structure!", exception);
-        }
-
-        final NamespacedKey key = new NamespacedKey(this.plugin, name);
-
-        manager.registerStructure(key, structure);
+            manager.registerStructure(key, structure);
+        });
     }
 
     public void unregisterStructure(@NotNull final String name) {

@@ -238,7 +238,7 @@ public abstract class IConfigFile<A extends IConfigFile<A, C, L>, C, L> extends 
             } catch (final IOException exception) {
                 throw new FusionException(String.format("Failed to save configuration file %s!", getFileName()), exception);
             }
-        });
+        }).thenAccept(v -> this.fusion.log("info", "Successfully saved {}!", getFileName()));
 
         return (A) this;
     }
