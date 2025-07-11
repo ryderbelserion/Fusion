@@ -9,12 +9,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class PaperCustomFile extends IConfigFile<PaperCustomFile, YamlConfiguration, YamlConfiguration> {
 
     public PaperCustomFile(@NotNull final Path path, final List<FileAction> actions) {
-        super(path, actions, CompletableFuture.supplyAsync(() -> YamlConfiguration.loadConfiguration(path.toFile())).join());
+        super(path, actions, new YamlConfiguration());
     }
 
     @Override
