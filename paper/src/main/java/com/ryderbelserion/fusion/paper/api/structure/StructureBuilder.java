@@ -20,8 +20,8 @@ import org.bukkit.structure.StructureManager;
 import org.bukkit.util.BlockVector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -72,7 +72,7 @@ public class StructureBuilder {
         this.isReady = false;
     }
 
-    public void saveStructure(@NotNull final File file, @Nullable final Location uno, @Nullable final Location dos, final boolean includeEntities, final boolean registerStructure) {
+    public void saveStructure(@NotNull final Path path, @Nullable final Location uno, @Nullable final Location dos, final boolean includeEntities, final boolean registerStructure) {
         if (uno == null || dos == null) {
             throw new FusionException("Cannot save structure as the file or one of the corners is null!");
         }
@@ -80,9 +80,9 @@ public class StructureBuilder {
         this.structure.fill(uno, dos, includeEntities);
 
         try {
-            this.manager.saveStructure(file, this.structure);
+            this.manager.saveStructure(path.toFile(), this.structure);
 
-            this.fileManager.addFile(file.toPath(), FileType.NBT, new ArrayList<>() {{
+            this.fileManager.addFile(path, FileType.NBT, new ArrayList<>() {{
                 add(FileAction.MANUALLY_SAVED);
             }}, null);
         } catch (final IOException exception) {

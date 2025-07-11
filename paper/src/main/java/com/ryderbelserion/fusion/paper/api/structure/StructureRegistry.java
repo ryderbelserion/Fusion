@@ -7,8 +7,9 @@ import org.bukkit.structure.Structure;
 import org.bukkit.structure.StructureManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.concurrent.CompletableFuture;
 
 public class StructureRegistry {
 
@@ -24,7 +25,7 @@ public class StructureRegistry {
         return this.manager.getStructure(new NamespacedKey(this.plugin, key));
     }
 
-    public void registerStructure(@NotNull final File file, @NotNull final String name) {
+    public void registerStructure(@NotNull final Path path, @NotNull final String name) {
         final StructureManager manager = this.manager;
 
         CompletableFuture.supplyAsync(() -> {
