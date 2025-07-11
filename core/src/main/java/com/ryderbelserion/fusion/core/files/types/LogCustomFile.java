@@ -30,14 +30,14 @@ public class LogCustomFile extends ICustomFile<LogCustomFile> {
      */
     @Override
     public @NotNull final LogCustomFile load() {
-        final Path path = getPath();
+        if (isLoaded()) return this;
 
-        if (Files.exists(path)) return this;
+        final Path path = getPath();
 
         try {
             Files.createFile(path);
         } catch (final IOException exception) {
-            throw new FusionException(String.format("Could not create file %s!", getFileName()), exception);
+            this.fusion.log("error", "Failed to create {}! Exception: {}", path, exception.getMessage());
         }
 
         return this;
@@ -64,7 +64,7 @@ public class LogCustomFile extends ICustomFile<LogCustomFile> {
 
         load();
 
-        FileUtils.write(path.toFile(), content);
+        FileUtils.write(path, content);
 
         return this;
     }

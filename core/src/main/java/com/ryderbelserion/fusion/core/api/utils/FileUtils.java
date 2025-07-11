@@ -6,19 +6,16 @@ import com.ryderbelserion.fusion.core.api.enums.FileAction;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -64,7 +61,7 @@ public class FileUtils {
 
         if (isFolder && Files.isDirectory(content)) {
             try {
-                Files.createDirectories(content);
+                Files.createDirectory(content);
             } catch (final IOException exception) {
                 throw new FusionException("Failed to create folder " + content, exception);
             }
@@ -121,7 +118,7 @@ public class FileUtils {
                 }
             }
         } catch (final URISyntaxException | IOException exception) {
-            fusion.log("warn", "Failed to extract file {}, {}", text, exception);
+            fusion.log("warn", "Failed to extract file {}! Exception: {}", text, exception);
         }
     }
 
@@ -293,19 +290,16 @@ public class FileUtils {
     }
 
     /**
-     * Writes the specified content to a file using stream-based operations.
-     * This method ensures efficient file handling and data persistence.
+     * Writes the specified content to the path file.
      *
-     * @param input  the target file where content will be written
-     * @param format the data or content to be written into the file
+     * @param path  the target path where content will be written
+     * @param format the data or content to be written
      */
-    public static void write(@NotNull final File input, @NotNull final String format) {
-        try (final FileWriter writer = new FileWriter(input, Charset.defaultCharset(), true); final BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-            bufferedWriter.write(format);
-            bufferedWriter.newLine();
-            writer.flush();
-        } catch (final Exception exception) {
-            throw new FusionException("Failed to write " + input + " to " + input, exception);
+    public static void write(@NotNull final Path path, @NotNull final String format) {
+        try {
+            Files.writeString(path, format, StandardOpenOption.APPEND);
+        } catch (IOException exception) {
+            throw new FusionException(String.format("Failed to write %s to %s", format, path), exception);
         }
     }
 

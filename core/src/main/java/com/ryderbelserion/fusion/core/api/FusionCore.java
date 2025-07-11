@@ -16,6 +16,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,7 +43,11 @@ public abstract class FusionCore {
         FusionProvider.register(this);
 
         if (!Files.exists(path)) {
-            path.toFile().mkdirs();
+            try {
+                Files.createDirectory(path);
+            } catch (final IOException exception) {
+                log("error", "Failed to create {}! Exception: {}", path, exception.getMessage());
+            }
         }
 
         // create fusion.yml
@@ -140,7 +145,13 @@ public abstract class FusionCore {
     }
 
     public void enable() {
-        this.path.toFile().mkdirs();
+        if (!Files.exists(this.path)) {
+            try {
+                Files.createDirectory(this.path);
+            } catch (final IOException exception) {
+                log("error", "Failed to create {}! Exception: {}", this.path, exception.getMessage());
+            }
+        }
     }
 
     public void reload() {

@@ -13,6 +13,7 @@ import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationOptions;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -40,7 +41,13 @@ public class FileManager extends IFileManager {
      */
     @Override
     public @NotNull final FileManager init(@NotNull final List<FileAction> actions) {
-        this.path.toFile().mkdirs();
+        if (!Files.exists(this.path)) {
+            try {
+                Files.createDirectory(path);
+            } catch (final IOException exception) {
+                this.fusion.log("error", "Failed to create {}! Exception: {}", this.path, exception.getMessage());
+            }
+        }
 
         this.folders.forEach((folder, type) -> addFolder(folder, type, actions, null));
 
