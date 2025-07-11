@@ -197,7 +197,7 @@ public abstract class IConfigFile<A extends IConfigFile<A, C, L>, C, L> extends 
     @Override
     public @NotNull A load() {
         if (isDirectory()) {
-            this.logger.warn("Cannot load configuration, as {} is a directory.", getFileName());
+            this.fusion.log("warn", "Cannot load configuration, as {} is a directory.", getFileName());
 
             return (A) this;
         }
@@ -221,13 +221,13 @@ public abstract class IConfigFile<A extends IConfigFile<A, C, L>, C, L> extends 
     @Override
     public @NotNull A save() {
         if (isDirectory()) {
-            this.logger.warn("Cannot save configuration, as {} is a directory.", getFileName());
+            this.fusion.log("warn", "Cannot save configuration, as {} is a directory.", getFileName());
 
             return (A) this;
         }
 
         if (this.configuration == null) {
-            this.logger.error("Configuration is null, cannot save {}!", getFileName());
+            this.fusion.log("error", "Configuration is null, cannot save {}!", getFileName());
 
             return (A) this;
         }

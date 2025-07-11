@@ -5,7 +5,6 @@ import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.FileAction;
 import com.ryderbelserion.fusion.core.api.enums.FileType;
 import com.ryderbelserion.fusion.core.api.interfaces.files.ICustomFile;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationOptions;
@@ -21,7 +20,6 @@ import java.util.function.UnaryOperator;
 public abstract class IFileManager {
 
     protected final FusionCore fusion = FusionProvider.get();
-    protected final ComponentLogger logger = this.fusion.getLogger();
     protected final Path path = this.fusion.getPath();
 
     /**

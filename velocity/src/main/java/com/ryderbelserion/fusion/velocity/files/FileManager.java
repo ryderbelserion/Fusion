@@ -188,13 +188,13 @@ public class FileManager extends IFileManager {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
         if (file == null) {
-            this.logger.warn("Cannot write to file as the file does not exist.");
+            this.fusion.log("warn", "Cannot write to file as the file does not exist.");
 
             return this;
         }
 
         if (file.getFileType() != FileType.LOG) {
-            this.logger.warn("The file {} is not a log file.", file.getFileName());
+            this.fusion.log("warn", "The file {} is not a log file.", file.getFileName());
 
             return this;
         }
@@ -215,13 +215,13 @@ public class FileManager extends IFileManager {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
         if (file == null) {
-            this.logger.warn("Cannot write to file as the file does not exist.");
+            this.fusion.log("warn", "Cannot write to file as the file does not exist.");
 
             return this;
         }
 
         if (file.getFileType() == FileType.LOG) {
-            this.logger.warn("Please use the correct method FileManager#saveFile(path, content) to write to log files!");
+            this.fusion.log("warn", "Please use the correct method FileManager#saveFile(path, content) to write to log files!");
 
             return this;
         }

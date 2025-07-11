@@ -5,7 +5,6 @@ import com.ryderbelserion.fusion.core.FusionProvider;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -28,15 +27,13 @@ public class ItemUtils {
 
     private static final FusionCore fusion = FusionProvider.get();
 
-    private static final ComponentLogger logger = fusion.getLogger();
-
     public static @NotNull RegistryAccess getRegistryAccess() {
         return RegistryAccess.registryAccess();
     }
 
     public static @NotNull Optional<DataComponentType> getDataComponentType(@NotNull final String value) {
         if (value.isEmpty()) {
-            logger.error("{} cannot be blank while fetching a data component.", value);
+            fusion.log("error", "{} cannot be blank while fetching a data component.", value);
 
             return Optional.empty();
         }
@@ -48,7 +45,7 @@ public class ItemUtils {
 
     public static @Nullable ItemType getItemType(@NotNull final String value) {
         if (value.isEmpty()) {
-            logger.error("{} cannot be blank when fetching item types.", value);
+            fusion.log("error", "{} cannot be blank when fetching item types.", value);
 
             return null;
         }
@@ -58,7 +55,7 @@ public class ItemUtils {
         @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid item key.", value);
+            fusion.log("error", "{} is not a valid item key.", value);
 
             return null;
         }
@@ -66,7 +63,7 @@ public class ItemUtils {
         @Nullable final ItemType itemType = getRegistryAccess().getRegistry(RegistryKey.ITEM).get(getKey(value));
 
         if (itemType == null) {
-            logger.error("{} is not a valid item type.", key.asString());
+            fusion.log("error", "{} is not a valid item type.", key.asString());
 
             return null;
         }
@@ -76,7 +73,7 @@ public class ItemUtils {
 
     public static @Nullable Sound getSound(@NotNull final String value) {
         if (value.isEmpty()) {
-            logger.error("{} cannot be blank when fetching the sound.", value);
+            fusion.log("error", "{} cannot be blank when fetching the sound.", value);
 
             return null;
         }
@@ -86,7 +83,7 @@ public class ItemUtils {
         @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid sound key.", value);
+            fusion.log("error", "{} is not a valid sound key.", value);
 
             return null;
         }
@@ -94,7 +91,7 @@ public class ItemUtils {
         @Nullable final Sound sound = getRegistryAccess().getRegistry(RegistryKey.SOUND_EVENT).get(getKey(value));
 
         if (sound == null) {
-            logger.error("{} is not a valid sound.", key.asString());
+            fusion.log("error", "{} is not a valid sound.", key.asString());
 
             return null;
         }
@@ -104,7 +101,7 @@ public class ItemUtils {
 
     public static @Nullable Enchantment getEnchantment(@NotNull final String value) {
         if (value.isEmpty()) {
-            logger.error("{} cannot be blank when fetching the enchantment.", value);
+            fusion.log("error", "{} cannot be blank when fetching the enchantment.", value);
 
             return null;
         }
@@ -114,7 +111,7 @@ public class ItemUtils {
         @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid enchantment key.", value);
+            fusion.log("error", "{} is not a valid enchantment key.", value);
 
             return null;
         }
@@ -122,7 +119,7 @@ public class ItemUtils {
         @Nullable final Enchantment enchantment = getRegistryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(key);
 
         if (enchantment == null) {
-            logger.error("{} is not a valid enchantment.", key.asString());
+            fusion.log("error", "{} is not a valid enchantment.", key.asString());
 
             return null;
         }
@@ -132,7 +129,7 @@ public class ItemUtils {
 
     public static @Nullable TrimPattern getTrimPattern(@NotNull final String value) {
         if (value.isEmpty()) {
-            logger.error("{} cannot be blank when fetching the trim pattern.", value);
+            fusion.log("error", "{} cannot be blank when fetching the trim pattern.", value);
 
             return null;
         }
@@ -142,7 +139,7 @@ public class ItemUtils {
         @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid trim pattern key.", value);
+            fusion.log("error", "{} is not a valid trim pattern key.", value);
 
             return null;
         }
@@ -150,7 +147,7 @@ public class ItemUtils {
         @Nullable final TrimPattern trimPattern = getRegistryAccess().getRegistry(RegistryKey.TRIM_PATTERN).get(getKey(value));
 
         if (trimPattern == null) {
-            logger.error("{} is not a valid trim pattern.", key.asString());
+            fusion.log("error", "{} is not a valid trim pattern.", key.asString());
 
             return null;
         }
@@ -160,7 +157,7 @@ public class ItemUtils {
 
     public static @Nullable TrimMaterial getTrimMaterial(@NotNull final String value) {
         if (value.isEmpty()) {
-            logger.error("{} cannot be blank when fetching the trim material.", value);
+            fusion.log("error", "{} cannot be blank when fetching the trim material.", value);
 
             return null;
         }
@@ -170,7 +167,7 @@ public class ItemUtils {
         @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid trim material key.", value);
+            fusion.log("error", "{} is not a valid trim material key.", value);
 
             return null;
         }
@@ -178,7 +175,7 @@ public class ItemUtils {
         @Nullable final TrimMaterial trimMaterial = getRegistryAccess().getRegistry(RegistryKey.TRIM_MATERIAL).get(getKey(value));
 
         if (trimMaterial == null) {
-            logger.error("{} is not a valid trim material.", key.asString());
+            fusion.log("error", "{} is not a valid trim material.", key.asString());
 
             return null;
         }
@@ -188,7 +185,7 @@ public class ItemUtils {
 
     public static @Nullable PotionType getPotionType(@NotNull final String value) {
         if (value.isEmpty()) {
-            logger.error("{} cannot be blank when fetching the potion.", value);
+            fusion.log("error", "{} cannot be blank when fetching the potion.", value);
 
             return null;
         }
@@ -198,7 +195,7 @@ public class ItemUtils {
         @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid potion type key.", value);
+            fusion.log("error", "{} is not a valid potion type key.", value);
 
             return null;
         }
@@ -206,7 +203,7 @@ public class ItemUtils {
         @Nullable final PotionType potionType = getRegistryAccess().getRegistry(RegistryKey.POTION).get(getKey(value));
 
         if (potionType == null) {
-            logger.error("{} is not a valid potion.", key.asString());
+            fusion.log("error", "{} is not a valid potion.", key.asString());
 
             return null;
         }
@@ -216,7 +213,7 @@ public class ItemUtils {
 
     public static @Nullable PotionEffectType getPotionEffect(@NotNull final String value) {
         if (value.isEmpty()) {
-            logger.error("{} cannot be blank when fetching the potion effect.", value);
+            fusion.log("error", "{} cannot be blank when fetching the potion effect.", value);
 
             return null;
         }
@@ -226,7 +223,7 @@ public class ItemUtils {
         @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid potion effect key.", value);
+            fusion.log("error", "{} is not a valid potion effect key.", value);
 
             return null;
         }
@@ -234,7 +231,7 @@ public class ItemUtils {
         @Nullable final PotionEffectType potionEffectType = getRegistryAccess().getRegistry(RegistryKey.MOB_EFFECT).get(getKey(value));
 
         if (potionEffectType == null) {
-            logger.error("{} is not a valid potion effect.", key.asString());
+            fusion.log("error", "{} is not a valid potion effect.", key.asString());
 
             return null;
         }
@@ -244,7 +241,7 @@ public class ItemUtils {
 
     public static @Nullable Particle getParticleType(@NotNull final String value) {
         if (value.isEmpty()) {
-            logger.error("{} cannot be blank when fetching the particle.", value);
+            fusion.log("error", "{} cannot be blank when fetching the particle.", value);
 
             return null;
         }
@@ -254,7 +251,7 @@ public class ItemUtils {
         @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid potion type key.", value);
+            fusion.log("error", "{} is not a valid potion type key.", value);
 
             return null;
         }
@@ -262,7 +259,7 @@ public class ItemUtils {
         @Nullable final Particle particle = getRegistryAccess().getRegistry(RegistryKey.PARTICLE_TYPE).get(getKey(value));
 
         if (particle == null) {
-            logger.error("{} is not a valid particle.", key.asString());
+            fusion.log("error", "{} is not a valid particle.", key.asString());
 
             return null;
         }
@@ -272,7 +269,7 @@ public class ItemUtils {
 
     public static @Nullable PatternType getPatternType(@NotNull final String value) {
         if (value.isEmpty()) {
-            logger.error("{} cannot be blank when fetching banner pattern types!", value);
+            fusion.log("error", "{} cannot be blank when fetching banner pattern types!", value);
 
             return null;
         }
@@ -282,7 +279,7 @@ public class ItemUtils {
         @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid potion type key.", value);
+            fusion.log("error", "{} is not a valid potion type key.", value);
 
             return null;
         }
@@ -290,7 +287,7 @@ public class ItemUtils {
         @Nullable final PatternType patternType = getRegistryAccess().getRegistry(RegistryKey.BANNER_PATTERN).get(getKey(value));
 
         if (patternType == null) {
-            logger.error("{} is not a valid banner pattern.", key.asString());
+            fusion.log("error", "{} is not a valid banner pattern.", key.asString());
 
             return null;
         }
@@ -300,7 +297,7 @@ public class ItemUtils {
 
     public static @Nullable EntityType getEntity(@NotNull final String value) {
         if (value.isEmpty()) {
-            logger.error("{} cannot be blank when fetching the entity.", value);
+            fusion.log("error", "{} cannot be blank when fetching the entity.", value);
 
             return null;
         }
@@ -310,7 +307,7 @@ public class ItemUtils {
         @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid potion type key.", value);
+            fusion.log("error", "{} is not a valid potion type key.", value);
 
             return null;
         }
@@ -318,7 +315,7 @@ public class ItemUtils {
         @Nullable final EntityType entityType = getRegistryAccess().getRegistry(RegistryKey.ENTITY_TYPE).get(getKey(value));
 
         if (entityType == null) {
-            logger.error("{} is not a valid entity.", key.asString());
+            fusion.log("error", "{} is not a valid entity.", key.asString());
 
             return null;
         }
@@ -328,7 +325,7 @@ public class ItemUtils {
 
     public static @Nullable Attribute getAttribute(@NotNull final String value) {
         if (value.isEmpty()) {
-            logger.error("{} cannot be blank when fetching the attribute.", value);
+            fusion.log("error", "{} cannot be blank when fetching the attribute.", value);
 
             return null;
         }
@@ -338,7 +335,7 @@ public class ItemUtils {
         @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
-            logger.error("{} is not a valid potion type key.", value);
+            fusion.log("error", "{} is not a valid potion type key.", value);
 
             return null;
         }
@@ -346,7 +343,7 @@ public class ItemUtils {
         @Nullable final Attribute attribute = getRegistryAccess().getRegistry(RegistryKey.ATTRIBUTE).get(getKey(value));
 
         if (attribute == null) {
-            logger.error("{} is not a valid attribute.", key.asString());
+            fusion.log("error", "{} is not a valid attribute.", key.asString());
 
             return null;
         }
