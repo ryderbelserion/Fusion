@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Represents an abstract configuration file that extends {@link ICustomFile}.
@@ -203,17 +202,13 @@ public abstract class IConfigFile<A extends IConfigFile<A, C, L>, C, L> extends 
             return (A) this;
         }
 
-        final AtomicReference<C> configuration = new AtomicReference<>();
-
-        CompletableFuture.supplyAsync(() -> {
+        this.configuration = CompletableFuture.supplyAsync(() -> {
             try {
                 return loadConfig();
             } catch (final IOException exception) {
                 throw new FusionException(String.format("Failed to load configuration file %s!", getFileName()), exception);
             }
-        }).thenAccept(configuration::set);
-
-        this.configuration = configuration.get();
+        }).join();
 
         return (A) this;
     }

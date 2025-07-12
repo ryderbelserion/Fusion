@@ -7,28 +7,19 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicReference;
 
 public record PlayerBuilder(Server server, String name) {
 
     public @Nullable PlayerProfile getOfflineProfile() {
         if (this.name.isEmpty()) return null;
 
-        final AtomicReference<PlayerProfile> playerProfile = new AtomicReference<>();
-
-        CompletableFuture.supplyAsync(() -> this.server.createProfile(this.name)).thenAccept(playerProfile::set);
-
-        return playerProfile.get();
+        return CompletableFuture.supplyAsync(() -> this.server.createProfile(this.name)).join();
     }
 
     public @Nullable OfflinePlayer getOfflinePlayer() {
         if (this.name.isEmpty()) return null;
 
-        final AtomicReference<OfflinePlayer> offlinePlayer = new AtomicReference<>();
-
-        CompletableFuture.supplyAsync(() -> this.server.getOfflinePlayer(this.name)).thenAccept(offlinePlayer::set);
-
-        return offlinePlayer.get();
+        return CompletableFuture.supplyAsync(() -> this.server.getOfflinePlayer(this.name)).join();
     }
 
     public @Nullable Player getPlayer() {
