@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LogCustomFile extends ICustomFile<LogCustomFile> {
@@ -44,6 +45,22 @@ public class LogCustomFile extends ICustomFile<LogCustomFile> {
     }
 
     /**
+     * Saves the configuration as is.
+     *
+     * @return {@link LogCustomFile}
+     */
+    @Override
+    public @NotNull final LogCustomFile save() {
+        try {
+            FileUtils.compress(getPath(), null, "", new ArrayList<>());
+        } catch (final IOException exception) {
+            throw new FusionException(String.format("Could not compress file %s!", getFileName()), exception);
+        }
+
+        return this;
+    }
+
+    /**
      * Saves the content to the log file.
      *
      * @param content the content to write to the file
@@ -55,11 +72,7 @@ public class LogCustomFile extends ICustomFile<LogCustomFile> {
         final Path path = getPath();
 
         if (actions.contains(FileAction.RELOAD_FILE)) {
-            try {
-                FileUtils.compress(path, null, "", actions);
-            } catch (final IOException exception) {
-                throw new FusionException(String.format("Could not compress file %s!", getFileName()), exception);
-            }
+            save();
         }
 
         load();
