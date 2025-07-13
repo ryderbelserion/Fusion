@@ -60,6 +60,14 @@ public abstract class IFileManager {
     public abstract @NotNull IFileManager addFile(@NotNull final Path path, @NotNull final FileType fileType, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options);
 
     /**
+     * Adds a custom file to the hashmap.
+     *
+     * @param customFile {@link ICustomFile}
+     * @return {@link IFileManager}
+     */
+    public abstract @NotNull IFileManager addFile(@NotNull final ICustomFile customFile);
+
+    /**
      * Saves contents at the given path i.e. a log file.
      *
      * @param path the path

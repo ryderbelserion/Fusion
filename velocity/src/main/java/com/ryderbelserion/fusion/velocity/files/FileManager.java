@@ -183,6 +183,19 @@ public class FileManager extends IFileManager {
     }
 
     /**
+     * Adds a custom file to the hashmap.
+     *
+     * @param customFile {@link ICustomFile}
+     * @return {@link IFileManager}
+     */
+    @Override
+    public @NotNull IFileManager addFile(@NotNull final ICustomFile customFile) {
+        this.customFiles.putIfAbsent(customFile.getPath(), customFile);
+
+        return this;
+    }
+
+    /**
      * Saves contents at the given path i.e. a log file.
      *
      * @param path the path
