@@ -69,15 +69,13 @@ public class LogCustomFile extends ICustomFile<LogCustomFile> {
      */
     @Override
     public @NotNull final LogCustomFile save(@NotNull final String content, @NotNull final List<FileAction> actions) {
-        final Path path = getPath();
-
         if (actions.contains(FileAction.RELOAD_FILE)) {
             save();
         }
 
         load();
 
-        FileUtils.write(path, content);
+        FileUtils.write(getPath(), content);
 
         return this;
     }
