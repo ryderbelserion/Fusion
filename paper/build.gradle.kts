@@ -18,10 +18,6 @@ repositories {
 dependencies {
     compileOnly(libs.bundles.shared)
 
-    api(libs.configurate.json) {
-        exclude("com.google.code.gson", "gson") // gson is present literally everywhere
-    }
-
     api(project(":fusion-core"))
 }
 
