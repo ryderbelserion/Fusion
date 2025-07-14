@@ -3,6 +3,12 @@ package com.ryderbelserion.fusion.core.api.commands.objects;
 import com.mojang.brigadier.context.CommandContext;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Builds the command context.
+ *
+ * @param <S> the platform's CommandSourceStack, or otherwise the sender.
+ * @param <P> the platform's player object.
+ */
 public abstract class ICommandContext<S, P> {
 
     private final CommandContext<S> context;
