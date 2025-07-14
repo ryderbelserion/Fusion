@@ -18,7 +18,12 @@ repositories {
 dependencies {
     compileOnly(libs.bundles.shared)
 
-    api(project(":fusion-core"))
+    api(project(":fusion-core")) {
+        exclude(
+            group = "org.yaml",
+            module = "snakeyaml",
+        )
+    }
 }
 
 tasks {
