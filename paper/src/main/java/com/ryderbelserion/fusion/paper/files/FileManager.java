@@ -56,18 +56,18 @@ public class FileManager extends IFileManager {
         return this;
     }
 
-    // ConfigMe
     /**
-     * Adds a folder which will be mapping ConfigMe
+     * Adds a folder which will be mapping ConfigMe.
      *
      * @param folder the folder to extract/map
      * @param builder the object mapped classes for the configs
      * @param actions a list of actions to define what to do
-     * @param options optional options to configure indentation size etc.
+     * @param options optional options to configure indentation size etc
      * @return {@link FileManager}
      */
+    @Override
     public @NotNull final FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
-        addFolder(folder, FileType.JALU);
+        this.folders.put(folder, FileType.JALU);
 
         extractFolder(folder, new ArrayList<>(actions) {{
             add(FileAction.EXTRACT_FOLDER);
@@ -83,16 +83,41 @@ public class FileManager extends IFileManager {
     }
 
     /**
+     * Adds a folder which will be mapping ConfigMe.
+     *
+     * @param folder the folder to extract/map
+     * @param builder the object mapped classes for the configs
+     * @param actions a list of actions to define what to do
+     * @return {@link FileManager}
+     */
+    @Override
+    public @NotNull final FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions) {
+        return addFolder(folder, builder, actions, null);
+    }
+
+    /**
+     * Adds a folder which will be mapping ConfigMe.
+     *
+     * @param folder the folder to extract/map
+     * @param builder the object mapped classes for the configs
+     * @return {@link FileManager}
+     */
+    @Override
+    public @NotNull final FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder) {
+        return addFolder(folder, builder, new ArrayList<>());
+    }
+
+    /**
      * Adds a folder which is used to map Configurate yaml/jackson.
      *
      * @param folder the folder to extract/map
      * @param actions a list of actions to define what to do
-     * @param options optional options to configure indentation size etc.
+     * @param options optional options to configure indentation size etc
      * @return {@link FileManager}
      */
     @Override
     public @NotNull final FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
-        addFolder(folder, fileType);
+        this.folders.put(folder, fileType);
 
         extractFolder(folder, actions);
 
@@ -106,7 +131,7 @@ public class FileManager extends IFileManager {
     }
 
     /**
-     * Adds a folder to a hashmap which is used with FileManager#init.
+     * Adds a folder to a hashmap.
      *
      * @param folder the folder to add
      * @param fileType the type of file expected in the folder
@@ -114,21 +139,21 @@ public class FileManager extends IFileManager {
      */
     @Override
     public @NotNull final FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType) {
-        this.folders.putIfAbsent(folder, fileType);
+        addFolder(folder, fileType, new ArrayList<>(), null);
 
         return this;
     }
 
-    // ConfigMe
     /**
      * Adds a path which will be mapping ConfigMe or reload if already present.
      *
      * @param path the path to extract/map
      * @param builder the object mapped classes for the configs
      * @param actions a list of actions to define what to do
-     * @param options optional options to configure indentation size etc.
+     * @param options optional options to configure indentation size etc
      * @return {@link FileManager}
      */
+    @Override
     public @NotNull final FileManager addFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.getOrDefault(path, null);
 
@@ -146,11 +171,37 @@ public class FileManager extends IFileManager {
     }
 
     /**
+     * Adds a path which will be mapping ConfigMe or reload if already present.
+     *
+     * @param path the path to extract/map
+     * @param builder the object mapped classes for the configs
+     * @param actions a list of actions to define what to do
+     * @return {@link FileManager}
+     */
+    @Override
+    public @NotNull final FileManager addFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions) {
+        return addFile(path, builder, actions, null);
+    }
+
+    /**
+     * Adds a path which will be mapping ConfigMe or reload if already present.
+     *
+     * @param path the path to extract/map
+     * @param builder the object mapped classes for the configs
+     * @return {@link FileManager}
+     */
+    @Override
+    public @NotNull final FileManager addFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder) {
+        return addFile(path, builder, new ArrayList<>());
+    }
+
+    /**
      * Adds a folder which is used to map Configurate yaml/jackson or log files. It automatically determines the file type!
      *
      * @param path the path to extract/map
+     * @param fileType the type of file expected in the folder
      * @param actions a list of actions to define what to do
-     * @param options optional options to configure indentation size etc.
+     * @param options optional options to configure indentation size etc
      * @return {@link FileManager}
      */
     @Override
@@ -185,6 +236,31 @@ public class FileManager extends IFileManager {
         }
 
         return this;
+    }
+
+    /**
+     * Adds a folder which is used to map Configurate yaml/jackson or log files. It automatically determines the file type!
+     *
+     * @param path the path to extract/map
+     * @param fileType the type of file expected in the folder
+     * @param actions a list of actions to define what to do
+     * @return {@link FileManager}
+     */
+    @Override
+    public @NotNull final FileManager addFile(@NotNull final Path path, @NotNull final FileType fileType, @NotNull final List<FileAction> actions) {
+        return addFile(path, fileType, actions, null);
+    }
+
+    /**
+     * Adds a folder which is used to map Configurate yaml/jackson or log files. It automatically determines the file type!
+     *
+     * @param path the path to extract/map
+     * @param fileType the type of file expected in the folder
+     * @return {@link FileManager}
+     */
+    @Override
+    public @NotNull final FileManager addFile(@NotNull final Path path, @NotNull final FileType fileType) {
+        return addFile(path, fileType, new ArrayList<>(), null);
     }
 
     /**
@@ -281,6 +357,17 @@ public class FileManager extends IFileManager {
     }
 
     /**
+     * Removes a file from the cache.
+     *
+     * @param path the path
+     * @return {@link FileManager}
+     */
+    @Override
+    public @NotNull final FileManager removeFile(@NotNull final Path path) {
+        return removeFile(path, null);
+    }
+
+    /**
      * Removes a file using {@link ICustomFile}.
      *
      * @param customFile the custom file
@@ -292,6 +379,17 @@ public class FileManager extends IFileManager {
         removeFile(customFile.getPath(), action);
 
         return this;
+    }
+
+    /**
+     * Removes a file using {@link ICustomFile}.
+     *
+     * @param customFile the custom file
+     * @return {@link FileManager}
+     */
+    @Override
+    public @NotNull final FileManager removeFile(@NotNull final ICustomFile<? extends ICustomFile<?>> customFile) {
+        return removeFile(customFile, null);
     }
 
     /**
@@ -372,6 +470,26 @@ public class FileManager extends IFileManager {
      */
     public @Nullable final PaperCustomFile getPaperCustomFile(@NotNull final Path path) {
         return (PaperCustomFile) getCustomFile(path);
+    }
+
+    /**
+     * Fetches a {@link NbtCustomFile} from the cache.
+     *
+     * @param path the path in the cache
+     * @return {@link NbtCustomFile}
+     */
+    public @Nullable final NbtCustomFile getNbtFile(@NotNull final Path path) {
+        return (NbtCustomFile) getCustomFile(path);
+    }
+
+    /**
+     * Fetches a {@link LogCustomFile} from the cache.
+     *
+     * @param path the path in the cache
+     * @return {@link LogCustomFile}
+     */
+    public @Nullable final LogCustomFile getLogFile(@NotNull final Path path) {
+        return (LogCustomFile) getCustomFile(path);
     }
 
     /**

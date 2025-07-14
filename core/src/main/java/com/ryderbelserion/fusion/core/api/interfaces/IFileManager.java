@@ -1,5 +1,7 @@
 package com.ryderbelserion.fusion.core.api.interfaces;
 
+import ch.jalu.configme.SettingsManagerBuilder;
+import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.api.FusionCore;
 import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.FileAction;
@@ -11,6 +13,7 @@ import org.spongepowered.configurate.ConfigurationOptions;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 /**
@@ -41,7 +44,7 @@ public abstract class IFileManager {
     public abstract @NotNull IFileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options);
 
     /**
-     * Adds a folder to a hashmap which is used with FileManager#init.
+     * Adds a folder to a hashmap.
      *
      * @param folder the folder to add
      * @param fileType the type of file expected in the folder
@@ -50,14 +53,94 @@ public abstract class IFileManager {
     public abstract @NotNull IFileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType);
 
     /**
+     * Adds a folder which will be mapping ConfigMe.
+     *
+     * @param folder the folder to extract/map
+     * @param builder the object mapped classes for the configs
+     * @param actions a list of actions to define what to do
+     * @param options optional options to configure indentation size etc
+     * @return {@link IFileManager}
+     */
+    public abstract @NotNull IFileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options);
+
+    /**
+     * Adds a folder which will be mapping ConfigMe.
+     *
+     * @param folder the folder to extract/map
+     * @param builder the object mapped classes for the configs
+     * @param actions a list of actions to define what to do
+     * @return {@link IFileManager}
+     */
+    public abstract @NotNull IFileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions);
+
+    /**
+     * Adds a folder which will be mapping ConfigMe.
+     *
+     * @param folder the folder to extract/map
+     * @param builder the object mapped classes for the configs
+     * @return {@link IFileManager}
+     */
+    public abstract @NotNull IFileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder);
+
+    /**
+     * Adds a path which will be mapping ConfigMe or reload if already present.
+     *
+     * @param path the path to extract/map
+     * @param builder the object mapped classes for the configs
+     * @param actions a list of actions to define what to do
+     * @param options optional options to configure indentation size etc
+     * @return {@link IFileManager}
+     */
+    public abstract @NotNull IFileManager addFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options);
+
+    /**
+     * Adds a path which will be mapping ConfigMe or reload if already present.
+     *
+     * @param path the path to extract/map
+     * @param builder the object mapped classes for the configs
+     * @param actions a list of actions to define what to do
+     * @return {@link IFileManager}
+     */
+    public abstract @NotNull IFileManager addFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions);
+
+    /**
+     * Adds a path which will be mapping ConfigMe or reload if already present.
+     *
+     * @param path the path to extract/map
+     * @param builder the object mapped classes for the configs
+     * @return {@link IFileManager}
+     */
+    public abstract @NotNull IFileManager addFile(@NotNull final Path path, @NotNull final Consumer<SettingsManagerBuilder> builder);
+
+    /**
      * Adds a folder which is used to map Configurate yaml/jackson or log files. It automatically determines the file type!
      *
      * @param path the path to extract/map
+     * @param fileType the type of file expected in the folder
      * @param actions a list of actions to define what to do
-     * @param options optional options to configure indentation size etc.
+     * @param options optional options to configure indentation size etc
      * @return {@link IFileManager}
      */
     public abstract @NotNull IFileManager addFile(@NotNull final Path path, @NotNull final FileType fileType, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options);
+
+    /**
+     * Adds a folder which is used to map Configurate yaml/jackson or log files. It automatically determines the file type!
+     *
+     * @param path the path to extract/map
+     * @param fileType the type of file expected in the folder
+     * @param actions a list of actions to define what to do
+     * @return {@link IFileManager}
+     */
+    public abstract @NotNull IFileManager addFile(@NotNull final Path path, @NotNull final FileType fileType, @NotNull final List<FileAction> actions);
+
+    /**
+     * Adds a folder which is used to map Configurate yaml/jackson or log files. It automatically determines the file type!
+     *
+     * @param path the path to extract/map
+     * @param fileType the type of file expected in the folder
+     * @return {@link IFileManager}
+     */
+    public abstract @NotNull IFileManager addFile(@NotNull final Path path, @NotNull final FileType fileType);
 
     /**
      * Adds a custom file to the hashmap.
@@ -102,6 +185,22 @@ public abstract class IFileManager {
      * @return {@link IFileManager}
      */
     public abstract @NotNull IFileManager removeFile(@NotNull final Path path, @Nullable final FileAction action);
+
+    /**
+     * Removes a file using {@link ICustomFile}.
+     *
+     * @param customFile the custom file
+     * @return {@link IFileManager}
+     */
+    public abstract @NotNull IFileManager removeFile(@NotNull final ICustomFile<? extends ICustomFile<?>> customFile);
+
+    /**
+     * Removes a file from the cache with the option to delete if the {@link FileAction} is specified.
+     *
+     * @param path the path
+     * @return {@link IFileManager}
+     */
+    public abstract @NotNull IFileManager removeFile(@NotNull final Path path);
 
     /**
      * Purges all file data without saving or reloading.

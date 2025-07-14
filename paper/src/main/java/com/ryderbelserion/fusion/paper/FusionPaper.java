@@ -98,16 +98,17 @@ public class FusionPaper extends FusionCore {
         return this.server.createProfile(uuid, name);
     }
 
-    public @NotNull final String getItemsPlugin() {
-        return this.config.getProperty(PluginKeys.items_plugin);
-    }
-
+    @Override
     public @NotNull final FileManager getFileManager() {
         if (this.fileManager == null) {
-            throw new FusionException("An error occurred while trying to get the legacy file manager instance.");
+            throw new FusionException("An error occurred while trying to get the file manager instance.");
         }
 
         return this.fileManager;
+    }
+
+    public @NotNull final String getItemsPlugin() {
+        return this.config.getProperty(PluginKeys.items_plugin);
     }
 
     public @NotNull final StructureRegistry getRegistry() {

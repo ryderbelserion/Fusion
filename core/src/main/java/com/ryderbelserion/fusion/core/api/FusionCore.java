@@ -3,6 +3,7 @@ package com.ryderbelserion.fusion.core.api;
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
+import com.ryderbelserion.fusion.core.api.interfaces.IFileManager;
 import com.ryderbelserion.fusion.core.api.utils.keys.ConfigKeys;
 import com.ryderbelserion.fusion.core.plugins.FusionPluginManager;
 import com.ryderbelserion.fusion.core.FusionProvider;
@@ -67,6 +68,8 @@ public abstract class FusionCore {
     public abstract String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message);
 
     public abstract ICommandManager getCommandManager();
+
+    public abstract IFileManager getFileManager();
 
     public abstract String chomp(@NotNull final String message);
 
