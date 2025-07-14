@@ -16,16 +16,16 @@ repositories {
 }
 
 dependencies {
-    compileOnly(libs.bundles.shared)
-
-    api(project(":fusion-core"))
-
-    api(libs.jalu) {
+    implementation(libs.jalu) {
         exclude(
             group = "org.yaml",
             module = "snakeyaml",
         )
     }
+
+    compileOnly(libs.bundles.shared)
+
+    api(project(":fusion-core"))
 }
 
 tasks {

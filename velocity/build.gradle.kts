@@ -12,15 +12,15 @@ repositories {
 }
 
 dependencies {
-    annotationProcessor(libs.velocity)
-    compileOnly(libs.velocity)
-
-    api(libs.jalu) {
+    implementation(libs.jalu) {
         exclude(
             group = "org.yaml",
             module = "snakeyaml",
         )
     }
+
+    annotationProcessor(libs.velocity)
+    compileOnly(libs.velocity)
 
     api(project(":fusion-core"))
 }
