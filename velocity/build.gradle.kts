@@ -15,6 +15,13 @@ dependencies {
     annotationProcessor(libs.velocity)
     compileOnly(libs.velocity)
 
+    api(libs.jalu) {
+        exclude(
+            group = "org.yaml",
+            module = "snakeyaml",
+        )
+    }
+
     api(project(":fusion-core"))
 }
 
