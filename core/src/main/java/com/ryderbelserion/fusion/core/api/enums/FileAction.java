@@ -23,6 +23,10 @@ public enum FileAction {
      */
     DELETE_FILE,
     /**
+     * Deletes from the cache.
+     */
+    DELETE_CACHE,
+    /**
      * Tells the FileManager that the file is not dynamic.
      */
     STATIC_FILE,

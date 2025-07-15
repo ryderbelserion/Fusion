@@ -341,11 +341,15 @@ public class FileManager extends IFileManager {
      */
     @Override
     public @NotNull final FileManager removeFile(@NotNull final Path path, @Nullable final FileAction action) {
+        if (!this.customFiles.containsKey(path)) return this;
+
         final ICustomFile<? extends ICustomFile<?>> file = this.customFiles.get(path);
 
         if (action == FileAction.DELETE_FILE) {
             file.delete();
+        }
 
+        if (action == FileAction.DELETE_CACHE) {
             this.customFiles.remove(path);
 
             return this;
