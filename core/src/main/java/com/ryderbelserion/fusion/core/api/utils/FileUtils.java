@@ -114,7 +114,9 @@ public class FileUtils {
                         Files.createDirectories(parent);
                     }
 
-                    Files.copy(stream, target);
+                    if (!Files.exists(target)) {
+                        Files.copy(stream, target);
+                    }
                 }
             }
         } catch (final URISyntaxException | IOException exception) {
