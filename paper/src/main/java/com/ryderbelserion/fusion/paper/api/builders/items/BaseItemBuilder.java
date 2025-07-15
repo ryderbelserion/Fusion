@@ -333,9 +333,9 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return plainLore;
     }
 
-    public @NotNull B setEnchantGlint(final boolean enchantGlintOverride) {
-        if (enchantGlintOverride && !this.item.hasData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE)) {
-            this.item.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, enchantGlintOverride);
+    public @NotNull B setEnchantGlint(final boolean isGlowing) {
+        if (isGlowing && !this.item.hasData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE)) {
+            this.item.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true);
 
             return (B) this;
         }
