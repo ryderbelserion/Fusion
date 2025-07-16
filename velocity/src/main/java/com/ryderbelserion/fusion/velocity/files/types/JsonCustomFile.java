@@ -63,18 +63,9 @@ public class JsonCustomFile extends IConfigFile<JsonCustomFile, BasicConfigurati
      * @param path         the path to the configuration key
      * @return the string value or the default if missing
      */
+    @Override
     public @NotNull final String getStringValueWithDefault(@NotNull final String defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getString(defaultValue);
-    }
-
-    /**
-     * Retrieves a string value from the configuration.
-     *
-     * @param path the path to the configuration key
-     * @return the string value or an empty string if missing
-     */
-    public @NotNull final String getStringValue(@NotNull final Object... path) {
-        return getStringValueWithDefault("", path);
     }
 
     /**
@@ -84,18 +75,9 @@ public class JsonCustomFile extends IConfigFile<JsonCustomFile, BasicConfigurati
      * @param path         the path to the configuration key
      * @return the boolean value or the default if missing
      */
+    @Override
     public final boolean getBooleanValueWithDefault(final boolean defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getBoolean(defaultValue);
-    }
-
-    /**
-     * Retrieves a boolean value from the configuration.
-     *
-     * @param path the path to the configuration key
-     * @return the boolean value or false if missing
-     */
-    public final boolean getBooleanValue(@NotNull final Object... path) {
-        return getBooleanValueWithDefault(false, path);
     }
 
     /**
@@ -105,18 +87,9 @@ public class JsonCustomFile extends IConfigFile<JsonCustomFile, BasicConfigurati
      * @param path         the path to the configuration key
      * @return the double value or the default if missing
      */
+    @Override
     public final double getDoubleValueWithDefault(final double defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getDouble(defaultValue);
-    }
-
-    /**
-     * Retrieves a double value from the configuration.
-     *
-     * @param path the path to the configuration key
-     * @return the double value or 0.0 if missing
-     */
-    public final double getDoubleValue(@NotNull final Object... path) {
-        return getDoubleValueWithDefault(0.0, path);
     }
 
     /**
@@ -126,18 +99,9 @@ public class JsonCustomFile extends IConfigFile<JsonCustomFile, BasicConfigurati
      * @param path         the path to the configuration key
      * @return the long value or the default if missing
      */
+    @Override
     public final long getLongValueWithDefault(final long defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getLong(defaultValue);
-    }
-
-    /**
-     * Retrieves a long value from the configuration.
-     *
-     * @param path the path to the configuration key
-     * @return the long value or 0L if missing
-     */
-    public final long getLongValue(@NotNull final Object... path) {
-        return getLongValueWithDefault(0L, path);
     }
 
     /**
@@ -147,18 +111,9 @@ public class JsonCustomFile extends IConfigFile<JsonCustomFile, BasicConfigurati
      * @param path         the path to the configuration key
      * @return the integer value or the default if missing
      */
+    @Override
     public final int getIntValueWithDefault(final int defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getInt(defaultValue);
-    }
-
-    /**
-     * Retrieves an integer value from the configuration.
-     *
-     * @param path the path to the configuration key
-     * @return the integer value or 0 if missing
-     */
-    public final int getIntValue(@NotNull final Object... path) {
-        return getIntValueWithDefault(0, path);
     }
 
     /**
