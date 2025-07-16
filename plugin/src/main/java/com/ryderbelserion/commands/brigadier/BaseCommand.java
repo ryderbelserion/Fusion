@@ -3,6 +3,7 @@ package com.ryderbelserion.commands.brigadier;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.CrazyCrates;
+import com.ryderbelserion.commands.brigadier.types.admin.CommandItem;
 import com.ryderbelserion.commands.brigadier.types.admin.CommandReload;
 import com.ryderbelserion.fusion.paper.api.commands.objects.PaperCommand;
 import com.ryderbelserion.fusion.paper.api.commands.objects.PaperCommandContext;
@@ -60,7 +61,7 @@ public class BaseCommand extends PaperCommand {
 
     @Override
     public @NotNull final List<PaperCommand> getChildren() {
-        return List.of(new CommandReload());
+        return List.of(new CommandReload(), new CommandItem());
     }
 
     public @Nullable PaperCustomFile getCrateConfig(final String fileName) {

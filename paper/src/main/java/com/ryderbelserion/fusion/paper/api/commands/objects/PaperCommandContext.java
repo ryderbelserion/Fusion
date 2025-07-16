@@ -19,7 +19,7 @@ public class PaperCommandContext extends ICommandContext<CommandSourceStack, Pla
 
     @Override
     public @NotNull final Player getPlayer() {
-        return (Player) getSource();
+        return (Player) getCommandSender();
     }
 
     @Override

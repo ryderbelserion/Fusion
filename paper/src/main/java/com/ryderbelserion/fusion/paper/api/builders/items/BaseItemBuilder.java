@@ -492,7 +492,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             if (color != null) {
                 this.item.setData(DataComponentTypes.MAP_COLOR, MapItemColor.mapItemColor().color(color).build());
             }
-        } else if (isLeather() || isPotion()) {
+        } else if (isLeather()) {
             final Color color = value.contains(",") ? ColorUtils.getRGB(value) : ColorUtils.getColor(value);
 
             if (color != null) {
