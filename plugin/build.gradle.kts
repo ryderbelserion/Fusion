@@ -5,7 +5,7 @@ plugins {
 project.group = "${rootProject.group}.paper"
 
 dependencies {
-    api(project(":fusion-paper"))
+    //api(project(":fusion-paper"))
 }
 
 tasks {
@@ -17,6 +17,6 @@ tasks {
 
         defaultCharacterEncoding = Charsets.UTF_8.name()
 
-        minecraftVersion(libs.versions.minecraft.get())
+        minecraftVersion("1.21.7")
     }
 }

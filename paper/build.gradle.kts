@@ -27,15 +27,3 @@ dependencies {
 
     api(project(":fusion-core"))
 }
-
-tasks {
-    runPaper.folia.registerTask()
-
-    runServer {
-        jvmArgs("-Dnet.kyori.ansi.colorLevel=truecolor")
-
-        defaultCharacterEncoding = Charsets.UTF_8.name()
-
-        minecraftVersion(libs.versions.minecraft.get())
-    }
-}

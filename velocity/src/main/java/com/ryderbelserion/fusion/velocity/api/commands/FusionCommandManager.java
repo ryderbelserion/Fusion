@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.velocity.api.commands;
 
-import com.ryderbelserion.fusion.core.api.commands.ICommandManager;
+import com.ryderbelserion.fusion.core.v1.api.commands.ICommandManager;
 import com.ryderbelserion.fusion.velocity.api.commands.objects.VelocityCommand;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandManager;

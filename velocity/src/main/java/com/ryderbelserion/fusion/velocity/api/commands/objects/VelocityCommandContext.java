@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.velocity.api.commands.objects;
 
 import com.mojang.brigadier.context.CommandContext;
-import com.ryderbelserion.fusion.core.api.commands.objects.ICommandContext;
+import com.ryderbelserion.fusion.core.v1.api.commands.objects.ICommandContext;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import org.jetbrains.annotations.NotNull;

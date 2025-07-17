@@ -8,7 +8,7 @@ pluginManagement {
 rootProject.name = "Fusion"
 
 listOf(
-    "velocity",
+    //"velocity",
     "paper",
     "core",
 

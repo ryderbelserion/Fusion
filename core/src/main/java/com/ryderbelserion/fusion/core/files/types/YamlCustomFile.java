@@ -1,58 +1,36 @@
 package com.ryderbelserion.fusion.core.files.types;
 
-import com.ryderbelserion.fusion.core.api.enums.FileType;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.api.interfaces.files.IConfigFile;
-import com.ryderbelserion.fusion.core.api.enums.FileAction;
+import com.ryderbelserion.fusion.core.files.FileManager;
+import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
-import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
-import java.nio.file.Path;
+import java.io.IOException;
 import java.util.List;
-import java.util.function.UnaryOperator;
+import java.util.function.Consumer;
 
-/**
- * Loads, reloads, or saves existing files built using Configurate Yaml.
- */
-public class YamlCustomFile extends IConfigFile<YamlCustomFile, CommentedConfigurationNode, YamlConfigurationLoader> {
+public class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedConfigurationNode, YamlConfigurationLoader, ConfigurationOptions> {
 
-    /**
-     * Constructs a {@code YamlCustomFile} with the specified file path, actions, and loader.
-     *
-     * @param path    the file path associated with the configuration file
-     * @param actions the list of file actions applied to the configuration file
-     * @param options the options responsible for configuring the formatting
-     */
-    public YamlCustomFile(@NotNull final Path path, @NotNull final List<FileAction> actions, @Nullable final UnaryOperator<ConfigurationOptions> options) {
-        super(path, actions, YamlConfigurationLoader.builder().defaultOptions(options != null ? options : configurationOptions -> configurationOptions).indent(2).path(path).build());
+    public YamlCustomFile(@NotNull final FileManager fileManager, @NotNull final Consumer<YamlCustomFile> consumer) {
+        super(fileManager);
+
+        this.options = ConfigurationOptions.defaults();
+
+        consumer.accept(this);
+
+        this.loader = YamlConfigurationLoader.builder().path(getPath()).defaultOptions(getOptions()).build();
     }
 
-    /**
-     * Loads the configuration.
-     *
-     * <p>This method retrieves the configuration file and initializes its contents.</p>
-     *
-     * @return the loaded configuration instance
-     * @throws ConfigurateException if an error occurs during the loading process
-     */
     @Override
-    public @NotNull final CommentedConfigurationNode loadConfig() throws ConfigurateException {
+    public @NotNull CommentedConfigurationNode loadConfig() throws IOException {
         return this.loader.load();
     }
 
-    /**
-     * Saves the current configuration.
-     *
-     * <p>This method writes changes back to the configuration file.</p>
-     *
-     * @throws ConfigurateException if an error occurs while saving
-     */
     @Override
-    public final void saveConfig() throws ConfigurateException {
+    public void saveConfig() throws IOException {
         this.loader.save(this.configuration);
     }
 
@@ -137,15 +115,5 @@ public class YamlCustomFile extends IConfigFile<YamlCustomFile, CommentedConfigu
         } catch (final SerializationException exception) {
             throw new FusionException(String.format("Failed to serialize %s!", node.path()), exception);
         }
-    }
-
-    /**
-     * Retrieves the file type.
-     *
-     * @return the {@link FileType}
-     */
-    @Override
-    public @NotNull final FileType getFileType() {
-        return FileType.CONFIGURATE;
     }
 }

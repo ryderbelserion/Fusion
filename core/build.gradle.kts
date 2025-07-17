@@ -14,7 +14,9 @@ dependencies {
 
     compileOnly(libs.configurate.yaml)
 
-    compileOnly(libs.brigadier)
+    //compileOnly(libs.brigadier)
+
+    //compileOnly(libs.snakeyaml)
 
     compileOnlyApi(libs.jalu)
 }

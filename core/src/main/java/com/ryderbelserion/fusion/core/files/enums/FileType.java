@@ -1,9 +1,9 @@
-package com.ryderbelserion.fusion.core.api.enums;
+package com.ryderbelserion.fusion.core.files.enums;
 
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Holds the FileType's used in FileUtils/FileManager
+ * Holds the FileType's used in FileUtils/FileManager.
  */
 public enum FileType {
 
@@ -39,7 +39,7 @@ public enum FileType {
     private final String extension;
 
     /**
-     * Creates a file type
+     * Creates a file type.
      *
      * @param extension the file extension
      */
