@@ -1,7 +1,11 @@
 package com.ryderbelserion.fusion.paper;
 
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.files.enums.FileAction;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
+import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
+import net.kyori.adventure.key.Key;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
@@ -33,6 +37,14 @@ public class FusionPaper extends FusionCore {
                 exception.printStackTrace();
             }
         }
+
+        this.fileManager.addFile(Key.key("fusion"), FileType.CONFIGURATE, consumer -> {
+            final YamlCustomFile customFile = (YamlCustomFile) consumer;
+
+            customFile.setOptions(options -> options.shouldCopyDefaults(true));
+            customFile.setPath(dataPath.resolve("fusion.yml"));
+            customFile.addAction(FileAction.EXTRACT_FILE);
+        });
 
         return this;
     }
