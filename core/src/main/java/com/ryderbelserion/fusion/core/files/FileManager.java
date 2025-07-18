@@ -57,6 +57,12 @@ public class FileManager extends IFileManager<FileManager> {
         return this;
     }
 
+    public @NotNull FileManager addFile(@NotNull final Key key, @NotNull final ICustomFile<?, ?, ?, ?> customFile) {
+        this.files.putIfAbsent(key, customFile);
+
+        return this;
+    }
+
     @Override
     public @NotNull YamlCustomFile buildYamlFile(@NotNull final Consumer<YamlCustomFile> consumer) {
         return new YamlCustomFile(this, consumer).load();
