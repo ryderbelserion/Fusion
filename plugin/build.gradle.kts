@@ -5,7 +5,7 @@ plugins {
 project.group = "${rootProject.group}.paper"
 
 dependencies {
-    //api(project(":fusion-paper"))
+    api(project(":fusion-paper"))
 }
 
 tasks {
