@@ -2,7 +2,6 @@ package com.ryderbelserion.fusion.core;
 
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.interfaces.IFusionCore;
-import com.ryderbelserion.fusion.core.files.FileManager;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -17,13 +16,10 @@ import java.util.function.Consumer;
 
 public abstract class FusionCore implements IFusionCore {
 
-    private final FileManager fileManager;
     private Path dataPath;
 
     public FusionCore(@NotNull final Consumer<FusionCore> consumer) {
         consumer.accept(this);
-
-        this.fileManager = new FileManager(this);
     }
 
     public abstract FusionCore init();
@@ -57,11 +53,6 @@ public abstract class FusionCore implements IFusionCore {
     @Override
     public List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth) {
         return getFiles(path, List.of(extension), depth);
-    }
-
-    @Override
-    public FileManager getFileManager() {
-        return this.fileManager;
     }
 
     @Override
