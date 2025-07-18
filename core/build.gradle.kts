@@ -16,7 +16,7 @@ dependencies {
 
     //compileOnly(libs.brigadier)
 
-    //compileOnly(libs.snakeyaml)
+    compileOnly(libs.snakeyaml)
 
     compileOnlyApi(libs.jalu)
 }
