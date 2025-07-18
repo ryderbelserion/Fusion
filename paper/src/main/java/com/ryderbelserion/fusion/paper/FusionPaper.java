@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.paper;
 
+import com.ryderbelserion.fusion.core.FusionConfig;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
@@ -11,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.function.Consumer;
 
 public class FusionPaper extends FusionCore {
 
@@ -23,11 +25,13 @@ public class FusionPaper extends FusionCore {
 
         this.fileManager = new PaperFileManager(this);
 
-        init();
+        init(consumer -> {
+            this.config = new FusionConfig(this.fileManager.getYamlFile(Key.key("fusion")));
+        });
     }
 
     @Override
-    public FusionPaper init() {
+    public FusionPaper init(@NotNull final Consumer<FusionCore> fusion) {
         final Path dataPath = getDataPath();
 
         if (Files.notExists(dataPath)) {
@@ -45,6 +49,20 @@ public class FusionPaper extends FusionCore {
             customFile.setPath(dataPath.resolve("fusion.yml"));
             customFile.addAction(FileAction.EXTRACT_FILE);
         });
+
+        fusion.accept(this);
+
+        return this;
+    }
+
+    @Override
+    public FusionConfig getConfig() {
+        return this.config;
+    }
+
+    @Override
+    public FusionCore reload() {
+        this.config.reload();
 
         return this;
     }

@@ -2,8 +2,8 @@
 paperweight = "2.0.0-beta.17" # https://github.com/PaperMC/paperweight
 configurate = "4.2.0" # https://github.com/SpongePowered/Configurate
 annotations = "24.1.0" # https://github.com/JetBrains/java-annotations
-snakeyaml = "2.4" # https://bitbucket.org/snakeyaml/snakeyaml
 adventure = "4.23.0" # https://github.com/KyoriPowered/adventure
+brigadier = "1.3.10" # https://github.com/mojang/brigadier
 velocity = "3.4.0-SNAPSHOT" # https://docs.papermc.io/velocity/dev/creating-your-first-plugin
 paper = "1.21.7-R0.1-SNAPSHOT" # https://github.com/PaperMC/Paper
 jalu = "1.4.3" # https://github.com/AuthMe/ConfigMe
@@ -35,8 +35,8 @@ velocity = { group = "com.velocitypowered", name = "velocity-api", version.ref =
 shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
 # https://github.com/JetBrains/java-annotations
 annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
-# https://bitbucket.org/snakeyaml/snakeyaml
-snakeyaml = { group = "org.yaml", name = "snakeyaml", version.ref = "snakeyaml" }
+# https://github.com/mojang/brigadier
+brigadier = { group = "com.mojang", name = "brigadier", version.ref = "brigadier" }
 # https://github.com/jpenilla/run-task
 run-paper = { module = "xyz.jpenilla:run-task", version.ref = "run-paper" }
 
