@@ -10,6 +10,8 @@ import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -172,19 +174,7 @@ public class FileManager extends IFileManager<FileManager> {
         if (!Files.exists(path)) return this;
         if (!Files.isDirectory(path)) return this;
 
-        final StringBuilder builder = new StringBuilder();
-
-        builder.append(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-
-        if (!content.isEmpty()) {
-            builder.append(content);
-        }
-
-        final int size = this.getFileCount(path, ".gz");
-
-        builder.append("-").append(size).append(".gz");
-
-        final Path target = this.dataPath.resolve(builder.toString());
+        final Path target = this.dataPath.resolve(asString(path, content));
 
         try (final ZipOutputStream output= new ZipOutputStream(Files.newOutputStream(target)); final Stream<Path> values = Files.walk(path)) {
             final List<Path> entries = values.filter(key -> !Files.isDirectory(key)).toList();
@@ -208,20 +198,8 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager compressFile(@NotNull final Path path, @NotNull final String content) {
+    public @NotNull FileManager compressFile(@NotNull final Path path, @Nullable final Path folder, @NotNull final String content) {
         if (!Files.exists(path)) return this;
-
-        final StringBuilder builder = new StringBuilder();
-
-        builder.append(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-
-        if (!content.isEmpty()) {
-            builder.append(content);
-        }
-
-        builder.append(".gz");
-
-        final Path target = this.dataPath.resolve(builder.toString());
 
         long size = 0L;
 
@@ -233,8 +211,12 @@ public class FileManager extends IFileManager<FileManager> {
 
         if (size <= 0L) return this;
 
+        final String builder = asString(path, content);
+
+        final Path target = folder == null ? this.dataPath : folder.resolve(builder);
+
         try (final ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(target))) {
-            final ZipEntry entry = new ZipEntry(path.toString());
+            final ZipEntry entry = new ZipEntry(path.getFileName().toString());
 
             output.putNextEntry(entry);
 
@@ -262,5 +244,21 @@ public class FileManager extends IFileManager<FileManager> {
     @Override
     public final int getFileCount(@NotNull final Path path, @NotNull final String extension) {
         return this.fusion.getFiles(path, extension, 1).size();
+    }
+
+    private String asString(@NotNull final Path path, @NotNull final String content) {
+        final StringBuilder builder = new StringBuilder();
+
+        builder.append(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
+        if (!content.isEmpty()) {
+            builder.append(content);
+        }
+
+        final int fileCount = this.getFileCount(path, ".gz");
+
+        builder.append("-").append(fileCount).append(".gz");
+
+        return builder.toString();
     }
 }

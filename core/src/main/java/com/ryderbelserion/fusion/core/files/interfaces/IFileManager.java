@@ -6,6 +6,8 @@ import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
@@ -41,13 +43,21 @@ public abstract class IFileManager<I> {
 
     public abstract @NotNull I compressFolder(@NotNull final Path path, @NotNull final String content);
 
-    public abstract @NotNull I compressFile(@NotNull final Path path, @NotNull final String content);
+    public abstract @NotNull I compressFile(@NotNull final Path path, @Nullable final Path folder, @NotNull final String content);
 
     public abstract @NotNull I writeFile(@NotNull final Path path, @NotNull final String content);
 
     public abstract int getFileCount(@NotNull final Path path, @NotNull final String extension);
 
+    public @NotNull I compressFile(@NotNull final Path path, @NotNull final String content) {
+        return compressFile(path, null, content);
+    }
+
+    public @NotNull I compressFile(@NotNull final Path path, @NotNull final Path folder) {
+        return compressFile(path, folder, "");
+    }
+
     public @NotNull I compressFile(@NotNull final Path path) {
-        return compressFile(path, "");
+        return compressFile(path, null, "");
     }
 }
