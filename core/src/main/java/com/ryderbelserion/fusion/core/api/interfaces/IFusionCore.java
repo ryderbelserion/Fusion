@@ -1,7 +1,9 @@
 package com.ryderbelserion.fusion.core.api.interfaces;
 
 import com.ryderbelserion.fusion.core.FusionConfig;
+import com.ryderbelserion.fusion.core.api.support.ModManager;
 import com.ryderbelserion.fusion.core.files.FileManager;
+import com.ryderbelserion.fusion.core.utils.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -20,6 +22,8 @@ public interface IFusionCore {
     List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions, final int depth);
 
     List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth);
+
+    StringUtils getStringUtils();
 
     FileManager getFileManager();
 
