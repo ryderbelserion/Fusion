@@ -23,6 +23,8 @@ public interface IFusionCore {
 
     FileManager getFileManager();
 
+    ModManager getModManager();
+
     FusionConfig getConfig();
 
     void setDataPath(@NotNull final Path dataPath);
