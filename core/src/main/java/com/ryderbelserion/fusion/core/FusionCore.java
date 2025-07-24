@@ -7,6 +7,7 @@ import com.ryderbelserion.fusion.core.utils.StringUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
@@ -28,9 +29,9 @@ public abstract class FusionCore implements IFusionCore {
     private final StringUtils stringUtils;
     private final ModManager modManager;
 
+    protected ComponentLogger logger;
     protected FusionConfig config;
-
-    private Path dataPath;
+    protected Path dataPath;
 
     public FusionCore(@NotNull final Consumer<FusionCore> consumer) {
         consumer.accept(this);
@@ -56,6 +57,32 @@ public abstract class FusionCore implements IFusionCore {
     public abstract boolean isModReady(@NotNull final Key key);
 
     public abstract FusionCore reload();
+
+    @SuppressWarnings("DuplicatedCode")
+    public void log(@NotNull final String type, @NotNull final String message, @NotNull final Throwable throwable) {
+        if (!this.config.isVerbose()) return;
+
+        final Component component = parse(Audience.audience(), message);
+
+        switch (type) {
+            case "info" -> this.logger.info(component, throwable);
+            case "error" -> this.logger.error(component, throwable);
+            case "warn" -> this.logger.warn(component, throwable);
+        }
+    }
+
+    @SuppressWarnings("DuplicatedCode")
+    public void log(@NotNull final String type, @NotNull final String message, @NotNull final Object... args) {
+        if (!this.config.isVerbose()) return;
+
+        final Component component = parse(Audience.audience(), message);
+
+        switch (type) {
+            case "info" -> this.logger.info(component, args);
+            case "error" -> this.logger.error(component, args);
+            case "warn" -> this.logger.warn(component, args);
+        }
+    }
 
     @Override
     public List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions, final int depth) {

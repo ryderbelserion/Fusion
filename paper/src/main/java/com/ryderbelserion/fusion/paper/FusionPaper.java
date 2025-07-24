@@ -47,6 +47,8 @@ public class FusionPaper extends FusionCore {
         final Server server = plugin.getServer();
 
         this.pluginManager = server.getPluginManager();
+
+        FusionProvider.register(this);
     }
 
     @Override
@@ -89,6 +91,13 @@ public class FusionPaper extends FusionCore {
     }
 
     @Override
+    public FusionCore reload() {
+        this.config.reload();
+
+        return this;
+    }
+
+    @Override
     public boolean isModReady(@NotNull final Key key) {
         return this.pluginManager.isPluginEnabled(key.value());
     }
@@ -101,12 +110,5 @@ public class FusionPaper extends FusionCore {
     @Override
     public FusionConfig getConfig() {
         return this.config;
-    }
-
-    @Override
-    public FusionCore reload() {
-        this.config.reload();
-
-        return this;
     }
 }
