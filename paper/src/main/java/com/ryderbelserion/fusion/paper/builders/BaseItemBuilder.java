@@ -33,6 +33,10 @@ public class BaseItemBuilder extends IBaseItemBuilder<BaseItemBuilder, ItemStack
         this(itemType, 1, consumer);
     }
 
+    public BaseItemBuilder(@NotNull final String itemStack) {
+        super(itemStack);
+    }
+
     @Override
     public BaseItemBuilder withCustomItem(@NotNull final String itemStack) {
         final String plugin = this.fusion.getConfig().getItemsPlugin();

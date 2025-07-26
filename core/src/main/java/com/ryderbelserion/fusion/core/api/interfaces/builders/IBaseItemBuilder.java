@@ -15,6 +15,8 @@ public abstract class IBaseItemBuilder<B, I, T> {
         withCustomItem(itemStack);
     }
 
+    public IBaseItemBuilder() {}
+
     public abstract B withCustomItem(@NotNull final String itemStack);
 
     public abstract B withBase64(@NotNull final String itemStack);
