@@ -9,15 +9,29 @@ import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.FusionProvider;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import dev.lone.itemsadder.api.CustomStack;
+import io.papermc.paper.datacomponent.DataComponentType;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.ItemLore;
 import io.th0rgal.oraxen.api.OraxenItems;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
-public class BaseItemBuilder extends IBaseItemBuilder<BaseItemBuilder, ItemStack, ItemType> {
+public abstract class BaseItemBuilder extends IBaseItemBuilder<BaseItemBuilder, ItemStack, ItemType> {
 
     private final FusionPaper fusion = FusionProvider.getInstance();
+
+    private DataComponentType.Valued<Component> type = DataComponentTypes.ITEM_NAME;
+    private Map<String, String> placeholders = new HashMap<>();
+    private List<String> displayLore = new ArrayList<>();
+    private String displayName = "";
 
     public BaseItemBuilder(@NotNull final ItemType itemType, final int amount, @NotNull final Consumer<BaseItemBuilder> consumer) {
         super(itemType.createItemStack(amount));
@@ -41,6 +55,57 @@ public class BaseItemBuilder extends IBaseItemBuilder<BaseItemBuilder, ItemStack
 
     public BaseItemBuilder(@NotNull final String itemStack) {
         super(itemStack);
+    }
+
+    public abstract void build();
+
+    public @NotNull ItemStack asItemStack(@NotNull final Audience audience) {
+        if (!this.displayName.isEmpty()) {
+            this.itemStack.setData(this.type, this.fusion.parse(audience, this.displayName, this.placeholders));
+        }
+
+        final List<String> lore = this.displayLore;
+
+        if (!lore.isEmpty()) {
+            final List<Component> components = new ArrayList<>(lore.size());
+
+            lore.forEach(line -> components.add(this.fusion.parse(audience, line, placeholders)));
+
+            this.itemStack.setData(DataComponentTypes.LORE, ItemLore.lore(components));
+        }
+
+        build();
+
+        return this.itemStack;
+    }
+    
+    public @NotNull ItemStack asItemStack() {
+        return asItemStack(Audience.empty());
+    }
+
+    public BaseItemBuilder withDisplayName(@NotNull final String displayName, @NotNull final DataComponentType.Valued<Component> type) {
+        this.displayName = displayName;
+        this.type = type;
+
+        return this;
+    }
+
+    public BaseItemBuilder withDisplayName(@NotNull final String displayName) {
+        return withDisplayName(displayName, DataComponentTypes.ITEM_NAME);
+    }
+
+    public BaseItemBuilder withDisplayLore(@NotNull final List<String> displayLore) {
+        this.displayLore = displayLore;
+
+        return this;
+    }
+
+    public BaseItemBuilder addDisplayLore(@NotNull final String displayLore) {
+        if (displayLore.isEmpty()) return this;
+
+        this.displayLore.add(displayLore);
+
+        return this;
     }
 
     @Override
