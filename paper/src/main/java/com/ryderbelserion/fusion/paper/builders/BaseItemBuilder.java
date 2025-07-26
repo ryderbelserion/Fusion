@@ -131,45 +131,51 @@ public class BaseItemBuilder extends IBaseItemBuilder<BaseItemBuilder, ItemStack
         return withType(itemType, 1);
     }
 
-    private void getItemsAdder(@NotNull final String item) {
-        if (!CustomStack.isInRegistry(item)) {
+    private void getItemsAdder(@NotNull final String itemStack) {
+        if (!CustomStack.isInRegistry(itemStack)) {
+            this.fusion.log("warn", "The id " + itemStack + " does not exist as an ItemsAdder item!");
+
             return;
         }
 
-        final CustomStack builder = CustomStack.getInstance(item);
+        final CustomStack builder = CustomStack.getInstance(itemStack);
 
         if (builder == null) {
-            throw new FusionException("The id " + item + " is not a valid ItemsAdder item!");
+            throw new FusionException("The id " + itemStack + " is not a valid ItemsAdder item!");
         }
 
         this.itemStack = builder.getItemStack();
         this.itemType = this.itemStack.getType().asItemType();
     }
 
-    private void getOraxen(@NotNull final String item) {
-        if (!OraxenItems.exists(item)) {
+    private void getOraxen(@NotNull final String itemStack) {
+        if (!OraxenItems.exists(itemStack)) {
+            this.fusion.log("warn", "The id " + itemStack + " does not exist as an Oraxen item!");
+
             return;
         }
 
-        final io.th0rgal.oraxen.items.ItemBuilder builder = OraxenItems.getItemById(item);
+        final io.th0rgal.oraxen.items.ItemBuilder builder = OraxenItems.getItemById(itemStack);
 
         if (builder == null) {
-            throw new FusionException("The id " + item + " is not a valid Oraxen item!");
+            throw new FusionException("The id " + itemStack + " is not a valid Oraxen item!");
         }
 
         this.itemStack = builder.build();
         this.itemType = this.itemStack.getType().asItemType();
     }
 
-    private void getNexo(@NotNull final String item) {
-        if (!NexoItems.exists(item)) {
+    private void getNexo(@NotNull final String itemStack) {
+        if (!NexoItems.exists(itemStack)) {
+            this.fusion.log("warn", "The id " + itemStack + " does not exist as a Nexo item!");
+
             return;
         }
 
-        final ItemBuilder builder = NexoItems.itemFromId(item);
+        final ItemBuilder builder = NexoItems.itemFromId(itemStack);
 
         if (builder == null) {
-            throw new FusionException("The id " + item + " is not a valid Nexo item!");
+            throw new FusionException("The id " + itemStack + " is not a valid Nexo item!");
         }
 
         this.itemStack = builder.build();
