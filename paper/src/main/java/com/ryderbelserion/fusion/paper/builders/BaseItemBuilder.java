@@ -33,6 +33,12 @@ public class BaseItemBuilder extends IBaseItemBuilder<BaseItemBuilder, ItemStack
         this(itemType, 1, consumer);
     }
 
+    public BaseItemBuilder(@NotNull final ItemStack itemStack) {
+        super(itemStack);
+
+        this.itemType = itemStack.getType().asItemType();
+    }
+
     public BaseItemBuilder(@NotNull final String itemStack) {
         super(itemStack);
     }
