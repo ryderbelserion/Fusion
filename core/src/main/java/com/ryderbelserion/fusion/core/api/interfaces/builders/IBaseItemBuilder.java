@@ -1,9 +1,12 @@
 package com.ryderbelserion.fusion.core.api.interfaces.builders;
 
 import org.jetbrains.annotations.NotNull;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class IBaseItemBuilder<B, I, T> {
 
+    protected Map<String, String> placeholders = new HashMap<>();
     protected I itemStack;
     protected T itemType;
 
@@ -24,4 +27,26 @@ public abstract class IBaseItemBuilder<B, I, T> {
     public abstract B withType(@NotNull final T itemType, final int amount);
 
     public abstract B withType(@NotNull final T itemType);
+
+    public @NotNull B addPlaceholder(@NotNull final String placeholder, @NotNull final String value) {
+        this.placeholders.put(placeholder, value);
+
+        return (B) this;
+    }
+
+    public @NotNull B setPlaceholders(@NotNull final Map<String, String> placeholders) {
+        this.placeholders = placeholders;
+
+        return (B) this;
+    }
+
+    public @NotNull B removePlaceholder(@NotNull final String placeholder) {
+        this.placeholders.remove(placeholder);
+
+        return (B) this;
+    }
+
+    public boolean hasPlaceholder(@NotNull final String placeholder) {
+        return this.placeholders.containsKey(placeholder);
+    }
 }

@@ -19,9 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 public abstract class BaseItemBuilder extends IBaseItemBuilder<BaseItemBuilder, ItemStack, ItemType> {
@@ -29,7 +27,6 @@ public abstract class BaseItemBuilder extends IBaseItemBuilder<BaseItemBuilder, 
     private final FusionPaper fusion = FusionProvider.getInstance();
 
     private DataComponentType.Valued<Component> type = DataComponentTypes.ITEM_NAME;
-    private Map<String, String> placeholders = new HashMap<>();
     private List<String> displayLore = new ArrayList<>();
     private String displayName = "";
 
