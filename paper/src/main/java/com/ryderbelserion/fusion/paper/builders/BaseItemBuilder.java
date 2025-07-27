@@ -57,6 +57,7 @@ public abstract class BaseItemBuilder extends IBaseItemBuilder<BaseItemBuilder, 
 
     public abstract void build();
 
+    @Override
     public @NotNull ItemStack asItemStack(@NotNull final Audience audience) {
         if (!this.displayName.isEmpty()) {
             this.itemStack.setData(this.type, this.fusion.parse(audience, this.displayName, this.placeholders));
@@ -76,12 +77,14 @@ public abstract class BaseItemBuilder extends IBaseItemBuilder<BaseItemBuilder, 
 
         return this.itemStack;
     }
-    
+
+    @Override
     public @NotNull ItemStack asItemStack() {
         return asItemStack(Audience.empty());
     }
 
-    public BaseItemBuilder withDisplayName(@NotNull final String displayName, @NotNull final DataComponentType.Valued<Component> type) {
+    @Override
+    public BaseItemBuilder withDisplayName(@NotNull final String displayName, @NotNull final ItemState itemState) {
         this.displayName = displayName;
 
         this.type = switch (itemState) {
@@ -92,16 +95,19 @@ public abstract class BaseItemBuilder extends IBaseItemBuilder<BaseItemBuilder, 
         return this;
     }
 
+    @Override
     public BaseItemBuilder withDisplayName(@NotNull final String displayName) {
         return withDisplayName(displayName, ItemState.ITEM_NAME);
     }
 
+    @Override
     public BaseItemBuilder withDisplayLore(@NotNull final List<String> displayLore) {
         this.displayLore = displayLore;
 
         return this;
     }
 
+    @Override
     public BaseItemBuilder addDisplayLore(@NotNull final String displayLore) {
         if (displayLore.isEmpty()) return this;
 

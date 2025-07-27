@@ -4,6 +4,7 @@ import com.ryderbelserion.fusion.core.api.enums.ItemState;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class IBaseItemBuilder<B, I, T> {
@@ -21,6 +22,18 @@ public abstract class IBaseItemBuilder<B, I, T> {
     }
 
     public IBaseItemBuilder() {}
+
+    public abstract I asItemStack(@NotNull final Audience audience);
+
+    public abstract I asItemStack();
+
+    public abstract B withDisplayName(@NotNull final String displayName, ItemState itemState);
+
+    public abstract B withDisplayName(@NotNull final String displayName);
+
+    public abstract B withDisplayLore(@NotNull final List<String> displayLore);
+
+    public abstract B addDisplayLore(@NotNull final String displayLore);
 
     public abstract B withCustomItem(@NotNull final String itemStack);
 
