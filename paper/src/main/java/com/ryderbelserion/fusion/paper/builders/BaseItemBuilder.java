@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.paper.builders;
 
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
+import com.ryderbelserion.fusion.core.api.enums.ItemState;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.interfaces.builders.IBaseItemBuilder;
 import com.ryderbelserion.fusion.core.api.support.ModSupport;
@@ -82,13 +83,17 @@ public abstract class BaseItemBuilder extends IBaseItemBuilder<BaseItemBuilder, 
 
     public BaseItemBuilder withDisplayName(@NotNull final String displayName, @NotNull final DataComponentType.Valued<Component> type) {
         this.displayName = displayName;
-        this.type = type;
+
+        this.type = switch (itemState) {
+            case ITEM_NAME -> DataComponentTypes.ITEM_NAME;
+            case CUSTOM_NAME -> DataComponentTypes.CUSTOM_NAME;
+        };
 
         return this;
     }
 
     public BaseItemBuilder withDisplayName(@NotNull final String displayName) {
-        return withDisplayName(displayName, DataComponentTypes.ITEM_NAME);
+        return withDisplayName(displayName, ItemState.ITEM_NAME);
     }
 
     public BaseItemBuilder withDisplayLore(@NotNull final List<String> displayLore) {

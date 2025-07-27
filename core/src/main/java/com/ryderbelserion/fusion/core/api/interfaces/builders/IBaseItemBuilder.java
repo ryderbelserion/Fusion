@@ -1,5 +1,7 @@
 package com.ryderbelserion.fusion.core.api.interfaces.builders;
 
+import com.ryderbelserion.fusion.core.api.enums.ItemState;
+import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
