@@ -1,9 +1,9 @@
 package com.ryderbelserion.fusion.paper.builders.types;
 
 import com.ryderbelserion.fusion.paper.builders.BaseItemBuilder;
+import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.PotionContents;
-import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -44,9 +44,7 @@ public class PotionBuilder extends BaseItemBuilder<PotionBuilder> {
 
     @Override
     public @NotNull PotionBuilder setColor(@NotNull final String value) {
-        final Color color = value.contains(",") ? ColorUtils.getRGB(value) : ColorUtils.getColor(value);
-
-        this.builder.customColor(color);
+        this.builder.customColor(value.contains(",") ? ColorUtils.getRGB(value) : ColorUtils.getColor(value));
 
         return this;
     }

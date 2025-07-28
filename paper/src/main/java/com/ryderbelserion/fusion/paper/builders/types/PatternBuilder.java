@@ -5,7 +5,6 @@ import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.BannerPatternLayers;
-import org.bukkit.DyeColor;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
@@ -32,9 +31,7 @@ public class PatternBuilder extends BaseItemBuilder<PatternBuilder> {
 
         if (type == null) return this;
 
-        final DyeColor color = ColorUtils.getDyeColor(dye);
-
-        return addPattern(new Pattern(color, type));
+        return addPattern(new Pattern(ColorUtils.getDyeColor(dye), type));
     }
 
     @Override
