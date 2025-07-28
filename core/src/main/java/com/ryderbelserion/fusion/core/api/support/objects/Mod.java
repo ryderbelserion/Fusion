@@ -1,15 +1,14 @@
 package com.ryderbelserion.fusion.core.api.support.objects;
 
 import com.ryderbelserion.fusion.core.api.interfaces.mods.IMod;
-import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 
 public class Mod extends IMod {
 
-    private Key key;
+    private ModKey key;
 
     @Override
-    public void setKey(@NotNull final Key key) {
+    public void setKey(@NotNull final ModKey key) {
         this.key = key;
     }
 
@@ -19,7 +18,7 @@ public class Mod extends IMod {
     }
 
     @Override
-    public @NotNull final Key key() {
+    public @NotNull final ModKey key() {
         return this.key;
     }
 }

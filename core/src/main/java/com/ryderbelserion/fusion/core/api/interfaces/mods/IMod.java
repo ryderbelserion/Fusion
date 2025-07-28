@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.core.api.interfaces.mods;
 
 import com.ryderbelserion.fusion.core.FusionCore;
-import net.kyori.adventure.key.Key;
+import com.ryderbelserion.fusion.core.api.support.objects.ModKey;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
@@ -23,11 +23,11 @@ public abstract class IMod {
         this.fusion = fusion;
     }
 
-    public abstract void setKey(@NotNull final Key key);
+    public abstract void setKey(@NotNull final ModKey key);
 
     public abstract boolean isEnabled();
 
-    public abstract @NotNull Key key();
+    public abstract @NotNull ModKey key();
 
     public boolean isIgnored(@NotNull final UUID uuid, @NotNull final UUID target) {
         return false;

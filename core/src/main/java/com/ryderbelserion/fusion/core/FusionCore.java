@@ -3,13 +3,14 @@ package com.ryderbelserion.fusion.core;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.interfaces.IFusionCore;
 import com.ryderbelserion.fusion.core.api.support.ModManager;
+import com.ryderbelserion.fusion.core.api.support.objects.ModKey;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileVisitResult;
@@ -17,11 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class FusionCore implements IFusionCore {
@@ -36,7 +33,7 @@ public abstract class FusionCore implements IFusionCore {
     public FusionCore(@NotNull final Consumer<FusionCore> consumer) {
         consumer.accept(this);
 
-        this.stringUtils = new StringUtils();
+        this.stringUtils = new StringUtils(this);
         this.modManager = new ModManager(this);
     }
 
@@ -50,11 +47,15 @@ public abstract class FusionCore implements IFusionCore {
         return parse(audience, message, new HashMap<>());
     }
 
+    public <T> @Nullable T createProfile(@NotNull final UUID uuid, @Nullable final String name) {
+        return null;
+    }
+
     public abstract String papi(@NotNull final Audience audience, @NotNull final String message);
 
     public abstract FusionCore init(@NotNull final Consumer<FusionCore> consumer);
 
-    public abstract boolean isModReady(@NotNull final Key key);
+    public abstract boolean isModReady(@NotNull final ModKey key);
 
     public abstract FusionCore reload();
 

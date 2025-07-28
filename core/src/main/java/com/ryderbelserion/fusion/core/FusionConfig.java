@@ -23,7 +23,7 @@ public class FusionConfig {
         return this.config.getStringValueWithDefault("None", "settings", "custom-items-plugin");
     }
 
-    public String getRounding() {
+    public String getRoundingFormat() {
         return this.config.getStringValueWithDefault("half_even", "settings", "rounding");
     }
 
