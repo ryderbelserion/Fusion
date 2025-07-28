@@ -7,7 +7,6 @@ import org.bukkit.structure.Structure;
 import org.bukkit.structure.StructureManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
@@ -17,9 +16,9 @@ public class StructureRegistry {
     private final StructureManager manager;
     private final JavaPlugin plugin;
 
-    public StructureRegistry(@NotNull final JavaPlugin plugin) {
+    public StructureRegistry(@NotNull final JavaPlugin plugin, @NotNull final StructureManager manager) {
         this.plugin = plugin;
-        this.manager = this.plugin.getServer().getStructureManager();
+        this.manager = manager;
     }
 
     public @Nullable Structure getStructure(@NotNull final String key) {

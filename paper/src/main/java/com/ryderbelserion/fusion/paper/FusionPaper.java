@@ -3,11 +3,13 @@ package com.ryderbelserion.fusion.paper;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.ryderbelserion.fusion.core.FusionConfig;
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.support.ModSupport;
 import com.ryderbelserion.fusion.core.api.support.objects.ModKey;
 import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
+import com.ryderbelserion.fusion.paper.api.structure.StructureRegistry;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -34,6 +36,7 @@ public class FusionPaper extends FusionCore {
 
     private final PaperFileManager fileManager;
     private final PluginManager pluginManager;
+    private StructureRegistry registry;
     private HeadDatabaseAPI api;
     private final Server server;
 
@@ -51,6 +54,8 @@ public class FusionPaper extends FusionCore {
         this.server = plugin.getServer();
 
         this.pluginManager = this.server.getPluginManager();
+
+        this.registry = new StructureRegistry(plugin, this.server.getStructureManager());
 
         FusionProvider.register(this);
     }
@@ -123,6 +128,14 @@ public class FusionPaper extends FusionCore {
     @Override
     public FusionConfig getConfig() {
         return this.config;
+    }
+
+    public @NotNull final StructureRegistry getRegistry() {
+        if (this.registry == null) {
+            throw new FusionException("An error occurred while trying to get the structure registry instance.");
+        }
+
+        return this.registry;
     }
 
     public @NotNull final Optional<HeadDatabaseAPI> getHeadDatabaseAPI() {
