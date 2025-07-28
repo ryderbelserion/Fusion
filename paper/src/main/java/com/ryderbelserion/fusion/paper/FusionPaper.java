@@ -47,15 +47,15 @@ public class FusionPaper extends FusionCore {
 
         this.fileManager = new PaperFileManager(this);
 
-        init(consumer -> {
-            this.config = new FusionConfig(this.fileManager.getYamlFile(FusionConfig.fusion_config));
-        });
-
         this.server = plugin.getServer();
 
         this.pluginManager = this.server.getPluginManager();
 
         this.registry = new StructureRegistry(plugin, this.server.getStructureManager());
+
+        init(consumer -> {
+            this.config = new FusionConfig(this.fileManager.getYamlFile(FusionConfig.fusion_config));
+        });
 
         FusionProvider.register(this);
     }
