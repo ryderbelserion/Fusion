@@ -19,6 +19,7 @@ import dev.lone.itemsadder.api.CustomStack;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.*;
+import io.papermc.paper.persistence.PersistentDataContainerView;
 import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.audience.Audience;
@@ -38,7 +39,6 @@ import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
-
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -317,24 +317,20 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return plainLore;
     }
 
-    public @NotNull B setEnchantGlint(final boolean isGlowing) {
-        if (isGlowing && !this.itemStack.hasData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE)) {
-            this.itemStack.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true);
+    public @NotNull B addEnchantGlint(final boolean isGlowing) {
+        if (!isGlowing && this.itemStack.hasData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE)) {
+            this.itemStack.unsetData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE);
 
             return (B) this;
         }
 
-        if (this.itemStack.hasData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE)) {
-            this.itemStack.unsetData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE);
-        }
+        this.itemStack.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true);
 
         return (B) this;
     }
 
     public @NotNull B removeEnchantGlint() {
-        if (!this.itemStack.hasData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE)) {
-            return (B) this;
-        }
+        if (!this.itemStack.hasData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE)) return (B) this;
 
         this.itemStack.unsetData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE);
 
@@ -348,9 +344,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public @NotNull B showToolTip() {
-        if (!this.itemStack.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {
-            return (B) this;
-        }
+        if (!this.itemStack.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) return (B) this;
 
         this.itemStack.setData(DataComponentTypes.TOOLTIP_DISPLAY, builder().hideTooltip(false).build());
 
@@ -550,23 +544,23 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public final boolean getBoolean(@NotNull final NamespacedKey key) {
-        return this.itemStack.getPersistentDataContainer().getOrDefault(key, PersistentDataType.BOOLEAN, false);
+        return getContainer().getOrDefault(key, PersistentDataType.BOOLEAN, false);
     }
 
     public final double getDouble(@NotNull final NamespacedKey key) {
-        return this.itemStack.getPersistentDataContainer().getOrDefault(key, PersistentDataType.DOUBLE, 0.0);
+        return getContainer().getOrDefault(key, PersistentDataType.DOUBLE, 0.0);
     }
 
     public final int getInteger(@NotNull final NamespacedKey key) {
-        return this.itemStack.getPersistentDataContainer().getOrDefault(key, PersistentDataType.INTEGER, 0);
+        return getContainer().getOrDefault(key, PersistentDataType.INTEGER, 0);
     }
 
     public @NotNull final List<String> getList(@NotNull final NamespacedKey key) {
-        return this.itemStack.getPersistentDataContainer().getOrDefault(key, PersistentDataType.LIST.strings(), Collections.emptyList());
+        return getContainer().getOrDefault(key, PersistentDataType.LIST.strings(), Collections.emptyList());
     }
 
     public @NotNull final String getString(@NotNull final NamespacedKey key) {
-        return this.itemStack.getPersistentDataContainer().getOrDefault(key, PersistentDataType.STRING, "");
+        return getContainer().getOrDefault(key, PersistentDataType.STRING, "");
     }
 
     public @NotNull final B removePersistentKey(@Nullable final NamespacedKey key) {
@@ -580,7 +574,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public final boolean hasKey(@NotNull final NamespacedKey key) {
-        return this.itemStack.getPersistentDataContainer().has(key);
+        return getContainer().has(key);
+    }
+
+    public @NotNull final PersistentDataContainerView getContainer() {
+        return this.itemStack.getPersistentDataContainer();
     }
 
     public @NotNull final FireworkBuilder asFireworkBuilder() {
