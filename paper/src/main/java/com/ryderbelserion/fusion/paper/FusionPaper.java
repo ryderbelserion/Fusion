@@ -36,9 +36,10 @@ public class FusionPaper extends FusionCore {
 
     private final PaperFileManager fileManager;
     private final PluginManager pluginManager;
-    private StructureRegistry registry;
-    private HeadDatabaseAPI api;
+    private final StructureRegistry registry;
     private final Server server;
+
+    private HeadDatabaseAPI api;
 
     public FusionPaper(@NotNull final JavaPlugin plugin) {
         super(consumer -> {
