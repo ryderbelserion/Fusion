@@ -2,7 +2,6 @@ package com.ryderbelserion.fusion.core.files;
 
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.api.support.ModSupport;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.core.files.interfaces.IFileManager;
@@ -50,11 +49,15 @@ public class FileManager extends IFileManager<FileManager> {
         ICustomFile<?, ?, ?, ?> customFile = null;
 
         switch (fileType) {
-            case CONFIGURATE_YAML -> customFile = buildYamlFile(consumer::accept);
-            case CONFIGURATE_GSON -> customFile = buildJsonFile(consumer::accept);
+            case CONFIGURATE_YAML, FUSION_YAML -> customFile = buildYamlFile(consumer::accept);
+            case CONFIGURATE_GSON, FUSION_GSON -> customFile = buildJsonFile(consumer::accept);
             case JALU -> customFile = buildJaluFile(consumer::accept);
             case LOG -> customFile = buildLogFile(consumer::accept);
         }
+
+        if (customFile == null) return this;
+
+        customFile.setFileType(fileType);
 
         this.files.putIfAbsent(key, customFile);
 
@@ -63,7 +66,11 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NotNull FileManager removeFile(@NotNull final Key key) {
-        if (key.asString().equalsIgnoreCase(ModSupport.fusion.asString())) return this;
+        final ICustomFile<?, ?, ?, ?> customFile = getFile(key);
+
+        final FileType fileType = customFile.getFileType();
+
+        if (fileType == FileType.FUSION_YAML || fileType == FileType.FUSION_GSON) return this; // do not allow removing these files
 
         this.files.remove(key);
 
@@ -120,7 +127,7 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NotNull ICustomFile<?, ?, ?, ?> getFile(@NotNull final Key key) {
-        return this.files.get(key);
+        return this.files.getOrDefault(key, null);
     }
 
     @Override
