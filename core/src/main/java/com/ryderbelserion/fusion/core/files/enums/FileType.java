@@ -16,6 +16,14 @@ public enum FileType {
      */
     CONFIGURATE_GSON(".json"),
     /**
+     * Files that end with .yml, but are built with Configurate which is by SpongePowered, and for internal use only.
+     */
+    FUSION_YAML(".yml"),
+    /**
+     * Files that end with .json, but are built with Configurate which is by SpongePowered, and for internal use only.
+     */
+    FUSION_GSON(".json"),
+    /**
      * Files that end with .yml, but are built using YamlConfiguration supplied by Paper
      */
     PAPER(".yml"),
