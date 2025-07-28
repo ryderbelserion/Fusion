@@ -19,7 +19,7 @@ public class ItemListener implements Listener {
         final PlayerInventory inventory = player.getInventory();
 
         final ItemBuilder builder = new ItemBuilder(ItemType.SPAWNER, 1, item -> {
-            item.withDisplayName("<red> " + PlainTextComponentSerializer.plainText().serialize(
+            item.withDisplayName("<red>" + PlainTextComponentSerializer.plainText().serialize(
                     player.displayName()
             ) + "</red>");
         });
@@ -28,6 +28,6 @@ public class ItemListener implements Listener {
 
         spawner.withEntityType(EntityType.CREEPER).build();
 
-        inventory.addItem(builder.asItemStack());
+        builder.addItemToInventory(player, inventory);
     }
 }
