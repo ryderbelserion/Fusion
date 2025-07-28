@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.core.files;
 
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.support.ModSupport;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.core.files.interfaces.IFileManager;
@@ -56,6 +57,26 @@ public class FileManager extends IFileManager<FileManager> {
         }
 
         this.files.putIfAbsent(key, customFile);
+
+        return this;
+    }
+
+    @Override
+    public @NotNull FileManager removeFile(@NotNull final Key key) {
+        if (key.asString().equalsIgnoreCase(ModSupport.fusion.asString())) return this;
+
+        this.files.remove(key);
+
+        return this;
+    }
+
+    @Override
+    public @NotNull FileManager purge() {
+        final Map<Key, ICustomFile<?, ?, ?, ?>> files = new HashMap<>(this.files);
+
+        for (final Map.Entry<Key, ICustomFile<?, ?, ?, ?>> entry : files.entrySet()) {
+            removeFile(entry.getKey());
+        }
 
         return this;
     }

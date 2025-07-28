@@ -15,7 +15,11 @@ public abstract class IFileManager<I> {
 
     public abstract @NotNull I addFile(@NotNull final Key key, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
 
+    public abstract @NotNull I removeFile(@NotNull final Key key);
+
     public abstract @NotNull I reloadFile(@NotNull final Key key);
+
+    public abstract @NotNull I purge();
 
     public abstract @NotNull ICustomFile<?, ?, ?, ?> getFile(@NotNull final Key key);
 
