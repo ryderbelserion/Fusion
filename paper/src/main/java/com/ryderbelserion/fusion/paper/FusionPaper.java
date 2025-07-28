@@ -49,7 +49,7 @@ public class FusionPaper extends FusionCore {
         this.fileManager = new PaperFileManager(this);
 
         init(consumer -> {
-            this.config = new FusionConfig(this.fileManager.getYamlFile(Key.key("fusion")));
+            this.config = new FusionConfig(this.fileManager.getYamlFile(ModSupport.fusion));
         });
 
         this.server = plugin.getServer();
@@ -87,7 +87,7 @@ public class FusionPaper extends FusionCore {
             }
         }
 
-        this.fileManager.addFile(Key.key("fusion"), FileType.CONFIGURATE_YAML, consumer -> {
+        this.fileManager.addFile(ModSupport.fusion, FileType.CONFIGURATE_YAML, consumer -> {
             final YamlCustomFile customFile = (YamlCustomFile) consumer;
 
             customFile.setOptions(options -> options.shouldCopyDefaults(true));
