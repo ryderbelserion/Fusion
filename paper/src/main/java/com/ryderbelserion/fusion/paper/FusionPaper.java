@@ -9,7 +9,7 @@ import com.ryderbelserion.fusion.core.api.support.objects.ModKey;
 import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
-import com.ryderbelserion.fusion.paper.api.structure.StructureRegistry;
+import com.ryderbelserion.fusion.paper.structure.StructureRegistry;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;

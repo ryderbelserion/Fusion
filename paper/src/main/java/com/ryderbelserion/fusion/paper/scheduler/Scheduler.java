@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.paper.api.enums;
+package com.ryderbelserion.fusion.paper.scheduler;
 
 public enum Scheduler {
 

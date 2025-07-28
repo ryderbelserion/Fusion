@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.paper.api.structure;
+package com.ryderbelserion.fusion.paper.structure;
 
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import org.bukkit.NamespacedKey;
