@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.core.files.types;
 
 import com.ryderbelserion.fusion.core.files.FileManager;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
@@ -36,5 +37,10 @@ public class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFile, Obj
     @Override
     public final void saveConfig() {
         this.fileManager.compressFile(getPath());
+    }
+
+    @Override
+    public FileType getFileType() {
+        return FileType.LOG;
     }
 }

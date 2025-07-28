@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.paper.files.types;
 
 import com.ryderbelserion.fusion.core.files.FileManager;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -84,5 +85,10 @@ public class PaperCustomFile extends ICustomFile<PaperCustomFile, YamlConfigurat
     @Override
     public long getLongValue(@NotNull final Object... path) {
         return getLongValueWithDefault(0L, path);
+    }
+
+    @Override
+    public FileType getFileType() {
+        return FileType.PAPER;
     }
 }

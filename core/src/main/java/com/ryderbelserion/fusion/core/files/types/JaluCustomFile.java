@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.files.FileManager;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
@@ -32,5 +33,10 @@ public class JaluCustomFile extends ICustomFile<JaluCustomFile, SettingsManager,
     @Override
     public final void saveConfig() {
         this.configuration.save();
+    }
+
+    @Override
+    public FileType getFileType() {
+        return FileType.JALU;
     }
 }
