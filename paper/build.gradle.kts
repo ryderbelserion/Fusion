@@ -23,6 +23,23 @@ dependencies {
         )
     }
 
+    implementation(libs.configurate.gson) {
+        exclude(
+            group = "org.gson",
+            module = "gson"
+        )
+
+        exclude(
+            group = "org.spongepowered",
+            module = "configurate-core"
+        )
+
+        exclude(
+            group = "com.google.errorprone",
+            module = "error_prone_annotations"
+        )
+    }
+
     compileOnly(libs.bundles.shared)
 
     api(project(":fusion-core"))

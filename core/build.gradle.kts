@@ -13,6 +13,6 @@ dependencies {
     compileOnly(libs.bundles.adventure)
 
     compileOnly(libs.configurate.yaml)
-
-    compileOnlyApi(libs.jalu)
+    compileOnly(libs.configurate.gson)
+    compileOnly(libs.jalu)
 }

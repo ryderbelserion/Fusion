@@ -10,7 +10,11 @@ public enum FileType {
     /**
      * Files that end with .yml, but are built with Configurate which is by SpongePowered
      */
-    CONFIGURATE(".yml"),
+    CONFIGURATE_YAML(".yml"),
+    /**
+     * Files that end with .json, but are built with Configurate which is by SpongePowered
+     */
+    CONFIGURATE_GSON(".json"),
     /**
      * Files that end with .yml, but are built using YamlConfiguration supplied by Paper
      */

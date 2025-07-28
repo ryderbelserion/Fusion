@@ -2,12 +2,12 @@ package com.ryderbelserion.fusion.core.files.interfaces;
 
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
+import com.ryderbelserion.fusion.core.files.types.JsonCustomFile;
 import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
@@ -20,6 +20,8 @@ public abstract class IFileManager<I> {
     public abstract @NotNull ICustomFile<?, ?, ?, ?> getFile(@NotNull final Key key);
 
     public abstract @NotNull YamlCustomFile buildYamlFile(@NotNull final Consumer<YamlCustomFile> consumer);
+
+    public abstract @NotNull JsonCustomFile buildJsonFile(@NotNull final Consumer<JsonCustomFile> consumer);
 
     public abstract @NotNull JaluCustomFile buildJaluFile(@NotNull final Consumer<JaluCustomFile> consumer);
 

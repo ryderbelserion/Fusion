@@ -5,13 +5,13 @@ import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.core.files.interfaces.IFileManager;
+import com.ryderbelserion.fusion.core.files.types.JsonCustomFile;
 import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -49,7 +49,8 @@ public class FileManager extends IFileManager<FileManager> {
         ICustomFile<?, ?, ?, ?> customFile = null;
 
         switch (fileType) {
-            case CONFIGURATE -> customFile = buildYamlFile(consumer::accept);
+            case CONFIGURATE_YAML -> customFile = buildYamlFile(consumer::accept);
+            case CONFIGURATE_GSON -> customFile = buildJsonFile(consumer::accept);
             case JALU -> customFile = buildJaluFile(consumer::accept);
             case LOG -> customFile = buildLogFile(consumer::accept);
         }
@@ -68,6 +69,11 @@ public class FileManager extends IFileManager<FileManager> {
     @Override
     public @NotNull YamlCustomFile buildYamlFile(@NotNull final Consumer<YamlCustomFile> consumer) {
         return new YamlCustomFile(this, consumer).load();
+    }
+
+    @Override
+    public @NotNull JsonCustomFile buildJsonFile(@NotNull final Consumer<JsonCustomFile> consumer) {
+        return new JsonCustomFile(this, consumer).load();
     }
 
     @Override

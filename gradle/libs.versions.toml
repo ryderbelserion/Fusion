@@ -16,7 +16,7 @@ nexo = "1.6.0" # https://github.com/Nexo-MC
 
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 run-paper = "2.3.1" # https://github.com/jpenilla/run-task
-shadow = "9.0.0-beta17" # https://github.com/GradleUp/shadow
+shadow = "9.0.0-rc2" # https://github.com/GradleUp/shadow
 
 [plugins]
 # https://github.com/mfnalex/gradle-fix-javadoc-plugin
@@ -29,6 +29,7 @@ fix-javadoc = { module = "com.jeff-media.fix-javadoc-plugin:com.jeff-media.fix-j
 paperweight = { module = "io.papermc.paperweight.userdev:io.papermc.paperweight.userdev.gradle.plugin", version.ref = "paperweight" }
 # https://github.com/SpongePowered/Configurate
 configurate-yaml = { group = "org.spongepowered", name = "configurate-yaml", version.ref = "configurate" }
+configurate-gson = { group = "org.spongepowered", name = "configurate-gson", version.ref = "configurate" }
 # https://docs.papermc.io/velocity/dev/creating-your-first-plugin/
 velocity = { group = "com.velocitypowered", name = "velocity-api", version.ref = "velocity" }
 # https://github.com/GradleUp/shadow
