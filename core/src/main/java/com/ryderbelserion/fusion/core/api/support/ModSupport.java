@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.core.api.support;
 
 import com.ryderbelserion.fusion.core.api.support.objects.ModKey;
-import net.kyori.adventure.key.Key;
 import java.util.List;
 
 public class ModSupport {
@@ -17,8 +16,6 @@ public class ModSupport {
     public static final ModKey oraxen =  ModKey.key("fusion", "Oraxen");
     
     public static final ModKey nexo = ModKey.key("fusion", "Nexo");
-
-    public static final Key fusion = Key.key("fusion-config", "fusion.yml");
 
     public static final List<ModKey> dependencies = List.of(
             placeholder_api,

@@ -1,9 +1,13 @@
 package com.ryderbelserion.fusion.core;
 
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
+import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 
 public class FusionConfig {
+
+    public static final Key fusion_config = Key.key("fusion-config", "fusion.yml");
+    public static final Key fusion_cache = Key.key("fusion-cache", "fusion-cache.json");
 
     private final YamlCustomFile config;
 

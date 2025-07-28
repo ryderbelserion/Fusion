@@ -14,7 +14,6 @@ import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -49,7 +48,7 @@ public class FusionPaper extends FusionCore {
         this.fileManager = new PaperFileManager(this);
 
         init(consumer -> {
-            this.config = new FusionConfig(this.fileManager.getYamlFile(ModSupport.fusion));
+            this.config = new FusionConfig(this.fileManager.getYamlFile(FusionConfig.fusion_config));
         });
 
         this.server = plugin.getServer();
@@ -87,7 +86,7 @@ public class FusionPaper extends FusionCore {
             }
         }
 
-        this.fileManager.addFile(ModSupport.fusion, FileType.CONFIGURATE_YAML, consumer -> {
+        this.fileManager.addFile(FusionConfig.fusion_config, FileType.CONFIGURATE_YAML, consumer -> {
             final YamlCustomFile customFile = (YamlCustomFile) consumer;
 
             customFile.setOptions(options -> options.shouldCopyDefaults(true));
