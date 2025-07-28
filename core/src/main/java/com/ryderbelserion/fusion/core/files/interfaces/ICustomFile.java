@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.core.files.interfaces;
 
 import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.core.files.FileManager;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,6 +25,7 @@ public abstract class ICustomFile<I, C, L, O> {
     protected C configuration;
     protected L loader;
 
+    protected FileType fileType;
     protected Path path;
 
     public ICustomFile(@NotNull final FileManager fileManager) {
@@ -248,5 +250,13 @@ public abstract class ICustomFile<I, C, L, O> {
 
     public boolean isDirectory() {
         return Files.isDirectory(getPath());
+    }
+
+    public FileType getFileType() {
+        return this.fileType;
+    }
+
+    public void setFileType(@NotNull final FileType fileType) {
+        this.fileType = fileType;
     }
 }
