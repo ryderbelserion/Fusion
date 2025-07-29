@@ -4,10 +4,15 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.builders.BaseItemBuilder;
+import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.ResolvableProfile;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
+import net.kyori.adventure.key.Key;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
@@ -74,6 +79,26 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         if (playerName.length() > 16) return withUrl(playerName);
 
         this.builder.name(playerName);
+
+        return this;
+    }
+
+    public @NotNull SkullBuilder withNoteBlockSound(@NotNull final String sound) {
+        if (sound.isEmpty()) return this;
+
+        final Sound value = ItemUtils.getSound(sound);
+
+        if (value == null) return this;
+
+        final NamespacedKey key = Registry.SOUNDS.getKey(value);
+
+        if (key == null) {
+            this.fusion.log("warn", "No valid NamespacedKey found for {}", sound);
+
+            return this;
+        }
+
+        this.itemStack.setData(DataComponentTypes.NOTE_BLOCK_SOUND, key);
 
         return this;
     }
