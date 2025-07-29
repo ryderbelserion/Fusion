@@ -388,6 +388,14 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
+    public @NotNull B setRepairCost(final int repairCost) {
+        if (repairCost == -1) return (B) this;
+
+        this.itemStack.setData(DataComponentTypes.REPAIR_COST, repairCost);
+
+        return (B) this;
+    }
+
     public @NotNull B setCustomModelData(final int customModelData) {
         if (customModelData == -1) return (B) this;
 
