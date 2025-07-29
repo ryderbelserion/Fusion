@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.utils;
 
-import com.ryderbelserion.fusion.core.FusionProvider;
+import com.ryderbelserion.fusion.paper.FusionProvider;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,7 +25,8 @@ public class ColorUtils {
 
         final MenuType<?> windowType = CraftContainer.getNotchInventoryType(player.getOpenInventory().getTopInventory());
 
-        entityPlayer.connection.send(new ClientboundOpenScreenPacket(containerId, windowType, CraftChatMessage.fromJSON(JSONComponentSerializer.json().serialize(FusionProvider.get().color(player, title, placeholders)))));
+        entityPlayer.connection.send(new ClientboundOpenScreenPacket(containerId, windowType, CraftChatMessage.fromJSON(JSONComponentSerializer.json().serialize(
+                FusionProvider.getInstance().parse(player, title, placeholders)))));
 
         player.updateInventory();
     }
@@ -86,9 +87,7 @@ public class ColorUtils {
 
         final String[] rgb = color.split(",");
 
-        if (rgb.length != 3) {
-            return null;
-        }
+        if (rgb.length != 3) return null;
 
         final int red = Integer.parseInt(rgb[0]);
         final int green = Integer.parseInt(rgb[1]);

@@ -3,7 +3,7 @@ package com.ryderbelserion.fusion.velocity.api.commands.objects;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.ryderbelserion.fusion.core.FusionProvider;
-import com.ryderbelserion.fusion.core.api.commands.objects.ICommand;
+import com.ryderbelserion.fusion.core.v1.api.commands.objects.ICommand;
 import com.ryderbelserion.fusion.velocity.FusionVelocity;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandSource;

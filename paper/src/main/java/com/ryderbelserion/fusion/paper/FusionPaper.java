@@ -1,96 +1,111 @@
 package com.ryderbelserion.fusion.paper;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import com.ryderbelserion.fusion.core.api.FusionCore;
+import com.ryderbelserion.fusion.core.FusionConfig;
+import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.api.enums.Support;
-import com.ryderbelserion.fusion.core.api.utils.keys.ConfigKeys;
-import com.ryderbelserion.fusion.paper.api.builders.gui.listeners.GuiListener;
-import com.ryderbelserion.fusion.paper.api.commands.PaperCommandManager;
-import com.ryderbelserion.fusion.paper.api.structure.StructureRegistry;
-import com.ryderbelserion.fusion.paper.files.FileManager;
-import com.ryderbelserion.fusion.paper.utils.keys.PluginKeys;
+import com.ryderbelserion.fusion.core.api.support.ModSupport;
+import com.ryderbelserion.fusion.core.api.support.objects.ModKey;
+import com.ryderbelserion.fusion.core.files.enums.FileAction;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
+import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
+import com.ryderbelserion.fusion.paper.structure.StructureRegistry;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-import org.apache.commons.lang3.StringUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Consumer;
 
 public class FusionPaper extends FusionCore {
 
-    private PaperCommandManager commandManager;
-    private StructureRegistry registry;
-    private FileManager fileManager;
+    private final PaperFileManager fileManager;
+    private final PluginManager pluginManager;
+    private final StructureRegistry registry;
+    private final Server server;
+
     private HeadDatabaseAPI api;
-    private JavaPlugin plugin;
-    private Server server;
-
-    private PluginManager pluginManager;
-
-    public FusionPaper(@NotNull final ComponentLogger logger, @NotNull final Path path) {
-        super(logger, path, consumer -> consumer.useDefaultMigrationService().configurationData(ConfigKeys.class, PluginKeys.class));
-    }
 
     public FusionPaper(@NotNull final JavaPlugin plugin) {
-        this(plugin.getComponentLogger(), plugin.getDataPath());
-    }
+        super(consumer -> {
+            consumer.setDataPath(plugin.getDataPath());
+        });
 
-    public void enable(@NotNull final JavaPlugin plugin) {
-        super.enable();
+        this.fileManager = new PaperFileManager(this);
 
-        this.plugin = plugin;
-        this.server = this.plugin.getServer();
+        this.server = plugin.getServer();
+
         this.pluginManager = this.server.getPluginManager();
 
-        this.registry = new StructureRegistry(this.plugin);
+        this.registry = new StructureRegistry(plugin, this.server.getStructureManager());
 
-        if (this.fileManager == null) {
-            this.fileManager = new FileManager();
+        init(consumer -> {
+            this.config = new FusionConfig(this.fileManager.getYamlFile(FusionConfig.fusion_config));
+        });
+
+        FusionProvider.register(this);
+    }
+
+    @Override
+    public Component parse(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
+        final List<TagResolver> resolvers = new ArrayList<>(tags);
+
+        placeholders.forEach((key, value) -> resolvers.add(Placeholder.parsed(getStringUtils().replaceAllBrackets(key).toLowerCase(), value)));
+
+        return MiniMessage.miniMessage().deserialize(papi(audience, message), !resolvers.isEmpty() ? TagResolver.resolver(resolvers) : TagResolver.empty()).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+    }
+
+    @Override
+    public String papi(@NotNull final Audience audience, @NotNull final String message) {
+        return audience instanceof Player player && getModManager().getMod(ModSupport.placeholder_api).isEnabled() ? PlaceholderAPI.setPlaceholders(player, message) : message;
+    }
+
+    @Override
+    public FusionPaper init(@NotNull final Consumer<FusionCore> fusion) {
+        final Path dataPath = getDataPath();
+
+        if (Files.notExists(dataPath)) {
+            try {
+                Files.createDirectory(dataPath);
+            } catch (final IOException exception) {
+                exception.printStackTrace();
+            }
         }
 
-        this.commandManager = new PaperCommandManager(this.plugin);
+        this.fileManager.addFile(FusionConfig.fusion_config, FileType.CONFIGURATE_YAML, consumer -> {
+            final YamlCustomFile customFile = (YamlCustomFile) consumer;
 
-        if (Support.head_database.isEnabled() && this.api == null) {
-            this.api = new HeadDatabaseAPI();
-        }
+            customFile.setOptions(options -> options.shouldCopyDefaults(true));
+            customFile.setPath(dataPath.resolve("fusion.yml"));
+            customFile.addAction(FileAction.EXTRACT_FILE);
+        });
 
-        this.pluginManager.registerEvents(new GuiListener(), this.plugin);
+        if (this.isModReady(ModSupport.head_database) && this.api == null) this.api = new HeadDatabaseAPI();
+
+        fusion.accept(this);
+
+        return this;
     }
 
     @Override
-    public void disable() {
-        super.disable();
+    public FusionCore reload() {
+        this.config.reload();
 
-        this.commandManager.disable();
-    }
-
-    @Override
-    public @NotNull final String parsePlaceholders(@NotNull final Audience audience, @NotNull final String message) {
-        return Support.placeholder_api.isEnabled() && audience instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
-    }
-
-    @Override
-    public @NotNull final PaperCommandManager getCommandManager() {
-        return this.commandManager;
-    }
-
-    @Override
-    public @NotNull final String chomp(@NotNull final String message) {
-        return StringUtils.chomp(message);
-    }
-
-    @Override
-    public final boolean isPluginEnabled(@NotNull final String name) {
-        return this.pluginManager.isPluginEnabled(name);
+        return this;
     }
 
     @Override
@@ -99,22 +114,22 @@ public class FusionPaper extends FusionCore {
     }
 
     @Override
-    public @NotNull final FileManager getFileManager() {
-        if (this.fileManager == null) {
-            throw new FusionException("An error occurred while trying to get the file manager instance.");
-        }
+    public boolean isModReady(@NotNull final ModKey key) {
+        return this.pluginManager.isPluginEnabled(key.getValue());
+    }
 
+    @Override
+    public PaperFileManager getFileManager() {
         return this.fileManager;
     }
 
-    public @NotNull final String getItemsPlugin() {
-        return this.config.getProperty(PluginKeys.items_plugin);
+    @Override
+    public FusionConfig getConfig() {
+        return this.config;
     }
 
     public @NotNull final StructureRegistry getRegistry() {
-        if (this.registry == null) {
-            throw new FusionException("An error occurred while trying to get the structure registry instance.");
-        }
+        if (this.registry == null) throw new FusionException("An error occurred while trying to get the structure registry instance.");
 
         return this.registry;
     }

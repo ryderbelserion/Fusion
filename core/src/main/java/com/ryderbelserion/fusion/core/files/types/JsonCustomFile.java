@@ -4,28 +4,28 @@ import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.ConfigurationOptions;
+import org.spongepowered.configurate.gson.GsonConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
-import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.IOException;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedConfigurationNode, YamlConfigurationLoader, ConfigurationOptions> {
+public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurationNode, GsonConfigurationLoader, ConfigurationOptions> {
 
-    public YamlCustomFile(@NotNull final FileManager fileManager, @NotNull final Consumer<YamlCustomFile> consumer) {
+    public JsonCustomFile(@NotNull final FileManager fileManager, @NotNull final Consumer<JsonCustomFile> consumer) {
         super(fileManager);
 
         this.options = ConfigurationOptions.defaults();
 
         consumer.accept(this);
 
-        this.loader = YamlConfigurationLoader.builder().path(getPath()).defaultOptions(getOptions()).build();
+        this.loader = GsonConfigurationLoader.builder().path(getPath()).defaultOptions(getOptions()).build();
     }
 
     @Override
-    public @NotNull CommentedConfigurationNode loadConfig() throws IOException {
+    public @NotNull BasicConfigurationNode loadConfig() throws IOException {
         return this.loader.load();
     }
 
@@ -102,7 +102,7 @@ public class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedConfigu
      */
     @Override
     public @NotNull final List<String> getStringList(@NotNull final List<String> defaultValue, @NotNull final Object... path) {
-        final CommentedConfigurationNode node = getConfiguration().node(path);
+        final BasicConfigurationNode node = getConfiguration().node(path);
 
         try {
             final List<String> list = node.getList(String.class);

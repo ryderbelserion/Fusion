@@ -1,29 +1,36 @@
 package com.ryderbelserion.fusion.paper.files.types;
 
-import com.ryderbelserion.fusion.core.api.enums.FileAction;
-import com.ryderbelserion.fusion.core.api.enums.FileType;
-import com.ryderbelserion.fusion.core.api.interfaces.files.IConfigFile;
+import com.ryderbelserion.fusion.core.files.FileManager;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
+import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
-public class PaperCustomFile extends IConfigFile<PaperCustomFile, YamlConfiguration, YamlConfiguration> {
+public class PaperCustomFile extends ICustomFile<PaperCustomFile, YamlConfiguration, Object, Object> {
 
-    public PaperCustomFile(@NotNull final Path path, final List<FileAction> actions) {
-        super(path, actions, new YamlConfiguration());
+    private final File file;
+
+    public PaperCustomFile(@NotNull final FileManager fileManager, @NotNull final Consumer<PaperCustomFile> consumer) {
+        super(fileManager);
+
+        this.file = getPath().toFile();
+
+        consumer.accept(this);
     }
 
     @Override
-    public @NotNull final YamlConfiguration loadConfig() {
-        return YamlConfiguration.loadConfiguration(getPath().toFile());
+    public @NotNull YamlConfiguration loadConfig() {
+        return YamlConfiguration.loadConfiguration(this.file);
     }
 
     @Override
     public void saveConfig() throws IOException {
-        this.configuration.save(getPath().toFile());
+        this.configuration.save(this.file);
     }
 
     @Override
@@ -81,7 +88,7 @@ public class PaperCustomFile extends IConfigFile<PaperCustomFile, YamlConfigurat
     }
 
     @Override
-    public @NotNull FileType getFileType() {
-        return super.getFileType();
+    public FileType getFileType() {
+        return FileType.PAPER;
     }
 }
