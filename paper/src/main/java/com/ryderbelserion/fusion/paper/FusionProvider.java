@@ -20,9 +20,7 @@ public class FusionProvider {
     }
 
     public static @NotNull FusionPaper getInstance() {
-        if (instance == null) {
-            throw new FusionException("Fusion API is not yet initialized.");
-        }
+        if (instance == null) throw new FusionException("Fusion API is not yet initialized.");
 
         return instance;
     }

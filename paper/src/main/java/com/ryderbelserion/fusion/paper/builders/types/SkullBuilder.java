@@ -71,9 +71,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
     public @NotNull SkullBuilder withName(@NotNull final String playerName) {
         if (playerName.isEmpty()) return this;
 
-        if (playerName.length() > 16) {
-            return withUrl(playerName);
-        }
+        if (playerName.length() > 16) return withUrl(playerName);
 
         this.builder.name(playerName);
 

@@ -107,9 +107,7 @@ public class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedConfigu
         try {
             final List<String> list = node.getList(String.class);
 
-            if (list != null) {
-                return list;
-            }
+            if (list != null) return list;
 
             return defaultValue;
         } catch (final SerializationException exception) {

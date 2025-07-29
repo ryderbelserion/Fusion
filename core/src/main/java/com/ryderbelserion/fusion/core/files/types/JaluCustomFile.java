@@ -21,9 +21,7 @@ public class JaluCustomFile extends ICustomFile<JaluCustomFile, SettingsManager,
 
     @Override
     public @NotNull final SettingsManager loadConfig() {
-        if (this.configuration == null) {
-            return this.loader.create();
-        }
+        if (this.configuration == null) return this.loader.create();
 
         this.configuration.reload();
 

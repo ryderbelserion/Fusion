@@ -171,19 +171,13 @@ public abstract class ICustomFile<I, C, L, O> {
     }
 
     public @NotNull I load() {
-        if (isDirectory()) {
-            return (I) this;
-        }
+        if (isDirectory()) return (I) this;
 
         final Path path = getPath();
 
-        if (hasAction(FileAction.EXTRACT_FILE)) {
-            this.fileManager.extractFile(path);
-        }
+        if (hasAction(FileAction.EXTRACT_FILE)) this.fileManager.extractFile(path);
 
-        if (hasAction(FileAction.EXTRACT_FOLDER)) {
-            this.fileManager.extractFolder(path.getFileName().toString(), path.getParent());
-        }
+        if (hasAction(FileAction.EXTRACT_FOLDER)) this.fileManager.extractFolder(path.getFileName().toString(), path.getParent());
 
         this.configuration = CompletableFuture.supplyAsync(() -> {
             try {
@@ -197,13 +191,9 @@ public abstract class ICustomFile<I, C, L, O> {
     }
 
     public @NotNull I save(@NotNull final String content) {
-        if (isDirectory()) {
-            return (I) this;
-        }
+        if (isDirectory()) return (I) this;
 
-        if (this.configuration == null) {
-            return (I) this;
-        }
+        if (this.configuration == null) return (I) this;
 
         CompletableFuture.runAsync(() -> {
             try {

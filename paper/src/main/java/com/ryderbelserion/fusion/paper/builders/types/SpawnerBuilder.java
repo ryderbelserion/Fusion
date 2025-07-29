@@ -51,17 +51,11 @@ public class SpawnerBuilder extends BaseItemBuilder<SpawnerBuilder> {
             if (!(itemMeta instanceof BlockStateMeta blockStateMeta)) return;
             if (!(blockStateMeta instanceof CreatureSpawner spawner)) return;
 
-            if (this.count > 0) {
-                spawner.setSpawnCount(this.count);
-            }
+            if (this.count > 0) spawner.setSpawnCount(this.count);
 
-            if (this.delay > 0) {
-                spawner.setDelay(this.delay);
-            }
+            if (this.delay > 0) spawner.setDelay(this.delay);
 
-            if (this.range > 0) {
-                spawner.setSpawnRange(this.range);
-            }
+            if (this.range > 0) spawner.setSpawnRange(this.range);
 
             spawner.setSpawnedType(this.entityType);
 

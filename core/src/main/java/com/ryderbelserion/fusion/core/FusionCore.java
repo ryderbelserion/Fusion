@@ -125,9 +125,7 @@ public abstract class FusionCore implements IFusionCore {
         for (final Path key : files) {
             final String fileName = key.getFileName().toString();
 
-            if (!fileName.endsWith(extension)) {
-                continue;
-            }
+            if (!fileName.endsWith(extension)) continue;
 
             names.add(withoutExtension ? fileName.replace(extension, "") : fileName);
         }
@@ -137,9 +135,7 @@ public abstract class FusionCore implements IFusionCore {
 
     @Override
     public void deleteDirectory(@NotNull final Path path) throws IOException {
-        if (!Files.exists(path) || !Files.isDirectory(path)) {
-            return;
-        }
+        if (!Files.exists(path) || !Files.isDirectory(path)) return;
 
         try (final DirectoryStream<Path> contents = Files.newDirectoryStream(path)) {
             for (final Path entry : contents) {

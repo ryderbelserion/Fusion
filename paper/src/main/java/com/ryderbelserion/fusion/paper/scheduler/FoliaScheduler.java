@@ -69,9 +69,7 @@ public abstract class FoliaScheduler implements Runnable {
             case async_scheduler -> task = this.server.getAsyncScheduler().runNow(this.plugin, scheduledTask -> this.run());
             case region_scheduler -> task = this.server.getRegionScheduler().run(this.plugin, this.world, this.x, this.z, scheduledTask -> this.run());
             case entity_scheduler -> {
-                if (this.entity == null) {
-                    throw new FusionException("Cannot immediately run entity task if the entity is null.");
-                }
+                if (this.entity == null) throw new FusionException("Cannot immediately run entity task if the entity is null.");
 
                 task = this.entity.getScheduler().run(this.plugin, scheduledTask -> this.run(), this.retired);
             }
@@ -90,9 +88,7 @@ public abstract class FoliaScheduler implements Runnable {
             case async_scheduler -> this.server.getAsyncScheduler().runNow(this.plugin, scheduledTask -> this.run());
             case region_scheduler -> this.server.getRegionScheduler().run(this.plugin, this.world, this.x, this.z, scheduledTask -> this.run());
             case entity_scheduler -> {
-                if (this.entity == null) {
-                    throw new FusionException("Cannot immediately execute entity task if the entity is null.");
-                }
+                if (this.entity == null) throw new FusionException("Cannot immediately execute entity task if the entity is null.");
                 
                 this.entity.getScheduler().run(this.plugin, scheduledTask -> this.run(), this.retired);
             }
@@ -115,9 +111,7 @@ public abstract class FoliaScheduler implements Runnable {
             case async_scheduler -> task = this.server.getAsyncScheduler().runDelayed(this.plugin, scheduledTask -> this.run(), maxDelay, this.timeUnit);
             case region_scheduler -> task = this.server.getRegionScheduler().runDelayed(this.plugin, this.world, this.x, this.z, scheduledTask -> this.run(), maxDelay);
             case entity_scheduler -> {
-                if (this.entity == null) {
-                    throw new FusionException("Cannot run delayed entity task if the entity is null.");
-                }
+                if (this.entity == null) throw new FusionException("Cannot run delayed entity task if the entity is null.");
 
                 task = this.entity.getScheduler().runDelayed(this.plugin, scheduledTask -> this.run(), this.retired, maxDelay);
             }
@@ -138,9 +132,7 @@ public abstract class FoliaScheduler implements Runnable {
             case async_scheduler -> task = this.server.getAsyncScheduler().runDelayed(this.plugin, scheduledTask -> this.run(), 50, TimeUnit.MILLISECONDS);
             case region_scheduler -> task = this.server.getRegionScheduler().run(this.plugin, this.world, this.x, this.z, scheduledTask -> this.run());
             case entity_scheduler -> {
-                if (this.entity == null) {
-                    throw new FusionException("Cannot run delayed entity task if the entity is null.");
-                }
+                if (this.entity == null) throw new FusionException("Cannot run delayed entity task if the entity is null.");
 
                 task = this.entity.getScheduler().run(this.plugin, scheduledTask -> this.run(), this.retired);
             }
@@ -164,9 +156,7 @@ public abstract class FoliaScheduler implements Runnable {
             case async_scheduler -> task = this.server.getAsyncScheduler().runAtFixedRate(this.plugin, scheduledTask -> this.run(), maxDelay, maxInterval, this.timeUnit);
             case region_scheduler -> task = this.server.getRegionScheduler().runAtFixedRate(this.plugin, this.world, this.x, this.z, scheduledTask -> this.run(), maxDelay, maxInterval);
             case entity_scheduler -> {
-                if (this.entity == null) {
-                    throw new FusionException("Cannot run fixed rate entity task if the entity is null");
-                }
+                if (this.entity == null) throw new FusionException("Cannot run fixed rate entity task if the entity is null");
 
                 task = this.entity.getScheduler().runAtFixedRate(this.plugin, scheduledTask -> this.run(), this.retired, maxDelay, maxInterval);
             }
@@ -182,9 +172,7 @@ public abstract class FoliaScheduler implements Runnable {
 
         this.task.cancel();
 
-        if (consumer != null) {
-            consumer.accept(this);
-        }
+        if (consumer != null) consumer.accept(this);
     }
 
     public void cancel() {

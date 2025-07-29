@@ -227,6 +227,12 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return withType(itemType, 1);
     }
 
+    public @NotNull B setAmount(final int amount) {
+        this.itemStack.setAmount(Math.max(amount, 1));
+
+        return (B) this;
+    }
+
     public @NotNull B addEnchantments(@NotNull final Map<String, Integer> enchantments) {
         for (final Map.Entry<String, Integer> entry : enchantments.entrySet()) {
             addEnchantment(entry.getKey(), entry.getValue());
@@ -277,27 +283,17 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setAmount(final int amount) {
-        this.itemStack.setAmount(Math.max(amount, 1));
-
-        return (B) this;
-    }
-
     public @NotNull String getPlainName() {
         Component component = Component.empty();
 
         if (this.itemStack.hasData(DataComponentTypes.ITEM_NAME)) {
             final Component itemName = this.itemStack.getData(DataComponentTypes.ITEM_NAME);
 
-            if (itemName != null) {
-                component = itemName;
-            }
+            if (itemName != null) component = itemName;
         } else if (this.itemStack.hasData(DataComponentTypes.CUSTOM_NAME)) {
             final Component customName = this.itemStack.getData(DataComponentTypes.CUSTOM_NAME);
 
-            if (customName != null) {
-                component = customName;
-            }
+            if (customName != null) component = customName;
         }
 
         return PlainTextComponentSerializer.plainText().serializeOr(component, "");
@@ -309,9 +305,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         if (this.itemStack.hasData(DataComponentTypes.LORE)) {
             final ItemLore lore = this.itemStack.getData(DataComponentTypes.LORE);
 
-            if (lore != null) {
-                lore.lines().forEach(line -> plainLore.add(PlainTextComponentSerializer.plainText().serialize(line)));
-            }
+            if (lore != null) lore.lines().forEach(line -> plainLore.add(PlainTextComponentSerializer.plainText().serialize(line)));
         }
 
         return plainLore;
@@ -372,9 +366,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         if (this.itemStack.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {
             final TooltipDisplay components = this.itemStack.getData(DataComponentTypes.TOOLTIP_DISPLAY);
 
-            if (components != null) {
-                display.hiddenComponents(components.hiddenComponents());
-            }
+            if (components != null) display.hiddenComponents(components.hiddenComponents());
         }
 
         display.addHiddenComponents(type.get());
@@ -391,9 +383,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             return (B) this;
         }
 
-        if (this.itemStack.hasData(DataComponentTypes.UNBREAKABLE)) {
-            this.itemStack.unsetData(DataComponentTypes.UNBREAKABLE);
-        }
+        if (this.itemStack.hasData(DataComponentTypes.UNBREAKABLE)) this.itemStack.unsetData(DataComponentTypes.UNBREAKABLE);
 
         return (B) this;
     }
@@ -411,9 +401,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         final Optional<Number> integer = this.fusion.getStringUtils().tryParseInt(customModelData);
 
-        if (integer.isPresent()) {
-            return setCustomModelData(integer.orElse(-1).intValue());
-        }
+        if (integer.isPresent()) return setCustomModelData(integer.orElse(-1).intValue());
 
         final CustomModelData.Builder data = populateData();
 
@@ -443,18 +431,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         final TrimMaterial trimMaterial = ItemUtils.getTrimMaterial(material);
 
-        if (trimMaterial == null) {
-            return (B) this;
-        }
+        if (trimMaterial == null) return (B) this;
 
         final TrimPattern trimPattern = ItemUtils.getTrimPattern(pattern);
 
-        if (trimPattern == null) {
-            return (B) this;
-        }
+        if (trimPattern == null) return (B) this;
 
-        final ItemArmorTrim.Builder builder = ItemArmorTrim
-                .itemArmorTrim(new ArmorTrim(trimMaterial, trimPattern));
+        final ItemArmorTrim.Builder builder = ItemArmorTrim.itemArmorTrim(new ArmorTrim(trimMaterial, trimPattern));
 
         this.itemStack.setData(DataComponentTypes.TRIM, builder.build());
 
@@ -467,15 +450,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         if (isMap()) {
             final Color color = value.contains(",") ? ColorUtils.getRGB(value) : ColorUtils.getColor(value);
 
-            if (color != null) {
-                this.itemStack.setData(DataComponentTypes.MAP_COLOR, MapItemColor.mapItemColor().color(color).build());
-            }
+            if (color != null) this.itemStack.setData(DataComponentTypes.MAP_COLOR, MapItemColor.mapItemColor().color(color).build());
         } else if (isLeather()) {
             final Color color = value.contains(",") ? ColorUtils.getRGB(value) : ColorUtils.getColor(value);
 
-            if (color != null) {
-                this.itemStack.setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor().color(color).build());
-            }
+            if (color != null) this.itemStack.setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor().color(color).build());
         } else if (isShield()) {
             final DyeColor color = ColorUtils.getDyeColor(value);
 
@@ -496,16 +475,14 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public @NotNull B withSkull(@NotNull final String skull) {
         if (skull.isEmpty()) return (B) this;
 
-        @NotNull final Optional<HeadDatabaseAPI> key = this.fusion.getHeadDatabaseAPI();
+        final Optional<HeadDatabaseAPI> key = this.fusion.getHeadDatabaseAPI();
 
         ItemStack item = ItemType.PLAYER_HEAD.createItemStack();
 
         if (key.isPresent()) {
-            @NotNull final HeadDatabaseAPI api = key.get();
+            final HeadDatabaseAPI api = key.get();
 
-            if (api.isHead(skull)) {
-                item = api.getItemHead(skull);
-            }
+            if (api.isHead(skull)) item = api.getItemHead(skull);
         }
 
         this.itemStack = item;
@@ -582,49 +559,37 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public @NotNull final FireworkBuilder asFireworkBuilder() {
-        if (!isFirework()) {
-            throw new FusionException("This item type is not a firework rocket.");
-        }
+        if (!isFirework()) throw new FusionException("This item type is not a firework rocket.");
 
         return new FireworkBuilder(this.itemStack);
     }
 
     public @NotNull final FireworkStarBuilder asFireworkStarBuilder() {
-        if (!isFireworkStar()) {
-            throw new FusionException("This item type is not a firework star.");
-        }
+        if (!isFireworkStar()) throw new FusionException("This item type is not a firework star.");
 
         return new FireworkStarBuilder(this.itemStack);
     }
 
     public @NotNull final PatternBuilder asPatternBuilder() {
-        if (isShield() || isBanner()) {
-            return new PatternBuilder(this.itemStack);
-        }
+        if (isShield() || isBanner()) return new PatternBuilder(this.itemStack);
 
         throw new FusionException("This item type is not a shield/banner.");
     }
 
     public @NotNull final SkullBuilder asSkullBuilder() {
-        if (!isPlayerHead()) {
-            throw new FusionException("This item type is not a skull.");
-        }
+        if (!isPlayerHead()) throw new FusionException("This item type is not a skull.");
 
         return new SkullBuilder(this.itemStack);
     }
 
     public @NotNull final PotionBuilder asPotionBuilder() {
-        if (isPotion() || isTippedArrow()) {
-            return new PotionBuilder(this.itemStack);
-        }
+        if (isPotion() || isTippedArrow()) return new PotionBuilder(this.itemStack);
 
         throw new FusionException("This item type is not a potion / tipped arrow.");
     }
 
     public @NotNull final SpawnerBuilder asSpawnerBuilder() {
-        if (!isSpawner()) {
-            throw new FusionException("This item type is not a spawner.");
-        }
+        if (!isSpawner()) throw new FusionException("This item type is not a spawner.");
 
         return new SpawnerBuilder(this.itemStack);
     }
@@ -780,9 +745,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         if (this.itemStack.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
             final CustomModelData component = this.itemStack.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
 
-            if (component != null) {
-                data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
-            }
+            if (component != null) data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
         }
 
         return data;
@@ -834,9 +797,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         final CustomStack builder = CustomStack.getInstance(itemStack);
 
-        if (builder == null) {
-            throw new FusionException("The id " + itemStack + " is not a valid ItemsAdder item!");
-        }
+        if (builder == null) throw new FusionException("The id " + itemStack + " is not a valid ItemsAdder item!");
 
         this.itemStack = builder.getItemStack();
         this.itemType = this.itemStack.getType().asItemType();
@@ -851,9 +812,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         final io.th0rgal.oraxen.items.ItemBuilder builder = OraxenItems.getItemById(itemStack);
 
-        if (builder == null) {
-            throw new FusionException("The id " + itemStack + " is not a valid Oraxen item!");
-        }
+        if (builder == null) throw new FusionException("The id " + itemStack + " is not a valid Oraxen item!");
 
         this.itemStack = builder.build();
         this.itemType = this.itemStack.getType().asItemType();
@@ -868,9 +827,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         final ItemBuilder builder = NexoItems.itemFromId(itemStack);
 
-        if (builder == null) {
-            throw new FusionException("The id " + itemStack + " is not a valid Nexo item!");
-        }
+        if (builder == null) throw new FusionException("The id " + itemStack + " is not a valid Nexo item!");
 
         this.itemStack = builder.build();
         this.itemType = this.itemStack.getType().asItemType();

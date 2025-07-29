@@ -96,7 +96,6 @@ public class StructureBuilder {
         if (!this.isReady) return;
 
         this.structureBlocks.forEach(state -> state.setType(Material.AIR));
-
         this.structureBlocks.clear();
 
         if (restoreInitialBlocks) {

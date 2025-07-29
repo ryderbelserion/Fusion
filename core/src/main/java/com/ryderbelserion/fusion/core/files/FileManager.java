@@ -285,9 +285,7 @@ public class FileManager extends IFileManager<FileManager> {
 
         builder.append(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-        if (!content.isEmpty()) {
-            builder.append(content);
-        }
+        if (!content.isEmpty()) builder.append(content);
 
         final int fileCount = this.getFileCount(path, ".gz");
 

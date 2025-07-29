@@ -87,9 +87,7 @@ public class ColorUtils {
 
         final String[] rgb = color.split(",");
 
-        if (rgb.length != 3) {
-            return null;
-        }
+        if (rgb.length != 3) return null;
 
         final int red = Integer.parseInt(rgb[0]);
         final int green = Integer.parseInt(rgb[1]);

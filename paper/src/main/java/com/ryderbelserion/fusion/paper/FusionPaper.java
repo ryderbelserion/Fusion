@@ -94,9 +94,7 @@ public class FusionPaper extends FusionCore {
             customFile.addAction(FileAction.EXTRACT_FILE);
         });
 
-        if (this.isModReady(ModSupport.head_database) && this.api == null) {
-            this.api = new HeadDatabaseAPI();
-        }
+        if (this.isModReady(ModSupport.head_database) && this.api == null) this.api = new HeadDatabaseAPI();
 
         fusion.accept(this);
 
@@ -131,9 +129,7 @@ public class FusionPaper extends FusionCore {
     }
 
     public @NotNull final StructureRegistry getRegistry() {
-        if (this.registry == null) {
-            throw new FusionException("An error occurred while trying to get the structure registry instance.");
-        }
+        if (this.registry == null) throw new FusionException("An error occurred while trying to get the structure registry instance.");
 
         return this.registry;
     }

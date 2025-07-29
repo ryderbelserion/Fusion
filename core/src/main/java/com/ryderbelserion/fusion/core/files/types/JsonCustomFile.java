@@ -107,9 +107,7 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
         try {
             final List<String> list = node.getList(String.class);
 
-            if (list != null) {
-                return list;
-            }
+            if (list != null) return list;
 
             return defaultValue;
         } catch (final SerializationException exception) {

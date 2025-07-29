@@ -33,13 +33,9 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
         builder.trail(trail);
         builder.with(type);
 
-        if (colors != null) {
-            builder.withColor(colors);
-        }
+        if (colors != null) builder.withColor(colors);
 
-        if (fadeColors != null) {
-            builder.withFade(fadeColors);
-        }
+        if (fadeColors != null) builder.withFade(fadeColors);
 
         return addEffect(builder.getBuilder().build());
     }
