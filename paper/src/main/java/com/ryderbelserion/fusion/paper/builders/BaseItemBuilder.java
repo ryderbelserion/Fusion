@@ -498,6 +498,28 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
+    public @NotNull B addPlaceholder(@NotNull final String placeholder, @NotNull final String value) {
+        this.placeholders.put(placeholder, value);
+
+        return (B) this;
+    }
+
+    public @NotNull B setPlaceholders(@NotNull final Map<String, String> placeholders) {
+        this.placeholders = placeholders;
+
+        return (B) this;
+    }
+
+    public @NotNull B removePlaceholder(@NotNull final String placeholder) {
+        this.placeholders.remove(placeholder);
+
+        return (B) this;
+    }
+
+    public boolean hasPlaceholder(@NotNull final String placeholder) {
+        return this.placeholders.containsKey(placeholder);
+    }
+
     public @NotNull final B setPersistentDouble(@NotNull final NamespacedKey key, final double value) {
         this.itemStack.editPersistentDataContainer(container -> container.set(key, PersistentDataType.DOUBLE, value));
 
@@ -772,28 +794,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         }
 
         return builder;
-    }
-    
-    public @NotNull B addPlaceholder(@NotNull final String placeholder, @NotNull final String value) {
-        this.placeholders.put(placeholder, value);
-
-        return (B) this;
-    }
-
-    public @NotNull B setPlaceholders(@NotNull final Map<String, String> placeholders) {
-        this.placeholders = placeholders;
-
-        return (B) this;
-    }
-
-    public @NotNull B removePlaceholder(@NotNull final String placeholder) {
-        this.placeholders.remove(placeholder);
-
-        return (B) this;
-    }
-
-    public boolean hasPlaceholder(@NotNull final String placeholder) {
-        return this.placeholders.containsKey(placeholder);
     }
 
     private void getItemsAdder(@NotNull final String itemStack) {
