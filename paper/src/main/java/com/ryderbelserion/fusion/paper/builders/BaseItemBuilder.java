@@ -485,15 +485,15 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         final Optional<HeadDatabaseAPI> key = this.fusion.getHeadDatabaseAPI();
 
-        ItemStack item = ItemType.PLAYER_HEAD.createItemStack();
+        ItemStack itemStack = ItemType.PLAYER_HEAD.createItemStack();
 
         if (key.isPresent()) {
             final HeadDatabaseAPI api = key.get();
 
-            if (api.isHead(skull)) item = api.getItemHead(skull);
+            if (api.isHead(skull)) itemStack = api.getItemHead(skull);
         }
 
-        this.itemStack = item;
+        this.itemStack = itemStack;
 
         return (B) this;
     }
