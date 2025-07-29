@@ -11,6 +11,7 @@ import com.ryderbelserion.fusion.paper.builders.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.SkullBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.SpawnerBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.fireworks.FireworkBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.fireworks.FireworkStarBuilder;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
@@ -447,44 +448,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setCustomModelData(final int customModelData) {
-        if (customModelData == -1) return (B) this;
-
-        this.itemStack.setData(DataComponentTypes.CUSTOM_MODEL_DATA, model().addFloat(customModelData).build());
-
-        return (B) this;
-    }
-
-    public @NotNull B setCustomModelData(@NotNull final String customModelData) {
-        if (customModelData.isEmpty()) return (B) this;
-
-        final Optional<Number> integer = this.fusion.getStringUtils().tryParseInt(customModelData);
-
-        if (integer.isPresent()) return setCustomModelData(integer.orElse(-1).intValue());
-
-        final CustomModelData.Builder data = model();
-
-        this.itemStack.setData(DataComponentTypes.CUSTOM_MODEL_DATA, data.addString(customModelData).build());
-
-        return (B) this;
-    }
-
-    public @NotNull B setItemModel(@NotNull final String itemModel) {
-        if (itemModel.isEmpty()) return (B) this;
-
-        this.itemStack.setData(DataComponentTypes.ITEM_MODEL, NamespacedKey.minecraft(itemModel));
-
-        return (B) this;
-    }
-
-    public @NotNull B setItemModel(@NotNull final String namespace, @NotNull final String itemModel) {
-        if (namespace.isEmpty() || itemModel.isEmpty()) return (B) this;
-
-        this.itemStack.setData(DataComponentTypes.ITEM_MODEL, new NamespacedKey(namespace, itemModel));
-
-        return (B) this;
-    }
-
     public @NotNull B setTrim(@NotNull final String pattern, @NotNull final String material) {
         if (pattern.isEmpty() || material.isEmpty()) return (B) this;
 
@@ -675,6 +638,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return new SpawnerBuilder(this.itemStack);
     }
 
+    public @NotNull final CustomBuilder asCustomBuilder() {
+        return new CustomBuilder(this.itemStack);
+    }
+
     public void setItemToInventory(@NotNull final Audience audience, @NotNull final Inventory inventory, final int slot) {
         inventory.setItem(slot, asItemStack(audience));
     }
@@ -769,18 +736,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     public final String getId() {
         return getKey().value();
-    }
-
-    private @NotNull CustomModelData.Builder model() {
-        final CustomModelData.Builder data = CustomModelData.customModelData();
-
-        if (this.itemStack.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
-            final CustomModelData component = this.itemStack.getData(DataComponentTypes.CUSTOM_MODEL_DATA);
-
-            if (component != null) data.addFloats(component.floats()).addStrings(component.strings()).addFlags(component.flags()).addColors(component.colors());
-        }
-
-        return data;
     }
 
     private @NotNull TooltipDisplay.Builder builder() {
