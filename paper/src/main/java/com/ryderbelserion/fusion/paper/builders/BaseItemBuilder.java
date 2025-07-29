@@ -747,18 +747,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return asString().equalsIgnoreCase(ItemType.FILLED_MAP.key().asString());
     }
 
-    public final String getNamespace() {
-        return getKey().namespace();
-    }
-
-    public final String asString() {
-        return getKey().asString();
-    }
-
-    public final String getId() {
-        return getKey().value();
-    }
-
     public @NotNull final String getTranslationKey() {
         return this.itemType.translationKey();
     }
@@ -771,8 +759,16 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.itemType.key();
     }
 
-    protected @NotNull final ItemType getType() {
-        return this.itemType;
+    public final String getNamespace() {
+        return getKey().namespace();
+    }
+
+    public final String asString() {
+        return getKey().asString();
+    }
+
+    public final String getId() {
+        return getKey().value();
     }
 
     private @NotNull CustomModelData.Builder model() {
