@@ -709,6 +709,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         add(ItemType.NETHERITE_BOOTS.key().asString());
 
         add(ItemType.TURTLE_HELMET.key().asString());
+
+        //todo() add copper armor
     }};
 
     private static final Set<String> leather_items = new HashSet<>() {{
