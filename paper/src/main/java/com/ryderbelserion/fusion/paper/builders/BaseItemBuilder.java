@@ -399,7 +399,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public @NotNull B setCustomModelData(final int customModelData) {
         if (customModelData == -1) return (B) this;
 
-        this.itemStack.setData(DataComponentTypes.CUSTOM_MODEL_DATA, populateData().addFloat(customModelData).build());
+        this.itemStack.setData(DataComponentTypes.CUSTOM_MODEL_DATA, model().addFloat(customModelData).build());
 
         return (B) this;
     }
@@ -411,7 +411,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         if (integer.isPresent()) return setCustomModelData(integer.orElse(-1).intValue());
 
-        final CustomModelData.Builder data = populateData();
+        final CustomModelData.Builder data = model();
 
         this.itemStack.setData(DataComponentTypes.CUSTOM_MODEL_DATA, data.addString(customModelData).build());
 
@@ -747,7 +747,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.itemType;
     }
 
-    private @NotNull CustomModelData.Builder populateData() {
+    private @NotNull CustomModelData.Builder model() {
         final CustomModelData.Builder data = CustomModelData.customModelData();
 
         if (this.itemStack.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
