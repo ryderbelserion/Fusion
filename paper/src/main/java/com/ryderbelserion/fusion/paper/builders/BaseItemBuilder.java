@@ -763,6 +763,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.itemType.translationKey();
     }
 
+    public @NotNull final ItemType getType() {
+        return this.itemType;
+    }
+
     public @NotNull final Key getKey() {
         return this.itemType.key();
     }
