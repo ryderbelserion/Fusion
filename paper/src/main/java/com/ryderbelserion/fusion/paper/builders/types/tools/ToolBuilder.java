@@ -19,6 +19,8 @@ public class ToolBuilder extends BaseItemBuilder<ToolBuilder> {
     }
 
     public void addEquipmentComponent(@NotNull final String equipmentSlot, @NotNull final Consumer<Equippable.Builder> consumer) {
+        if (!isArmor()) return;
+
         final EquipmentSlot slot = EquipmentSlot.valueOf(equipmentSlot);
 
         this.equippable = Equippable.equippable(slot);
@@ -27,6 +29,8 @@ public class ToolBuilder extends BaseItemBuilder<ToolBuilder> {
     }
 
     public void addWeaponComponent(@NotNull final Consumer<Weapon.Builder> consumer) {
+        if (!isTool()) return;
+
         this.weapon = Weapon.weapon();
 
         consumer.accept(this.weapon);
