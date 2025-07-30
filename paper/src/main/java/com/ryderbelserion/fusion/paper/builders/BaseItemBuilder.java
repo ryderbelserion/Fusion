@@ -47,12 +47,6 @@ import java.util.function.Consumer;
 public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     private static final Set<String> armor = new HashSet<>() {{
-        add(ItemType.LEATHER_HELMET.key().asString());
-        add(ItemType.LEATHER_CHESTPLATE.key().asString());
-        add(ItemType.LEATHER_LEGGINGS.key().asString());
-        add(ItemType.LEATHER_BOOTS.key().asString());
-        add(ItemType.LEATHER_HORSE_ARMOR.key().asString());
-
         add(ItemType.CHAINMAIL_HELMET.key().asString());
         add(ItemType.CHAINMAIL_CHESTPLATE.key().asString());
         add(ItemType.CHAINMAIL_LEGGINGS.key().asString());
@@ -80,7 +74,47 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         add(ItemType.TURTLE_HELMET.key().asString());
 
+        addAll(leather_items);
+
         //todo() add copper armor
+    }};
+
+    private static final Set<String> tools = new HashSet<>() {{
+       add(ItemType.WOODEN_SWORD.key().asString());
+       add(ItemType.WOODEN_PICKAXE.key().asString());
+       add(ItemType.WOODEN_AXE.key().asString());
+       add(ItemType.WOODEN_HOE.key().asString());
+       add(ItemType.WOODEN_SHOVEL.key().asString());
+
+       add(ItemType.STONE_SWORD.key().asString());
+       add(ItemType.STONE_PICKAXE.key().asString());
+       add(ItemType.STONE_AXE.key().asString());
+       add(ItemType.STONE_HOE.key().asString());
+       add(ItemType.STONE_SHOVEL.key().asString());
+
+       add(ItemType.IRON_SWORD.key().asString());
+       add(ItemType.IRON_PICKAXE.key().asString());
+       add(ItemType.IRON_AXE.key().asString());
+       add(ItemType.IRON_HOE.key().asString());
+       add(ItemType.IRON_SHOVEL.key().asString());
+
+       add(ItemType.DIAMOND_SWORD.key().asString());
+       add(ItemType.DIAMOND_PICKAXE.key().asString());
+       add(ItemType.DIAMOND_AXE.key().asString());
+       add(ItemType.DIAMOND_HOE.key().asString());
+       add(ItemType.DIAMOND_SHOVEL.key().asString());
+
+       add(ItemType.GOLDEN_SWORD.key().asString());
+       add(ItemType.GOLDEN_PICKAXE.key().asString());
+       add(ItemType.GOLDEN_AXE.key().asString());
+       add(ItemType.GOLDEN_HOE.key().asString());
+       add(ItemType.GOLDEN_SHOVEL.key().asString());
+
+       add(ItemType.NETHERITE_SWORD.key().asString());
+       add(ItemType.NETHERITE_PICKAXE.key().asString());
+       add(ItemType.NETHERITE_AXE.key().asString());
+       add(ItemType.NETHERITE_HOE.key().asString());
+       add(ItemType.NETHERITE_SHOVEL.key().asString());
     }};
 
     private static final Set<String> leather_items = new HashSet<>() {{
@@ -709,6 +743,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     public final boolean isArmor() {
         return armor.contains(asString());
+    }
+
+    public final boolean isTool() {
+        return tools.contains(asString());
     }
 
     public final boolean isLeather() {
