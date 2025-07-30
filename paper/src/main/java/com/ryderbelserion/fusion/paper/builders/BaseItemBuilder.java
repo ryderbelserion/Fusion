@@ -14,6 +14,7 @@ import com.ryderbelserion.fusion.paper.builders.types.SpawnerBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.fireworks.FireworkBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.fireworks.FireworkStarBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.tools.ToolBuilder;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import dev.lone.itemsadder.api.CustomStack;
@@ -652,6 +653,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     public @NotNull final CustomBuilder asCustomBuilder() {
         return new CustomBuilder(this.itemStack);
+    }
+
+    public @NotNull final ToolBuilder asToolBuilder() {
+        return new ToolBuilder(this.itemStack);
     }
 
     public void setItemToInventory(@NotNull final Audience audience, @NotNull final Inventory inventory, final int slot) {
