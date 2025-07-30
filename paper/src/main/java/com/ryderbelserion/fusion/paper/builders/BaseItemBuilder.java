@@ -279,6 +279,18 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return withType(itemType, 1);
     }
 
+    public @NotNull B addFoodComponent(@NotNull final Consumer<FoodProperties.Builder> consumer) {
+        if (!this.itemStack.hasData(DataComponentTypes.CONSUMABLE)) return (B) this;
+
+        final FoodProperties.Builder foodProperties = FoodProperties.food();
+
+        consumer.accept(foodProperties);
+
+        this.itemStack.setData(DataComponentTypes.FOOD, foodProperties);
+
+        return (B) this;
+    }
+
     public @NotNull B setAmount(final int amount) {
         this.itemStack.setAmount(Math.max(amount, 1));
 
