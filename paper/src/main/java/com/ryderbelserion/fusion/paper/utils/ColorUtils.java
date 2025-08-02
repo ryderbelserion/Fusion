@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.utils;
 
-import com.ryderbelserion.fusion.paper.FusionProvider;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
 import net.minecraft.server.level.ServerPlayer;

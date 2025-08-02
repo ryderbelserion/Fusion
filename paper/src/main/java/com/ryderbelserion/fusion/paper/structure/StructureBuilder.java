@@ -5,7 +5,7 @@ import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.FusionProvider;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -30,7 +30,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class StructureBuilder {
 
-    private final FusionPaper fusion = FusionProvider.getInstance();
+    private final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
 
     private final FileManager fileManager = this.fusion.getFileManager();
 

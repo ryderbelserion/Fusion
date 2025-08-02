@@ -6,7 +6,7 @@ import com.ryderbelserion.fusion.core.api.enums.ItemState;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.support.ModSupport;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.FusionProvider;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.paper.builders.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.SkullBuilder;
@@ -131,7 +131,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         add(ItemType.LINGERING_POTION.key().asString());
     }};
 
-    protected final FusionPaper fusion = FusionProvider.getInstance();
+    protected final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
     protected ItemStack itemStack;
     protected ItemType itemType;
 

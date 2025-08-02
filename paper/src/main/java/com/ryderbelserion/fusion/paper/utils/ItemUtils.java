@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.paper.utils;
 
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.FusionProvider;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
@@ -25,7 +25,7 @@ import java.util.Optional;
 
 public class ItemUtils {
 
-    private static final FusionPaper fusion = FusionProvider.getInstance();
+    private static final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
 
     public static @NotNull RegistryAccess getRegistryAccess() {
         return RegistryAccess.registryAccess();

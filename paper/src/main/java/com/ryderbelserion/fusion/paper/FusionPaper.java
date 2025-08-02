@@ -3,6 +3,7 @@ package com.ryderbelserion.fusion.paper;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.ryderbelserion.fusion.core.FusionConfig;
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.support.ModSupport;
 import com.ryderbelserion.fusion.core.api.support.objects.ModKey;
