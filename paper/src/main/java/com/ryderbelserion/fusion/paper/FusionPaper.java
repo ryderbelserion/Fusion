@@ -20,6 +20,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -107,6 +108,11 @@ public class FusionPaper extends FusionCore {
         this.config.reload();
 
         return this;
+    }
+
+    @Override
+    public @NotNull final String chomp(@NotNull final String value) {
+        return StringUtils.chomp(value);
     }
 
     @Override

@@ -85,6 +85,10 @@ public abstract class FusionCore implements IFusionCore {
         }
     }
 
+    public String chomp(@NotNull final String value) {
+        return "";
+    }
+
     @Override
     public List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions, final int depth) {
         final List<Path> files = new ArrayList<>();
