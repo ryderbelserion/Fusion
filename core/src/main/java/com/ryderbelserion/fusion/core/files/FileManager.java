@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -331,6 +332,37 @@ public class FileManager extends IFileManager<FileManager> {
     @Override
     public final int getFileCount(@NotNull final Path path, @NotNull final String extension) {
         return this.fusion.getFiles(path, extension, 1).size();
+    }
+
+    @Override
+    public @NotNull final FileManager refresh(final boolean save) { // save or reload all files
+        if (this.files.isEmpty()) return this;
+
+        final List<Key> keys = new ArrayList<>();
+
+        for (final Map.Entry<Key, ICustomFile<?, ?, ?, ?>> file : this.files.entrySet()) {
+            final ICustomFile<?, ?, ?, ?> value = file.getValue();
+
+            if (value == null) continue;
+
+            final Path path = value.getPath();
+
+            if (!Files.exists(path)) {
+                keys.add(file.getKey());
+
+                continue;
+            }
+
+            if (save) {
+                value.save(); // save the config
+            } else {
+                value.load(); // load the config
+            }
+        }
+
+        if (!keys.isEmpty()) keys.forEach(this.files::remove);
+
+        return this;
     }
 
     private String asString(@NotNull final Path path, @NotNull final String content) {
