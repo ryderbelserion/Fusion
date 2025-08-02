@@ -11,17 +11,25 @@ import java.util.function.Consumer;
 
 public class JaluCustomFile extends ICustomFile<JaluCustomFile, SettingsManager, SettingsManagerBuilder, YamlFileResourceOptions> {
 
-    public JaluCustomFile(@NotNull final FileManager fileManager, @NotNull final Consumer<JaluCustomFile> consumer) {
+    private final Consumer<SettingsManagerBuilder> builder;
+
+    public JaluCustomFile(@NotNull final FileManager fileManager, @NotNull final Consumer<SettingsManagerBuilder> builder) {
         super(fileManager);
 
-        this.options = YamlFileResourceOptions.builder().build();
-
-        consumer.accept(this);
+        this.builder = builder;
     }
 
     @Override
     public @NotNull final SettingsManager loadConfig() {
-        if (this.configuration == null) return this.loader.create();
+        if (this.configuration == null) {
+            final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(getPath(), this.options);
+
+            builder.useDefaultMigrationService();
+
+            this.builder.accept(builder); // overrides the default migration service if set in the consumer.
+
+            return builder.create();
+        }
 
         this.configuration.reload();
 
@@ -34,7 +42,7 @@ public class JaluCustomFile extends ICustomFile<JaluCustomFile, SettingsManager,
     }
 
     @Override
-    public FileType getFileType() {
+    public @NotNull final FileType getFileType() {
         return FileType.JALU;
     }
 }

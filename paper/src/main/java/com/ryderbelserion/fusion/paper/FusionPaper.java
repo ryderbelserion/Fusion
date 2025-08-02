@@ -86,7 +86,7 @@ public class FusionPaper extends FusionCore {
             }
         }
 
-        this.fileManager.addFile(FusionConfig.fusion_config, FileType.CONFIGURATE_YAML, consumer -> {
+        this.fileManager.addFile(FusionConfig.fusion_config, FileType.FUSION_YAML, consumer -> {
             final YamlCustomFile customFile = (YamlCustomFile) consumer;
 
             customFile.setOptions(options -> options.shouldCopyDefaults(true));

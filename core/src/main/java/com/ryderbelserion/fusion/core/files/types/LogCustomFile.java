@@ -40,7 +40,7 @@ public class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFile, Obj
     }
 
     @Override
-    public FileType getFileType() {
+    public @NotNull final FileType getFileType() {
         return FileType.LOG;
     }
 }

@@ -21,9 +21,9 @@ public abstract class ICustomFile<I, C, L, O> {
     protected final List<FileAction> actions = new ArrayList<>();
     protected final FileManager fileManager;
 
-    protected O options = null;
     protected C configuration;
     protected L loader;
+    protected O options = null;
 
     protected FileType fileType;
     protected Path path;
@@ -242,11 +242,11 @@ public abstract class ICustomFile<I, C, L, O> {
         return Files.isDirectory(getPath());
     }
 
-    public FileType getFileType() {
+    public @NotNull FileType getFileType() {
         return this.fileType;
     }
 
-    public void setFileType(@NotNull final FileType fileType) {
-        this.fileType = fileType;
+    public void setLoader(@NotNull final L loader) {
+        this.loader = loader;
     }
 }

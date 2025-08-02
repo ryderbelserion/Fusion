@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.core.files.types;
 
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.files.FileManager;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
@@ -113,5 +114,10 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
         } catch (final SerializationException exception) {
             throw new FusionException(String.format("Failed to serialize %s!", node.path()), exception);
         }
+    }
+
+    @Override
+    public @NotNull final FileType getFileType() {
+        return FileType.JSON;
     }
 }

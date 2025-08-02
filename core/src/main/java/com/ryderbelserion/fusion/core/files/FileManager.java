@@ -1,7 +1,9 @@
 package com.ryderbelserion.fusion.core.files;
 
+import ch.jalu.configme.SettingsManagerBuilder;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.core.files.interfaces.IFileManager;
@@ -45,19 +47,70 @@ public class FileManager extends IFileManager<FileManager> {
     private final Map<Key, ICustomFile<?, ?, ?, ?>> files = new HashMap<>();
 
     @Override
+    public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
+        final String folderName = folder.getFileName().toString();
+
+        extractFolder(folderName, folder.getParent());
+
+        for (final Path path : this.fusion.getFiles(folder, ".yml", this.fusion.getConfig().getDepth())) {
+            addFile(Key.key(folderName, path.getFileName().toString()), fileType, consumer);
+        }
+
+        return this;
+    }
+
+    @Override
+    public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType) {
+        addFolder(folder, fileType, consumer -> {
+            consumer.addAction(FileAction.EXTRACT_FOLDER);
+        });
+
+        return this;
+    }
+
+    @Override
+    public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder) {
+        final String folderName = folder.getFileName().toString();
+
+        for (final Path path : this.fusion.getFiles(folder, ".yml", this.fusion.getConfig().getDepth())) {
+            addFile(Key.key(folderName, path.getFileName().toString()), builder);
+        }
+
+        return this;
+    }
+
+    @Override
+    public @NotNull FileManager addFile(@NotNull final Key key, @NotNull final Consumer<SettingsManagerBuilder> builder) {
+        if (this.files.containsKey(key)) {
+            this.files.get(key).load();
+
+            return this;
+        }
+
+        final ICustomFile<?, ?, ?, ?> customFile = buildJaluFile(builder);
+
+        this.files.putIfAbsent(key, customFile);
+
+        return this;
+    }
+
+    @Override
     public @NotNull FileManager addFile(@NotNull final Key key, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
+        if (this.files.containsKey(key)) {
+            this.files.get(key).load();
+
+            return this;
+        }
+
         ICustomFile<?, ?, ?, ?> customFile = null;
 
         switch (fileType) {
-            case CONFIGURATE_YAML, FUSION_YAML -> customFile = buildYamlFile(consumer::accept);
-            case CONFIGURATE_GSON, FUSION_GSON -> customFile = buildJsonFile(consumer::accept);
-            case JALU -> customFile = buildJaluFile(consumer::accept);
+            case YAML, FUSION_YAML -> customFile = buildYamlFile(consumer::accept);
+            case JSON, FUSION_JSON -> customFile = buildJsonFile(consumer::accept);
             case LOG -> customFile = buildLogFile(consumer::accept);
         }
 
         if (customFile == null) return this;
-
-        customFile.setFileType(fileType);
 
         this.files.putIfAbsent(key, customFile);
 
@@ -70,7 +123,7 @@ public class FileManager extends IFileManager<FileManager> {
 
         final FileType fileType = customFile.getFileType();
 
-        if (fileType == FileType.FUSION_YAML || fileType == FileType.FUSION_GSON) return this; // do not allow removing these files
+        if (fileType == FileType.FUSION_YAML || fileType == FileType.FUSION_JSON) return this; // do not allow removing these files
 
         this.files.remove(key);
 
@@ -105,8 +158,8 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull JaluCustomFile buildJaluFile(@NotNull final Consumer<JaluCustomFile> consumer) {
-        return new JaluCustomFile(this, consumer).load();
+    public @NotNull JaluCustomFile buildJaluFile(@NotNull final Consumer<SettingsManagerBuilder> builder) {
+        return new JaluCustomFile(this, builder).load();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.core.files.interfaces;
 
+import ch.jalu.configme.SettingsManagerBuilder;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.core.files.types.JsonCustomFile;
@@ -13,6 +14,14 @@ import java.util.function.Consumer;
 
 public abstract class IFileManager<I> {
 
+    public abstract @NotNull I addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
+
+    public abstract @NotNull I addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder);
+
+    public abstract @NotNull I addFolder(@NotNull final Path folder, @NotNull final FileType fileType);
+
+    public abstract @NotNull I addFile(@NotNull final Key key, @NotNull final Consumer<SettingsManagerBuilder> builder);
+
     public abstract @NotNull I addFile(@NotNull final Key key, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
 
     public abstract @NotNull I removeFile(@NotNull final Key key);
@@ -23,11 +32,11 @@ public abstract class IFileManager<I> {
 
     public abstract @NotNull ICustomFile<?, ?, ?, ?> getFile(@NotNull final Key key);
 
+    public abstract @NotNull JaluCustomFile buildJaluFile(@NotNull final Consumer<SettingsManagerBuilder> builder);
+
     public abstract @NotNull YamlCustomFile buildYamlFile(@NotNull final Consumer<YamlCustomFile> consumer);
 
     public abstract @NotNull JsonCustomFile buildJsonFile(@NotNull final Consumer<JsonCustomFile> consumer);
-
-    public abstract @NotNull JaluCustomFile buildJaluFile(@NotNull final Consumer<JaluCustomFile> consumer);
 
     public abstract @NotNull LogCustomFile buildLogFile(@NotNull final Consumer<LogCustomFile> consumer);
 

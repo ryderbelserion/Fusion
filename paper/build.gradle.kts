@@ -16,13 +16,6 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.jalu) {
-        exclude(
-            group = "org.yaml",
-            module = "snakeyaml",
-        )
-    }
-
     implementation(libs.configurate.gson) {
         exclude(
             group = "org.gson",
@@ -41,6 +34,13 @@ dependencies {
     }
 
     compileOnly(libs.bundles.shared)
+
+    api(libs.jalu) {
+        exclude(
+            group = "org.yaml",
+            module = "snakeyaml",
+        )
+    }
 
     api(project(":fusion-core"))
 }

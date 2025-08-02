@@ -10,11 +10,11 @@ public enum FileType {
     /**
      * Files that end with .yml, but are built with Configurate which is by SpongePowered
      */
-    CONFIGURATE_YAML(".yml"),
+    YAML(".yml"),
     /**
      * Files that end with .json, but are built with Configurate which is by SpongePowered
      */
-    CONFIGURATE_GSON(".json"),
+    JSON(".json"),
     /**
      * Files that end with .yml, but are built with Configurate which is by SpongePowered, and for internal use only.
      */
@@ -22,7 +22,7 @@ public enum FileType {
     /**
      * Files that end with .json, but are built with Configurate which is by SpongePowered, and for internal use only.
      */
-    FUSION_GSON(".json"),
+    FUSION_JSON(".json"),
     /**
      * Files that end with .yml, but are built using YamlConfiguration supplied by Paper
      */
@@ -31,10 +31,6 @@ public enum FileType {
      * Files that end with .yml, but are made by ConfigMe
      */
     JALU(".yml"),
-    /**
-     * Files with the extension .json
-     */
-    JSON(".json"),
     /**
      * Files with no extension.
      */
