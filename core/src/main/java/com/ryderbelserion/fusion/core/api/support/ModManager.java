@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.core.api.support;
 
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.interfaces.mods.IMod;
-import com.ryderbelserion.fusion.core.api.support.objects.ModKey;
+import com.ryderbelserion.fusion.core.api.support.objects.FusionKey;
 import com.ryderbelserion.fusion.core.api.support.objects.Mod;
 import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
@@ -15,30 +15,28 @@ public class ModManager {
 
     public ModManager(@NotNull final FusionCore fusion) {
         this.fusion = fusion;
-
-        ModSupport.dependencies.forEach(dependency -> addMod(dependency, new Mod()));
     }
 
-    public Map<ModKey, IMod> mods = new HashMap<>();
+    public Map<FusionKey, IMod> mods = new HashMap<>();
 
-    public void addMod(@NotNull final ModKey key, @NotNull final Mod mod) {
+    public void addMod(@NotNull final FusionKey key, @NotNull final Mod mod) {
         this.mods.putIfAbsent(key, mod.accept(consumer -> {
             consumer.setFusion(this.fusion);
             consumer.setKey(key);
         }));
     }
 
-    public void removeMod(@NotNull final ModKey key) {
+    public void removeMod(@NotNull final FusionKey key) {
         if (!this.mods.containsKey(key) || ModSupport.dependencies.contains(key)) return;
 
         this.mods.remove(key);
     }
 
-    public @NotNull final Map<ModKey, IMod> getMods() {
+    public @NotNull final Map<FusionKey, IMod> getMods() {
         return Collections.unmodifiableMap(this.mods);
     }
 
-    public IMod getMod(@NotNull final ModKey key) {
+    public IMod getMod(@NotNull final FusionKey key) {
         return this.mods.get(key);
     }
 }

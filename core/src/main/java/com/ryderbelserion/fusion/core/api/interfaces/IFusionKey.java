@@ -1,10 +1,11 @@
-package com.ryderbelserion.fusion.core.api.interfaces.mods;
+package com.ryderbelserion.fusion.core.api.interfaces;
 
-public abstract class IModKey {
+public abstract class IFusionKey {
 
     public abstract String getNamespace();
 
     public abstract String getValue();
 
     public abstract String asString();
+
 }

@@ -5,10 +5,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class Mod extends IMod {
 
-    private ModKey key;
+    private FusionKey key;
 
     @Override
-    public void setKey(@NotNull final ModKey key) {
+    public void setKey(@NotNull final FusionKey key) {
         this.key = key;
     }
 
@@ -18,7 +18,7 @@ public class Mod extends IMod {
     }
 
     @Override
-    public @NotNull final ModKey key() {
+    public @NotNull final FusionKey key() {
         return this.key;
     }
 }

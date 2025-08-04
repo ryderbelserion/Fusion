@@ -1,12 +1,12 @@
 package com.ryderbelserion.fusion.core.files.interfaces;
 
 import ch.jalu.configme.SettingsManagerBuilder;
+import com.ryderbelserion.fusion.core.api.support.objects.FusionKey;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.core.files.types.JsonCustomFile;
 import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
-import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
@@ -20,19 +20,19 @@ public abstract class IFileManager<I> {
 
     public abstract @NotNull I addFolder(@NotNull final Path folder, @NotNull final FileType fileType);
 
-    public abstract @NotNull I addFile(@NotNull final Key key, @NotNull final Consumer<SettingsManagerBuilder> builder);
+    public abstract @NotNull I addFile(@NotNull final FusionKey key, @NotNull final Consumer<SettingsManagerBuilder> builder);
 
-    public abstract @NotNull I addFile(@NotNull final Key key, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
+    public abstract @NotNull I addFile(@NotNull final FusionKey key, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
 
-    public abstract @NotNull I removeFile(@NotNull final Key key);
+    public abstract @NotNull I removeFile(@NotNull final FusionKey key);
 
-    public abstract @NotNull I reloadFile(@NotNull final Key key);
+    public abstract @NotNull I reloadFile(@NotNull final FusionKey key);
 
     public abstract @NotNull I purge();
 
     public abstract @NotNull I refresh(final boolean save);
 
-    public abstract @NotNull ICustomFile<?, ?, ?, ?> getFile(@NotNull final Key key);
+    public abstract @NotNull ICustomFile<?, ?, ?, ?> getFile(@NotNull final FusionKey key);
 
     public abstract @NotNull JaluCustomFile buildJaluFile(@NotNull final Consumer<SettingsManagerBuilder> builder);
 
@@ -42,15 +42,15 @@ public abstract class IFileManager<I> {
 
     public abstract @NotNull LogCustomFile buildLogFile(@NotNull final Consumer<LogCustomFile> consumer);
 
-    public @NotNull YamlCustomFile getYamlFile(@NotNull final Key key) {
+    public @NotNull YamlCustomFile getYamlFile(@NotNull final FusionKey key) {
         return (YamlCustomFile) getFile(key);
     }
 
-    public @NotNull JaluCustomFile getJaluFile(@NotNull final Key key) {
+    public @NotNull JaluCustomFile getJaluFile(@NotNull final FusionKey key) {
         return (JaluCustomFile) getFile(key);
     }
 
-    public @NotNull LogCustomFile getLogFile(@NotNull final Key key) {
+    public @NotNull LogCustomFile getLogFile(@NotNull final FusionKey key) {
         return (LogCustomFile) getFile(key);
     }
 

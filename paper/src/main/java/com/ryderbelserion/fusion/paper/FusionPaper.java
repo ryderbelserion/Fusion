@@ -6,7 +6,8 @@ import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.support.ModSupport;
-import com.ryderbelserion.fusion.core.api.support.objects.ModKey;
+import com.ryderbelserion.fusion.core.api.support.objects.FusionKey;
+import com.ryderbelserion.fusion.core.api.support.objects.Mod;
 import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
@@ -39,13 +40,12 @@ public class FusionPaper extends FusionCore {
     private final PluginManager pluginManager;
     private final StructureRegistry registry;
     private final Server server;
+    private final String name;
 
     private HeadDatabaseAPI api;
 
-    public FusionPaper(@NotNull final JavaPlugin plugin) {
-        super(consumer -> {
-            consumer.setDataPath(plugin.getDataPath());
-        });
+    public FusionPaper(@NotNull final JavaPlugin plugin, @NotNull final String name) {
+        super(consumer -> consumer.setDataPath(plugin.getDataPath()));
 
         this.fileManager = new PaperFileManager(this);
 
@@ -55,15 +55,17 @@ public class FusionPaper extends FusionCore {
 
         this.registry = new StructureRegistry(plugin, this.server.getStructureManager());
 
-        init(consumer -> {
-            this.config = new FusionConfig(this.fileManager.getYamlFile(FusionConfig.fusion_config));
-        });
+        init(consumer -> this.config = new FusionConfig(this.fileManager.getYamlFile(FusionConfig.fusion_config)));
+
+        this.name = name;
 
         FusionProvider.register(this);
+
+        ModSupport.dependencies.forEach(dependency -> getModManager().addMod(dependency, new Mod()));
     }
 
     @Override
-    public Component parse(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
+    public @NotNull final Component parse(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
         final List<TagResolver> resolvers = new ArrayList<>(tags);
 
         placeholders.forEach((key, value) -> resolvers.add(Placeholder.parsed(getStringUtils().replaceAllBrackets(key).toLowerCase(), value)));
@@ -72,12 +74,12 @@ public class FusionPaper extends FusionCore {
     }
 
     @Override
-    public String papi(@NotNull final Audience audience, @NotNull final String message) {
+    public @NotNull final String papi(@NotNull final Audience audience, @NotNull final String message) {
         return audience instanceof Player player && getModManager().getMod(ModSupport.placeholder_api).isEnabled() ? PlaceholderAPI.setPlaceholders(player, message) : message;
     }
 
     @Override
-    public FusionPaper init(@NotNull final Consumer<FusionCore> fusion) {
+    public @NotNull final FusionPaper init(@NotNull final Consumer<FusionCore> fusion) {
         final Path dataPath = getDataPath();
 
         if (Files.notExists(dataPath)) {
@@ -104,10 +106,15 @@ public class FusionPaper extends FusionCore {
     }
 
     @Override
-    public FusionCore reload() {
+    public @NotNull final FusionCore reload() {
         this.config.reload();
 
         return this;
+    }
+
+    @Override
+    public @NotNull final String getName() {
+        return this.name;
     }
 
     @Override
@@ -121,7 +128,7 @@ public class FusionPaper extends FusionCore {
     }
 
     @Override
-    public boolean isModReady(@NotNull final ModKey key) {
+    public boolean isModReady(@NotNull final FusionKey key) {
         return this.pluginManager.isPluginEnabled(key.getValue());
     }
 
