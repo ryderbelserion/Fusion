@@ -6,12 +6,13 @@ import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.function.Consumer;
 
 public class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFile, Object, Object> {
 
-    public LogCustomFile(@NotNull final FileManager fileManager, @NotNull final Consumer<LogCustomFile> consumer) {
-        super(fileManager);
+    public LogCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<LogCustomFile> consumer) {
+        super(fileManager, path);
 
         consumer.accept(this);
     }

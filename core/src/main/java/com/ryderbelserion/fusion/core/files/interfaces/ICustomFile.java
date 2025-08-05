@@ -28,8 +28,9 @@ public abstract class ICustomFile<I, C, L, O> {
     protected FileType fileType;
     protected Path path;
 
-    public ICustomFile(@NotNull final FileManager fileManager) {
+    public ICustomFile(@NotNull final FileManager fileManager, @NotNull final Path path) {
         this.fileManager = fileManager;
+        this.path = path;
     }
 
     /**
@@ -201,7 +202,7 @@ public abstract class ICustomFile<I, C, L, O> {
             } catch (final IOException exception) {
                 throw new RuntimeException(exception);
             }
-        }).thenAccept(result -> {});
+        });
 
         return (I) this;
     }
@@ -224,10 +225,6 @@ public abstract class ICustomFile<I, C, L, O> {
 
     public void addAction(@NotNull final FileAction action) {
         this.actions.add(action);
-    }
-
-    public void setPath(@NotNull final Path path) {
-        this.path = path;
     }
 
     public @NotNull O getOptions() {

@@ -1,9 +1,9 @@
 package com.ryderbelserion.fusion.core.files;
 
 import ch.jalu.configme.SettingsManagerBuilder;
+import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.api.support.objects.FusionKey;
 import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
@@ -22,11 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -45,16 +41,14 @@ public class FileManager extends IFileManager<FileManager> {
         this.dataPath = this.fusion.getDataPath();
     }
 
-    private final Map<FusionKey, ICustomFile<?, ?, ?, ?>> files = new HashMap<>();
+    private final Map<Path, ICustomFile<?, ?, ?, ?>> files = new HashMap<>();
 
     @Override
     public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
-        final String folderName = folder.getFileName().toString();
-
-        extractFolder(folderName, folder.getParent());
+        extractFolder(folder.getFileName().toString(), folder.getParent());
 
         for (final Path path : this.fusion.getFiles(folder, ".yml", this.fusion.getConfig().getDepth())) {
-            addFile(FusionKey.key(folderName, path.getFileName().toString()), fileType, consumer);
+            addFile(path, fileType, consumer);
         }
 
         return this;
@@ -70,35 +64,33 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder) {
-        final String folderName = folder.getFileName().toString();
-
+    public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder) {
         for (final Path path : this.fusion.getFiles(folder, ".yml", this.fusion.getConfig().getDepth())) {
-            addFile(FusionKey.key(folderName, path.getFileName().toString()), builder);
+            addFile(path, options, builder);
         }
 
         return this;
     }
 
     @Override
-    public @NotNull FileManager addFile(@NotNull final FusionKey key, @NotNull final Consumer<SettingsManagerBuilder> builder) {
-        if (this.files.containsKey(key)) {
-            this.files.get(key).load();
+    public @NotNull FileManager addFile(@NotNull final Path path, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder) {
+        if (this.files.containsKey(path)) {
+            this.files.get(path).load();
 
             return this;
         }
 
-        final ICustomFile<?, ?, ?, ?> customFile = buildJaluFile(builder);
+        final ICustomFile<?, ?, ?, ?> customFile = buildJaluFile(path, options, builder);
 
-        this.files.putIfAbsent(key, customFile);
+        this.files.putIfAbsent(path, customFile);
 
         return this;
     }
 
     @Override
-    public @NotNull FileManager addFile(@NotNull final FusionKey key, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
-        if (this.files.containsKey(key)) {
-            this.files.get(key).load();
+    public @NotNull FileManager addFile(@NotNull final Path path, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
+        if (this.files.containsKey(path)) {
+            this.files.get(path).load();
 
             return this;
         }
@@ -106,71 +98,71 @@ public class FileManager extends IFileManager<FileManager> {
         ICustomFile<?, ?, ?, ?> customFile = null;
 
         switch (fileType) {
-            case YAML, FUSION_YAML -> customFile = buildYamlFile(consumer::accept);
-            case JSON, FUSION_JSON -> customFile = buildJsonFile(consumer::accept);
-            case LOG -> customFile = buildLogFile(consumer::accept);
+            case YAML, FUSION_YAML -> customFile = buildYamlFile(path, consumer::accept);
+            case JSON, FUSION_JSON -> customFile = buildJsonFile(path, consumer::accept);
+            case LOG -> customFile = buildLogFile(path, consumer::accept);
         }
 
         if (customFile == null) return this;
 
-        this.files.putIfAbsent(key, customFile);
+        this.files.putIfAbsent(path, customFile);
 
         return this;
     }
 
     @Override
-    public @NotNull FileManager removeFile(@NotNull final FusionKey key) {
-        final ICustomFile<?, ?, ?, ?> customFile = getFile(key);
+    public @NotNull FileManager removeFile(@NotNull final Path path) {
+        final ICustomFile<?, ?, ?, ?> customFile = getFile(path);
 
         final FileType fileType = customFile.getFileType();
 
         if (fileType == FileType.FUSION_YAML || fileType == FileType.FUSION_JSON) return this; // do not allow removing these files
 
-        this.files.remove(key);
+        this.files.remove(path);
 
         return this;
     }
 
     @Override
     public @NotNull FileManager purge() {
-        final Map<FusionKey, ICustomFile<?, ?, ?, ?>> files = new HashMap<>(this.files);
+        final Map<Path, ICustomFile<?, ?, ?, ?>> files = new HashMap<>(this.files);
 
-        for (final Map.Entry<FusionKey, ICustomFile<?, ?, ?, ?>> entry : files.entrySet()) {
+        for (final Map.Entry<Path, ICustomFile<?, ?, ?, ?>> entry : files.entrySet()) {
             removeFile(entry.getKey());
         }
 
         return this;
     }
 
-    public @NotNull FileManager addFile(@NotNull final FusionKey key, @NotNull final ICustomFile<?, ?, ?, ?> customFile) {
-        this.files.putIfAbsent(key, customFile);
+    public @NotNull FileManager addFile(@NotNull final Path path, @NotNull final ICustomFile<?, ?, ?, ?> customFile) {
+        this.files.putIfAbsent(path, customFile);
 
         return this;
     }
 
     @Override
-    public @NotNull YamlCustomFile buildYamlFile(@NotNull final Consumer<YamlCustomFile> consumer) {
-        return new YamlCustomFile(this, consumer).load();
+    public @NotNull YamlCustomFile buildYamlFile(@NotNull final Path path, @NotNull final Consumer<YamlCustomFile> consumer) {
+        return new YamlCustomFile(this, path, consumer).load();
     }
 
     @Override
-    public @NotNull JsonCustomFile buildJsonFile(@NotNull final Consumer<JsonCustomFile> consumer) {
-        return new JsonCustomFile(this, consumer).load();
+    public @NotNull JsonCustomFile buildJsonFile(@NotNull final Path path, @NotNull final Consumer<JsonCustomFile> consumer) {
+        return new JsonCustomFile(this, path, consumer).load();
     }
 
     @Override
-    public @NotNull JaluCustomFile buildJaluFile(@NotNull final Consumer<SettingsManagerBuilder> builder) {
-        return new JaluCustomFile(this, builder).load();
+    public @NotNull JaluCustomFile buildJaluFile(@NotNull final Path path, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder) {
+        return new JaluCustomFile(this, path, options, builder).load();
     }
 
     @Override
-    public @NotNull LogCustomFile buildLogFile(@NotNull final Consumer<LogCustomFile> consumer) {
-        return new LogCustomFile(this, consumer).load();
+    public @NotNull LogCustomFile buildLogFile(@NotNull final Path path, @NotNull final Consumer<LogCustomFile> consumer) {
+        return new LogCustomFile(this, path, consumer).load();
     }
 
     @Override
-    public @NotNull FileManager reloadFile(@NotNull final FusionKey key) {
-        final ICustomFile<?, ?, ?, ?> customFile = this.files.get(key);
+    public @NotNull FileManager reloadFile(@NotNull final Path path) {
+        final ICustomFile<?, ?, ?, ?> customFile = this.files.get(path);
 
         if (customFile == null) return this;
 
@@ -180,8 +172,14 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull ICustomFile<?, ?, ?, ?> getFile(@NotNull final FusionKey key) {
-        return this.files.getOrDefault(key, null);
+    public @NotNull ICustomFile<?, ?, ?, ?> getFile(@NotNull final Path path) {
+        final ICustomFile<?, ?, ?, ?> customFile = this.files.getOrDefault(path, null);
+
+        if (customFile == null) {
+            throw new FusionException("Failed to fetch the config %s".formatted(path));
+        }
+
+        return customFile;
     }
 
     @Override
@@ -334,13 +332,17 @@ public class FileManager extends IFileManager<FileManager> {
         return this.fusion.getFiles(path, extension, 1).size();
     }
 
+    public @NotNull final Map<Path, ICustomFile<?, ?, ?, ?>> getFiles() {
+        return Collections.unmodifiableMap(this.files);
+    }
+
     @Override
     public @NotNull final FileManager refresh(final boolean save) { // save or reload all files
         if (this.files.isEmpty()) return this;
 
-        final List<FusionKey> keys = new ArrayList<>();
+        final List<Path> keys = new ArrayList<>();
 
-        for (final Map.Entry<FusionKey, ICustomFile<?, ?, ?, ?>> file : this.files.entrySet()) {
+        for (final Map.Entry<Path, ICustomFile<?, ?, ?, ?>> file : this.files.entrySet()) {
             final ICustomFile<?, ?, ?, ?> value = file.getValue();
 
             if (value == null) continue;

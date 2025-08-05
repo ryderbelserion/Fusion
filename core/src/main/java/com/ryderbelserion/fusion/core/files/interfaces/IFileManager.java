@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.core.files.interfaces;
 
 import ch.jalu.configme.SettingsManagerBuilder;
+import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.api.support.objects.FusionKey;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
@@ -16,42 +17,42 @@ public abstract class IFileManager<I> {
 
     public abstract @NotNull I addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
 
-    public abstract @NotNull I addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder);
+    public abstract @NotNull I addFolder(@NotNull final Path folder, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder);
 
     public abstract @NotNull I addFolder(@NotNull final Path folder, @NotNull final FileType fileType);
 
-    public abstract @NotNull I addFile(@NotNull final FusionKey key, @NotNull final Consumer<SettingsManagerBuilder> builder);
+    public abstract @NotNull I addFile(@NotNull final Path path, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder);
 
-    public abstract @NotNull I addFile(@NotNull final FusionKey key, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
+    public abstract @NotNull I addFile(@NotNull final Path path, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
 
-    public abstract @NotNull I removeFile(@NotNull final FusionKey key);
+    public abstract @NotNull I removeFile(@NotNull final Path path);
 
-    public abstract @NotNull I reloadFile(@NotNull final FusionKey key);
+    public abstract @NotNull I reloadFile(@NotNull final Path path);
 
     public abstract @NotNull I purge();
 
     public abstract @NotNull I refresh(final boolean save);
 
-    public abstract @NotNull ICustomFile<?, ?, ?, ?> getFile(@NotNull final FusionKey key);
+    public abstract @NotNull ICustomFile<?, ?, ?, ?> getFile(@NotNull final Path path);
 
-    public abstract @NotNull JaluCustomFile buildJaluFile(@NotNull final Consumer<SettingsManagerBuilder> builder);
+    public abstract @NotNull JaluCustomFile buildJaluFile(@NotNull final Path path, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder);
 
-    public abstract @NotNull YamlCustomFile buildYamlFile(@NotNull final Consumer<YamlCustomFile> consumer);
+    public abstract @NotNull YamlCustomFile buildYamlFile(@NotNull final Path path, @NotNull final Consumer<YamlCustomFile> consumer);
 
-    public abstract @NotNull JsonCustomFile buildJsonFile(@NotNull final Consumer<JsonCustomFile> consumer);
+    public abstract @NotNull JsonCustomFile buildJsonFile(@NotNull final Path path, @NotNull final Consumer<JsonCustomFile> consumer);
 
-    public abstract @NotNull LogCustomFile buildLogFile(@NotNull final Consumer<LogCustomFile> consumer);
+    public abstract @NotNull LogCustomFile buildLogFile(@NotNull final Path path, @NotNull final Consumer<LogCustomFile> consumer);
 
-    public @NotNull YamlCustomFile getYamlFile(@NotNull final FusionKey key) {
-        return (YamlCustomFile) getFile(key);
+    public @NotNull YamlCustomFile getYamlFile(@NotNull final Path path) {
+        return (YamlCustomFile) getFile(path);
     }
 
-    public @NotNull JaluCustomFile getJaluFile(@NotNull final FusionKey key) {
-        return (JaluCustomFile) getFile(key);
+    public @NotNull JaluCustomFile getJaluFile(@NotNull final Path path) {
+        return (JaluCustomFile) getFile(path);
     }
 
-    public @NotNull LogCustomFile getLogFile(@NotNull final FusionKey key) {
-        return (LogCustomFile) getFile(key);
+    public @NotNull LogCustomFile getLogFile(@NotNull final Path path) {
+        return (LogCustomFile) getFile(path);
     }
 
     public abstract @NotNull I extractFolder(@NotNull final String folder, @NotNull final Path output);

@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.paper.structure;
 
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.api.support.objects.FusionKey;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
@@ -83,7 +82,7 @@ public class StructureBuilder {
         try {
             this.manager.saveStructure(path.toFile(), this.structure);
 
-            this.fileManager.addFile(FusionKey.key(this.key.namespace(), this.key.value()), FileType.NBT, consumer -> consumer.addAction(FileAction.MANUALLY_SAVED));
+            this.fileManager.addFile(path, FileType.NBT, consumer -> consumer.addAction(FileAction.MANUALLY_SAVED));
         } catch (final IOException exception) {
             throw new FusionException("Failed to save structure!", exception);
         }

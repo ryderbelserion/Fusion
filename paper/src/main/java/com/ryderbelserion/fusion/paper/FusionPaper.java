@@ -55,7 +55,7 @@ public class FusionPaper extends FusionCore {
 
         this.registry = new StructureRegistry(plugin, this.server.getStructureManager());
 
-        init(consumer -> this.config = new FusionConfig(this.fileManager.getYamlFile(FusionConfig.fusion_config)));
+        init(consumer -> this.config = new FusionConfig(this.fileManager.getYamlFile(this.dataPath.resolve("fusion.yml"))));
 
         this.name = name;
 
@@ -90,11 +90,10 @@ public class FusionPaper extends FusionCore {
             }
         }
 
-        this.fileManager.addFile(FusionConfig.fusion_config, FileType.FUSION_YAML, consumer -> {
+        this.fileManager.addFile(this.dataPath.resolve("fusion.yml"), FileType.FUSION_YAML, consumer -> {
             final YamlCustomFile customFile = (YamlCustomFile) consumer;
 
             customFile.setOptions(options -> options.shouldCopyDefaults(true));
-            customFile.setPath(dataPath.resolve("fusion.yml"));
             customFile.addAction(FileAction.EXTRACT_FILE);
         });
 

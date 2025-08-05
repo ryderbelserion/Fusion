@@ -10,13 +10,14 @@ import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.gson.GsonConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurationNode, GsonConfigurationLoader, ConfigurationOptions> {
 
-    public JsonCustomFile(@NotNull final FileManager fileManager, @NotNull final Consumer<JsonCustomFile> consumer) {
-        super(fileManager);
+    public JsonCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<JsonCustomFile> consumer) {
+        super(fileManager, path);
 
         this.options = ConfigurationOptions.defaults();
 

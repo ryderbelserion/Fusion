@@ -10,13 +10,14 @@ import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedConfigurationNode, YamlConfigurationLoader, ConfigurationOptions> {
 
-    public YamlCustomFile(@NotNull final FileManager fileManager, @NotNull final Consumer<YamlCustomFile> consumer) {
-        super(fileManager);
+    public YamlCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<YamlCustomFile> consumer) {
+        super(fileManager, path);
 
         this.options = ConfigurationOptions.defaults();
 

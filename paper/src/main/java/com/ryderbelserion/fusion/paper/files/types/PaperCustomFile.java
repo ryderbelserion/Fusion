@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -15,8 +16,8 @@ public class PaperCustomFile extends ICustomFile<PaperCustomFile, YamlConfigurat
 
     private final File file;
 
-    public PaperCustomFile(@NotNull final FileManager fileManager, @NotNull final Consumer<PaperCustomFile> consumer) {
-        super(fileManager);
+    public PaperCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<PaperCustomFile> consumer) {
+        super(fileManager, path);
 
         this.file = getPath().toFile();
 
