@@ -5,6 +5,7 @@ import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class PaperFileManager extends FileManager {
@@ -19,7 +20,7 @@ public class PaperFileManager extends FileManager {
         return this;
     }
 
-    public final PaperCustomFile getPaperFile(@NotNull final Path path) {
-        return (PaperCustomFile) getFile(path);
+    public final @NotNull Optional<PaperCustomFile> getPaperFile(@NotNull final Path path) {
+        return getFile(path).map(PaperCustomFile.class::cast);
     }
 }

@@ -1,18 +1,16 @@
 package com.ryderbelserion.fusion.core;
 
-import com.ryderbelserion.fusion.core.api.support.objects.FusionKey;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import org.jetbrains.annotations.NotNull;
+import java.util.Optional;
 
 public class FusionConfig {
 
-    public static final FusionKey fusion_config = FusionKey.key("fusion-config", "fusion.yml");
-    public static final FusionKey fusion_cache = FusionKey.key("fusion-cache", "fusion-cache.json");
-
     private final YamlCustomFile config;
 
-    public FusionConfig(@NotNull final YamlCustomFile config) {
-        this.config = config;
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    public FusionConfig(@NotNull final Optional<YamlCustomFile> config) {
+        this.config = config.orElseThrow();
     }
 
     public void reload() {

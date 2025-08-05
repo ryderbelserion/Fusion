@@ -1,7 +1,6 @@
 package com.ryderbelserion;
 
 import ch.jalu.configme.SettingsManager;
-import com.ryderbelserion.fusion.core.api.support.objects.FusionKey;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -11,6 +10,7 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.nio.charset.Charset;
+import java.util.Optional;
 
 public class CrazyCrates extends JavaPlugin {
 
@@ -28,11 +28,13 @@ public class CrazyCrates extends JavaPlugin {
 
         final ComponentLogger logger = getComponentLogger();
 
-        final JaluCustomFile customFile = fileManager.getJaluFile(getDataPath().resolve("config.yml"));
+        final Optional<JaluCustomFile> customFile = fileManager.getJaluFile(getDataPath().resolve("config.yml"));
 
-        final SettingsManager config = customFile.getConfiguration();
+        if (customFile.isPresent()) {
+            final SettingsManager config = customFile.get().getConfiguration();
 
-        logger.warn("Test: {}", config.getProperty(ConfigKeys.test));
+            logger.warn("Test: {}", config.getProperty(ConfigKeys.test));
+        }
 
         getServer().getPluginManager().registerEvents(new ItemListener(), this);
     }

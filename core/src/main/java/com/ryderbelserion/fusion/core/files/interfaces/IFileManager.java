@@ -11,6 +11,7 @@ import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public abstract class IFileManager<I> {
@@ -33,7 +34,7 @@ public abstract class IFileManager<I> {
 
     public abstract @NotNull I refresh(final boolean save);
 
-    public abstract @NotNull ICustomFile<?, ?, ?, ?> getFile(@NotNull final Path path);
+    public abstract @NotNull Optional<ICustomFile<?, ?, ?, ?>> getFile(@NotNull final Path path);
 
     public abstract @NotNull JaluCustomFile buildJaluFile(@NotNull final Path path, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder);
 
@@ -43,16 +44,16 @@ public abstract class IFileManager<I> {
 
     public abstract @NotNull LogCustomFile buildLogFile(@NotNull final Path path, @NotNull final Consumer<LogCustomFile> consumer);
 
-    public @NotNull YamlCustomFile getYamlFile(@NotNull final Path path) {
-        return (YamlCustomFile) getFile(path);
+    public @NotNull Optional<YamlCustomFile> getYamlFile(@NotNull final Path path) {
+        return getFile(path).map(YamlCustomFile.class::cast);
     }
 
-    public @NotNull JaluCustomFile getJaluFile(@NotNull final Path path) {
-        return (JaluCustomFile) getFile(path);
+    public @NotNull Optional<JaluCustomFile> getJaluFile(@NotNull final Path path) {
+        return getFile(path).map(JaluCustomFile.class::cast);
     }
 
-    public @NotNull LogCustomFile getLogFile(@NotNull final Path path) {
-        return (LogCustomFile) getFile(path);
+    public @NotNull Optional<LogCustomFile> getLogFile(@NotNull final Path path) {
+        return getFile(path).map(LogCustomFile.class::cast);
     }
 
     public abstract @NotNull I extractFolder(@NotNull final String folder, @NotNull final Path output);

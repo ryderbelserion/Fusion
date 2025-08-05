@@ -112,7 +112,13 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NotNull FileManager removeFile(@NotNull final Path path) {
-        final ICustomFile<?, ?, ?, ?> customFile = getFile(path);
+        final Optional<ICustomFile<?, ?, ?, ?>> variable = getFile(path);
+
+        if (variable.isEmpty()) {
+            return this;
+        }
+
+        final ICustomFile<?, ?, ?, ?> customFile = variable.get();
 
         final FileType fileType = customFile.getFileType();
 
@@ -162,24 +168,18 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NotNull FileManager reloadFile(@NotNull final Path path) {
-        final ICustomFile<?, ?, ?, ?> customFile = this.files.get(path);
+        final @NotNull Optional<ICustomFile<?, ?, ?, ?>> customFile = getFile(path);
 
-        if (customFile == null) return this;
+        if (customFile.isEmpty()) return this;
 
-        customFile.load();
+        customFile.get().load();
 
         return this;
     }
 
     @Override
-    public @NotNull ICustomFile<?, ?, ?, ?> getFile(@NotNull final Path path) {
-        final ICustomFile<?, ?, ?, ?> customFile = this.files.getOrDefault(path, null);
-
-        if (customFile == null) {
-            throw new FusionException("Failed to fetch the config %s".formatted(path));
-        }
-
-        return customFile;
+    public @NotNull Optional<ICustomFile<?, ?, ?, ?>> getFile(@NotNull final Path path) {
+        return Optional.ofNullable(this.files.get(path));
     }
 
     @Override
