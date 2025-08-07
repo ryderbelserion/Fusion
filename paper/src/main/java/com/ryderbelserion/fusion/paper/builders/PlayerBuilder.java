@@ -24,14 +24,14 @@ public class PlayerBuilder {
     public @Nullable OfflinePlayer getOfflinePlayer() {
         if (this.name.isEmpty()) return null;
 
-        CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> server.getOfflinePlayer(this.name)).thenApply(OfflinePlayer::getUniqueId);
+        CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> this.server.getOfflinePlayer(this.name)).thenApply(OfflinePlayer::getUniqueId);
 
-        return server.getOfflinePlayer(future.join());
+        return this.server.getOfflinePlayer(future.join());
     }
 
     public @Nullable Player getPlayer() {
         if (this.name.isEmpty()) return null;
 
-        return server.getPlayerExact(this.name);
+        return this.server.getPlayerExact(this.name);
     }
 }
