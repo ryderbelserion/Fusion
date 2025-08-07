@@ -33,8 +33,8 @@ import java.util.zip.ZipOutputStream;
 
 public class FileManager extends IFileManager<FileManager> {
 
-    private final FusionCore fusion;
-    private final Path dataPath;
+    protected final FusionCore fusion;
+    protected final Path dataPath;
 
     public FileManager(@NotNull final FusionCore fusion) {
         this.fusion = fusion;
@@ -56,11 +56,9 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType) {
-        addFolder(folder, fileType, consumer -> {
+        return addFolder(folder, fileType, consumer -> {
             consumer.addAction(FileAction.EXTRACT_FOLDER);
         });
-
-        return this;
     }
 
     @Override
