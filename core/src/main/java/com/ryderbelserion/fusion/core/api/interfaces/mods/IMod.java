@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.core.api.interfaces.mods;
 
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.support.objects.FusionKey;
+import com.ryderbelserion.fusion.core.FusionKey;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import java.util.UUID;

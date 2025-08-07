@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.core.api.support.objects;
+package com.ryderbelserion.fusion.core;
 
 import com.ryderbelserion.fusion.core.api.interfaces.IFusionKey;
 import org.jetbrains.annotations.NotNull;

@@ -6,7 +6,7 @@ import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.support.ModSupport;
-import com.ryderbelserion.fusion.core.api.support.objects.FusionKey;
+import com.ryderbelserion.fusion.core.FusionKey;
 import com.ryderbelserion.fusion.core.api.support.objects.Mod;
 import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
@@ -40,11 +40,10 @@ public class FusionPaper extends FusionCore {
     private final PluginManager pluginManager;
     private final StructureRegistry registry;
     private final Server server;
-    private final String name;
 
     private HeadDatabaseAPI api;
 
-    public FusionPaper(@NotNull final JavaPlugin plugin, @NotNull final String name) {
+    public FusionPaper(@NotNull final JavaPlugin plugin) {
         super(consumer -> consumer.setDataPath(plugin.getDataPath()));
 
         this.fileManager = new PaperFileManager(this);
@@ -56,8 +55,6 @@ public class FusionPaper extends FusionCore {
         this.registry = new StructureRegistry(plugin, this.server.getStructureManager());
 
         init(consumer -> this.config = new FusionConfig(this.fileManager.getYamlFile(this.dataPath.resolve("fusion.yml"))));
-
-        this.name = name;
 
         FusionProvider.register(this);
 
@@ -109,11 +106,6 @@ public class FusionPaper extends FusionCore {
         this.config.reload();
 
         return this;
-    }
-
-    @Override
-    public @NotNull final String getName() {
-        return this.name;
     }
 
     @Override

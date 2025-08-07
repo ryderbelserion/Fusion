@@ -3,7 +3,6 @@ package com.ryderbelserion.fusion.core;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.interfaces.IFusionCore;
 import com.ryderbelserion.fusion.core.api.support.ModManager;
-import com.ryderbelserion.fusion.core.api.support.objects.FusionKey;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -58,8 +57,6 @@ public abstract class FusionCore implements IFusionCore {
     public abstract boolean isModReady(@NotNull final FusionKey key);
 
     public abstract FusionCore reload();
-
-    public abstract String getName();
 
     @SuppressWarnings("DuplicatedCode")
     public void log(@NotNull final String type, @NotNull final String message, @NotNull final Throwable throwable) {

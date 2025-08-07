@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.core.api.support.objects;
 
+import com.ryderbelserion.fusion.core.FusionKey;
 import com.ryderbelserion.fusion.core.api.interfaces.mods.IMod;
 import org.jetbrains.annotations.NotNull;
 

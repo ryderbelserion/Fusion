@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.core.api.support;
 
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.interfaces.mods.IMod;
-import com.ryderbelserion.fusion.core.api.support.objects.FusionKey;
+import com.ryderbelserion.fusion.core.FusionKey;
 import com.ryderbelserion.fusion.core.api.support.objects.Mod;
 import org.jetbrains.annotations.NotNull;
 import java.util.Collections;

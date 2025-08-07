@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.core.api.support;
 
-import com.ryderbelserion.fusion.core.api.support.objects.FusionKey;
+import com.ryderbelserion.fusion.core.FusionKey;
 import java.util.List;
 
 public class ModSupport {
