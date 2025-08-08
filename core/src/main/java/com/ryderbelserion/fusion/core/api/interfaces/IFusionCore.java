@@ -23,6 +23,10 @@ public interface IFusionCore {
 
     List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth);
 
+    default List<Path> getFiles(@NotNull final Path path, @NotNull final String extension) {
+        return getFiles(path, extension, this.getConfig().getDepth());
+    }
+
     StringUtils getStringUtils();
 
     FileManager getFileManager();
