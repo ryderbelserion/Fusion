@@ -55,13 +55,6 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType) {
-        return addFolder(folder, fileType, consumer -> {
-            consumer.addAction(FileAction.EXTRACT_FOLDER);
-        });
-    }
-
-    @Override
     public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder) {
         for (final Path path : this.fusion.getFiles(folder, ".yml", this.fusion.getConfig().getDepth())) {
             addFile(path, options, builder);

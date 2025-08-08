@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.core.files.interfaces;
 
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
+import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.core.files.types.JsonCustomFile;
@@ -17,13 +18,19 @@ public abstract class IFileManager<I> {
 
     public abstract @NotNull I addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
 
-    public abstract @NotNull I addFolder(@NotNull final Path folder, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder);
-
-    public abstract @NotNull I addFolder(@NotNull final Path folder, @NotNull final FileType fileType);
-
-    public abstract @NotNull I addFile(@NotNull final Path path, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder);
+    public @NotNull I addFolder(@NotNull final Path folder, @NotNull final FileType fileType) {
+        return addFolder(folder, fileType, consumer -> consumer.addAction(FileAction.EXTRACT_FOLDER));
+    }
 
     public abstract @NotNull I addFile(@NotNull final Path path, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
+
+    public @NotNull I addFile(@NotNull final Path path, @NotNull final FileType fileType) {
+        return addFile(path, fileType, consumer -> consumer.addAction(FileAction.EXTRACT_FILE));
+    }
+
+    public abstract @NotNull I addFolder(@NotNull final Path folder, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder);
+
+    public abstract @NotNull I addFile(@NotNull final Path path, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder);
 
     public abstract @NotNull I removeFile(@NotNull final Path path);
 
