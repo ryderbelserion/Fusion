@@ -18,7 +18,7 @@ public class CrazyCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.fusion = new FusionPaper(this, "crazycrates");
+        this.fusion = new FusionPaper(this);
 
         final FileManager fileManager = this.fusion.getFileManager();
 
