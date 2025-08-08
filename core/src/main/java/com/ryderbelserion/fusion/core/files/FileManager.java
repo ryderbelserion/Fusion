@@ -41,7 +41,7 @@ public class FileManager extends IFileManager<FileManager> {
         this.dataPath = this.fusion.getDataPath();
     }
 
-    private final Map<Path, ICustomFile<?, ?, ?, ?>> files = new HashMap<>();
+    protected final Map<Path, ICustomFile<?, ?, ?, ?>> files = new HashMap<>();
 
     @Override
     public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
@@ -166,11 +166,22 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NotNull FileManager reloadFile(@NotNull final Path path) {
-        final @NotNull Optional<ICustomFile<?, ?, ?, ?>> customFile = getFile(path);
+        final Optional<ICustomFile<?, ?, ?, ?>> customFile = getFile(path);
 
         if (customFile.isEmpty()) return this;
 
         customFile.get().load();
+
+        return this;
+    }
+
+    @Override
+    public @NotNull FileManager saveFile(@NotNull final Path path) {
+        final Optional<ICustomFile<?, ?, ?, ?>> customFile = getFile(path);
+
+        if (customFile.isEmpty()) return this;
+
+        customFile.get().save();
 
         return this;
     }

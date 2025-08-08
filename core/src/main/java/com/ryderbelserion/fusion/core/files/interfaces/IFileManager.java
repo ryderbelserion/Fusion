@@ -29,6 +29,8 @@ public abstract class IFileManager<I> {
 
     public abstract @NotNull I reloadFile(@NotNull final Path path);
 
+    public abstract @NotNull I saveFile(@NotNull final Path path);
+
     public abstract @NotNull I purge();
 
     public abstract @NotNull I refresh(final boolean save);

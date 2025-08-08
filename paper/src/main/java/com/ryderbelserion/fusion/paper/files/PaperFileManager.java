@@ -16,6 +16,12 @@ public class PaperFileManager extends FileManager {
     }
 
     public final PaperFileManager addPaperFile(@NotNull final Path path, @NotNull final Consumer<PaperCustomFile> consumer) {
+        if (this.files.containsKey(path)) {
+            this.files.get(path).load();
+
+            return this;
+        }
+
         addFile(path, new PaperCustomFile(this, path, consumer).load());
 
         return this;
