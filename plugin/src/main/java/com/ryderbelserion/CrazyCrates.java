@@ -3,6 +3,7 @@ package com.ryderbelserion;
 import ch.jalu.configme.SettingsManager;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.files.enums.FileAction;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
@@ -26,14 +27,20 @@ public class CrazyCrates extends JavaPlugin {
 
         final PaperFileManager fileManager = this.fusion.getFileManager();
 
-        fileManager.addPaperFile(getDataPath().resolve("test.yml"), consumer -> consumer.addAction(FileAction.EXTRACT_FILE))
-                .addFile(getDataPath().resolve("config.yml"),
-                options -> options.indentationSize(2).charset(Charset.defaultCharset()),
-                builder -> builder.configurationData(ConfigKeys.class));
+        //fileManager.addPaperFile(getDataPath().resolve("test.yml"), consumer -> consumer.addAction(FileAction.EXTRACT_FILE))
+        //        .addFile(getDataPath().resolve("config.yml"),
+        //        options -> options.indentationSize(2).charset(Charset.defaultCharset()),
+        //        builder -> builder.configurationData(ConfigKeys.class));
+
+        fileManager.addPaperFolder(getDataPath().resolve("crates"));
 
         final ComponentLogger logger = getComponentLogger();
 
-        final Optional<JaluCustomFile> customFile = fileManager.getJaluFile(getDataPath().resolve("config.yml"));
+        fileManager.getFiles().forEach(((path, file) -> {
+            logger.warn("Path: {}", path);
+        }));
+
+        /*final Optional<JaluCustomFile> customFile = fileManager.getJaluFile(getDataPath().resolve("config.yml"));
 
         if (customFile.isPresent()) {
             final SettingsManager config = customFile.get().getConfiguration();
@@ -49,7 +56,7 @@ public class CrazyCrates extends JavaPlugin {
             final YamlConfiguration configuration = file.getConfiguration();
 
             logger.warn("Configuration: {}", configuration.getString("test-value", "N/A"));
-        }
+        }*/
 
         getServer().getPluginManager().registerEvents(new ItemListener(), this);
     }
