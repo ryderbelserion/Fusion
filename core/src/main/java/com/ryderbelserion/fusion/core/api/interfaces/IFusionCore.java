@@ -4,6 +4,7 @@ import com.ryderbelserion.fusion.core.FusionConfig;
 import com.ryderbelserion.fusion.core.api.support.ModManager;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
+import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -36,6 +37,8 @@ public interface IFusionCore {
     FusionConfig getConfig();
 
     void setDataPath(@NotNull final Path dataPath);
+
+    void setLogger(@NotNull final ComponentLogger logger);
 
     Path getDataPath();
 

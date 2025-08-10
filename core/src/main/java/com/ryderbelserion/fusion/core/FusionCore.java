@@ -173,6 +173,13 @@ public abstract class FusionCore implements IFusionCore {
     }
 
     @Override
+    public void setLogger(@NotNull final ComponentLogger logger) {
+        if (this.logger != null) return;
+
+        this.logger = logger;
+    }
+
+    @Override
     public @NotNull Path getDataPath() {
         return this.dataPath;
     }

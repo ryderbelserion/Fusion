@@ -44,7 +44,11 @@ public class FusionPaper extends FusionCore {
     private HeadDatabaseAPI api;
 
     public FusionPaper(@NotNull final JavaPlugin plugin) {
-        super(consumer -> consumer.setDataPath(plugin.getDataPath()));
+        super(consumer -> {
+            consumer.setDataPath(plugin.getDataPath());
+
+            consumer.setLogger(plugin.getComponentLogger());
+        });
 
         this.fileManager = new PaperFileManager(this);
 
