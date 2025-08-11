@@ -11,10 +11,13 @@ import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import com.ryderbelserion.keys.ConfigKeys;
 import com.ryderbelserion.listeners.ItemListener;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.bukkit.Server;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Optional;
 
 public class CrazyCrates extends JavaPlugin {
@@ -40,6 +43,14 @@ public class CrazyCrates extends JavaPlugin {
             logger.warn("Path: {}", path);
         }));
 
+        final Server server = getServer();
+
+        final CommandSender sender = server.getConsoleSender();
+
+        sender.sendMessage(this.fusion.parse(sender, "{prefix}Hello!", new HashMap<>() {{
+            put("{prefix}", "<red>[CoreCraft] <yellow>");
+        }}));
+
         /*final Optional<JaluCustomFile> customFile = fileManager.getJaluFile(getDataPath().resolve("config.yml"));
 
         if (customFile.isPresent()) {
@@ -58,7 +69,7 @@ public class CrazyCrates extends JavaPlugin {
             logger.warn("Configuration: {}", configuration.getString("test-value", "N/A"));
         }*/
 
-        getServer().getPluginManager().registerEvents(new ItemListener(), this);
+        server.getPluginManager().registerEvents(new ItemListener(), this);
     }
 
     public @NotNull final FusionPaper getFusion() {

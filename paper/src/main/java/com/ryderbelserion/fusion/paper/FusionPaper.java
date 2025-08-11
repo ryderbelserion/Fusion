@@ -69,9 +69,11 @@ public class FusionPaper extends FusionCore {
     public @NotNull final Component parse(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
         final List<TagResolver> resolvers = new ArrayList<>(tags);
 
-        placeholders.forEach((key, value) -> resolvers.add(Placeholder.parsed(getStringUtils().replaceAllBrackets(key).toLowerCase(), value)));
+        final com.ryderbelserion.fusion.core.utils.StringUtils utils = getStringUtils();
 
-        return MiniMessage.miniMessage().deserialize(papi(audience, message), !resolvers.isEmpty() ? TagResolver.resolver(resolvers) : TagResolver.empty()).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+        placeholders.forEach((key, value) -> resolvers.add(Placeholder.parsed(utils.replaceAllBrackets(key).toLowerCase(), value)));
+
+        return MiniMessage.miniMessage().deserialize(papi(audience, utils.replaceBrackets(message)), !resolvers.isEmpty() ? TagResolver.resolver(resolvers) : TagResolver.empty()).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
     @Override
