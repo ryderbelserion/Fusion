@@ -7,6 +7,7 @@ import com.ryderbelserion.fusion.core.utils.StringUtils;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -62,7 +63,7 @@ public abstract class FusionCore implements IFusionCore {
     public void log(@NotNull final String type, @NotNull final String message, @NotNull final Throwable throwable) {
         if (!this.config.isVerbose()) return;
 
-        final Component component = parse(Audience.audience(), message);
+        final Component component = MiniMessage.miniMessage().deserialize(message);
 
         switch (type) {
             case "info" -> this.logger.info(component, throwable);
@@ -75,7 +76,7 @@ public abstract class FusionCore implements IFusionCore {
     public void log(@NotNull final String type, @NotNull final String message, @NotNull final Object... args) {
         if (!this.config.isVerbose()) return;
 
-        final Component component = parse(Audience.audience(), message);
+        final Component component = MiniMessage.miniMessage().deserialize(message);
 
         switch (type) {
             case "info" -> this.logger.info(component, args);
