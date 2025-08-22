@@ -33,10 +33,6 @@ public class CrazyCrates extends JavaPlugin {
 
         final ComponentLogger logger = getComponentLogger();
 
-        /*fileManager.getFiles().forEach(((path, file) -> {
-            logger.warn("Path: {}", path);
-        }));*/
-
         final Optional<PaperCustomFile> customFile = fileManager.getPaperFile(crate.resolve("AdvancedExample.yml"));
 
         if (customFile.isPresent()) {
@@ -52,6 +48,14 @@ public class CrazyCrates extends JavaPlugin {
         }
 
         final Server server = getServer();
+
+        /*final Optional<JaluCustomFile> customFile = fileManager.getJaluFile(getDataPath().resolve("config.yml"));
+
+        if (customFile.isPresent()) {
+            final SettingsManager config = customFile.get().getConfiguration();
+
+            logger.warn("Test: {}", config.getProperty(ConfigKeys.test));
+        }*/
 
         server.getPluginManager().registerEvents(new ItemListener(), this);
     }
