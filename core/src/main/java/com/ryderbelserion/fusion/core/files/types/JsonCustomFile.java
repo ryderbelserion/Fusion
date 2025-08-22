@@ -44,7 +44,7 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
      * @return the string value or the default if missing
      */
     @Override
-    public @NotNull final String getStringValueWithDefault(@NotNull final String defaultValue, @NotNull final Object... path) {
+    public @NotNull String getStringValueWithDefault(@NotNull final String defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getString(defaultValue);
     }
 
@@ -56,7 +56,7 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
      * @return the boolean value or the default if missing
      */
     @Override
-    public final boolean getBooleanValueWithDefault(final boolean defaultValue, @NotNull final Object... path) {
+    public boolean getBooleanValueWithDefault(final boolean defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getBoolean(defaultValue);
     }
 
@@ -68,7 +68,7 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
      * @return the double value or the default if missing
      */
     @Override
-    public final double getDoubleValueWithDefault(final double defaultValue, @NotNull final Object... path) {
+    public double getDoubleValueWithDefault(final double defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getDouble(defaultValue);
     }
 
@@ -80,7 +80,7 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
      * @return the long value or the default if missing
      */
     @Override
-    public final long getLongValueWithDefault(final long defaultValue, @NotNull final Object... path) {
+    public long getLongValueWithDefault(final long defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getLong(defaultValue);
     }
 
@@ -92,7 +92,7 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
      * @return the integer value or the default if missing
      */
     @Override
-    public final int getIntValueWithDefault(final int defaultValue, @NotNull final Object... path) {
+    public int getIntValueWithDefault(final int defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getInt(defaultValue);
     }
 
@@ -103,7 +103,7 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
      * @return the list of string values or an empty list if missing
      */
     @Override
-    public @NotNull final List<String> getStringList(@NotNull final List<String> defaultValue, @NotNull final Object... path) {
+    public @NotNull List<String> getStringList(@NotNull final List<String> defaultValue, @NotNull final Object... path) {
         final BasicConfigurationNode node = getConfiguration().node(path);
 
         try {
@@ -118,7 +118,7 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
     }
 
     @Override
-    public @NotNull final FileType getFileType() {
+    public @NotNull FileType getFileType() {
         return FileType.JSON;
     }
 }

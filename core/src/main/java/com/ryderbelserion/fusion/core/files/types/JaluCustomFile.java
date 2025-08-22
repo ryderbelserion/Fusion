@@ -26,7 +26,7 @@ public class JaluCustomFile extends ICustomFile<JaluCustomFile, SettingsManager,
     }
 
     @Override
-    public @NotNull final SettingsManager loadConfig() {
+    public @NotNull SettingsManager loadConfig() {
         if (this.configuration == null) {
             final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(getPath(), this.options.build());
 
@@ -43,12 +43,12 @@ public class JaluCustomFile extends ICustomFile<JaluCustomFile, SettingsManager,
     }
 
     @Override
-    public final void saveConfig() {
+    public void saveConfig() {
         this.configuration.save();
     }
 
     @Override
-    public @NotNull final FileType getFileType() {
+    public @NotNull FileType getFileType() {
         return FileType.JALU;
     }
 }

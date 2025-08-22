@@ -18,14 +18,14 @@ public class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFile, Obj
     }
 
     @Override
-    public @NotNull final LogCustomFile loadConfig() throws IOException {
+    public @NotNull LogCustomFile loadConfig() throws IOException {
         Files.createFile(getPath());
 
         return this;
     }
 
     @Override
-    public final void saveConfig(@NotNull final String content) {
+    public void saveConfig(@NotNull final String content) {
         if (content.isEmpty()) {
             saveConfig();
 
@@ -36,12 +36,12 @@ public class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFile, Obj
     }
 
     @Override
-    public final void saveConfig() {
+    public void saveConfig() {
         this.fileManager.compressFile(getPath());
     }
 
     @Override
-    public @NotNull final FileType getFileType() {
+    public @NotNull FileType getFileType() {
         return FileType.LOG;
     }
 }
