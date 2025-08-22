@@ -160,12 +160,14 @@ public abstract class ICustomFile<I, C, L, O> {
     }
 
     public void saveConfig(@NotNull final String content) throws IOException {
+        saveConfig();
+    }
+
+    public void saveConfig() throws IOException {
 
     }
 
     public abstract @NotNull C loadConfig() throws IOException;
-
-    public abstract void saveConfig() throws IOException;
 
     public @NotNull C getConfiguration() {
         return this.configuration;

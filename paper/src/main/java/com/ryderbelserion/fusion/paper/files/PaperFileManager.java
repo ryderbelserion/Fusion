@@ -27,7 +27,19 @@ public class PaperFileManager extends FileManager {
         return this;
     }
 
-    public final PaperFileManager addPaperFolder(@NotNull final Path folder, @NotNull final Consumer<PaperCustomFile> consumer) {
+    public PaperFileManager addPaperFile(@NotNull final PaperCustomFile customFile) {
+        addFile(customFile.getPath(), customFile);
+
+        return this;
+    }
+
+    public PaperFileManager savePaperFile(@NotNull final PaperCustomFile customFile) {
+        customFile.save();
+
+        return this;
+    }
+
+    public PaperFileManager addPaperFolder(@NotNull final Path folder, @NotNull final Consumer<PaperCustomFile> consumer) {
         extractFolder(folder.getFileName().toString(), folder.getParent());
 
         for (final Path path : this.fusion.getFiles(folder, ".yml", this.fusion.getConfig().getDepth())) {
@@ -37,13 +49,13 @@ public class PaperFileManager extends FileManager {
         return this;
     }
 
-    public final PaperFileManager addPaperFolder(@NotNull final Path folder) {
+    public PaperFileManager addPaperFolder(@NotNull final Path folder) {
         return addPaperFolder(folder, consumer -> {
             consumer.addAction(FileAction.EXTRACT_FOLDER);
         });
     }
 
-    public final @NotNull Optional<PaperCustomFile> getPaperFile(@NotNull final Path path) {
+    public @NotNull Optional<PaperCustomFile> getPaperFile(@NotNull final Path path) {
         return getFile(path).map(PaperCustomFile.class::cast);
     }
 }
