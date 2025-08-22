@@ -1,23 +1,15 @@
 package com.ryderbelserion;
 
-import ch.jalu.configme.SettingsManager;
-import com.ryderbelserion.fusion.core.files.FileManager;
-import com.ryderbelserion.fusion.core.files.enums.FileAction;
-import com.ryderbelserion.fusion.core.files.enums.FileType;
-import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
-import com.ryderbelserion.keys.ConfigKeys;
 import com.ryderbelserion.listeners.ItemListener;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Server;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import java.nio.charset.Charset;
-import java.util.HashMap;
+import java.nio.file.Path;
 import java.util.Optional;
 
 public class CrazyCrates extends JavaPlugin {
@@ -35,39 +27,31 @@ public class CrazyCrates extends JavaPlugin {
         //        options -> options.indentationSize(2).charset(Charset.defaultCharset()),
         //        builder -> builder.configurationData(ConfigKeys.class));
 
-        fileManager.addPaperFolder(getDataPath().resolve("crates"));
+        final Path crate = getDataPath().resolve("crates");
+
+        fileManager.addPaperFolder(crate);
 
         final ComponentLogger logger = getComponentLogger();
 
-        fileManager.getFiles().forEach(((path, file) -> {
+        /*fileManager.getFiles().forEach(((path, file) -> {
             logger.warn("Path: {}", path);
-        }));
+        }));*/
 
-        final Server server = getServer();
-
-        final CommandSender sender = server.getConsoleSender();
-
-        sender.sendMessage(this.fusion.parse(sender, "{prefix}Hello!", new HashMap<>() {{
-            put("{prefix}", "<red>[CoreCraft] <yellow>");
-        }}));
-
-        /*final Optional<JaluCustomFile> customFile = fileManager.getJaluFile(getDataPath().resolve("config.yml"));
+        final Optional<PaperCustomFile> customFile = fileManager.getPaperFile(crate.resolve("AdvancedExample.yml"));
 
         if (customFile.isPresent()) {
-            final SettingsManager config = customFile.get().getConfiguration();
+            final PaperCustomFile paper = customFile.get();
 
-            logger.warn("Test: {}", config.getProperty(ConfigKeys.test));
+            final YamlConfiguration configuration = paper.getConfiguration();
+
+            configuration.set("Crate.CrateType", "Cosmic");
+
+            logger.warn("Type: {}", configuration.get("Crate.CrateType", "CSGO"));
+
+            fileManager.savePaperFile(paper);
         }
 
-        final Optional<PaperCustomFile> paperCustomFile = fileManager.getPaperFile(getDataPath().resolve("test.yml"));
-
-        if (paperCustomFile.isPresent()) {
-            final PaperCustomFile file = paperCustomFile.get();
-
-            final YamlConfiguration configuration = file.getConfiguration();
-
-            logger.warn("Configuration: {}", configuration.getString("test-value", "N/A"));
-        }*/
+        final Server server = getServer();
 
         server.getPluginManager().registerEvents(new ItemListener(), this);
     }
