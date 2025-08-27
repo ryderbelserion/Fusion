@@ -4,7 +4,6 @@ import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.core.files.interfaces.IFileManager;
@@ -188,6 +187,10 @@ public class FileManager extends IFileManager<FileManager> {
     public @NotNull FileManager extractFolder(@NotNull final String folder, @NotNull final Path output) {
         final Path path = output.resolve(folder);
 
+        if (Files.exists(path)) { // do not extract if path exists.
+            return this;
+        }
+
         if (Files.notExists(path)) { // create folder
             try {
                 Files.createDirectories(path);
@@ -232,6 +235,10 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NotNull FileManager extractFile(@NotNull final Path path) {
+        if (Files.exists(path)) { // do not extract if path exists.
+            return this;
+        }
+
         final String fileName = path.getFileName().toString();
 
         try (final JarFile jarFile = new JarFile(Path.of(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
