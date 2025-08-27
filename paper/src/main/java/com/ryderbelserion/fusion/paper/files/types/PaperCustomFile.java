@@ -82,6 +82,6 @@ public class PaperCustomFile extends IConfigFile<PaperCustomFile, YamlConfigurat
 
     @Override
     public @NotNull FileType getFileType() {
-        return super.getFileType();
+        return FileType.PAPER;
     }
 }
