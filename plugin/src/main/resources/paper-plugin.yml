@@ -1,8 +1,8 @@
-name: 'CrazyCrates'
-main: 'com.ryderbelserion.CrazyCrates'
+name: 'Fusion'
+main: 'com.ryderbelserion.fusion.Fusion'
 
 version: '1.0.0'
-api-version: '1.21.7'
-description: 'A test plugin'
+api-version: '1.21.8'
+description: 'A library for the ages!'
 
 folia-supported: true
