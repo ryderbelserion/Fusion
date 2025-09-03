@@ -42,7 +42,7 @@ dependencies {
 
     compileOnly(libs.bundles.shared)
 
-    api(libs.triumph.core)
+    compileOnly(libs.triumph.core)
 
     api(project(":fusion-core"))
 }

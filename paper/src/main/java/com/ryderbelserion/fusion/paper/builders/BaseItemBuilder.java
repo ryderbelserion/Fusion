@@ -18,6 +18,11 @@ import com.ryderbelserion.fusion.paper.builders.types.tools.ToolBuilder;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import dev.lone.itemsadder.api.CustomStack;
+import dev.triumphteam.gui.click.action.EmptyGuiClickAction;
+import dev.triumphteam.gui.click.action.GuiClickAction;
+import dev.triumphteam.gui.click.action.SimpleGuiClickAction;
+import dev.triumphteam.gui.element.GuiItem;
+import dev.triumphteam.gui.element.items.SimpleGuiItem;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.*;
@@ -32,6 +37,7 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
@@ -135,7 +141,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     protected ItemStack itemStack;
     protected ItemType itemType;
 
-    private DataComponentType.Valued<Component> type = DataComponentTypes.ITEM_NAME;
+    private DataComponentType.Valued<@NotNull Component> type = DataComponentTypes.ITEM_NAME;
     private Map<String, String> placeholders = new HashMap<>();
     private List<String> displayLore = new ArrayList<>();
     private String displayName = "";
@@ -165,6 +171,30 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     public B build() {
         return (B) this;
+    }
+
+    public @NotNull final GuiItem<Player, ItemStack> asGuiItem(@NotNull final Audience audience, @NotNull final SimpleGuiClickAction<Player> action) {
+        return new SimpleGuiItem<>(asItemStack(audience), action);
+    }
+
+    public @NotNull final GuiItem<Player, ItemStack> asGuiItem(@NotNull final Audience audience, @NotNull final GuiClickAction<Player> action) {
+        return new SimpleGuiItem<>(asItemStack(audience), action);
+    }
+
+    public @NotNull final GuiItem<Player, ItemStack> asGuiItem(@NotNull final Audience audience) {
+        return new SimpleGuiItem<>(asItemStack(audience), new EmptyGuiClickAction<>());
+    }
+
+    public @NotNull final GuiItem<Player, ItemStack> asGuiItem(@NotNull final SimpleGuiClickAction<Player> action) {
+        return asGuiItem(Audience.empty(), action);
+    }
+
+    public @NotNull final GuiItem<Player, ItemStack> asGuiItem(@NotNull final GuiClickAction<Player> action) {
+        return asGuiItem(Audience.empty(), action);
+    }
+
+    public @NotNull final GuiItem<Player, ItemStack> asGuiItem() {
+        return asGuiItem(Audience.empty());
     }
 
     public @NotNull ItemStack asItemStack(@NotNull final Audience audience) {
