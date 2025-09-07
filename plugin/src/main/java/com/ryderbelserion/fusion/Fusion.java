@@ -6,11 +6,15 @@ import org.jetbrains.annotations.NotNull;
 
 public class Fusion extends JavaPlugin {
 
-    private FusionPaper fusion;
+    private final FusionPaper fusion;
+
+    public Fusion(@NotNull final FusionPaper fusion) {
+        this.fusion = fusion;
+    }
 
     @Override
     public void onEnable() {
-        this.fusion = new FusionPaper(this);
+        this.fusion.setJavaPlugin(this).init();
     }
 
     public @NotNull final FusionPaper getFusion() {

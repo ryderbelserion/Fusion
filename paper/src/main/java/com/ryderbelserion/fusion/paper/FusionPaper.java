@@ -13,6 +13,7 @@ import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.paper.structure.StructureRegistry;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
+import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
@@ -37,11 +38,11 @@ import java.util.function.Consumer;
 public class FusionPaper extends FusionCore {
 
     private final PaperFileManager fileManager;
-    private final PluginManager pluginManager;
-    private final StructureRegistry registry;
-    private final Server server;
-
+    private PluginManager pluginManager;
+    private StructureRegistry registry;
     private HeadDatabaseAPI api;
+    private JavaPlugin plugin;
+    private Server server;
 
     public FusionPaper(@NotNull final JavaPlugin plugin) {
         super(consumer -> {
@@ -52,17 +53,23 @@ public class FusionPaper extends FusionCore {
 
         this.fileManager = new PaperFileManager(this);
 
-        this.server = plugin.getServer();
+        this.plugin = plugin;
+
+        this.server = this.plugin.getServer();
 
         this.pluginManager = this.server.getPluginManager();
 
-        this.registry = new StructureRegistry(plugin, this.server.getStructureManager());
+        this.registry = new StructureRegistry(this.plugin, this.server.getStructureManager());
+    }
 
-        init(consumer -> this.config = new FusionConfig(this.fileManager.getYamlFile(this.dataPath.resolve("fusion.yml"))));
+    public FusionPaper(@NotNull final BootstrapContext context) {
+        super(consumer -> {
+            consumer.setDataPath(context.getDataDirectory());
 
-        FusionProvider.register(this);
+            consumer.setLogger(context.getLogger());
+        });
 
-        ModSupport.dependencies.forEach(dependency -> getModManager().addMod(dependency, new Mod()));
+        this.fileManager = new PaperFileManager(this);
     }
 
     @Override
@@ -93,6 +100,14 @@ public class FusionPaper extends FusionCore {
             }
         }
 
+        this.server = this.plugin.getServer();
+
+        this.pluginManager = this.server.getPluginManager();
+
+        this.registry = new StructureRegistry(this.plugin, this.server.getStructureManager());
+
+        ModSupport.dependencies.forEach(dependency -> getModManager().addMod(dependency, new Mod()));
+
         this.fileManager.addFile(this.dataPath.resolve("fusion.yml"), FileType.FUSION_YAML, consumer -> {
             final YamlCustomFile customFile = (YamlCustomFile) consumer;
 
@@ -100,9 +115,13 @@ public class FusionPaper extends FusionCore {
             customFile.addAction(FileAction.EXTRACT_FILE);
         });
 
+        this.config = new FusionConfig(this.fileManager.getYamlFile(this.dataPath.resolve("fusion.yml")));
+
         if (this.isModReady(ModSupport.head_database) && this.api == null) this.api = new HeadDatabaseAPI();
 
         fusion.accept(this);
+
+        FusionProvider.register(this);
 
         return this;
     }
@@ -147,5 +166,11 @@ public class FusionPaper extends FusionCore {
 
     public @NotNull final Optional<HeadDatabaseAPI> getHeadDatabaseAPI() {
         return Optional.ofNullable(this.api);
+    }
+
+    public FusionPaper setJavaPlugin(@NotNull final JavaPlugin plugin) {
+        this.plugin = plugin;
+
+        return this;
     }
 }

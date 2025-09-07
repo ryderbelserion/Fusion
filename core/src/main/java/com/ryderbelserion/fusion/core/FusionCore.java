@@ -47,6 +47,10 @@ public abstract class FusionCore implements IFusionCore {
         return parse(audience, message, new HashMap<>());
     }
 
+    public Component parse(@NotNull final String message) {
+        return parse(Audience.empty(), message, new HashMap<>());
+    }
+
     public <T> @Nullable T createProfile(@NotNull final UUID uuid, @Nullable final String name) {
         return null;
     }
@@ -54,6 +58,10 @@ public abstract class FusionCore implements IFusionCore {
     public abstract String papi(@NotNull final Audience audience, @NotNull final String message);
 
     public abstract FusionCore init(@NotNull final Consumer<FusionCore> consumer);
+
+    public FusionCore init() {
+        return init(fusion -> {});
+    }
 
     public abstract boolean isModReady(@NotNull final FusionKey key);
 
