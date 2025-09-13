@@ -158,6 +158,10 @@ public class FileManager extends IFileManager {
             file.load();
 
             return this;
+        } else if (this.customFiles.containsKey(path)) {
+            this.fusion.log("info", "Path {} already exists in the cache, so we don't need to rebuild it", path);
+
+            return this;
         }
 
         final JaluCustomFile jalu = new JaluCustomFile(path, builder, actions, options);
@@ -213,6 +217,10 @@ public class FileManager extends IFileManager {
 
         if (file != null && !actions.contains(FileAction.RELOAD_FILE)) { // if the reload action is not present, we load the file!
             file.load();
+
+            return this;
+        } else if (this.customFiles.containsKey(path)) {
+            this.fusion.log("info", "Path {} already exists in the cache, so we don't need to rebuild it", path);
 
             return this;
         }
