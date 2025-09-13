@@ -76,6 +76,11 @@ public class PaperCustomFile extends IConfigFile<PaperCustomFile, YamlConfigurat
     }
 
     @Override
+    public boolean isLoaded() {
+        return this.configuration != null;
+    }
+
+    @Override
     public long getLongValue(@NotNull final Object... path) {
         return getLongValueWithDefault(0L, path);
     }

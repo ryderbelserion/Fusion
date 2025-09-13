@@ -68,9 +68,7 @@ public class FileManager extends IFileManager {
     public @NotNull final FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<SettingsManagerBuilder> builder, @NotNull final List<FileAction> actions, @Nullable final YamlFileResourceOptions options) {
         this.folders.put(folder, FileType.JALU);
 
-        extractFolder(folder, new ArrayList<>(actions) {{
-            add(FileAction.EXTRACT_FOLDER);
-        }});
+        extractFolder(folder, actions);
 
         final List<Path> files = FileUtils.getFiles(this.path.resolve(folder), ".yml", this.fusion.getDepth());
 
@@ -412,7 +410,11 @@ public class FileManager extends IFileManager {
      */
     @Override
     public @NotNull final FileManager extractFolder(@NotNull final Path folder, @NotNull final List<FileAction> actions) {
-        actions.add(FileAction.EXTRACT_FOLDER);
+        if (!actions.contains(FileAction.EXTRACT_FOLDER)) {
+            this.fusion.log("info", "The file action EXTRACT_FOLDER was not specified for {}, You can ignore this.", folder);
+
+            return this;
+        }
 
         FileUtils.extract(folder.getFileName().toString(), this.path, actions);
 

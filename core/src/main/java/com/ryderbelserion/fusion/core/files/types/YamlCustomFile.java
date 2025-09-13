@@ -139,6 +139,11 @@ public class YamlCustomFile extends IConfigFile<YamlCustomFile, CommentedConfigu
         }
     }
 
+    @Override
+    public final boolean isLoaded() {
+        return this.loader != null;
+    }
+
     /**
      * Retrieves the file type.
      *
