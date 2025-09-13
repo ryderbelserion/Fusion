@@ -54,6 +54,8 @@ public class FileUtils {
         }
 
         if (Files.exists(content)) {
+            fusion.log("info", "Cannot extract folder {} to {}, because it already exists @ {}.", input, output, content);
+
             return;
         }
 
