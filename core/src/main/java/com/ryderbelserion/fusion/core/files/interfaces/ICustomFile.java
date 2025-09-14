@@ -213,6 +213,10 @@ public abstract class ICustomFile<I, C, L, O> {
         return save("");
     }
 
+    public boolean isLoaded() {
+        return Files.exists(this.path);
+    }
+
     public void setOptions(@NotNull final Consumer<O> options) {
         options.accept(this.options);
     }

@@ -118,6 +118,11 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
     }
 
     @Override
+    public boolean isLoaded() {
+        return this.configuration != null;
+    }
+
+    @Override
     public @NotNull FileType getFileType() {
         return FileType.JSON;
     }

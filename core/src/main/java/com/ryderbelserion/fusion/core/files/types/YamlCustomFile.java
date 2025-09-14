@@ -118,6 +118,11 @@ public class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedConfigu
     }
 
     @Override
+    public boolean isLoaded() {
+        return this.configuration != null;
+    }
+
+    @Override
     public @NotNull FileType getFileType() {
         return FileType.YAML;
     }

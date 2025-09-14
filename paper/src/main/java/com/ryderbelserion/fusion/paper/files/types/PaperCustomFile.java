@@ -89,6 +89,11 @@ public class PaperCustomFile extends ICustomFile<PaperCustomFile, YamlConfigurat
     }
 
     @Override
+    public boolean isLoaded() {
+        return this.configuration != null;
+    }
+
+    @Override
     public @NotNull final FileType getFileType() {
         return FileType.PAPER;
     }
