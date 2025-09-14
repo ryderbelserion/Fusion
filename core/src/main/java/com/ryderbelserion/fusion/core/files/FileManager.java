@@ -4,6 +4,7 @@ import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.core.files.interfaces.IFileManager;
@@ -80,7 +81,17 @@ public class FileManager extends IFileManager<FileManager> {
     @Override
     public @NotNull FileManager addFile(@NotNull final Path path, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
         if (this.files.containsKey(path)) {
-            this.files.get(path).load();
+            final ICustomFile<?, ?, ?, ?> customFile = this.files.get(path);
+
+            consumer.accept(customFile);
+
+            if (!customFile.hasAction(FileAction.FILE_ALREADY_RELOADED)) {
+                customFile.load();
+
+                return this;
+            }
+
+            this.fusion.log("info", "Path {} already exists in the cache, so we don't need to rebuild it", path);
 
             return this;
         }

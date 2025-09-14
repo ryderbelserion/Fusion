@@ -17,6 +17,9 @@ public enum FileAction {
     // The files with this tag are user created.
     DYNAMIC_FILE,
 
+    // This is used when a file is already reloaded to avoid double reloads.
+    FILE_ALREADY_RELOADED,
+
     // Do not extract at all.
     MANUALLY_SAVED
 
