@@ -188,6 +188,8 @@ public class FileManager extends IFileManager<FileManager> {
         final Path path = output.resolve(folder);
 
         if (Files.exists(path)) { // do not extract if path exists.
+            this.fusion.log("info", "Cannot extract folder {} to {}, because it already exists @ {}.", folder, output, path);
+
             return this;
         }
 
@@ -346,7 +348,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull final FileManager refresh(final boolean save) { // save or reload all files
+    public @NotNull final FileManager refresh(final boolean save) { // save or reload all existing files
         if (this.files.isEmpty()) return this;
 
         final List<Path> keys = new ArrayList<>();
