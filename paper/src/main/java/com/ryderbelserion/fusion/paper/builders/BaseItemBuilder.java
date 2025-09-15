@@ -7,6 +7,7 @@ import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.support.ModSupport;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.core.FusionProvider;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.builders.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.PotionBuilder;
@@ -33,6 +34,7 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
@@ -192,8 +194,16 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return asGuiItem(Audience.empty());
     }*/
 
+    public @NotNull final GuiItem asGuiItem(@NotNull final Audience audience, @Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
+        return new GuiItem(asItemStack(audience), action);
+    }
+
+    public @NotNull final GuiItem asGuiItem(@NotNull final GuiAction<@NotNull InventoryClickEvent> action) {
+        return new GuiItem(asItemStack(), action);
+    }
+
     public @NotNull final GuiItem asGuiItem(@NotNull final Audience audience) {
-        return new GuiItem(asItemStack(audience));
+        return asGuiItem(audience, null);
     }
 
     public @NotNull final GuiItem asGuiItem() {
