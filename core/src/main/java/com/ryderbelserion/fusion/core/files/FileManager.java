@@ -249,6 +249,8 @@ public class FileManager extends IFileManager<FileManager> {
     @Override
     public @NotNull FileManager extractFile(@NotNull final Path path) {
         if (Files.exists(path)) { // do not extract if path exists.
+            this.fusion.log("info", "Cannot extract {} to {}, because it already exists.", path.getFileName().toString(), path);
+
             return this;
         }
 
