@@ -147,17 +147,17 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     private String displayName = "";
 
     public BaseItemBuilder(@NotNull final ItemType itemType, final int amount, @NotNull final Consumer<BaseItemBuilder> consumer) {
-        this.itemStack = itemType.createItemStack(Math.min(amount, 1));
+        this(itemType.createItemStack(Math.min(amount, 1))); // create ItemStack, and populate item type.
 
-        // bind item type.
-        this.itemType = itemType;
-
-        // apply extra data to this class.
-        consumer.accept(this);
+        consumer.accept(this); // apply anything else to the class.
     }
 
     public BaseItemBuilder(@NotNull final ItemType itemType, @NotNull final Consumer<BaseItemBuilder> consumer) {
         this(itemType, 1, consumer);
+    }
+
+    public BaseItemBuilder(@NotNull final ItemType itemType) {
+        this(itemType, 1, item -> {});
     }
 
     public BaseItemBuilder(@NotNull final ItemStack itemStack) {

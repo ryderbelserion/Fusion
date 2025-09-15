@@ -18,4 +18,8 @@ public class ItemBuilder extends BaseItemBuilder<ItemBuilder> {
     public ItemBuilder(@NotNull final ItemStack itemStack) {
         super(itemStack);
     }
+
+    public ItemBuilder(@NotNull final String itemStack) {
+        super(itemStack);
+    }
 }
