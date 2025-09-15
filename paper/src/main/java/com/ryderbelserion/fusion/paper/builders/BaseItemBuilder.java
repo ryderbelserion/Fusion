@@ -7,6 +7,7 @@ import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.support.ModSupport;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.core.FusionProvider;
+import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.builders.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.SkullBuilder;
@@ -18,11 +19,6 @@ import com.ryderbelserion.fusion.paper.builders.types.tools.ToolBuilder;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import dev.lone.itemsadder.api.CustomStack;
-import dev.triumphteam.gui.click.action.EmptyGuiClickAction;
-import dev.triumphteam.gui.click.action.GuiClickAction;
-import dev.triumphteam.gui.click.action.SimpleGuiClickAction;
-import dev.triumphteam.gui.element.GuiItem;
-import dev.triumphteam.gui.element.items.SimpleGuiItem;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.*;
@@ -37,7 +33,6 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
@@ -173,7 +168,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull final GuiItem<Player, ItemStack> asGuiItem(@NotNull final Audience audience, @NotNull final SimpleGuiClickAction<Player> action) {
+    /*public @NotNull final GuiItem<Player, ItemStack> asGuiItem(@NotNull final Audience audience, @NotNull final SimpleGuiClickAction<Player> action) {
         return new SimpleGuiItem<>(asItemStack(audience), action);
     }
 
@@ -194,6 +189,14 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public @NotNull final GuiItem<Player, ItemStack> asGuiItem() {
+        return asGuiItem(Audience.empty());
+    }*/
+
+    public @NotNull final GuiItem asGuiItem(@NotNull final Audience audience) {
+        return new GuiItem(asItemStack(audience));
+    }
+
+    public @NotNull final GuiItem asGuiItem() {
         return asGuiItem(Audience.empty());
     }
 
