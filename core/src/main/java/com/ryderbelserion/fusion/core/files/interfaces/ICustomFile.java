@@ -237,6 +237,14 @@ public abstract class ICustomFile<I, C, L, O> {
         return this.options;
     }
 
+    public @NotNull String getFileName() {
+        return this.path.getFileName().toString();
+    }
+
+    public @NotNull String getPrettyName() {
+        return getFileName().replace(getFileType().getExtension(), "");
+    }
+
     public @NotNull Path getPath() {
         return this.path;
     }
