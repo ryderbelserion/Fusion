@@ -1,16 +1,12 @@
 package com.ryderbelserion.fusion.paper;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import com.ryderbelserion.fusion.core.FusionConfig;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.support.ModSupport;
 import com.ryderbelserion.fusion.core.FusionKey;
 import com.ryderbelserion.fusion.core.api.support.objects.Mod;
-import com.ryderbelserion.fusion.core.files.enums.FileAction;
-import com.ryderbelserion.fusion.core.files.enums.FileType;
-import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.paper.structure.StructureRegistry;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
@@ -108,15 +104,6 @@ public class FusionPaper extends FusionCore {
 
         ModSupport.dependencies.forEach(dependency -> getModManager().addMod(dependency, new Mod()));
 
-        this.fileManager.addFile(this.dataPath.resolve("fusion.yml"), FileType.FUSION_YAML, consumer -> {
-            final YamlCustomFile customFile = (YamlCustomFile) consumer;
-
-            customFile.setOptions(options -> options.shouldCopyDefaults(true));
-            customFile.addAction(FileAction.EXTRACT_FILE);
-        });
-
-        this.config = new FusionConfig(this.fileManager.getYamlFile(this.dataPath.resolve("fusion.yml")));
-
         if (this.isModReady(ModSupport.head_database) && this.api == null) this.api = new HeadDatabaseAPI();
 
         fusion.accept(this);
@@ -151,11 +138,6 @@ public class FusionPaper extends FusionCore {
     @Override
     public PaperFileManager getFileManager() {
         return this.fileManager;
-    }
-
-    @Override
-    public FusionConfig getConfig() {
-        return this.config;
     }
 
     public @NotNull final StructureRegistry getRegistry() {

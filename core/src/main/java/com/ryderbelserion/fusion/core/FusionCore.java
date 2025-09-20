@@ -1,5 +1,7 @@
 package com.ryderbelserion.fusion.core;
 
+import ch.jalu.configme.SettingsManager;
+import ch.jalu.configme.SettingsManagerBuilder;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.interfaces.IFusionCore;
 import com.ryderbelserion.fusion.core.api.support.ModManager;
@@ -26,12 +28,14 @@ public abstract class FusionCore implements IFusionCore {
     private final StringUtils stringUtils;
     private final ModManager modManager;
 
+    protected final SettingsManager config;
     protected ComponentLogger logger;
-    protected FusionConfig config;
     protected Path dataPath;
 
     public FusionCore(@NotNull final Consumer<FusionCore> consumer) {
         consumer.accept(this);
+
+        this.config = SettingsManagerBuilder.withYamlFile(this.dataPath.resolve("fusion.yml")).create();
 
         this.stringUtils = new StringUtils(this);
         this.modManager = new ModManager(this);
@@ -69,7 +73,7 @@ public abstract class FusionCore implements IFusionCore {
 
     @SuppressWarnings("DuplicatedCode")
     public void log(@NotNull final String type, @NotNull final String message, @NotNull final Throwable throwable) {
-        if (!this.config.isVerbose()) return;
+        if (!this.config.getProperty(FusionConfig.is_verbose)) return;
 
         final Component component = MiniMessage.miniMessage().deserialize(message);
 
@@ -82,7 +86,7 @@ public abstract class FusionCore implements IFusionCore {
 
     @SuppressWarnings("DuplicatedCode")
     public void log(@NotNull final String type, @NotNull final String message, @NotNull final Object... args) {
-        if (!this.config.isVerbose()) return;
+        if (!this.config.getProperty(FusionConfig.is_verbose)) return;
 
         final Component component = MiniMessage.miniMessage().deserialize(message);
 
@@ -191,5 +195,30 @@ public abstract class FusionCore implements IFusionCore {
     @Override
     public @NotNull Path getDataPath() {
         return this.dataPath;
+    }
+
+    @Override
+    public boolean isVerbose() {
+        return this.config.getProperty(FusionConfig.is_verbose);
+    }
+
+    @Override
+    public String getNumberFormat() {
+        return this.config.getProperty(FusionConfig.number_format);
+    }
+
+    @Override
+    public String getRounding() {
+        return this.config.getProperty(FusionConfig.rounding_format);
+    }
+
+    @Override
+    public String getCustomItemsPlugin() {
+        return this.config.getProperty(FusionConfig.custom_items_plugin);
+    }
+
+    @Override
+    public int getDepth() {
+        return this.config.getProperty(FusionConfig.recursion_depth);
     }
 }

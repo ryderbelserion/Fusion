@@ -1,6 +1,5 @@
 package com.ryderbelserion.fusion.core.api.interfaces;
 
-import com.ryderbelserion.fusion.core.FusionConfig;
 import com.ryderbelserion.fusion.core.api.support.ModManager;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
@@ -15,7 +14,7 @@ public interface IFusionCore {
     List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean withoutExtension);
 
     default List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final boolean withoutExtension) {
-        return getFileNames(folder, path, extension, this.getConfig().getDepth(), withoutExtension);
+        return getFileNames(folder, path, extension, getDepth(), withoutExtension);
     }
 
     void deleteDirectory(@NotNull final Path path) throws IOException;
@@ -25,7 +24,7 @@ public interface IFusionCore {
     List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth);
 
     default List<Path> getFiles(@NotNull final Path path, @NotNull final String extension) {
-        return getFiles(path, extension, this.getConfig().getDepth());
+        return getFiles(path, extension, getDepth());
     }
 
     StringUtils getStringUtils();
@@ -34,12 +33,20 @@ public interface IFusionCore {
 
     ModManager getModManager();
 
-    FusionConfig getConfig();
-
     void setDataPath(@NotNull final Path dataPath);
 
     void setLogger(@NotNull final ComponentLogger logger);
 
     Path getDataPath();
+
+    String getRounding();
+
+    String getNumberFormat();
+
+    String getCustomItemsPlugin();
+
+    boolean isVerbose();
+
+    int getDepth();
 
 }

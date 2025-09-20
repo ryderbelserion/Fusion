@@ -264,7 +264,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public @NotNull B withCustomItem(@NotNull final String itemStack) {
-        final String plugin = this.fusion.getConfig().getItemsPlugin();
+        final String plugin = this.fusion.getCustomItemsPlugin();
 
         switch (plugin.toLowerCase()) {
             case "nexo" -> {

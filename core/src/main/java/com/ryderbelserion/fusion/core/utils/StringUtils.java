@@ -1,6 +1,5 @@
 package com.ryderbelserion.fusion.core.utils;
 
-import com.ryderbelserion.fusion.core.FusionConfig;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.interfaces.IStringUtils;
 import net.kyori.adventure.text.Component;
@@ -24,11 +23,9 @@ public class StringUtils implements IStringUtils {
     private static final Pattern ANGLE_PATTERN = Pattern.compile("[<>]");
 
     private final FusionCore fusion;
-    private final FusionConfig config;
 
     public StringUtils(@NotNull final FusionCore fusion) {
         this.fusion = fusion;
-        this.config = this.fusion.getConfig();
     }
 
     @Override
@@ -135,7 +132,7 @@ public class StringUtils implements IStringUtils {
 
     @Override
     public @NotNull String format(final double value) {
-        final DecimalFormat decimalFormat = new DecimalFormat(this.config.getNumberFormat());
+        final DecimalFormat decimalFormat = new DecimalFormat(this.fusion.getNumberFormat());
 
         decimalFormat.setRoundingMode(getRoundingMode());
 
@@ -144,6 +141,6 @@ public class StringUtils implements IStringUtils {
 
     @Override
     public @NotNull RoundingMode getRoundingMode() {
-        return RoundingMode.valueOf(this.config.getRoundingFormat().toUpperCase());
+        return RoundingMode.valueOf(this.fusion.getRounding().toUpperCase());
     }
 }

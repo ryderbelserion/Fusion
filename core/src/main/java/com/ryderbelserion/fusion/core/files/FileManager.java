@@ -47,7 +47,7 @@ public class FileManager extends IFileManager<FileManager> {
     public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
         extractFolder(folder.getFileName().toString(), folder.getParent());
 
-        for (final Path path : this.fusion.getFiles(folder, ".yml", this.fusion.getConfig().getDepth())) {
+        for (final Path path : this.fusion.getFiles(folder, ".yml", this.fusion.getDepth())) {
             addFile(path, fileType, consumer);
         }
 
@@ -56,7 +56,7 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder) {
-        for (final Path path : this.fusion.getFiles(folder, ".yml", this.fusion.getConfig().getDepth())) {
+        for (final Path path : this.fusion.getFiles(folder, ".yml", this.fusion.getDepth())) {
             addFile(path, options, builder);
         }
 

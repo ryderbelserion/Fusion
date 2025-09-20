@@ -10,7 +10,7 @@ settings:
   # Available types: up, down, ceiling, floor, half_up, half_down, half_even, unnecessary
   rounding: half_even
   # This config option decides how deep to search through a given folder.
-  # It only applies to folders that are dynamic like the crates folder or vouchers
+  # It only applies to folders that are dynamic like the crates folder or vouchers.
   recursion_depth: 1
   # A list of available custom item plugins
   #   -> ItemsAdder
