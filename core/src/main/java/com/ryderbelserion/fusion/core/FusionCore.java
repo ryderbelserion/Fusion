@@ -35,7 +35,7 @@ public abstract class FusionCore implements IFusionCore {
     public FusionCore(@NotNull final Consumer<FusionCore> consumer) {
         consumer.accept(this);
 
-        this.config = SettingsManagerBuilder.withYamlFile(this.dataPath.resolve("fusion.yml")).create();
+        this.config = SettingsManagerBuilder.withYamlFile(this.dataPath.resolve("fusion.yml")).useDefaultMigrationService().configurationData(FusionConfig.class).create();
 
         this.stringUtils = new StringUtils(this);
         this.modManager = new ModManager(this);
