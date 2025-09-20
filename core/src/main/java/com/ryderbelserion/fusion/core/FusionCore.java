@@ -73,7 +73,7 @@ public abstract class FusionCore implements IFusionCore {
 
     @SuppressWarnings("DuplicatedCode")
     public void log(@NotNull final String type, @NotNull final String message, @NotNull final Throwable throwable) {
-        if (!this.config.getProperty(FusionConfig.is_verbose)) return;
+        if (!this.isVerbose()) return;
 
         final Component component = MiniMessage.miniMessage().deserialize(message);
 
@@ -86,7 +86,7 @@ public abstract class FusionCore implements IFusionCore {
 
     @SuppressWarnings("DuplicatedCode")
     public void log(@NotNull final String type, @NotNull final String message, @NotNull final Object... args) {
-        if (!this.config.getProperty(FusionConfig.is_verbose)) return;
+        if (!this.isVerbose()) return;
 
         final Component component = MiniMessage.miniMessage().deserialize(message);
 
