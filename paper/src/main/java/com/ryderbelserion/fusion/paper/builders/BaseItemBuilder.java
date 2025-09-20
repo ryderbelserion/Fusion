@@ -49,39 +49,6 @@ import java.util.function.Consumer;
 
 public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
-    private static final Set<String> armor = new HashSet<>() {{
-        add(ItemType.CHAINMAIL_HELMET.key().asString());
-        add(ItemType.CHAINMAIL_CHESTPLATE.key().asString());
-        add(ItemType.CHAINMAIL_LEGGINGS.key().asString());
-        add(ItemType.CHAINMAIL_BOOTS.key().asString());
-
-        add(ItemType.IRON_HELMET.key().asString());
-        add(ItemType.IRON_CHESTPLATE.key().asString());
-        add(ItemType.IRON_LEGGINGS.key().asString());
-        add(ItemType.IRON_BOOTS.key().asString());
-
-        add(ItemType.DIAMOND_HELMET.key().asString());
-        add(ItemType.DIAMOND_CHESTPLATE.key().asString());
-        add(ItemType.DIAMOND_LEGGINGS.key().asString());
-        add(ItemType.DIAMOND_BOOTS.key().asString());
-
-        add(ItemType.GOLDEN_HELMET.key().asString());
-        add(ItemType.GOLDEN_CHESTPLATE.key().asString());
-        add(ItemType.GOLDEN_LEGGINGS.key().asString());
-        add(ItemType.GOLDEN_BOOTS.key().asString());
-
-        add(ItemType.NETHERITE_HELMET.key().asString());
-        add(ItemType.NETHERITE_CHESTPLATE.key().asString());
-        add(ItemType.NETHERITE_LEGGINGS.key().asString());
-        add(ItemType.NETHERITE_BOOTS.key().asString());
-
-        add(ItemType.TURTLE_HELMET.key().asString());
-
-        addAll(leather_items);
-
-        //todo() add copper armor
-    }};
-
     private static final Set<String> tools = new HashSet<>() {{
        add(ItemType.WOODEN_SWORD.key().asString());
        add(ItemType.WOODEN_PICKAXE.key().asString());
@@ -126,6 +93,39 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         add(ItemType.LEATHER_LEGGINGS.key().asString());
         add(ItemType.LEATHER_BOOTS.key().asString());
         add(ItemType.LEATHER_HORSE_ARMOR.key().asString());
+    }};
+
+    private static final Set<String> armor = new HashSet<>() {{
+        add(ItemType.CHAINMAIL_HELMET.key().asString());
+        add(ItemType.CHAINMAIL_CHESTPLATE.key().asString());
+        add(ItemType.CHAINMAIL_LEGGINGS.key().asString());
+        add(ItemType.CHAINMAIL_BOOTS.key().asString());
+
+        add(ItemType.IRON_HELMET.key().asString());
+        add(ItemType.IRON_CHESTPLATE.key().asString());
+        add(ItemType.IRON_LEGGINGS.key().asString());
+        add(ItemType.IRON_BOOTS.key().asString());
+
+        add(ItemType.DIAMOND_HELMET.key().asString());
+        add(ItemType.DIAMOND_CHESTPLATE.key().asString());
+        add(ItemType.DIAMOND_LEGGINGS.key().asString());
+        add(ItemType.DIAMOND_BOOTS.key().asString());
+
+        add(ItemType.GOLDEN_HELMET.key().asString());
+        add(ItemType.GOLDEN_CHESTPLATE.key().asString());
+        add(ItemType.GOLDEN_LEGGINGS.key().asString());
+        add(ItemType.GOLDEN_BOOTS.key().asString());
+
+        add(ItemType.NETHERITE_HELMET.key().asString());
+        add(ItemType.NETHERITE_CHESTPLATE.key().asString());
+        add(ItemType.NETHERITE_LEGGINGS.key().asString());
+        add(ItemType.NETHERITE_BOOTS.key().asString());
+
+        add(ItemType.TURTLE_HELMET.key().asString());
+
+        addAll(leather_items);
+
+        //todo() add copper armor
     }};
 
     private static final Set<String> potions = new HashSet<>() {{
