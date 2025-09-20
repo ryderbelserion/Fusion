@@ -27,6 +27,10 @@ public class PaperFileManager extends FileManager {
         return this;
     }
 
+    public final PaperFileManager addPaperFile(@NotNull final Path path) {
+        return addPaperFile(path, consumer -> {});
+    }
+
     public PaperFileManager addPaperFile(@NotNull final PaperCustomFile customFile) {
         addFile(customFile.getPath(), customFile);
 
