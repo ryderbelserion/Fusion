@@ -7,7 +7,7 @@ public enum FileAction {
     // Extract a file.
     EXTRACT_FILE,
 
-    // Delete the folder, and  remove all files inside from the cache.
+    // Delete the folder, and remove all files inside from the cache.
     DELETE_FOLDER,
     // Delete from cache.
     DELETE_CACHE,

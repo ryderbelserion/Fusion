@@ -356,6 +356,11 @@ public class FileManager extends IFileManager<FileManager> {
         return this.fusion.getFiles(path, extension, 1).size();
     }
 
+    @Override
+    public final boolean hasFile(@NotNull final Path path) {
+        return this.files.containsKey(path);
+    }
+
     public @NotNull final Map<Path, ICustomFile<?, ?, ?, ?>> getFiles() {
         return Collections.unmodifiableMap(this.files);
     }

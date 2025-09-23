@@ -42,6 +42,8 @@ public abstract class IFileManager<I> {
 
     public abstract @NotNull I refresh(final boolean save);
 
+    public abstract boolean hasFile(@NotNull final Path path);
+
     public abstract @NotNull Optional<ICustomFile<?, ?, ?, ?>> getFile(@NotNull final Path path);
 
     public abstract @NotNull JaluCustomFile buildJaluFile(@NotNull final Path path, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder);
