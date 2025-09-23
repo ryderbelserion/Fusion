@@ -1,11 +1,9 @@
 package com.ryderbelserion.fusion.paper.structure;
 
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.files.FileManager;
-import com.ryderbelserion.fusion.core.files.enums.FileAction;
-import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.core.FusionProvider;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -32,7 +30,7 @@ public class StructureBuilder {
 
     private final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
 
-    private final FileManager fileManager = this.fusion.getFileManager();
+    private final PaperFileManager fileManager = this.fusion.getFileManager();
 
     private final StructureManager manager;
     private final JavaPlugin plugin;
@@ -82,7 +80,11 @@ public class StructureBuilder {
         try {
             this.manager.saveStructure(path.toFile(), this.structure);
 
-            this.fileManager.addFile(path, FileType.NBT, consumer -> consumer.addAction(FileAction.MANUALLY_SAVED));
+            if (this.fileManager.getFiles().containsKey(path)) { // remove file if it exists
+                this.fileManager.removeFile(path);
+            }
+
+            this.fileManager.addNbtFile(path); // add new file to overwrite
         } catch (final IOException exception) {
             throw new FusionException("Failed to save structure!", exception);
         }

@@ -286,7 +286,7 @@ public class FileManager extends IFileManager<FileManager> {
 
         final Path target = this.dataPath.resolve(asString(path, content));
 
-        try (final ZipOutputStream output= new ZipOutputStream(Files.newOutputStream(target)); final Stream<Path> values = Files.walk(path)) {
+        try (final ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(target)); final Stream<Path> values = Files.walk(path)) {
             final List<Path> entries = values.filter(key -> !Files.isDirectory(key)).toList();
 
             for (final Path entry : entries) {

@@ -150,9 +150,13 @@ public class FusionPaper extends FusionCore {
         return Optional.ofNullable(this.api);
     }
 
-    public FusionPaper setJavaPlugin(@NotNull final JavaPlugin plugin) {
+    public @NotNull final FusionPaper setJavaPlugin(@NotNull final JavaPlugin plugin) {
         this.plugin = plugin;
 
         return this;
+    }
+
+    public @NotNull final JavaPlugin getPlugin() {
+        return this.plugin;
     }
 }
