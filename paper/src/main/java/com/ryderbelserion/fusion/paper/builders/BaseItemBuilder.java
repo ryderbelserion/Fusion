@@ -234,6 +234,12 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return asItemStack(Audience.empty());
     }
 
+    public @NotNull B withConsumer(@NotNull final Consumer<B> consumer) {
+        consumer.accept((B) this);
+
+        return (B) this;
+    }
+
     public @NotNull B withDisplayName(@NotNull final String displayName, @NotNull final ItemState itemState) {
         this.displayName = displayName;
 
