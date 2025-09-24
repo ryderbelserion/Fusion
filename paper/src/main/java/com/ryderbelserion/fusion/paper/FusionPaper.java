@@ -7,6 +7,7 @@ import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.support.ModSupport;
 import com.ryderbelserion.fusion.core.FusionKey;
 import com.ryderbelserion.fusion.core.api.support.objects.Mod;
+import com.ryderbelserion.fusion.paper.builders.gui.listeners.GuiListener;
 import com.ryderbelserion.fusion.paper.structure.StructureRegistry;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
@@ -105,6 +106,8 @@ public class FusionPaper extends FusionCore {
         ModSupport.dependencies.forEach(dependency -> getModManager().addMod(dependency, new Mod()));
 
         if (this.isModReady(ModSupport.head_database) && this.api == null) this.api = new HeadDatabaseAPI();
+
+        this.pluginManager.registerEvents(new GuiListener(), this.plugin);
 
         fusion.accept(this);
 
