@@ -11,10 +11,10 @@ import java.util.List;
 
 public interface IFusionCore {
 
-    List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean withoutExtension);
+    List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean removeExtension);
 
-    default List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final boolean withoutExtension) {
-        return getFileNames(folder, path, extension, getDepth(), withoutExtension);
+    default List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final boolean removeExtension) {
+        return getFileNames(folder, path, extension, getDepth(), removeExtension);
     }
 
     void deleteDirectory(@NotNull final Path path) throws IOException;

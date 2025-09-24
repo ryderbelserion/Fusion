@@ -133,7 +133,7 @@ public abstract class FusionCore implements IFusionCore {
     }
 
     @Override
-    public List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean withoutExtension) {
+    public List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean removeExtension) {
         final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), List.of(extension), depth);
 
         final List<String> names = new ArrayList<>();
@@ -143,7 +143,7 @@ public abstract class FusionCore implements IFusionCore {
 
             if (!fileName.endsWith(extension)) continue;
 
-            names.add(withoutExtension ? fileName.replace(extension, "") : fileName);
+            names.add(removeExtension ? fileName.replace(extension, "") : fileName);
         }
 
         return names;
