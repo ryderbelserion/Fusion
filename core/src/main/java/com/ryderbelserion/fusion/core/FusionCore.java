@@ -128,11 +128,6 @@ public abstract class FusionCore implements IFusionCore {
     }
 
     @Override
-    public List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth) {
-        return getFiles(path, List.of(extension), depth);
-    }
-
-    @Override
     public List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean removeExtension) {
         final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), List.of(extension), depth);
 

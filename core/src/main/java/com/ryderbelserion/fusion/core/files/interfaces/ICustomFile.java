@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.core.files.interfaces;
 
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.files.enums.FileAction;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.files.enums.FileType;
@@ -186,7 +187,7 @@ public abstract class ICustomFile<I, C, L, O> {
             try {
                 return loadConfig();
             } catch (final IOException exception) {
-                throw new RuntimeException(exception);
+                throw new FusionException("Failed to load file %s".formatted(getPath()), exception);
             }
         }).join();
 
@@ -202,7 +203,7 @@ public abstract class ICustomFile<I, C, L, O> {
             try {
                 saveConfig(content);
             } catch (final IOException exception) {
-                throw new RuntimeException(exception);
+                throw new FusionException("Failed to save content for %s".formatted(getPath()), exception);
             }
         });
 

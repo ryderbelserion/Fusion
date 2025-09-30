@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurationNode, GsonConfigurationLoader, ConfigurationOptions> {
+public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurationNode, GsonConfigurationLoader, ConfigurationOptions> {
 
     public JsonCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<JsonCustomFile> consumer) {
         super(fileManager, path);
@@ -37,11 +37,11 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
     }
 
     /**
-     * Retrieves a string value from the configuration with a specified default.
+     * {@inheritDoc}
      *
-     * @param defaultValue the default value to return if the key is not found
-     * @param path         the path to the configuration key
-     * @return the string value or the default if missing
+     * @param defaultValue {@inheritDoc}
+     * @param path         {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Override
     public @NotNull String getStringValueWithDefault(@NotNull final String defaultValue, @NotNull final Object... path) {
@@ -49,11 +49,11 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
     }
 
     /**
-     * Retrieves a boolean value from the configuration with a specified default.
+     * {@inheritDoc}
      *
-     * @param defaultValue the default value to return if the key is not found
-     * @param path         the path to the configuration key
-     * @return the boolean value or the default if missing
+     * @param defaultValue {@inheritDoc}
+     * @param path         {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Override
     public boolean getBooleanValueWithDefault(final boolean defaultValue, @NotNull final Object... path) {
@@ -61,11 +61,11 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
     }
 
     /**
-     * Retrieves a double value from the configuration with a specified default.
+     * {@inheritDoc}
      *
-     * @param defaultValue the default value to return if the key is not found
-     * @param path         the path to the configuration key
-     * @return the double value or the default if missing
+     * @param defaultValue {@inheritDoc}
+     * @param path         {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Override
     public double getDoubleValueWithDefault(final double defaultValue, @NotNull final Object... path) {
@@ -73,11 +73,11 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
     }
 
     /**
-     * Retrieves a long value from the configuration with a specified default.
+     * {@inheritDoc}
      *
-     * @param defaultValue the default value to return if the key is not found
-     * @param path         the path to the configuration key
-     * @return the long value or the default if missing
+     * @param defaultValue {@inheritDoc}
+     * @param path         {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Override
     public long getLongValueWithDefault(final long defaultValue, @NotNull final Object... path) {
@@ -85,11 +85,11 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
     }
 
     /**
-     * Retrieves an integer value from the configuration with a specified default.
+     * {@inheritDoc}
      *
-     * @param defaultValue the default value to return if the key is not found
-     * @param path         the path to the configuration key
-     * @return the integer value or the default if missing
+     * @param defaultValue {@inheritDoc}
+     * @param path         {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Override
     public int getIntValueWithDefault(final int defaultValue, @NotNull final Object... path) {
@@ -97,10 +97,10 @@ public class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurati
     }
 
     /**
-     * Retrieves a list of string values from the configuration.
+     * {@inheritDoc}
      *
-     * @param path the path to the configuration key
-     * @return the list of string values or an empty list if missing
+     * @param path {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Override
     public @NotNull List<String> getStringList(@NotNull final List<String> defaultValue, @NotNull final Object... path) {

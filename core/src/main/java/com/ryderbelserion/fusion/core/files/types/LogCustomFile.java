@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
-public class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFile, Object, Object> {
+public final class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFile, Object, Object> {
 
     public LogCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<LogCustomFile> consumer) {
         super(fileManager, path);

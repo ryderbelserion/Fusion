@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
-public class JaluCustomFile extends ICustomFile<JaluCustomFile, SettingsManager, SettingsManagerBuilder, YamlFileResourceOptions.Builder> {
+public final class JaluCustomFile extends ICustomFile<JaluCustomFile, SettingsManager, SettingsManagerBuilder, YamlFileResourceOptions.Builder> {
 
     private final Consumer<SettingsManagerBuilder> builder;
 

@@ -21,7 +21,9 @@ public interface IFusionCore {
 
     List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions, final int depth);
 
-    List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth);
+    default List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth) {
+        return getFiles(path, List.of(extension), depth);
+    }
 
     default List<Path> getFiles(@NotNull final Path path, @NotNull final String extension) {
         return getFiles(path, extension, getDepth());
