@@ -58,6 +58,10 @@ public abstract class IFileManager<I> {
         return getFile(path).map(YamlCustomFile.class::cast);
     }
 
+    public @NotNull Optional<JsonCustomFile> getJsonFile(@NotNull final Path path) {
+        return getFile(path).map(JsonCustomFile.class::cast);
+    }
+
     public @NotNull Optional<JaluCustomFile> getJaluFile(@NotNull final Path path) {
         return getFile(path).map(JaluCustomFile.class::cast);
     }
