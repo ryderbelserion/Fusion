@@ -240,6 +240,17 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
+    public @NotNull B withDisplayName(@NotNull final Component displayName, @NotNull final ItemState itemState) {
+        this.type = switch (itemState) {
+            case ITEM_NAME -> DataComponentTypes.ITEM_NAME;
+            case CUSTOM_NAME -> DataComponentTypes.CUSTOM_NAME;
+        };
+
+        this.itemStack.setData(this.type, displayName);
+
+        return (B) this;
+    }
+
     public @NotNull B withDisplayName(@NotNull final String displayName, @NotNull final ItemState itemState) {
         this.displayName = displayName;
 
@@ -253,6 +264,12 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     public @NotNull B withDisplayName(@NotNull final String displayName) {
         return withDisplayName(displayName, ItemState.ITEM_NAME);
+    }
+
+    public @NotNull B displayLore(@NotNull final List<Component> displayLore) {
+        this.itemStack.setData(DataComponentTypes.LORE, ItemLore.lore().lines(displayLore).build());
+
+        return (B) this;
     }
 
     public @NotNull B withDisplayLore(@NotNull final List<String> displayLore) {
