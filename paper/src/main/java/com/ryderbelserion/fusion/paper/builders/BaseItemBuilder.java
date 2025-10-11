@@ -240,7 +240,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B withDisplayName(@NotNull final Component displayName, @NotNull final ItemState itemState) {
+    public @NotNull B displayName(@NotNull final Component displayName, @NotNull final ItemState itemState) {
         this.type = switch (itemState) {
             case ITEM_NAME -> DataComponentTypes.ITEM_NAME;
             case CUSTOM_NAME -> DataComponentTypes.CUSTOM_NAME;
