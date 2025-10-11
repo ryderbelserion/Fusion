@@ -43,7 +43,8 @@ import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import org.jspecify.annotations.Nullable;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -210,9 +211,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return asGuiItem(Audience.empty());
     }
 
-    public @NotNull ItemStack asItemStack(@NotNull final Audience audience) {
+    public @NotNull ItemStack asItemStack(@Nullable final Audience audience) {
+        final Audience safeAudience = audience == null ? Audience.empty() : audience;
+
         if (!this.displayName.isEmpty()) {
-            this.itemStack.setData(this.type, this.fusion.parse(audience, this.displayName, this.placeholders));
+            this.itemStack.setData(this.type, this.fusion.parse(safeAudience, this.displayName, this.placeholders));
         }
 
         final List<String> lore = this.displayLore;
@@ -220,7 +223,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         if (!lore.isEmpty()) {
             final List<Component> components = new ArrayList<>(lore.size());
 
-            lore.forEach(line -> components.add(this.fusion.parse(audience, line, placeholders)));
+            lore.forEach(line -> components.add(this.fusion.parse(safeAudience, line, placeholders)));
 
             this.itemStack.setData(DataComponentTypes.LORE, ItemLore.lore(components));
         }
