@@ -57,7 +57,7 @@ public class PaperFileManager extends FileManager {
     }
 
     public final PaperFileManager addPaperFile(@NotNull final Path path) {
-        return addPaperFile(path, consumer -> {});
+        return addPaperFile(path, consumer -> consumer.addAction(FileAction.EXTRACT_FILE));
     }
 
     public PaperFileManager addPaperFile(@NotNull final PaperCustomFile customFile) {
@@ -83,9 +83,7 @@ public class PaperFileManager extends FileManager {
     }
 
     public PaperFileManager addPaperFolder(@NotNull final Path folder) {
-        return addPaperFolder(folder, consumer -> {
-            consumer.addAction(FileAction.EXTRACT_FOLDER);
-        });
+        return addPaperFolder(folder, consumer -> consumer.addAction(FileAction.EXTRACT_FOLDER));
     }
 
     public @NotNull Optional<PaperCustomFile> getPaperFile(@NotNull final Path path) {
