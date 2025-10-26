@@ -9,14 +9,16 @@ rootProject.name = "Fusion"
 
 listOf(
     //"velocity",
-    "paper",
+    //"paper",
     "core",
+    "api",
 
     // test plugin
-    "plugin",
+    //"plugin",
 
     // stand alone
-    "addons"
+    "addons",
+    "files"
 ).forEach {
     includeProject(it)
 }

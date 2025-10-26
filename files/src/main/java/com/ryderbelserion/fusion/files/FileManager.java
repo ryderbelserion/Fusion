@@ -1,27 +1,22 @@
-package com.ryderbelserion.fusion.core.files;
+package com.ryderbelserion.fusion.files;
 
 import ch.jalu.configme.SettingsManagerBuilder;
 import ch.jalu.configme.resource.YamlFileResourceOptions;
-import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.files.enums.FileAction;
-import com.ryderbelserion.fusion.core.files.enums.FileType;
-import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
-import com.ryderbelserion.fusion.core.files.interfaces.IFileManager;
-import com.ryderbelserion.fusion.core.files.types.JsonCustomFile;
-import com.ryderbelserion.fusion.core.files.types.JaluCustomFile;
-import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
-import com.ryderbelserion.fusion.core.files.types.YamlCustomFile;
+import com.ryderbelserion.fusion.files.enums.FileAction;
+import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
+import com.ryderbelserion.fusion.files.interfaces.IFileManager;
+import com.ryderbelserion.fusion.files.types.JaluCustomFile;
+import com.ryderbelserion.fusion.files.types.LogCustomFile;
+import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
+import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.jar.JarEntry;
@@ -33,21 +28,20 @@ import java.util.zip.ZipOutputStream;
 
 public class FileManager extends IFileManager<FileManager> {
 
-    protected final FusionCore fusion;
-    protected final Path dataPath;
-
-    public FileManager(@NotNull final FusionCore fusion) {
-        this.fusion = fusion;
-        this.dataPath = this.fusion.getDataPath();
-    }
-
     protected final Map<Path, ICustomFile<?, ?, ?, ?>> files = new HashMap<>();
+
+    private final Path path;
+    private int depth = 1;
+
+    public FileManager(@NotNull final Path path) {
+        this.path = path;
+    }
 
     @Override
     public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
         extractFolder(folder.getFileName().toString(), folder.getParent());
 
-        for (final Path path : this.fusion.getFiles(folder, ".yml", this.fusion.getDepth())) {
+        for (final Path path : getFiles(folder, ".yml", getDepth())) {
             addFile(path, fileType, consumer);
         }
 
@@ -55,8 +49,29 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
+    public @NotNull FileManager addFile(@NotNull final Path path, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
+        if (this.files.containsKey(path)) {
+            return this;
+        }
+
+        ICustomFile<?, ?, ?, ?> customFile = null;
+
+        switch (fileType) {
+            case YAML -> customFile = buildYamlFile(path, consumer::accept);
+            case JSON -> customFile = buildJsonFile(path, consumer::accept);
+            case LOG -> customFile = buildLogFile(path, consumer::accept);
+        }
+
+        if (customFile == null) return this;
+
+        this.files.putIfAbsent(path, customFile);
+
+        return this;
+    }
+
+    @Override
     public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder) {
-        for (final Path path : this.fusion.getFiles(folder, ".yml", this.fusion.getDepth())) {
+        for (final Path path : getFiles(folder, ".yml", getDepth())) {
             addFile(path, options, builder);
         }
 
@@ -79,39 +94,6 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager addFile(@NotNull final Path path, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
-        if (this.files.containsKey(path)) {
-            final ICustomFile<?, ?, ?, ?> customFile = this.files.get(path);
-
-            consumer.accept(customFile);
-
-            if (!customFile.hasAction(FileAction.FILE_ALREADY_RELOADED)) {
-                customFile.load();
-
-                return this;
-            }
-
-            this.fusion.log("info", "Path {} already exists in the cache, so we don't need to rebuild it", path);
-
-            return this;
-        }
-
-        ICustomFile<?, ?, ?, ?> customFile = null;
-
-        switch (fileType) {
-            case YAML, FUSION_YAML -> customFile = buildYamlFile(path, consumer::accept);
-            case JSON, FUSION_JSON -> customFile = buildJsonFile(path, consumer::accept);
-            case LOG -> customFile = buildLogFile(path, consumer::accept);
-        }
-
-        if (customFile == null) return this;
-
-        this.files.putIfAbsent(path, customFile);
-
-        return this;
-    }
-
-    @Override
     public @NotNull FileManager removeFile(@NotNull final Path path) {
         final Optional<ICustomFile<?, ?, ?, ?>> variable = getFile(path);
 
@@ -119,11 +101,9 @@ public class FileManager extends IFileManager<FileManager> {
             return this;
         }
 
-        final ICustomFile<?, ?, ?, ?> customFile = variable.get();
-
-        final FileType fileType = customFile.getFileType();
-
-        if (fileType == FileType.FUSION_YAML || fileType == FileType.FUSION_JSON) return this; // do not allow removing these files
+        if (variable.get().hasAction(FileAction.KEEP_FILE)) {
+            return this;
+        }
 
         this.files.remove(path);
 
@@ -141,10 +121,16 @@ public class FileManager extends IFileManager<FileManager> {
         return this;
     }
 
+    @Override
     public @NotNull FileManager addFile(@NotNull final Path path, @NotNull final ICustomFile<?, ?, ?, ?> customFile) {
         this.files.putIfAbsent(path, customFile);
 
         return this;
+    }
+
+    @Override
+    public @NotNull JaluCustomFile buildJaluFile(@NotNull final Path path, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder) {
+        return new JaluCustomFile(this, path, options, builder).load();
     }
 
     @Override
@@ -155,11 +141,6 @@ public class FileManager extends IFileManager<FileManager> {
     @Override
     public @NotNull JsonCustomFile buildJsonFile(@NotNull final Path path, @NotNull final Consumer<JsonCustomFile> consumer) {
         return new JsonCustomFile(this, path, consumer).load();
-    }
-
-    @Override
-    public @NotNull JaluCustomFile buildJaluFile(@NotNull final Path path, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder) {
-        return new JaluCustomFile(this, path, options, builder).load();
     }
 
     @Override
@@ -199,8 +180,6 @@ public class FileManager extends IFileManager<FileManager> {
         final Path path = output.resolve(folder);
 
         if (Files.exists(path)) { // do not extract if path exists.
-            this.fusion.log("info", "Cannot extract folder {} to {}, because it already exists @ {}.", folder, output, path);
-
             return this;
         }
 
@@ -208,7 +187,7 @@ public class FileManager extends IFileManager<FileManager> {
             try {
                 Files.createDirectories(path);
             } catch (final Exception exception) {
-                throw new FusionException("Failed to create %s".formatted(path), exception);
+                throw new FileException("Failed to create %s".formatted(path), exception);
             }
         }
 
@@ -227,7 +206,7 @@ public class FileManager extends IFileManager<FileManager> {
                     try {
                         Files.createDirectories(parent);
                     } catch (final IOException exception) {
-                        throw new FusionException("Failed to create %s".formatted(parent), exception);
+                        throw new FileException("Failed to create %s".formatted(parent), exception);
                     }
                 }
 
@@ -235,12 +214,12 @@ public class FileManager extends IFileManager<FileManager> {
                     try (final InputStream stream = jarFile.getInputStream(entry)) {
                         Files.copy(stream, target);
                     } catch (final IOException exception) {
-                        throw new FusionException("Failed to copy %s to %s".formatted(target, parent), exception);
+                        throw new FileException("Failed to copy %s to %s".formatted(target, parent), exception);
                     }
                 }
             });
         } catch (final IOException | URISyntaxException exception) {
-            throw new FusionException("Failed to extract folder %s".formatted(path), exception);
+            throw new FileException("Failed to extract folder %s".formatted(path), exception);
         }
 
         return this;
@@ -249,8 +228,6 @@ public class FileManager extends IFileManager<FileManager> {
     @Override
     public @NotNull FileManager extractFile(@NotNull final Path path) {
         if (Files.exists(path)) { // do not extract if path exists.
-            this.fusion.log("info", "Cannot extract {} to {}, because it already exists.", path.getFileName().toString(), path);
-
             return this;
         }
 
@@ -268,12 +245,12 @@ public class FileManager extends IFileManager<FileManager> {
                     try (final InputStream stream = jarFile.getInputStream(entry)) {
                         Files.copy(stream, path);
                     } catch (final IOException exception) {
-                        throw new FusionException("Failed to copy %s to %s".formatted(entry.getName(), path), exception);
+                        throw new FileException("Failed to copy %s to %s".formatted(entry.getName(), path), exception);
                     }
                 }
             });
         } catch (final IOException | URISyntaxException exception) {
-            throw new FusionException("Failed to extract file %s".formatted(path), exception);
+            throw new FileException("Failed to extract file %s".formatted(path), exception);
         }
 
         return this;
@@ -284,7 +261,7 @@ public class FileManager extends IFileManager<FileManager> {
         if (!Files.exists(path)) return this;
         if (!Files.isDirectory(path)) return this;
 
-        final Path target = this.dataPath.resolve(asString(path, content));
+        final Path target = this.path.resolve(asString(path, content));
 
         try (final ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(target)); final Stream<Path> values = Files.walk(path)) {
             final List<Path> entries = values.filter(key -> !Files.isDirectory(key)).toList();
@@ -301,7 +278,7 @@ public class FileManager extends IFileManager<FileManager> {
                 output.closeEntry();
             }
         } catch (final IOException exception) {
-            throw new FusionException("Failed to compress folder %s".formatted(path), exception);
+            throw new FileException("Failed to compress folder %s".formatted(path), exception);
         }
 
         return this;
@@ -316,14 +293,14 @@ public class FileManager extends IFileManager<FileManager> {
         try {
             size = Files.size(path);
         } catch (final Exception exception) {
-            throw new FusionException("Failed to calculate file size for %s".formatted(path), exception);
+            throw new FileException("Failed to calculate file size for %s".formatted(path), exception);
         }
 
         if (size <= 0L) return this;
 
         final String builder = asString(path, content);
 
-        final Path target = folder == null ? this.dataPath : folder.resolve(builder);
+        final Path target = folder == null ? this.path : folder.resolve(builder);
 
         try (final ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(target))) {
             final ZipEntry entry = new ZipEntry(path.getFileName().toString());
@@ -334,7 +311,7 @@ public class FileManager extends IFileManager<FileManager> {
 
             output.closeEntry();
         } catch (final Exception exception) {
-            throw new FusionException("Failed to compress %s".formatted(path), exception);
+            throw new FileException("Failed to compress %s".formatted(path), exception);
         }
 
         return this;
@@ -345,24 +322,30 @@ public class FileManager extends IFileManager<FileManager> {
         try {
             Files.writeString(path, content, StandardOpenOption.APPEND);
         } catch (final IOException exception) {
-            throw new FusionException("Failed to write %s to %s".formatted(content, path), exception);
+            throw new FileException("Failed to write %s to %s".formatted(content, path), exception);
         }
 
         return this;
     }
 
     @Override
-    public final int getFileCount(@NotNull final Path path, @NotNull final String extension) {
-        return this.fusion.getFiles(path, extension, 1).size();
+    public final int getDirectorySize(@NotNull final Path path, @NotNull final String extension) {
+        return getFiles(path, extension, getDepth()).size();
+    }
+
+    @Override
+    public void setDepth(final int depth) {
+        this.depth = depth;
+    }
+
+    @Override
+    public int getDepth() {
+        return this.depth;
     }
 
     @Override
     public final boolean hasFile(@NotNull final Path path) {
         return this.files.containsKey(path);
-    }
-
-    public @NotNull final Map<Path, ICustomFile<?, ?, ?, ?>> getFiles() {
-        return Collections.unmodifiableMap(this.files);
     }
 
     @Override
@@ -396,17 +379,51 @@ public class FileManager extends IFileManager<FileManager> {
         return this;
     }
 
-    private String asString(@NotNull final Path path, @NotNull final String content) {
-        final StringBuilder builder = new StringBuilder();
+    @Override
+    public @NotNull final List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean removeExtension) {
+        final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), List.of(extension), depth);
 
-        builder.append(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        final List<String> names = new ArrayList<>();
 
-        if (!content.isEmpty()) builder.append(content);
+        for (final Path key : files) {
+            final String fileName = key.getFileName().toString();
 
-        final int fileCount = this.getFileCount(path, ".gz");
+            if (!fileName.endsWith(extension)) continue;
 
-        builder.append("-").append(fileCount).append(".gz");
+            names.add(removeExtension ? fileName.replace(extension, "") : fileName);
+        }
 
-        return builder.toString();
+        return names;
+    }
+
+    @Override
+    public @NotNull final List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions, final int depth) {
+        final List<Path> files = new ArrayList<>();
+
+        if (Files.notExists(path) || !Files.isDirectory(path)) return new ArrayList<>();
+
+        try {
+            Files.walkFileTree(path, new HashSet<>(), Math.max(depth, 1), new SimpleFileVisitor<>() {
+                @Override
+                public @NotNull FileVisitResult visitFile(@NotNull final Path path, @NotNull final BasicFileAttributes attributes) {
+                    final String fileName = path.getFileName().toString();
+
+                    extensions.forEach(extension -> {
+                        if (fileName.endsWith(extension)) files.add(path);
+                    });
+
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (final IOException exception) {
+            throw new FileException("Failed to get a list of files", exception);
+        }
+
+        return files;
+    }
+
+    @Override
+    public @NotNull final Map<Path, ICustomFile<?, ?, ?, ?>> getFiles() {
+        return Collections.unmodifiableMap(this.files);
     }
 }

@@ -33,7 +33,7 @@ tasks {
 
         repositories {
             maven {
-                url = uri("https://repo.crazycrew.us/releases/")
+                url = uri("https://repo.crazycrew.us/snapshots/")
                 credentials(PasswordCredentials::class)
                 authentication.create<BasicAuthentication>("basic")
             }

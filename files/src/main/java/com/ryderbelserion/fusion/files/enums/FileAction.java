@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.core.files.enums;
+package com.ryderbelserion.fusion.files.enums;
 
 public enum FileAction {
 
@@ -14,13 +14,7 @@ public enum FileAction {
     // Delete the file and remove from cache.
     DELETE_FILE,
 
-    // The files with this tag are user created.
-    DYNAMIC_FILE,
-
-    // This is used when a file is already reloaded to avoid double reloads.
-    FILE_ALREADY_RELOADED,
-
-    // Do not extract at all.
-    MANUALLY_SAVED
+    // Do not remove file from cache.
+    KEEP_FILE,
 
 }

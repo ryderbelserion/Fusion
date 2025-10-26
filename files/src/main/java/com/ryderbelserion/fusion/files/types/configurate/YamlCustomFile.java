@@ -1,39 +1,50 @@
-package com.ryderbelserion.fusion.core.files.types;
+package com.ryderbelserion.fusion.files.types.configurate;
 
-import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.files.FileManager;
-import com.ryderbelserion.fusion.core.files.enums.FileType;
-import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
+import com.ryderbelserion.fusion.files.FileException;
+import com.ryderbelserion.fusion.files.FileManager;
+import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.files.interfaces.IConfigurate;
+import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.configurate.BasicConfigurationNode;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurationOptions;
-import org.spongepowered.configurate.gson.GsonConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
 
-public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurationNode, GsonConfigurationLoader, ConfigurationOptions> {
+public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedConfigurationNode, YamlConfigurationLoader, ConfigurationOptions> implements IConfigurate {
 
-    public JsonCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<JsonCustomFile> consumer) {
+    public YamlCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<YamlCustomFile> consumer) {
         super(fileManager, path);
 
         this.options = ConfigurationOptions.defaults();
 
         consumer.accept(this);
 
-        this.loader = GsonConfigurationLoader.builder().path(getPath()).defaultOptions(getOptions()).build();
+        this.loader = YamlConfigurationLoader.builder().path(getPath()).defaultOptions(getOptions()).build();
     }
 
     @Override
-    public @NotNull BasicConfigurationNode loadConfig() throws IOException {
+    public @NotNull CommentedConfigurationNode loadConfig() throws IOException {
         return this.loader.load();
     }
 
     @Override
     public void saveConfig() throws IOException {
         this.loader.save(this.configuration);
+    }
+
+    @Override
+    public @NotNull FileType getFileType() {
+        return FileType.YAML;
+    }
+
+    @Override
+    public boolean isLoaded() {
+        return this.configuration != null;
     }
 
     /**
@@ -104,7 +115,7 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
      */
     @Override
     public @NotNull List<String> getStringList(@NotNull final List<String> defaultValue, @NotNull final Object... path) {
-        final BasicConfigurationNode node = getConfiguration().node(path);
+        final CommentedConfigurationNode node = getConfiguration().node(path);
 
         try {
             final List<String> list = node.getList(String.class);
@@ -113,17 +124,7 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
 
             return defaultValue;
         } catch (final SerializationException exception) {
-            throw new FusionException(String.format("Failed to serialize %s!", node.path()), exception);
+            throw new FileException("Failed to serialize %s!".formatted(node.path()), exception);
         }
-    }
-
-    @Override
-    public boolean isLoaded() {
-        return this.configuration != null;
-    }
-
-    @Override
-    public @NotNull FileType getFileType() {
-        return FileType.JSON;
     }
 }

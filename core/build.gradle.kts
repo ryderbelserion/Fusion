@@ -5,13 +5,11 @@ plugins {
 
 project.group = "${rootProject.name}.core"
 
-repositories {
-    maven("https://libraries.minecraft.net/")
-}
-
 dependencies {
-    compileOnlyApi(libs.bundles.adventure)
-    compileOnlyApi(libs.configurate.yaml)
-    compileOnlyApi(libs.configurate.gson)
-    compileOnlyApi(libs.jalu)
+    implementation(project(":fusion-files"))
+
+    compileOnly(libs.bundles.adventure)
+    compileOnly(libs.configurate.gson)
+    compileOnly(libs.configurate.yaml)
+    compileOnly(libs.jalu)
 }

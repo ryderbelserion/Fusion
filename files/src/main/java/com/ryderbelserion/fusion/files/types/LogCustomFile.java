@@ -1,8 +1,8 @@
-package com.ryderbelserion.fusion.core.files.types;
+package com.ryderbelserion.fusion.files.types;
 
-import com.ryderbelserion.fusion.core.files.FileManager;
-import com.ryderbelserion.fusion.core.files.enums.FileType;
-import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
+import com.ryderbelserion.fusion.files.FileManager;
+import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Files;

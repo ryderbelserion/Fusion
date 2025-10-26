@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.core.files.enums;
+package com.ryderbelserion.fusion.files.enums;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -16,29 +16,9 @@ public enum FileType {
      */
     JSON(".json"),
     /**
-     * Files that end with .yml, but are built with Configurate which is by SpongePowered, and for internal use only.
-     */
-    FUSION_YAML(".yml"),
-    /**
-     * Files that end with .json, but are built with Configurate which is by SpongePowered, and for internal use only.
-     */
-    FUSION_JSON(".json"),
-    /**
-     * Files that end with .yml, but are built using YamlConfiguration supplied by Paper
-     */
-    PAPER(".yml"),
-    /**
      * Files that end with .yml, but are made by ConfigMe
      */
     JALU(".yml"),
-    /**
-     * Files with no extension.
-     */
-    NONE("none"),
-    /**
-     * Files with the extension .nbt
-     */
-    NBT(".nbt"),
     /**
      * Files with the extension .log
      */
