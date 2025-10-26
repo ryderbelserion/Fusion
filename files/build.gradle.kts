@@ -6,7 +6,7 @@ plugins {
 project.group = "${rootProject.name}.files"
 
 dependencies {
-    implementation(libs.configurate.gson)
-    implementation(libs.configurate.yaml)
-    implementation(libs.jalu)
+    api(libs.configurate.gson)
+    api(libs.configurate.yaml)
+    api(libs.jalu)
 }
