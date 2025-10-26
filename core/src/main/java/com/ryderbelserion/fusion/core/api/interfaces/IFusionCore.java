@@ -1,8 +1,8 @@
 package com.ryderbelserion.fusion.core.api.interfaces;
 
 import com.ryderbelserion.fusion.core.api.support.ModManager;
-import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
+import com.ryderbelserion.fusion.files.FileManager;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
