@@ -25,7 +25,7 @@ import java.util.function.Consumer;
 
 public abstract class FusionCore implements IFusionCore {
 
-    private final StringUtils stringUtils;
+    //private final StringUtils stringUtils;
     private final ModManager modManager;
 
     protected final SettingsManager config;
@@ -37,7 +37,7 @@ public abstract class FusionCore implements IFusionCore {
 
         this.config = SettingsManagerBuilder.withYamlFile(this.dataPath.resolve("fusion.yml")).useDefaultMigrationService().configurationData(FusionConfig.class).create();
 
-        this.stringUtils = new StringUtils(this);
+        //this.stringUtils = new StringUtils(this);
         this.modManager = new ModManager(this);
     }
 
@@ -166,11 +166,6 @@ public abstract class FusionCore implements IFusionCore {
     @Override
     public ModManager getModManager() {
         return this.modManager;
-    }
-
-    @Override
-    public StringUtils getStringUtils() {
-        return this.stringUtils;
     }
 
     @Override
