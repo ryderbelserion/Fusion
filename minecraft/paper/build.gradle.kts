@@ -42,8 +42,6 @@ dependencies {
 
     compileOnly(libs.bundles.shared)
 
-    //api(project(":fusion-core"))
-
     api(project(":fusion-files"))
     api(project(":fusion-kyori"))
 }

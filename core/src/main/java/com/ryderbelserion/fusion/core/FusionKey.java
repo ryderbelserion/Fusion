@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.core;
 
-import com.ryderbelserion.fusion.core.api.interfaces.IFusionKey;
+import com.ryderbelserion.fusion.core.interfaces.IFusionKey;
 import org.jetbrains.annotations.NotNull;
 
 public class FusionKey extends IFusionKey {
@@ -12,21 +12,6 @@ public class FusionKey extends IFusionKey {
         this.namespace = namespace;
 
         this.value = value;
-    }
-
-    @Override
-    public @NotNull String getNamespace() {
-        return this.namespace;
-    }
-
-    @Override
-    public @NotNull String getValue() {
-        return this.value;
-    }
-
-    @Override
-    public @NotNull String asString() {
-        return this.namespace + ":" + this.value;
     }
 
     public static FusionKey key(@NotNull final String namespace, @NotNull final String value) {
@@ -43,5 +28,20 @@ public class FusionKey extends IFusionKey {
 
     public static String getFusionNamespace() {
         return "fusion";
+    }
+
+    @Override
+    public @NotNull String getNamespace() {
+        return this.namespace;
+    }
+
+    @Override
+    public @NotNull String getValue() {
+        return this.value;
+    }
+
+    @Override
+    public @NotNull String asString() {
+        return this.namespace + ":" + this.value;
     }
 }

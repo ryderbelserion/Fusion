@@ -7,6 +7,6 @@ public class Fusion extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        final FusionPaper fusion = new FusionPaper(getDataPath());
+        final FusionPaper fusion = new FusionPaper(this);
     }
 }

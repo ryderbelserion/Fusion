@@ -50,6 +50,27 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
     /**
      * {@inheritDoc}
      *
+     * @param path {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Override
+    public @NotNull List<String> getStringList(@NotNull final List<String> defaultValue, @NotNull final Object... path) {
+        final BasicConfigurationNode node = getConfiguration().node(path);
+
+        try {
+            final List<String> list = node.getList(String.class);
+
+            if (list != null) return list;
+
+            return defaultValue;
+        } catch (final SerializationException exception) {
+            throw new FileException("Failed to serialize %s!".formatted(node.path()), exception);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param defaultValue {@inheritDoc}
      * @param path         {@inheritDoc}
      * @return {@inheritDoc}
@@ -105,26 +126,5 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
     @Override
     public int getIntValueWithDefault(final int defaultValue, @NotNull final Object... path) {
         return getConfiguration().node(path).getInt(defaultValue);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param path {@inheritDoc}
-     * @return {@inheritDoc}
-     */
-    @Override
-    public @NotNull List<String> getStringList(@NotNull final List<String> defaultValue, @NotNull final Object... path) {
-        final BasicConfigurationNode node = getConfiguration().node(path);
-
-        try {
-            final List<String> list = node.getList(String.class);
-
-            if (list != null) return list;
-
-            return defaultValue;
-        } catch (final SerializationException exception) {
-            throw new FileException("Failed to serialize %s!".formatted(node.path()), exception);
-        }
     }
 }

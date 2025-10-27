@@ -9,9 +9,7 @@ rootProject.name = "Fusion"
 
 listOf(
     //"velocity",
-    //"paper",
     "core",
-    "api",
 
     // test plugin
     "plugin",

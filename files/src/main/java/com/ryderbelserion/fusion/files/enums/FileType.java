@@ -8,6 +8,10 @@ import org.jetbrains.annotations.NotNull;
 public enum FileType {
 
     /**
+     * Files that end with .yml, but are built with Bukkit Configuration
+     */
+    PAPER_YAML(".yml"),
+    /**
      * Files that end with .yml, but are built with Configurate which is by SpongePowered
      */
     YAML(".yml"),
@@ -19,6 +23,10 @@ public enum FileType {
      * Files that end with .yml, but are made by ConfigMe
      */
     JALU(".yml"),
+    /**
+     * Files that end with .nbt, used for structure files
+     */
+    NBT(".nbt"),
     /**
      * Files with the extension .log
      */

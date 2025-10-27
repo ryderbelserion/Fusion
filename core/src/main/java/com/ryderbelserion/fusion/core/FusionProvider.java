@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.core;
 
-import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.exceptions.FusionException;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +20,9 @@ public class FusionProvider {
     }
 
     public static @NotNull FusionCore getInstance() {
-        if (instance == null) throw new FusionException("Fusion API is not yet initialized.");
+        if (instance == null) {
+            throw new FusionException("Fusion API is not yet initialized.");
+        }
 
         return instance;
     }
