@@ -16,7 +16,7 @@ public abstract class FusionCore implements IFusionCore {
     private final Path path;
 
     public FusionCore(@NotNull final Path path) {
-        this.config = SettingsManagerBuilder.withYamlFile(path).configurationData(FusionConfig.class).useDefaultMigrationService().create();
+        this.config = SettingsManagerBuilder.withYamlFile(path.resolve("fusion.yml")).configurationData(FusionConfig.class).useDefaultMigrationService().create();
         this.path = path;
     }
 
