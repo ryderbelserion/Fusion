@@ -15,6 +15,6 @@ public class Fusion extends JavaPlugin {
 
         final Path path = getDataPath();
 
-        fileManager.extractFile(path.resolve("config.yml"), path.resolve("guis").resolve("config.yml"));
+        fileManager.extractFile("config.yml", path.resolve("guis").resolve("config.yml"));
     }
 }
