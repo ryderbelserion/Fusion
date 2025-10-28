@@ -2,6 +2,8 @@ package com.ryderbelserion.fusion.files.enums;
 
 public enum FileAction {
 
+    // Extract a file to a specific path. usually done manually.
+    ALREADY_EXTRACTED,
     // Extract a folder.
     EXTRACT_FOLDER,
     // Extract a file.

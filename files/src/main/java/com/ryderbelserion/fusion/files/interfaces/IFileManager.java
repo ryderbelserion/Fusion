@@ -80,6 +80,8 @@ public abstract class IFileManager<I> {
 
     public abstract @NotNull I extractFolder(@NotNull final String folder, @NotNull final Path output);
 
+    public abstract @NotNull I extractFile(@NotNull final Path path, @NotNull final Path output);
+
     public abstract @NotNull I extractFile(@NotNull final Path path);
 
     public abstract @NotNull I compressFolder(@NotNull final Path path, @NotNull final String content);

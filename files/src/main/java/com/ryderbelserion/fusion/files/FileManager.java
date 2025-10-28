@@ -226,6 +226,47 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
+    public @NotNull FileManager extractFile(@NotNull final Path path, @NotNull final Path output) {
+        if (Files.exists(output)) { // do not extract if path exists.
+            return this;
+        }
+
+        final Path parent = output.getParent();
+
+        if (!Files.exists(parent)) {
+            try {
+                Files.createDirectory(parent);
+            } catch (final IOException exception) {
+                throw new FileException("Failed to create %s".formatted(parent));
+            }
+        }
+
+        final String fileName = path.getFileName().toString();
+
+        try (final JarFile jarFile = new JarFile(Path.of(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
+            final Set<JarEntry> entries = jarFile.stream().filter(entry -> !entry.getName().endsWith(".class"))
+                    .filter(entry -> !entry.getName().startsWith("META-INF"))
+                    .filter(entry -> !entry.isDirectory())
+                    .filter(entry -> entry.getName().equalsIgnoreCase(fileName))
+                    .collect(Collectors.toSet());
+
+            entries.forEach(entry -> {
+                if (Files.notExists(output)) {
+                    try (final InputStream stream = jarFile.getInputStream(entry)) {
+                        Files.copy(stream, output);
+                    } catch (final IOException exception) {
+                        throw new FileException("Failed to copy %s to %s".formatted(entry.getName(), output), exception);
+                    }
+                }
+            });
+        } catch (final IOException | URISyntaxException exception) {
+            throw new FileException("Failed to extract file %s".formatted(path), exception);
+        }
+
+        return this;
+    }
+
+    @Override
     public @NotNull FileManager extractFile(@NotNull final Path path) {
         if (Files.exists(path)) { // do not extract if path exists.
             return this;

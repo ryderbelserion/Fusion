@@ -45,12 +45,14 @@ public abstract class ICustomFile<I, C, L, O> {
 
         final Path path = getPath();
 
-        if (hasAction(FileAction.EXTRACT_FILE)) {
-            this.fileManager.extractFile(path);
-        }
+        if (!hasAction(FileAction.ALREADY_EXTRACTED)) {
+            if (hasAction(FileAction.EXTRACT_FILE)) {
+                this.fileManager.extractFile(path);
+            }
 
-        if (hasAction(FileAction.EXTRACT_FOLDER)) {
-            this.fileManager.extractFolder(path.getFileName().toString(), path.getParent());
+            if (hasAction(FileAction.EXTRACT_FOLDER)) {
+                this.fileManager.extractFolder(path.getFileName().toString(), path.getParent());
+            }
         }
 
         this.configuration = CompletableFuture.supplyAsync(() -> {
