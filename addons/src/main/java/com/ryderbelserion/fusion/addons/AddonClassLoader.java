@@ -63,6 +63,7 @@ public class AddonClassLoader extends URLClassLoader {
             this.addon = addonClass.getDeclaredConstructor().newInstance();
             this.addon.setLoader(this);
             this.addon.setName(this.name = name);
+            this.addon.setGroup(group);
         } catch (final Exception exception) {
             throw new IllegalStateException(String.format("Failed to load main class for addon %s!", name), exception);
         }

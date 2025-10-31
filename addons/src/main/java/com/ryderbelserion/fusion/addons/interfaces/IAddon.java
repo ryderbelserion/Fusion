@@ -24,6 +24,7 @@ public abstract class IAddon {
     private Logger logger;
     private String name;
     private Path folder;
+    private String group;
 
     /**
      * Enables the addon.
@@ -107,8 +108,17 @@ public abstract class IAddon {
      * @param name the name of the addon
      */
     public void setName(@NotNull final String name) {
-        this.logger = LoggerFactory.getLogger(name);
         this.name = name;
+    }
+
+    /**
+     * Gets the group i.e. the domain
+     *
+     * @param group the group
+     */
+    public void setGroup(@NotNull final String group) {
+        this.logger = LoggerFactory.getLogger(group);
+        this.group = group;
     }
 
     /**
@@ -130,11 +140,20 @@ public abstract class IAddon {
     }
 
     /**
+     * Retrieves the group path.
+     *
+     * @return the group path of the addon
+     */
+    public @NotNull String getGroup() {
+        return this.group;
+    }
+
+    /**
      * Retrieves the folder of the addon.
      *
      * @return the folder of the addon
      */
-    public Path getFolder() {
+    public @NotNull Path getFolder() {
         return this.folder;
     }
 }
