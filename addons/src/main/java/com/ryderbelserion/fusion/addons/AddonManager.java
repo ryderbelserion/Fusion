@@ -314,6 +314,15 @@ public class AddonManager {
     }
 
     /**
+     * The path of the addon manager.
+     *
+     * @return {@link Path}
+     */
+    public @NotNull final Path getPath() {
+        return this.path;
+    }
+
+    /**
      * Fetches properties using jar file and inputstreams.
      *
      * @param path the relative path

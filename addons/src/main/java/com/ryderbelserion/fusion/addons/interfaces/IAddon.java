@@ -2,6 +2,9 @@ package com.ryderbelserion.fusion.addons.interfaces;
 
 import com.ryderbelserion.fusion.addons.AddonClassLoader;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.nio.file.Path;
 
 /**
@@ -18,6 +21,7 @@ public abstract class IAddon {
 
     private AddonClassLoader loader;
     private boolean isEnabled;
+    private Logger logger;
     private String name;
     private Path folder;
 
@@ -98,12 +102,22 @@ public abstract class IAddon {
     }
 
     /**
-     * Sets the name of the addon.
+     * Sets the name of the addon, and creates a logger impl.
      *
      * @param name the name of the addon
      */
     public void setName(@NotNull final String name) {
+        this.logger = LoggerFactory.getLogger(name);
         this.name = name;
+    }
+
+    /**
+     * Gets an instance of the logger.
+     *
+     * @return the logger instance of this addon
+     */
+    public @NotNull Logger getLogger() {
+        return this.logger;
     }
 
     /**
