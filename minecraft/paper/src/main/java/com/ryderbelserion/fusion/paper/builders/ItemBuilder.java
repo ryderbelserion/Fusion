@@ -30,4 +30,28 @@ public class ItemBuilder extends BaseItemBuilder<ItemBuilder> {
     public ItemBuilder(@NotNull final String itemStack) {
         super(itemStack);
     }
+
+    public static ItemBuilder from(@NotNull final ItemType itemType, final int amount, @NotNull final Consumer<BaseItemBuilder> consumer) {
+        return new ItemBuilder(itemType, amount, consumer);
+    }
+
+    public static ItemBuilder from(@NotNull final ItemType itemType, @NotNull final Consumer<BaseItemBuilder> consumer) {
+        return from(itemType, 1, consumer);
+    }
+
+    public static ItemBuilder from(@NotNull final ItemType itemType, final int amount) {
+        return from(itemType, amount, consumer -> {});
+    }
+
+    public static ItemBuilder from(@NotNull final String itemType, final int amount) {
+        return new ItemBuilder(itemType).setAmount(amount);
+    }
+
+    public static ItemBuilder from(@NotNull final String itemType) {
+        return from(itemType, 1);
+    }
+
+    public static ItemBuilder from(@NotNull final ItemStack itemStack) {
+        return new ItemBuilder(itemStack);
+    }
 }
