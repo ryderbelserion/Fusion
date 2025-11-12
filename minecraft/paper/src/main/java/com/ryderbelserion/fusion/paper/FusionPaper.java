@@ -122,7 +122,8 @@ public class FusionPaper extends FusionKyori {
         return this.registry;
     }
 
-    public @NotNull final PaperFileManager getFileManager() {
+    @Override
+    public final @NotNull PaperFileManager getFileManager() {
         return this.fileManager;
     }
 

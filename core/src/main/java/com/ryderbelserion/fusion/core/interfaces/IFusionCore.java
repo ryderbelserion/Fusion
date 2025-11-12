@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.core.interfaces;
 
+import com.ryderbelserion.fusion.files.FileManager;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -7,6 +8,8 @@ import java.nio.file.Path;
 public interface IFusionCore {
 
     void deleteDirectory(@NotNull final Path path) throws IOException;
+
+    FileManager getFileManager();
 
     String getNumberFormat();
 
