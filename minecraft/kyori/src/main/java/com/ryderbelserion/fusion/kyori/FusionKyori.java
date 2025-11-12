@@ -29,9 +29,9 @@ public abstract class FusionKyori extends FusionCore {
         this.logger = logger;
     }
 
-    public abstract Component parse(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags);
+    public abstract Component parse(@Nullable final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags);
 
-    public abstract String papi(@NotNull final Audience audience, @NotNull final String message);
+    public abstract String papi(@Nullable final Audience audience, @NotNull final String message);
 
     @SuppressWarnings("DuplicatedCode")
     public void log(@NotNull final String type, @NotNull final String message, @NotNull final Throwable throwable) {

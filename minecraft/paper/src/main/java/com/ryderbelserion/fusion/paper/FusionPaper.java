@@ -5,7 +5,6 @@ import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.FusionKey;
 import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.exceptions.FusionException;
-import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.mods.ModSupport;
 import com.ryderbelserion.fusion.kyori.mods.objects.Mod;
@@ -19,7 +18,6 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -57,7 +55,7 @@ public class FusionPaper extends FusionKyori {
     }
 
     @Override
-    public @NotNull final Component parse(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
+    public @NotNull final Component parse(@Nullable final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
         //final List<TagResolver> resolvers = new ArrayList<>(tags);
 
         //placeholders.forEach((key, value) -> resolvers.add(Placeholder.parsed(StringUtils.replaceAllBrackets(key).toLowerCase(), value)));
@@ -73,7 +71,7 @@ public class FusionPaper extends FusionKyori {
     }
 
     @Override
-    public @NotNull final String papi(@NotNull final Audience audience, @NotNull final String message) {
+    public @NotNull final String papi(@Nullable final Audience audience, @NotNull final String message) {
         return audience instanceof Player player && getModManager().getMod(ModSupport.placeholder_api).isEnabled() ? PlaceholderAPI.setPlaceholders(player, message) : message;
     }
 
