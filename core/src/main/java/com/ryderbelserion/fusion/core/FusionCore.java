@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 
 public abstract class FusionCore implements IFusionCore {
 
@@ -18,6 +19,25 @@ public abstract class FusionCore implements IFusionCore {
     public FusionCore(@NotNull final Path path) {
         this.config = SettingsManagerBuilder.withYamlFile(path.resolve("fusion.yml")).configurationData(FusionConfig.class).useDefaultMigrationService().create();
         this.path = path;
+    }
+
+    public String replacePlaceholder(@NotNull final String message, @NotNull final Map<String, String> placeholders) {
+        String safeMessage = message;
+
+        if (!placeholders.isEmpty()) {
+            for (final Map.Entry<String, String> key : placeholders.entrySet()) {
+                if (key == null) continue;
+
+                final String placeholder = key.getKey();
+                final String value = key.getValue();
+
+                if (placeholder != null && value != null) {
+                    safeMessage = safeMessage.replace(placeholder, value).replace(placeholder.toLowerCase(), value);
+                }
+            }
+        }
+
+        return safeMessage;
     }
 
     public abstract boolean isModReady(@NotNull final FusionKey key);

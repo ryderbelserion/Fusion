@@ -6,7 +6,6 @@ import com.ryderbelserion.fusion.core.FusionKey;
 import com.ryderbelserion.fusion.core.FusionProvider;
 import com.ryderbelserion.fusion.core.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
-import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.mods.ModSupport;
 import com.ryderbelserion.fusion.kyori.mods.objects.Mod;
@@ -32,7 +31,7 @@ import java.util.*;
 
 public class FusionPaper extends FusionKyori {
 
-    private final FileManager fileManager;
+    private final PaperFileManager fileManager;
     private PluginManager pluginManager;
     private StructureRegistry registry;
     private HeadDatabaseAPI api;
@@ -59,11 +58,13 @@ public class FusionPaper extends FusionKyori {
 
     @Override
     public @NotNull final Component parse(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
-        final List<TagResolver> resolvers = new ArrayList<>(tags);
+        //final List<TagResolver> resolvers = new ArrayList<>(tags);
 
-        placeholders.forEach((key, value) -> resolvers.add(Placeholder.parsed(StringUtils.replaceAllBrackets(key).toLowerCase(), value)));
+        //placeholders.forEach((key, value) -> resolvers.add(Placeholder.parsed(StringUtils.replaceAllBrackets(key).toLowerCase(), value)));
 
-        return MiniMessage.miniMessage().deserialize(papi(audience, StringUtils.replaceBrackets(message)), TagResolver.resolver(resolvers)).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+        //return MiniMessage.miniMessage().deserialize(papi(audience, StringUtils.replaceBrackets(message)), TagResolver.resolver(resolvers)).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+
+        return MiniMessage.miniMessage().deserialize(papi(audience, replacePlaceholder(message, placeholders))).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
     @Override
@@ -123,7 +124,7 @@ public class FusionPaper extends FusionKyori {
         return this.registry;
     }
 
-    public @NotNull final FileManager getFileManager() {
+    public @NotNull final PaperFileManager getFileManager() {
         return this.fileManager;
     }
 
