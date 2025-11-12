@@ -86,6 +86,12 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
        add(ItemType.NETHERITE_AXE.key().asString());
        add(ItemType.NETHERITE_HOE.key().asString());
        add(ItemType.NETHERITE_SHOVEL.key().asString());
+
+       add(ItemType.COPPER_PICKAXE.key().asString());
+       add(ItemType.COPPER_SHOVEL.key().asString());
+       add(ItemType.COPPER_SWORD.key().asString());
+       add(ItemType.COPPER_AXE.key().asString());
+       add(ItemType.COPPER_HOE.key().asString());
     }};
 
     private static final Set<String> leather_items = new HashSet<>() {{
@@ -124,9 +130,12 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         add(ItemType.TURTLE_HELMET.key().asString());
 
-        addAll(leather_items);
+        add(ItemType.COPPER_HELMET.key().asString());
+        add(ItemType.COPPER_CHESTPLATE.key().asString());
+        add(ItemType.COPPER_LEGGINGS.key().asString());
+        add(ItemType.COPPER_BOOTS.key().asString());
 
-        //todo() add copper armor
+        addAll(leather_items);
     }};
 
     private static final Set<String> potions = new HashSet<>() {{
@@ -479,13 +488,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return plainLore;
     }
 
-    public @NotNull B addEnchantGlint(final boolean isGlowing) {
-        if (!isGlowing && this.itemStack.hasData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE)) {
-            this.itemStack.unsetData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE);
-
-            return (B) this;
-        }
-
+    public @NotNull B addEnchantGlint() {
         this.itemStack.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true);
 
         return (B) this;
