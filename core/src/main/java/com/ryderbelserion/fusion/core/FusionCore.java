@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 
 public abstract class FusionCore implements IFusionCore {
@@ -43,6 +44,18 @@ public abstract class FusionCore implements IFusionCore {
     public abstract boolean isModReady(@NotNull final FusionKey key);
 
     public abstract FusionCore reload();
+
+    public abstract @NotNull List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean removeExtension);
+
+    public @NotNull List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final boolean removeExtension) {
+        return getFileNames(folder, path, extension, 1, removeExtension);
+    }
+
+    public abstract @NotNull List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions, final int depth);
+
+    public @NotNull List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth) {
+        return getFiles(path, List.of(extension), depth);
+    }
 
     @Override
     public void deleteDirectory(@NotNull final Path path) throws IOException {

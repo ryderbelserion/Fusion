@@ -25,6 +25,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.nio.file.Path;
 import java.util.*;
 
 public class FusionPaper extends FusionKyori {
@@ -85,6 +87,16 @@ public class FusionPaper extends FusionKyori {
         this.config.reload();
 
         return this;
+    }
+
+    @Override
+    public @NotNull final List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean removeExtension) {
+        return this.fileManager.getFileNames(folder, path, extension, depth, removeExtension);
+    }
+
+    @Override
+    public @NotNull final List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions, final int depth) {
+        return this.fileManager.getFiles(path, extensions, depth);
     }
 
     @Override
