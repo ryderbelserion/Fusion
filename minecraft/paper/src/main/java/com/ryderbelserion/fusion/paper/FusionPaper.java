@@ -54,6 +54,8 @@ public class FusionPaper extends FusionKyori {
         super(context.getDataDirectory(), context.getLogger());
 
         this.fileManager = new PaperFileManager(getDataPath());
+
+        FusionProvider.register(this);
     }
 
     @Override
@@ -102,6 +104,10 @@ public class FusionPaper extends FusionKyori {
     @Override
     public void init() {
         super.init();
+
+        if (FusionProvider.isRegistered()) { // unregister just in case
+            FusionProvider.unregister();
+        }
 
         this.server = this.plugin.getServer();
 

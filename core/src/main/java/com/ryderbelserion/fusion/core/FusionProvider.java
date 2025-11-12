@@ -14,6 +14,10 @@ public class FusionProvider {
         FusionProvider.instance = instance;
     }
 
+    public static boolean isRegistered() {
+        return instance != null;
+    }
+
     @ApiStatus.Internal
     public static void unregister() {
         FusionProvider.instance = null;
