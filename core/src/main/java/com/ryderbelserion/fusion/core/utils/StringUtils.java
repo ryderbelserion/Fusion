@@ -112,7 +112,7 @@ public class StringUtils {
         return BRACKET_PATTERN.matcher(input).replaceAll("<$1>");
     }
 
-    public @NotNull String toString(@NotNull final List<String> list) {
+    public static @NotNull String toString(@NotNull final List<String> list) {
         if (list.isEmpty()) return "";
 
         final StringBuilder message = new StringBuilder(list.size());
