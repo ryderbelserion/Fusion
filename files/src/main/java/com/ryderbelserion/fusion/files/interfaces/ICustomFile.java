@@ -63,6 +63,10 @@ public abstract class ICustomFile<I, C, L, O> {
             }
         }).join();
 
+        if (hasAction(FileAction.RELOAD_FILE)) { // config loaded, we remove!
+            removeAction(FileAction.RELOAD_FILE);
+        }
+
         return (I) this;
     }
 

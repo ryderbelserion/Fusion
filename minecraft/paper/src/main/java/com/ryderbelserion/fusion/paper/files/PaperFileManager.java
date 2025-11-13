@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.paper.files;
 
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
+import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.paper.files.types.NbtCustomFile;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,7 +21,13 @@ public class PaperFileManager extends FileManager {
 
     public final PaperFileManager addPaperFile(@NotNull final Path path, @NotNull final Consumer<PaperCustomFile> consumer) {
         if (this.files.containsKey(path)) {
-            this.files.get(path).load();
+            final PaperCustomFile customFile = (PaperCustomFile) this.files.get(path);
+
+            consumer.accept(customFile);
+
+            if (customFile.hasAction(FileAction.RELOAD_FILE)) {
+                customFile.load();
+            }
 
             return this;
         }

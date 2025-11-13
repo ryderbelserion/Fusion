@@ -51,7 +51,13 @@ public class FileManager extends IFileManager<FileManager> {
     @Override
     public @NotNull FileManager addFile(@NotNull final Path path, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
         if (this.files.containsKey(path)) {
-            this.files.get(path).load();
+            final ICustomFile<?, ?, ?, ?> customFile = this.files.get(path);
+
+            consumer.accept(customFile);
+
+            if (customFile.hasAction(FileAction.RELOAD_FILE)) {
+                customFile.load();
+            }
 
             return this;
         }

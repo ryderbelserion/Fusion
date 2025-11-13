@@ -24,4 +24,6 @@ public enum FileAction {
     // The file is created not by the user, but by the system.
     STATIC_FILE,
 
+    RELOAD_FILE
+
 }
