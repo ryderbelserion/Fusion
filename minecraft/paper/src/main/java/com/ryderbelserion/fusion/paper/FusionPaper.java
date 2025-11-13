@@ -105,7 +105,7 @@ public class FusionPaper extends FusionKyori {
 
         this.registry = new StructureRegistry(this.plugin, this.server.getStructureManager());
 
-        ModSupport.dependencies.forEach(dependency -> getModManager().addMod(dependency, new Mod()));
+        ModSupport.dependencies.forEach(dependency -> getModManager().addMod(dependency, new Mod(this)));
 
         if (this.isModReady(ModSupport.head_database) && this.api == null) this.api = new HeadDatabaseAPI();
 

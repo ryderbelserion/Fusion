@@ -1,15 +1,11 @@
 package com.ryderbelserion.fusion.kyori.mods.interfaces;
 
 import com.ryderbelserion.fusion.core.FusionKey;
-import com.ryderbelserion.fusion.core.FusionProvider;
-import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 public abstract class IMod {
-
-    protected final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
     public abstract void setKey(@NotNull final FusionKey key);
 
