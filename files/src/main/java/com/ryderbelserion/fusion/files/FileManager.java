@@ -41,7 +41,7 @@ public class FileManager extends IFileManager<FileManager> {
     public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
         extractFolder(folder.getFileName().toString(), folder.getParent());
 
-        for (final Path path : getFiles(folder, ".yml", getDepth())) {
+        for (final Path path : getFiles(folder, fileType.getExtension(), getDepth())) {
             addFile(path, fileType, consumer);
         }
 
