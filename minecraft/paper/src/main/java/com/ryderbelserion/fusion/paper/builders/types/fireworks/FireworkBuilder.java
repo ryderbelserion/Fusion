@@ -41,6 +41,8 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
     }
 
     public @NotNull FireworkBuilder withDuration(final int duration) {
+        if (duration == -1) return this;
+
         this.builder.flightDuration(duration);
 
         return this;

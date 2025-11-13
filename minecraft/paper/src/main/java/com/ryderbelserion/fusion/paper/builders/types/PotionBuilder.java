@@ -37,12 +37,16 @@ public class PotionBuilder extends BaseItemBuilder<PotionBuilder> {
     }
 
     public @NotNull PotionBuilder withCustomName(@NotNull final String customName) {
+        if (customName.isBlank()) return this;
+
         this.builder.customName(customName);
 
         return this;
     }
 
     public @NotNull PotionBuilder setDuration(final float duration) {
+        if (duration == -1F) return this;
+
         this.itemStack.setData(DataComponentTypes.POTION_DURATION_SCALE, duration);
 
         return this;
@@ -50,6 +54,8 @@ public class PotionBuilder extends BaseItemBuilder<PotionBuilder> {
 
     @Override
     public @NotNull PotionBuilder setColor(@NotNull final String value) {
+        if (value.isBlank()) return this;
+
         this.builder.customColor(value.contains(",") ? ColorUtils.getRGB(value) : ColorUtils.getColor(value));
 
         return this;

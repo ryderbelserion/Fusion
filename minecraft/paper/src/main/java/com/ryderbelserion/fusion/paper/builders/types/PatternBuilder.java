@@ -27,6 +27,8 @@ public class PatternBuilder extends BaseItemBuilder<PatternBuilder> {
     }
 
     public @NotNull PatternBuilder addPattern(@NotNull final String pattern, @NotNull final String dye) {
+        if (pattern.isBlank() || dye.isBlank()) return this;
+
         final PatternType type = ItemUtils.getPatternType(pattern.toLowerCase());
 
         if (type == null) return this;
