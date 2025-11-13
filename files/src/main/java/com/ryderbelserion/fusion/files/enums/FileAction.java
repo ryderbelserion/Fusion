@@ -19,4 +19,9 @@ public enum FileAction {
     // Do not remove file from cache.
     KEEP_FILE,
 
+    // The file is user created.
+    DYNAMIC_FILE,
+    // The file is created not by the user, but by the system.
+    STATIC_FILE,
+
 }
