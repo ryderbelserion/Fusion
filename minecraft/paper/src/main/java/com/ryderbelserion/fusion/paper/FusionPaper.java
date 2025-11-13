@@ -96,7 +96,7 @@ public class FusionPaper extends FusionKyori {
     }
 
     @Override
-    public void init() {
+    public @NotNull final FusionPaper init() {
         super.init();
 
         this.server = this.plugin.getServer();
@@ -112,6 +112,8 @@ public class FusionPaper extends FusionKyori {
         this.pluginManager.registerEvents(new GuiListener(), this.plugin);
 
         FusionProvider.register(this);
+
+        return this;
     }
 
     public @NotNull final Optional<HeadDatabaseAPI> getHeadDatabaseAPI() {

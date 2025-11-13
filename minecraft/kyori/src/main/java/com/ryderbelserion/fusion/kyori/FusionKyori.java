@@ -83,7 +83,7 @@ public abstract class FusionKyori extends FusionCore {
         return this.modManager;
     }
 
-    public void init() {
+    public FusionKyori init() {
         final Path dataPath = getDataPath();
 
         if (Files.notExists(dataPath)) {
@@ -93,5 +93,6 @@ public abstract class FusionKyori extends FusionCore {
                 exception.printStackTrace();
             }
         }
+        return null;
     }
 }
