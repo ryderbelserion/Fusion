@@ -91,8 +91,8 @@ public class FusionPaper extends FusionKyori {
     }
 
     @Override
-    public @NotNull final List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions, final int depth) {
-        return this.fileManager.getFiles(path, extensions, depth);
+    public @NotNull final List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions) {
+        return this.fileManager.getFiles(path, extensions, getDepth());
     }
 
     @Override

@@ -43,6 +43,10 @@ public class ItemBuilder extends BaseItemBuilder<ItemBuilder> {
         return from(itemType, amount, consumer -> {});
     }
 
+    public static ItemBuilder from(@NotNull final ItemType itemType) {
+        return from(itemType, 1, consumer -> {});
+    }
+
     public static ItemBuilder from(@NotNull final String itemType, final int amount) {
         return new ItemBuilder(itemType).setAmount(amount);
     }

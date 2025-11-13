@@ -48,13 +48,13 @@ public abstract class FusionCore implements IFusionCore {
     public abstract @NotNull List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean removeExtension);
 
     public @NotNull List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final boolean removeExtension) {
-        return getFileNames(folder, path, extension, 1, removeExtension);
+        return getFileNames(folder, path, extension, getDepth(), removeExtension);
     }
 
-    public abstract @NotNull List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions, final int depth);
+    public abstract @NotNull List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions);
 
-    public @NotNull List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth) {
-        return getFiles(path, List.of(extension), depth);
+    public @NotNull List<Path> getFiles(@NotNull final Path path, @NotNull final String extension) {
+        return getFiles(path, List.of(extension));
     }
 
     @Override
