@@ -60,12 +60,6 @@ public class FusionPaper extends FusionKyori {
 
     @Override
     public @NotNull final Component parse(@Nullable final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
-        //final List<TagResolver> resolvers = new ArrayList<>(tags);
-
-        //placeholders.forEach((key, value) -> resolvers.add(Placeholder.parsed(StringUtils.replaceAllBrackets(key).toLowerCase(), value)));
-
-        //return MiniMessage.miniMessage().deserialize(papi(audience, StringUtils.replaceBrackets(message)), TagResolver.resolver(resolvers)).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
-
         return MiniMessage.miniMessage().deserialize(papi(audience, replacePlaceholder(message, placeholders))).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
@@ -105,10 +99,6 @@ public class FusionPaper extends FusionKyori {
     public void init() {
         super.init();
 
-        if (FusionProvider.isRegistered()) { // unregister just in case
-            FusionProvider.unregister();
-        }
-
         this.server = this.plugin.getServer();
 
         this.pluginManager = this.server.getPluginManager();
@@ -128,10 +118,6 @@ public class FusionPaper extends FusionKyori {
         return Optional.ofNullable(this.api);
     }
 
-    public void setPlugin(@NotNull final JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
-
     public @NotNull final StructureRegistry getRegistry() {
         if (this.registry == null) {
             throw new FusionException("An error occurred while trying to get the structure registry instance.");
@@ -143,6 +129,12 @@ public class FusionPaper extends FusionKyori {
     @Override
     public final @NotNull PaperFileManager getFileManager() {
         return this.fileManager;
+    }
+
+    public @NotNull final FusionPaper setPlugin(@NotNull final JavaPlugin plugin) {
+        this.plugin = plugin;
+
+        return this;
     }
 
     public @NotNull final JavaPlugin getPlugin() {
