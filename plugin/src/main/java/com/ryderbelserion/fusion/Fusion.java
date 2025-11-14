@@ -1,15 +1,17 @@
 package com.ryderbelserion.fusion;
 
-import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.files.PaperFileManager;
-import org.bukkit.command.ConsoleCommandSender;
+import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import java.nio.file.Path;
-import java.util.HashMap;
 
-public class Fusion extends JavaPlugin {
+public class Fusion extends JavaPlugin implements Listener {
 
     private final FusionPaper fusion;
 
@@ -21,18 +23,21 @@ public class Fusion extends JavaPlugin {
     public void onEnable() {
         this.fusion.setPlugin(this).init();
 
-        final PaperFileManager fileManager = this.fusion.getFileManager();
+        getServer().getPluginManager().registerEvents(this, this);
+    }
 
-        final Path path = getDataPath();
+    @EventHandler
+    public void onPlayerJoin(final PlayerJoinEvent event) {
+        final Player player = event.getPlayer();
 
-        fileManager.extractFile("config.yml", path.resolve("guis").resolve("config.yml"));
+        final Inventory inventory = player.getInventory();
 
-        final ConsoleCommandSender sender = getServer().getConsoleSender();
+        inventory.addItem(ItemBuilder.from(ItemType.POTION)
+                .setColor("229,164,229")
+                .asItemStack());
 
-        this.fusion.log("warn", "{} Chance: ", StringUtils.format(11.583011583011583));
-
-        sender.sendMessage(this.fusion.parse(sender, "A test message with a placeholder: {test}", new HashMap<>() {{
-            put("{test}", " <gradient:#e91e63:blue>CrazyCrates</gradient> | ");
-        }}));
+        inventory.addItem(ItemBuilder.from(ItemType.POTION)
+                .setColor("yellow")
+                .asItemStack());
     }
 }

@@ -93,6 +93,7 @@ public abstract class FusionKyori extends FusionCore {
                 exception.printStackTrace();
             }
         }
+
         return null;
     }
 }

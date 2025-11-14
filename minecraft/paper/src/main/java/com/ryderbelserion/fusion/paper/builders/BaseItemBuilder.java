@@ -12,7 +12,6 @@ import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.builders.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.SkullBuilder;
-import com.ryderbelserion.fusion.paper.builders.types.SpawnerBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.custom.CustomBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.fireworks.FireworkBuilder;
 import com.ryderbelserion.fusion.paper.builders.types.fireworks.FireworkStarBuilder;
@@ -44,7 +43,6 @@ import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -600,6 +598,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             final DyeColor color = ColorUtils.getDyeColor(value);
 
             this.itemStack.setData(DataComponentTypes.BASE_COLOR, color);
+        } else if (isPotion()) {
+            asPotionBuilder().setColor(value).build();
         }
 
         return (B) this;
@@ -749,12 +749,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         if (isPotion() || isTippedArrow()) return new PotionBuilder(this.itemStack);
 
         throw new FusionException("This item type is not a potion / tipped arrow.");
-    }
-
-    public @NotNull final SpawnerBuilder asSpawnerBuilder() {
-        if (!isSpawner()) throw new FusionException("This item type is not a spawner.");
-
-        return new SpawnerBuilder(this.itemStack);
     }
 
     public @NotNull final CustomBuilder asCustomBuilder() {
