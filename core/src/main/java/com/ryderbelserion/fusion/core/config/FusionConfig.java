@@ -22,7 +22,7 @@ public class FusionConfig implements SettingsHolder {
     public static final Property<Boolean> is_verbose = newProperty("settings.is_verbose", true);
 
     @Comment("This controls the format of the numerical data.")
-    public static final Property<String> number_format = newProperty("settings.number_format", "number_format");
+    public static final Property<String> number_format = newProperty("settings.number_format", "#,###.##");
 
     @Comment({
             "This controls the type of rounding for how the numerical data is rounded.",
