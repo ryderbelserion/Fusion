@@ -40,6 +40,8 @@ public abstract class IAddon {
         setEnabled(false);
     }
 
+    public void onReload() {}
+
     /**
      * Enables an addon, this includes adding it to the class path.
      *
