@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -31,6 +33,14 @@ public abstract class IAddon {
      */
     public void onEnable() {
         setEnabled(true);
+
+        if (this.folder != null && !Files.exists(this.folder)) {
+            try {
+                Files.createDirectory(this.folder);
+            } catch (final IOException exception) {
+                throw new IllegalStateException("Cannot enable the addon, the folder %s did not get created.".formatted(this.folder));
+            }
+        }
     }
 
     /**
@@ -40,7 +50,15 @@ public abstract class IAddon {
         setEnabled(false);
     }
 
-    public void onReload() {}
+    public void onReload() {
+        if (this.folder != null && !Files.exists(this.folder)) {
+            try {
+                Files.createDirectory(this.folder);
+            } catch (final IOException exception) {
+                throw new IllegalStateException("Cannot enable the addon, the folder %s did not get created.".formatted(this.folder));
+            }
+        }
+    }
 
     /**
      * Enables an addon, this includes adding it to the class path.
