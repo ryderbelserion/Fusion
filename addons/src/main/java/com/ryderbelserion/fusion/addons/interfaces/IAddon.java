@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.addons.interfaces;
 
 import com.ryderbelserion.fusion.addons.AddonClassLoader;
+import com.ryderbelserion.fusion.files.FileManager;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ public abstract class IAddon {
 
     }
 
+    private FileManager fileManager;
     private AddonClassLoader loader;
     private boolean isEnabled;
     private Logger logger;
@@ -40,6 +42,8 @@ public abstract class IAddon {
             } catch (final IOException exception) {
                 throw new IllegalStateException("Cannot enable the addon, the folder %s did not get created.".formatted(this.folder));
             }
+
+            this.fileManager = new FileManager(this.folder);
         }
     }
 
@@ -139,6 +143,15 @@ public abstract class IAddon {
     public void setGroup(@NotNull final String group) {
         this.logger = LoggerFactory.getLogger(group);
         this.group = group;
+    }
+
+    /**
+     * Get an instance of the FileManager.
+     *
+     * @return the file manager
+     */
+    public @NotNull final FileManager getFileManager() {
+        return this.fileManager;
     }
 
     /**
