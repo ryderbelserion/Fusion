@@ -78,11 +78,11 @@ public abstract class IFileManager<I> {
         return getFile(path).map(LogCustomFile.class::cast);
     }
 
-    public abstract @NotNull I extractFolder(@NotNull final String folder, @NotNull final Path output);
+    public abstract @NotNull I extractFolder(@NotNull final Path jarPath, @NotNull final String folder, @NotNull final Path output);
 
-    public abstract @NotNull I extractFile(@NotNull final String fileName, @NotNull final Path output);
+    public abstract @NotNull I extractFile(@NotNull final Path jarPath, @NotNull final String fileName, @NotNull final Path output);
 
-    public abstract @NotNull I extractFile(@NotNull final Path path);
+    public abstract @NotNull I extractFile(@NotNull final Path jarPath, @NotNull final Path path);
 
     public abstract @NotNull I compressFolder(@NotNull final Path path, @NotNull final String content);
 

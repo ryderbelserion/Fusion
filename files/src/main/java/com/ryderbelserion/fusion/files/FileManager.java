@@ -10,11 +10,11 @@ import com.ryderbelserion.fusion.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
@@ -30,16 +30,18 @@ public class FileManager extends IFileManager<FileManager> {
 
     protected final Map<Path, ICustomFile<?, ?, ?, ?>> files = new HashMap<>();
 
+    protected final Path source;
     private final Path path;
     private int depth = 1;
 
-    public FileManager(@NotNull final Path path) {
+    public FileManager(@NotNull final Path source, @NotNull final Path path) {
+        this.source = source;
         this.path = path;
     }
 
     @Override
     public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
-        extractFolder(folder.getFileName().toString(), folder.getParent());
+        extractFolder(this.source, folder.getFileName().toString(), folder.getParent());
 
         for (final Path path : getFiles(folder, fileType.getExtension(), getDepth())) {
             addFile(path, fileType, consumer);
@@ -184,7 +186,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager extractFolder(@NotNull final String folder, @NotNull final Path output) {
+    public @NotNull FileManager extractFolder(@NotNull final Path jarFile, @NotNull final String folder, @NotNull final Path output) {
         final Path path = output.resolve(folder);
 
         if (Files.exists(path)) { // do not extract if path exists.
@@ -199,8 +201,8 @@ public class FileManager extends IFileManager<FileManager> {
             }
         }
 
-        try (final JarFile jarFile = new JarFile(Path.of(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
-            final Set<JarEntry> entries = jarFile.stream().filter(entry -> !entry.getName().endsWith(".class"))
+        try (final JarFile jar = new JarFile(jarFile.toFile())) {
+            final Set<JarEntry> entries = jar.stream().filter(entry -> !entry.getName().endsWith(".class"))
                     .filter(entry -> !entry.getName().startsWith("META-INF"))
                     .filter(entry -> !entry.isDirectory())
                     .filter(entry -> entry.getName().startsWith(folder))
@@ -219,14 +221,14 @@ public class FileManager extends IFileManager<FileManager> {
                 }
 
                 if (Files.notExists(target)) {
-                    try (final InputStream stream = jarFile.getInputStream(entry)) {
+                    try (final InputStream stream = jar.getInputStream(entry)) {
                         Files.copy(stream, target);
                     } catch (final IOException exception) {
                         throw new FileException("Failed to copy %s to %s".formatted(target, parent), exception);
                     }
                 }
             });
-        } catch (final IOException | URISyntaxException exception) {
+        } catch (final IOException exception) {
             throw new FileException("Failed to extract folder %s".formatted(path), exception);
         }
 
@@ -234,7 +236,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager extractFile(@NotNull final String fileName, @NotNull final Path output) {
+    public @NotNull FileManager extractFile(@NotNull final Path jarFile, @NotNull final String fileName, @NotNull final Path output) {
         if (Files.exists(output)) {
             return this;
         }
@@ -249,8 +251,8 @@ public class FileManager extends IFileManager<FileManager> {
             }
         }
 
-        try (final JarFile jarFile = new JarFile(Path.of(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
-            final Set<JarEntry> entries = jarFile.stream().filter(entry -> !entry.getName().endsWith(".class"))
+        try (final JarFile jar = new JarFile(jarFile.toFile())) {
+            final Set<JarEntry> entries = jar.stream().filter(entry -> !entry.getName().endsWith(".class"))
                     .filter(entry -> !entry.getName().startsWith("META-INF"))
                     .filter(entry -> !entry.isDirectory())
                     .filter(entry -> entry.getName().equalsIgnoreCase(fileName))
@@ -261,13 +263,13 @@ public class FileManager extends IFileManager<FileManager> {
                     continue;
                 }
 
-                try (final InputStream stream = jarFile.getInputStream(entry)) {
+                try (final InputStream stream = jar.getInputStream(entry)) {
                     Files.copy(stream, output);
                 } catch (final IOException exception) {
                     throw new FileException("Failed to copy %s to %s".formatted(entry.getName(), output), exception);
                 }
             }
-        } catch (final IOException | URISyntaxException exception) {
+        } catch (final IOException exception) {
             throw new FileException("Failed to extract file %s".formatted(fileName), exception);
         }
 
@@ -275,8 +277,8 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager extractFile(@NotNull final Path path) {
-        extractFile(path.getFileName().toString(), path);
+    public @NotNull FileManager extractFile(@NotNull final Path jarFile, @NotNull final Path path) {
+        extractFile(jarFile, path.getFileName().toString(), path);
 
         return this;
     }
@@ -450,5 +452,10 @@ public class FileManager extends IFileManager<FileManager> {
     @Override
     public @NotNull final Map<Path, ICustomFile<?, ?, ?, ?>> getFiles() {
         return Collections.unmodifiableMap(this.files);
+    }
+
+    @ApiStatus.Internal
+    public @NotNull final Path getSource() {
+        return this.source;
     }
 }

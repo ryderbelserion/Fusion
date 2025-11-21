@@ -15,7 +15,7 @@ public final class JaluCustomFile extends ICustomFile<JaluCustomFile, SettingsMa
     private final Consumer<SettingsManagerBuilder> builder;
 
     public JaluCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder) {
-        super(fileManager, path);
+        super(fileManager, path, path);
 
         this.options = YamlFileResourceOptions.builder();
 

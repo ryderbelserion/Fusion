@@ -18,7 +18,7 @@ public class PaperCustomFile extends ICustomFile<PaperCustomFile, YamlConfigurat
     private final File file;
 
     public PaperCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<PaperCustomFile> consumer) {
-        super(fileManager, path);
+        super(fileManager, fileManager.getSource(), path);
 
         this.file = getPath().toFile();
 

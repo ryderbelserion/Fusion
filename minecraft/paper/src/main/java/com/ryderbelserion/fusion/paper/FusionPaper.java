@@ -25,6 +25,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -37,12 +40,24 @@ public class FusionPaper extends FusionKyori {
     private JavaPlugin plugin;
     private Server server;
 
+    private Path source;
+
     public FusionPaper(@NotNull final JavaPlugin plugin) {
         super(plugin.getDataPath(), plugin.getComponentLogger());
+        
+        try {
+            final Method method = plugin.getClass().getDeclaredMethod("getFile");
+            
+            if (method.trySetAccessible()) {
+                this.source = ((File) method.invoke(plugin)).toPath();
+            }
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
 
         this.server = plugin.getServer();
         this.pluginManager = this.server.getPluginManager();
-        this.fileManager = new PaperFileManager(getDataPath());
+        this.fileManager = new PaperFileManager(this.source, getDataPath());
 
         this.plugin = plugin;
 
@@ -52,7 +67,7 @@ public class FusionPaper extends FusionKyori {
     public FusionPaper(@NotNull final BootstrapContext context) {
         super(context.getDataDirectory(), context.getLogger());
 
-        this.fileManager = new PaperFileManager(getDataPath());
+        this.fileManager = new PaperFileManager(this.source = context.getPluginSource(), getDataPath());
 
         FusionProvider.register(this);
     }

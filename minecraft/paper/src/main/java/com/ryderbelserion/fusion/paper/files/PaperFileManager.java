@@ -2,7 +2,6 @@ package com.ryderbelserion.fusion.paper.files;
 
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
-import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.paper.files.types.NbtCustomFile;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,8 +14,8 @@ public class PaperFileManager extends FileManager {
 
     private JavaPlugin plugin;
 
-    public PaperFileManager(@NotNull final Path path) {
-        super(path);
+    public PaperFileManager(@NotNull final Path source, @NotNull final Path path) {
+        super(source, path);
     }
 
     public final PaperFileManager addPaperFile(@NotNull final Path path, @NotNull final Consumer<PaperCustomFile> consumer) {
@@ -38,7 +37,7 @@ public class PaperFileManager extends FileManager {
     }
 
     public PaperFileManager addPaperFolder(@NotNull final Path folder, @NotNull final Consumer<PaperCustomFile> consumer) {
-        extractFolder(folder.getFileName().toString(), folder.getParent());
+        extractFolder(this.source, folder.getFileName().toString(), folder.getParent());
 
         for (final Path path : getFiles(folder, ".yml", getDepth())) {
             addPaperFile(path, consumer);
@@ -68,7 +67,7 @@ public class PaperFileManager extends FileManager {
     }
 
     public final PaperFileManager addNbtFolder(@NotNull final Path folder) {
-        extractFolder(folder.getFileName().toString(), folder.getParent());
+        extractFolder(this.source, folder.getFileName().toString(), folder.getParent());
 
         for (final Path path : getFiles(folder, ".nbt", getDepth())) {
             addNbtFile(path);

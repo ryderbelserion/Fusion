@@ -15,7 +15,7 @@ public class NbtCustomFile extends ICustomFile<NbtCustomFile, StructureBuilder, 
     private StructureBuilder builder;
 
     public NbtCustomFile(@NotNull final JavaPlugin plugin, @NotNull final FileManager fileManager, @NotNull final Path path) {
-        super(fileManager, path);
+        super(fileManager, fileManager.getSource(), path);
 
         this.plugin = plugin;
     }

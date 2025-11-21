@@ -27,10 +27,12 @@ public abstract class ICustomFile<I, C, L, O> {
 
     protected FileManager fileManager;
     protected FileType fileType;
+    protected Path source;
     protected Path path;
 
-    public ICustomFile(@NotNull final FileManager fileManager, @NotNull final Path path) {
+    public ICustomFile(@NotNull final FileManager fileManager, @NotNull final Path source, @NotNull final Path path) {
         this.fileManager = fileManager;
+        this.source = source;
         this.path = path;
     }
 
@@ -47,11 +49,11 @@ public abstract class ICustomFile<I, C, L, O> {
 
         if (!hasAction(FileAction.ALREADY_EXTRACTED)) {
             if (hasAction(FileAction.EXTRACT_FILE)) {
-                this.fileManager.extractFile(path);
+                this.fileManager.extractFile(this.source, path);
             }
 
             if (hasAction(FileAction.EXTRACT_FOLDER)) {
-                this.fileManager.extractFolder(path.getFileName().toString(), path.getParent());
+                this.fileManager.extractFolder(this.source, path.getFileName().toString(), path.getParent());
             }
         }
 
