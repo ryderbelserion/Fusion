@@ -1,80 +1,37 @@
 package com.ryderbelserion.fusion.addons.interfaces;
 
 import com.ryderbelserion.fusion.addons.AddonClassLoader;
-import com.ryderbelserion.fusion.files.FileManager;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 /**
  * The addon class, handles all things related to addons.
  */
 public abstract class IAddon {
 
+    private final AddonClassLoader loader;
+    private final String name;
+
     /**
      * The addon class, handles all things related to addons.
      */
-    public IAddon() {
-
+    public IAddon(@NotNull final String name, @NotNull final AddonClassLoader loader, @NotNull final String group) {
+        this.name = name;
+        this.loader = loader;
     }
 
-    private FileManager fileManager;
-    private AddonClassLoader loader;
     private boolean isEnabled;
-    private Logger logger;
-    private String name;
-    private Path folder;
-    private String group;
 
-    /**
-     * Enables the addon.
-     */
-    public void onEnable() {
-        setEnabled(true);
-
-        if (this.folder != null && !Files.exists(this.folder)) {
-            try {
-                Files.createDirectory(this.folder);
-            } catch (final IOException exception) {
-                throw new IllegalStateException("Cannot enable the addon, the folder %s did not get created.".formatted(this.folder));
-            }
-
-            this.fileManager = new FileManager(this.folder);
-        }
-    }
-
-    /**
-     * Disables the addon.
-     */
-    public void onDisable() {
-        setEnabled(false);
-    }
-
-    public void onReload() {
-        if (this.folder != null && !Files.exists(this.folder)) {
-            try {
-                Files.createDirectory(this.folder);
-            } catch (final IOException exception) {
-                throw new IllegalStateException("Cannot enable the addon, the folder %s did not get created.".formatted(this.folder));
-            }
-        }
-    }
+    public void onEnable() {}
+    public void onDisable() {}
+    public void onReload() {}
 
     /**
      * Enables an addon, this includes adding it to the class path.
-     *
-     * @param folder the addon's folder
      */
-    public void enable(@NotNull final Path folder) {
+    public void enable() {
         if (this.isEnabled()) {
             throw new IllegalStateException("Cannot enable the addon when it's already enabled");
         }
-
-        this.folder = folder;
 
         this.onEnable();
     }
@@ -88,15 +45,6 @@ public abstract class IAddon {
         }
 
         this.onDisable();
-    }
-
-    /**
-     * Sets the addon class loader
-     *
-     * @param loader {@link AddonClassLoader}
-     */
-    public void setLoader(@NotNull final AddonClassLoader loader) {
-        this.loader = loader;
     }
 
     /**
@@ -127,66 +75,11 @@ public abstract class IAddon {
     }
 
     /**
-     * Sets the name of the addon, and creates a logger impl.
-     *
-     * @param name the name of the addon
-     */
-    public void setName(@NotNull final String name) {
-        this.name = name;
-    }
-
-    /**
-     * Gets the group i.e. the domain
-     *
-     * @param group the group
-     */
-    public void setGroup(@NotNull final String group) {
-        this.logger = LoggerFactory.getLogger(group);
-        this.group = group;
-    }
-
-    /**
-     * Get an instance of the FileManager.
-     *
-     * @return the file manager
-     */
-    public @NotNull final FileManager getFileManager() {
-        return this.fileManager;
-    }
-
-    /**
-     * Gets an instance of the logger.
-     *
-     * @return the logger instance of this addon
-     */
-    public @NotNull Logger getLogger() {
-        return this.logger;
-    }
-
-    /**
      * Retrieves the name of the addon.
      *
      * @return the name of the addon
      */
     public @NotNull String getName() {
         return this.name;
-    }
-
-    /**
-     * Retrieves the group path.
-     *
-     * @return the group path of the addon
-     */
-    public @NotNull String getGroup() {
-        return this.group;
-    }
-
-    /**
-     * Retrieves the folder of the addon.
-     *
-     * @return the folder of the addon
-     */
-    public @NotNull Path getFolder() {
-        return this.folder;
     }
 }

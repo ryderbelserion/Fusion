@@ -139,11 +139,7 @@ public class AddonManager {
      * @return {@code Optional<Addon>} an optional containing the addon instance
      */
     public Optional<IAddon> getAddonInstance(@NotNull final String name) {
-        if (this.loaders.containsKey(name)) {
-            return Optional.ofNullable(this.loaders.get(name).getAddon());
-        }
-
-        return Optional.empty();
+        return Optional.ofNullable(this.loaders.getOrDefault(name, null).getAddon());
     }
 
     /**
@@ -167,7 +163,7 @@ public class AddonManager {
             final IAddon key = loader.getAddon();
 
             if (key != null) {
-                key.enable(this.folder.resolve(key.getName()));
+                key.enable();
             }
 
             foundKey = key;
@@ -287,7 +283,7 @@ public class AddonManager {
      * @return {@link AddonManager}
      */
     public @NotNull AddonManager enableAddons() {
-        this.loaders.values().stream().map(AddonClassLoader::getAddon).filter(Objects::nonNull).filter(addOn -> !addOn.isEnabled()).forEach(addon -> addon.enable(this.folder.resolve(addon.getName())));
+        this.loaders.values().stream().map(AddonClassLoader::getAddon).filter(Objects::nonNull).filter(addOn -> !addOn.isEnabled()).forEach(addon -> addon.enable());
 
         return this;
     }
