@@ -44,7 +44,6 @@ import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -623,7 +622,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             if (api.isHead(skull)) itemStack = api.getItemHead(skull);
         }
 
-        this.itemStack = itemStack;
+        if (itemStack.hasData(DataComponentTypes.PROFILE)) {
+            final ResolvableProfile profile = itemStack.getData(DataComponentTypes.PROFILE);
+
+            if (profile != null) {
+                this.itemStack.setData(DataComponentTypes.PROFILE, profile);
+            }
+        }
 
         return (B) this;
     }
