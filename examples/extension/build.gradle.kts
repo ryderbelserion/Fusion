@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    compileOnly("ch.qos.logback:logback-classic:1.5.20")
     compileOnly(project(":fusion-addons"))
+    compileOnly(libs.log4j)
 }

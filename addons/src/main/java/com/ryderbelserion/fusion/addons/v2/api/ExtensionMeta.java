@@ -46,12 +46,16 @@ public abstract class ExtensionMeta implements IExtensionMeta {
 
         this.logger = LoggerFactory.getLogger(this.name);
 
+        this.logger.warn("Loading the extension {}.", this.name);
+
         this.path = parent.resolve(this.name);
 
-        try {
-            Files.createDirectory(this.path);
-        } catch (final IOException exception) {
-            this.logger.warn("Failed to create directory {}", this.path);
+        if (!Files.exists(this.path)) {
+            try {
+                Files.createDirectory(this.path);
+            } catch (final IOException ignored) {
+                this.logger.warn("Failed to create directory {}", this.path);
+            }
         }
     }
 

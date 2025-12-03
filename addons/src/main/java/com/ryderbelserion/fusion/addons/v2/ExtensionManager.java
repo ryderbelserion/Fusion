@@ -5,7 +5,6 @@ import com.ryderbelserion.fusion.addons.v2.api.Extension;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -36,14 +35,16 @@ public class ExtensionManager {
 
         final List<Path> paths = FileUtils.getFiles(this.parent, List.of(".jar"), depth);
 
+        this.logger.warn("Initializing extensions...");
+
         for (final Path path : paths) {
             loadExtension(path);
         }
+
+        this.logger.warn("Initialized {} extension(s)", this.extensions.size());
     }
 
     public void loadExtension(@NotNull final Path path) {
-        this.logger.info("Loading the extension {}.", path.getFileName());
-
         final Extension extension = new Extension();
 
         extension.init(this.parent, path);
