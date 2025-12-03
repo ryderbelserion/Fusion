@@ -24,7 +24,9 @@ listOf(
 listOf(
     "minecraft/kyori" to "kyori",
 
-    "minecraft/paper" to "paper"
+    "minecraft/paper" to "paper",
+
+    "examples/extension" to "extension"
 ).forEach {
     includeProject(it.first, it.second)
 }

@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion;
 
+import com.ryderbelserion.fusion.addons.v2.ExtensionManager;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import org.bukkit.entity.Player;
@@ -21,6 +22,10 @@ public class Fusion extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        final ExtensionManager manager = new ExtensionManager(getDataPath().resolve("extensions"));
+
+        manager.init(1);
+
         this.fusion.setPlugin(this).init();
 
         getServer().getPluginManager().registerEvents(this, this);

@@ -3,6 +3,9 @@ package com.ryderbelserion.fusion.addons.v2;
 import com.ryderbelserion.fusion.addons.utils.FileUtils;
 import com.ryderbelserion.fusion.addons.v2.api.Extension;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,6 +15,8 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ExtensionManager {
+
+    private final Logger logger = LoggerFactory.getLogger(ExtensionManager.class);
 
     private final Map<String, Extension> extensions = new ConcurrentHashMap<>();
     private final Map<String, Class<?>> classMap = new ConcurrentHashMap<>();
@@ -37,6 +42,8 @@ public class ExtensionManager {
     }
 
     public void loadExtension(@NotNull final Path path) {
+        this.logger.info("Loading the extension {}.", path.getFileName());
+
         final Extension extension = new Extension();
 
         extension.init(this.parent, path);
