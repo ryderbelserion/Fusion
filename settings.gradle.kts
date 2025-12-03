@@ -15,7 +15,7 @@ listOf(
     "plugin",
 
     // stand alone
-    "addons",
+    //"addons",
     "files"
 ).forEach {
     includeProject(it)
