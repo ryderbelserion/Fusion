@@ -626,7 +626,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             if (api.isHead(skull)) itemStack = api.getItemHead(skull);
         }
 
-        this.itemStack = itemStack;
+        if (itemStack.hasData(DataComponentTypes.PROFILE)) {
+            final ResolvableProfile profile = itemStack.getData(DataComponentTypes.PROFILE);
+
+            if (profile != null) {
+                this.itemStack.setData(DataComponentTypes.PROFILE, profile);
+            }
+        }
 
         return (B) this;
     }
