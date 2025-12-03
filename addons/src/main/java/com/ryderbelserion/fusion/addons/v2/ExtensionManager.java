@@ -20,8 +20,6 @@ public class ExtensionManager {
 
     public ExtensionManager(@NotNull final Path parent) {
         this.parent = parent;
-
-        init(1);
     }
 
     public void init(final int depth) {

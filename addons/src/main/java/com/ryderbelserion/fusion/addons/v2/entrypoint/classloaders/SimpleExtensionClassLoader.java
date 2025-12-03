@@ -29,7 +29,7 @@ public class SimpleExtensionClassLoader extends URLClassLoader {
                                       @NotNull final IExtensionMeta config, @NotNull final ClassLoader loader) throws IOException, InvalidExtensionException {
         super(path.getFileName().toString(), new URL[]{path.toUri().toURL()}, loader);
 
-        this.jarFile = new JarFile(source.toFile());
+        this.jarFile = new JarFile(path.toFile());
         this.source = source;
         this.config = config;
         this.path = path;
