@@ -47,7 +47,7 @@ public class ExtensionManager {
     public void loadExtension(@NotNull final Path path) {
         final Extension extension = new Extension();
 
-        extension.init(this.parent, path);
+        extension.init(this, this.parent, path);
 
         final String name = extension.getName();
 
@@ -56,6 +56,8 @@ public class ExtensionManager {
         }
 
         this.extensions.put(name, extension);
+
+        extension.onEnable();
     }
 
     public final boolean isExtensionEnabled(@NotNull final String name) {
