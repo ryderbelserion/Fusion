@@ -4,6 +4,7 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.FusionKey;
 import com.ryderbelserion.fusion.core.FusionProvider;
+import com.ryderbelserion.fusion.core.api.interfaces.permissions.enums.Mode;
 import com.ryderbelserion.fusion.core.exceptions.FusionException;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.mods.ModSupport;
@@ -20,7 +21,10 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Server;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -73,6 +77,27 @@ public class FusionPaper extends FusionKyori {
     }
 
     @Override
+    public @NotNull final FusionPaper init() {
+        super.init();
+
+        this.server = this.plugin.getServer();
+
+        this.pluginManager = this.server.getPluginManager();
+
+        this.registry = new StructureRegistry(this.plugin, this.server.getStructureManager());
+
+        ModSupport.dependencies.forEach(dependency -> getModManager().addMod(dependency, new Mod(this)));
+
+        if (this.isModReady(ModSupport.head_database) && this.api == null) this.api = new HeadDatabaseAPI();
+
+        this.pluginManager.registerEvents(new GuiListener(), this.plugin);
+
+        FusionProvider.register(this);
+
+        return this;
+    }
+
+    @Override
     public @NotNull final Component parse(@Nullable final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
         return MiniMessage.miniMessage().deserialize(papi(audience, replacePlaceholder(message, placeholders))).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
@@ -110,24 +135,56 @@ public class FusionPaper extends FusionKyori {
     }
 
     @Override
-    public @NotNull final FusionPaper init() {
-        super.init();
+    public final boolean hasPermission(@NotNull final Audience audience, @NotNull final String permission) {
+        final CommandSender sender = (CommandSender) audience;
 
-        this.server = this.plugin.getServer();
+        return sender.hasPermission(permission);
+    }
 
-        this.pluginManager = this.server.getPluginManager();
+    @Override
+    public void registerPermission(@NotNull final Mode mode, @NotNull final String parent, @NotNull final String description, @NotNull final Map<String, Boolean> children) {
+        PermissionDefault permissionDefault;
 
-        this.registry = new StructureRegistry(this.plugin, this.server.getStructureManager());
+        switch (mode) {
+            case NOT_OP -> permissionDefault = PermissionDefault.NOT_OP;
+            case TRUE -> permissionDefault = PermissionDefault.TRUE;
+            case FALSE -> permissionDefault = PermissionDefault.FALSE;
+            default -> permissionDefault = PermissionDefault.OP;
+        }
 
-        ModSupport.dependencies.forEach(dependency -> getModManager().addMod(dependency, new Mod(this)));
+        if (isPermissionRegistered(parent)) return;
 
-        if (this.isModReady(ModSupport.head_database) && this.api == null) this.api = new HeadDatabaseAPI();
+        final PluginManager pluginManager = this.server.getPluginManager();
 
-        this.pluginManager.registerEvents(new GuiListener(), this.plugin);
+        final Permission permission = new Permission(
+                parent,
+                description,
+                permissionDefault,
+                children
+        );
 
-        FusionProvider.register(this);
+        pluginManager.addPermission(permission);
+    }
 
-        return this;
+    @Override
+    public void unregisterPermission(@NotNull final String parent) {
+        if (!isPermissionRegistered(parent)) return;
+
+        final PluginManager pluginManager = this.server.getPluginManager();
+
+        pluginManager.removePermission(parent);
+    }
+
+    @Override
+    public boolean isPermissionRegistered(@NotNull final String parent) {
+        final PluginManager pluginManager = this.server.getPluginManager();
+
+        return pluginManager.getPermission(parent) != null;
+    }
+
+    @Override
+    public final @NotNull PaperFileManager getFileManager() {
+        return this.fileManager;
     }
 
     public @NotNull final Optional<HeadDatabaseAPI> getHeadDatabaseAPI() {
@@ -140,11 +197,6 @@ public class FusionPaper extends FusionKyori {
         }
 
         return this.registry;
-    }
-
-    @Override
-    public final @NotNull PaperFileManager getFileManager() {
-        return this.fileManager;
     }
 
     public @NotNull final FusionPaper setPlugin(@NotNull final JavaPlugin plugin) {

@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.kyori;
 
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.interfaces.permissions.enums.Mode;
 import com.ryderbelserion.fusion.kyori.mods.ModManager;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -32,6 +33,18 @@ public abstract class FusionKyori extends FusionCore {
     public abstract Component parse(@Nullable final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags);
 
     public abstract String papi(@Nullable final Audience audience, @NotNull final String message);
+
+    public abstract boolean hasPermission(@NotNull final Audience audience, @NotNull final String permission);
+
+    public abstract void registerPermission(@NotNull final Mode mode, @NotNull final String parent, @NotNull final String description, @NotNull final Map<String, Boolean> children);
+
+    public void registerPermission(@NotNull final Mode mode, @NotNull final String parent, @NotNull final String description) {
+        registerPermission(mode, parent, description, new HashMap<>());
+    }
+
+    public abstract void unregisterPermission(@NotNull final String parent);
+
+    public abstract boolean isPermissionRegistered(@NotNull final String parent);
 
     @SuppressWarnings("DuplicatedCode")
     public void log(@NotNull final String type, @NotNull final String message, @NotNull final Throwable throwable) {
