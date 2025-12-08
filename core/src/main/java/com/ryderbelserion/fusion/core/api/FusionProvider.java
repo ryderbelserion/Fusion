@@ -1,6 +1,7 @@
-package com.ryderbelserion.fusion.core;
+package com.ryderbelserion.fusion.core.api;
 
-import com.ryderbelserion.fusion.core.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

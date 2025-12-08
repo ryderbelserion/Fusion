@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.core.exceptions;
+package com.ryderbelserion.fusion.core.api.exceptions;
 
 import org.jetbrains.annotations.NotNull;
 

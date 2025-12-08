@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.kyori.mods.interfaces;
 
-import com.ryderbelserion.fusion.core.FusionKey;
+import com.ryderbelserion.fusion.core.api.FusionKey;
 import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 import java.util.function.Consumer;

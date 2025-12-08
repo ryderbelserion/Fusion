@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.core.interfaces;
+package com.ryderbelserion.fusion.core.api.interfaces;
 
 import com.ryderbelserion.fusion.files.FileManager;
 import org.jetbrains.annotations.NotNull;

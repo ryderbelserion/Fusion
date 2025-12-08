@@ -1,6 +1,6 @@
-package com.ryderbelserion.fusion.core;
+package com.ryderbelserion.fusion.core.api;
 
-import com.ryderbelserion.fusion.core.interfaces.IFusionKey;
+import com.ryderbelserion.fusion.core.api.interfaces.IFusionKey;
 import org.jetbrains.annotations.NotNull;
 
 public class FusionKey extends IFusionKey {

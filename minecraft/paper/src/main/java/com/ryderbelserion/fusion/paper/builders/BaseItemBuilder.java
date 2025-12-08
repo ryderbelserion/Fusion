@@ -2,11 +2,11 @@ package com.ryderbelserion.fusion.paper.builders;
 
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
-import com.ryderbelserion.fusion.core.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.kyori.items.enums.ItemState;
 import com.ryderbelserion.fusion.kyori.mods.ModSupport;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.core.FusionProvider;
+import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
 import com.ryderbelserion.fusion.paper.builders.types.PatternBuilder;

@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.kyori.mods.objects;
 
-import com.ryderbelserion.fusion.core.FusionKey;
+import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.mods.interfaces.IMod;
 import org.jetbrains.annotations.NotNull;

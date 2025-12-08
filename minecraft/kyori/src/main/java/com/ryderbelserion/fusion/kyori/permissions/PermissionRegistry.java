@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.kyori.permissions;
 
-import com.ryderbelserion.fusion.core.FusionProvider;
+import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.interfaces.permissions.IPermissionRegistry;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.permissions.objects.Permission;

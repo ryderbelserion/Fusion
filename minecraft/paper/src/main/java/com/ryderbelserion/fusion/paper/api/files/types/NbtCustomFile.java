@@ -1,9 +1,9 @@
-package com.ryderbelserion.fusion.paper.files.types;
+package com.ryderbelserion.fusion.paper.api.files.types;
 
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
-import com.ryderbelserion.fusion.paper.files.PaperFileManager;
+import com.ryderbelserion.fusion.paper.api.files.PaperFileManager;
 import com.ryderbelserion.fusion.paper.structure.StructureBuilder;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;

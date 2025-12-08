@@ -1,9 +1,9 @@
-package com.ryderbelserion.fusion.paper.files;
+package com.ryderbelserion.fusion.paper.api.files;
 
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
-import com.ryderbelserion.fusion.paper.files.types.NbtCustomFile;
-import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
+import com.ryderbelserion.fusion.paper.api.files.types.NbtCustomFile;
+import com.ryderbelserion.fusion.paper.api.files.types.PaperCustomFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.nio.file.Path;

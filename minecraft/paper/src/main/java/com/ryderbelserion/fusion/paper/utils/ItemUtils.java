@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.paper.utils;
 
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.core.FusionProvider;
+import com.ryderbelserion.fusion.core.api.FusionProvider;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;

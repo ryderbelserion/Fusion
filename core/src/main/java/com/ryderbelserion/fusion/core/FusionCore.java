@@ -2,8 +2,9 @@ package com.ryderbelserion.fusion.core;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
+import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.config.FusionConfig;
-import com.ryderbelserion.fusion.core.interfaces.IFusionCore;
+import com.ryderbelserion.fusion.core.api.interfaces.IFusionCore;
 import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;

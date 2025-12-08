@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.core.interfaces;
+package com.ryderbelserion.fusion.core.api.interfaces;
 
 public abstract class IFusionKey {
 

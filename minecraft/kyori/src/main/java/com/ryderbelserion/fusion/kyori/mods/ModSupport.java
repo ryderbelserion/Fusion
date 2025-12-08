@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.kyori.mods;
 
-import com.ryderbelserion.fusion.core.FusionKey;
+import com.ryderbelserion.fusion.core.api.FusionKey;
 import java.util.List;
 
 public class ModSupport {

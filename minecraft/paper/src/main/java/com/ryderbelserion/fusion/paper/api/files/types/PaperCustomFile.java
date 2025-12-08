@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.paper.files.types;
+package com.ryderbelserion.fusion.paper.api.files.types;
 
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileType;
