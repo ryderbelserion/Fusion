@@ -1,7 +1,6 @@
-package com.ryderbelserion.fusion.addons.v2.api;
+package com.ryderbelserion.fusion.addons.api;
 
-import com.ryderbelserion.fusion.addons.v2.ExtensionManager;
-import com.ryderbelserion.fusion.addons.v2.api.interfaces.IExtensionMeta;
+import com.ryderbelserion.fusion.addons.api.interfaces.IExtensionMeta;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +21,7 @@ public abstract class ExtensionMeta implements IExtensionMeta {
 
     private Path path;
 
-    public void init(@NotNull final ExtensionManager manager, @NotNull final Path parent, @NotNull final Path path) {
+    public void init(@NotNull final Path parent, @NotNull final Path path) {
         final Properties properties = new Properties();
 
         try (final FileSystem entry = FileSystems.newFileSystem(path, (ClassLoader) null); final InputStream stream = Files.newInputStream(entry.getPath("addon.properties"))) {

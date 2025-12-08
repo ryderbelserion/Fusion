@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.addons.v2.api.interfaces;
+package com.ryderbelserion.fusion.addons.api.interfaces;
 
 import org.slf4j.Logger;
 import java.nio.file.Path;

@@ -25,6 +25,6 @@ public class FusionLoader implements PluginBootstrap {
 
     @Override
     public @NotNull JavaPlugin createPlugin(@NotNull PluginProviderContext context) {
-        return new Fusion(this.fusion);
+        return new Fusion();
     }
 }

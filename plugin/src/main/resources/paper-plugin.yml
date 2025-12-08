@@ -1,6 +1,6 @@
 name: 'Fusion'
 main: 'com.ryderbelserion.fusion.Fusion'
-bootstrapper: 'com.ryderbelserion.fusion.FusionLoader'
+#bootstrapper: 'com.ryderbelserion.fusion.FusionLoader'
 
 version: '1.0.0'
 api-version: '1.21.10'

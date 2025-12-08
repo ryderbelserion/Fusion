@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion;
 
-import com.ryderbelserion.fusion.addons.v2.ExtensionManager;
+import com.ryderbelserion.fusion.addons.ExtensionManager;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
 import org.bukkit.entity.Player;
@@ -14,11 +14,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class Fusion extends JavaPlugin implements Listener {
 
-    private final FusionPaper fusion;
+    //private final FusionPaper fusion;
 
-    public Fusion(@NotNull final FusionPaper fusion) {
-        this.fusion = fusion;
-    }
+    //public Fusion(@NotNull final FusionPaper fusion) {
+    //    //this.fusion = fusion;
+    //}
 
     @Override
     public void onEnable() {
@@ -26,9 +26,9 @@ public class Fusion extends JavaPlugin implements Listener {
 
         manager.init(1);
 
-        this.fusion.setPlugin(this).init();
+        //this.fusion.setPlugin(this).init();
 
-        getServer().getPluginManager().registerEvents(this, this);
+        //getServer().getPluginManager().registerEvents(this, this);
     }
 
     @EventHandler

@@ -1,6 +1,6 @@
 package me.corecraft.currency;
 
-import com.ryderbelserion.fusion.addons.v2.api.Extension;
+import com.ryderbelserion.fusion.addons.api.Extension;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,11 +18,13 @@ public class Currency extends Extension {
                 throw new IllegalStateException("Cannot enable the extension, the folder %s did not get created.".formatted(path));
             }
         }
+
+        getLogger().warn("The extension is enabling!");
     }
 
     @Override
     public void onDisable() {
-
+        getLogger().warn("The extension is disabled!");
     }
 
     @Override
