@@ -38,26 +38,18 @@ import java.util.*;
 public class FusionPaper extends FusionKyori {
 
     private final PaperFileManager fileManager;
+    private final Path source;
+
     private PluginManager pluginManager;
     private StructureRegistry registry;
     private HeadDatabaseAPI api;
     private JavaPlugin plugin;
     private Server server;
 
-    private Path source;
-
-    public FusionPaper(@NotNull final JavaPlugin plugin) {
+    public FusionPaper(@NotNull final File source, @NotNull final JavaPlugin plugin) {
         super(plugin.getDataPath(), plugin.getComponentLogger());
         
-        try {
-            final Method method = plugin.getClass().getDeclaredMethod("getFile");
-            
-            if (method.trySetAccessible()) {
-                this.source = ((File) method.invoke(plugin)).toPath();
-            }
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
+        this.source = source.toPath();
 
         this.server = plugin.getServer();
         this.pluginManager = this.server.getPluginManager();
