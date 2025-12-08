@@ -18,6 +18,7 @@ nexo = "1.6.0" # https://github.com/Nexo-MC
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 run-paper = "3.0.2" # https://github.com/jpenilla/run-task
 shadow = "9.2.2" # https://github.com/GradleUp/shadow
+log4j = "2.12.4" # https://logging.apache.org/log4j/2.12.x/maven-artifacts.html
 
 [plugins]
 # https://github.com/mfnalex/gradle-fix-javadoc-plugin
@@ -35,6 +36,8 @@ configurate-gson = { group = "org.spongepowered", name = "configurate-gson", ver
 velocity = { group = "com.velocitypowered", name = "velocity-api", version.ref = "velocity" }
 # https://github.com/GradleUp/shadow
 shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
+# https://logging.apache.org/log4j/2.12.x/maven-artifacts.html
+log4j = { module = "org.apache.logging.log4j:log4j-slf4j-impl", version.ref = "log4j" }
 # https://github.com/JetBrains/java-annotations
 annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
 # https://github.com/mojang/brigadier

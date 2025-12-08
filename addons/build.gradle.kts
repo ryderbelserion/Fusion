@@ -7,7 +7,6 @@ project.group = "${rootProject.name}.addons"
 project.version = "0.5.0"
 
 dependencies {
-    compileOnly("ch.qos.logback:logback-classic:1.5.20")
-
     api(project(":fusion-files"))
+    compileOnly(libs.log4j)
 }
