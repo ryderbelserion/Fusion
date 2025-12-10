@@ -1,7 +1,9 @@
 package com.ryderbelserion.fusion;
 
+import com.ryderbelserion.fusion.kyori.items.enums.ItemState;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.ItemBuilder;
+import com.ryderbelserion.fusion.paper.builders.types.SkullBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,12 +34,24 @@ public class Fusion extends JavaPlugin implements Listener {
 
         final Inventory inventory = player.getInventory();
 
+        final ItemBuilder itemBuilder = ItemBuilder.from(ItemType.PLAYER_HEAD);
+
+        itemBuilder.withDisplayName("<red>This is a name");
+
+        final SkullBuilder skullBuilder = itemBuilder.asSkullBuilder();
+
+        skullBuilder.withName(player.getName()).build();
+
+        inventory.addItem(itemBuilder.asItemStack());
+
         inventory.addItem(ItemBuilder.from(ItemType.POTION)
                 .setColor("229,164,229")
+                .withDisplayName("<yellow>Hello!")
                 .asItemStack());
 
         inventory.addItem(ItemBuilder.from(ItemType.POTION)
                 .setColor("yellow")
+                .withDisplayName("<yellow>Hello!")
                 .asItemStack());
     }
 }

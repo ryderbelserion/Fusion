@@ -146,7 +146,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     protected ItemStack itemStack;
     protected ItemType itemType;
 
-    private DataComponentType.Valued<@NotNull Component> type = DataComponentTypes.ITEM_NAME;
+    private DataComponentType.Valued<@NotNull Component> type = DataComponentTypes.CUSTOM_NAME;
     private Map<String, String> placeholders = new HashMap<>();
     private List<String> displayLore = new ArrayList<>();
     private String displayName = "";
@@ -273,7 +273,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public @NotNull B withDisplayName(@NotNull final String displayName) {
-        return withDisplayName(displayName, ItemState.ITEM_NAME);
+        return withDisplayName(displayName, ItemState.CUSTOM_NAME);
     }
 
     public @NotNull B displayLore(@NotNull final List<Component> displayLore) {
