@@ -32,6 +32,8 @@ public abstract class FusionKyori extends FusionCore {
 
     public abstract Component parse(@Nullable final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags);
 
+    public abstract Component parse(@NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags);
+
     public abstract String papi(@Nullable final Audience audience, @NotNull final String message);
 
     public abstract boolean hasPermission(@NotNull final Audience audience, @NotNull final String permission);

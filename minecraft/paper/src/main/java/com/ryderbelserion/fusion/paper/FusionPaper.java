@@ -88,8 +88,23 @@ public class FusionPaper extends FusionKyori {
     }
 
     @Override
+    // with papi, for guaranteed strings not used with user input.
     public @NotNull final Component parse(@Nullable final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
-        return MiniMessage.miniMessage().deserialize(papi(audience, replacePlaceholder(message, placeholders))).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+        final MiniMessage builder = MiniMessage.builder()
+                .tags(TagResolver.builder().resolvers(tags).build())
+                .build();
+
+        return builder.deserialize(papi(audience, replacePlaceholder(message, placeholders))).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+    }
+
+    @Override
+    // no papi, for strings with user input.
+    public Component parse(@NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
+        final MiniMessage builder = MiniMessage.builder()
+                .tags(TagResolver.builder().resolvers(tags).build())
+                .build();
+
+        return builder.deserialize(replacePlaceholder(message, placeholders)).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
     @Override
