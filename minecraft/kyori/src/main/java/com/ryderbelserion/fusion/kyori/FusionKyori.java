@@ -13,10 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class FusionKyori extends FusionCore {
 
@@ -34,6 +31,18 @@ public abstract class FusionKyori extends FusionCore {
 
     public abstract Component parse(@NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags);
 
+    public Component parse(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
+        return parse(audience, message, placeholders, List.of());
+    }
+
+    public Component parse(@NotNull final Audience audience, @NotNull final String message) {
+        return parse(audience, message, Map.of());
+    }
+
+    public Component parse(@NotNull final String message) {
+        return parse(message, Map.of(), List.of());
+    }
+
     public abstract String papi(@Nullable final Audience audience, @NotNull final String message);
 
     public abstract boolean hasPermission(@NotNull final Audience audience, @NotNull final String permission);
@@ -41,7 +50,7 @@ public abstract class FusionKyori extends FusionCore {
     public abstract void registerPermission(@NotNull final Mode mode, @NotNull final String parent, @NotNull final String description, @NotNull final Map<String, Boolean> children);
 
     public void registerPermission(@NotNull final Mode mode, @NotNull final String parent, @NotNull final String description) {
-        registerPermission(mode, parent, description, new HashMap<>());
+        registerPermission(mode, parent, description, Map.of());
     }
 
     public abstract void unregisterPermission(@NotNull final String parent);
@@ -74,20 +83,8 @@ public abstract class FusionKyori extends FusionCore {
         }
     }
 
-    public Component parse(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
-        return parse(audience, message, placeholders, List.of());
-    }
-
     public <T> @Nullable T createProfile(@NotNull final UUID uuid, @Nullable final String name) {
         return null;
-    }
-
-    public Component parse(@NotNull final Audience audience, @NotNull final String message) {
-        return parse(audience, message, new HashMap<>());
-    }
-
-    public Component parse(@NotNull final String message) {
-        return parse(Audience.empty(), message, new HashMap<>());
     }
 
     public @NotNull final ComponentLogger getLogger() {
