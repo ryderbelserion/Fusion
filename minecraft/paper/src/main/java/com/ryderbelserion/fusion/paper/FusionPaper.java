@@ -96,8 +96,12 @@ public class FusionPaper extends FusionKyori {
     @Override
     // no papi, for strings with user input.
     public Component parse(@NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags) {
+        final List<TagResolver> resolvers = new ArrayList<>(tags);
+
+        resolvers.add(TagResolver.standard());
+
         final MiniMessage builder = MiniMessage.builder()
-                .tags(TagResolver.builder().resolvers(tags).build())
+                .tags(TagResolver.builder().resolvers(resolvers).build())
                 .build();
 
         return builder.deserialize(replacePlaceholder(message, placeholders)).decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);

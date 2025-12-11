@@ -39,6 +39,10 @@ public abstract class FusionKyori extends FusionCore {
         return parse(audience, message, Map.of());
     }
 
+    public Component parse(@NotNull final String message, @NotNull final Map<String, String> placeholders) {
+        return parse(message, placeholders, List.of());
+    }
+
     public Component parse(@NotNull final String message) {
         return parse(message, Map.of(), List.of());
     }
