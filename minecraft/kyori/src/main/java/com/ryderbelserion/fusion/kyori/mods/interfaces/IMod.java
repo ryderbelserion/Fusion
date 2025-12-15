@@ -17,6 +17,14 @@ public abstract class IMod {
         return false;
     }
 
+    public IMod start() {
+        return this;
+    }
+
+    public IMod stop() {
+        return this;
+    }
+
     public IMod accept(@NotNull final Consumer<IMod> consumer) {
         consumer.accept(this);
 

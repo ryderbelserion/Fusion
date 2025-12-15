@@ -13,13 +13,13 @@ public class ModManager {
     public Map<FusionKey, IMod> mods = new HashMap<>();
 
     public void addMod(@NotNull final FusionKey key, @NotNull final Mod mod) {
-        this.mods.putIfAbsent(key, mod.accept(consumer -> consumer.setKey(key)));
+        this.mods.putIfAbsent(key, mod.accept(consumer -> consumer.setKey(key)).start());
     }
 
     public void removeMod(@NotNull final FusionKey key) {
         if (!this.mods.containsKey(key) || ModSupport.dependencies.contains(key)) return;
 
-        this.mods.remove(key);
+        this.mods.remove(key).stop();
     }
 
     public @NotNull final Map<FusionKey, IMod> getMods() {
