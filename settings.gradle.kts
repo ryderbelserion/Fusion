@@ -9,21 +9,36 @@ rootProject.name = "Fusion"
 
 listOf(
     //"velocity",
-    "paper",
     "core",
 
     // test plugin
     "plugin",
 
     // stand alone
-    "addons"
+    //"addons",
+    "files"
 ).forEach {
     includeProject(it)
+}
+
+listOf(
+    "minecraft/kyori" to "kyori",
+
+    "minecraft/paper" to "paper"
+).forEach {
+    includeProject(it.first, it.second)
 }
 
 fun includeProject(name: String) {
     includeProject(name) {
         this.name = "${rootProject.name.lowercase()}-$name"
+    }
+}
+
+fun includeProject(folder: String, name: String) {
+    includeProject(name) {
+        this.name = "${rootProject.name.lowercase()}-$name"
+        this.projectDir = file(folder)
     }
 }
 

@@ -1,7 +1,13 @@
 package com.ryderbelserion.fusion.addons.interfaces;
 
 import com.ryderbelserion.fusion.addons.AddonClassLoader;
+import com.ryderbelserion.fusion.files.FileManager;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -16,16 +22,29 @@ public abstract class IAddon {
 
     }
 
+    private FileManager fileManager;
     private AddonClassLoader loader;
     private boolean isEnabled;
+    private Logger logger;
     private String name;
     private Path folder;
+    private String group;
 
     /**
      * Enables the addon.
      */
     public void onEnable() {
         setEnabled(true);
+
+        if (this.folder != null && !Files.exists(this.folder)) {
+            try {
+                Files.createDirectory(this.folder);
+            } catch (final IOException exception) {
+                throw new IllegalStateException("Cannot enable the addon, the folder %s did not get created.".formatted(this.folder));
+            }
+
+            this.fileManager = new FileManager(this.folder);
+        }
     }
 
     /**
@@ -33,6 +52,16 @@ public abstract class IAddon {
      */
     public void onDisable() {
         setEnabled(false);
+    }
+
+    public void onReload() {
+        if (this.folder != null && !Files.exists(this.folder)) {
+            try {
+                Files.createDirectory(this.folder);
+            } catch (final IOException exception) {
+                throw new IllegalStateException("Cannot enable the addon, the folder %s did not get created.".formatted(this.folder));
+            }
+        }
     }
 
     /**
@@ -98,12 +127,40 @@ public abstract class IAddon {
     }
 
     /**
-     * Sets the name of the addon.
+     * Sets the name of the addon, and creates a logger impl.
      *
      * @param name the name of the addon
      */
     public void setName(@NotNull final String name) {
         this.name = name;
+    }
+
+    /**
+     * Gets the group i.e. the domain
+     *
+     * @param group the group
+     */
+    public void setGroup(@NotNull final String group) {
+        this.logger = LoggerFactory.getLogger(group);
+        this.group = group;
+    }
+
+    /**
+     * Get an instance of the FileManager.
+     *
+     * @return the file manager
+     */
+    public @NotNull final FileManager getFileManager() {
+        return this.fileManager;
+    }
+
+    /**
+     * Gets an instance of the logger.
+     *
+     * @return the logger instance of this addon
+     */
+    public @NotNull Logger getLogger() {
+        return this.logger;
     }
 
     /**
@@ -116,11 +173,20 @@ public abstract class IAddon {
     }
 
     /**
+     * Retrieves the group path.
+     *
+     * @return the group path of the addon
+     */
+    public @NotNull String getGroup() {
+        return this.group;
+    }
+
+    /**
      * Retrieves the folder of the addon.
      *
      * @return the folder of the addon
      */
-    public Path getFolder() {
+    public @NotNull Path getFolder() {
         return this.folder;
     }
 }
