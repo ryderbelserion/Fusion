@@ -48,99 +48,103 @@ import java.util.function.Consumer;
 
 public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
-    private static final Set<String> tools = new HashSet<>() {{
-       add(ItemType.WOODEN_SWORD.key().asString());
-       add(ItemType.WOODEN_PICKAXE.key().asString());
-       add(ItemType.WOODEN_AXE.key().asString());
-       add(ItemType.WOODEN_HOE.key().asString());
-       add(ItemType.WOODEN_SHOVEL.key().asString());
+    private static final Set<String> tools = Set.of(
+        ItemType.WOODEN_SWORD.key().asString(),
+        ItemType.WOODEN_PICKAXE.key().asString(),
+        ItemType.WOODEN_AXE.key().asString(),
+        ItemType.WOODEN_HOE.key().asString(),
+        ItemType.WOODEN_SHOVEL.key().asString(),
 
-       add(ItemType.STONE_SWORD.key().asString());
-       add(ItemType.STONE_PICKAXE.key().asString());
-       add(ItemType.STONE_AXE.key().asString());
-       add(ItemType.STONE_HOE.key().asString());
-       add(ItemType.STONE_SHOVEL.key().asString());
+        ItemType.STONE_SWORD.key().asString(),
+        ItemType.STONE_PICKAXE.key().asString(),
+        ItemType.STONE_AXE.key().asString(),
+        ItemType.STONE_HOE.key().asString(),
+        ItemType.STONE_SHOVEL.key().asString(),
 
-       add(ItemType.IRON_SWORD.key().asString());
-       add(ItemType.IRON_PICKAXE.key().asString());
-       add(ItemType.IRON_AXE.key().asString());
-       add(ItemType.IRON_HOE.key().asString());
-       add(ItemType.IRON_SHOVEL.key().asString());
+        ItemType.IRON_SWORD.key().asString(),
+        ItemType.IRON_PICKAXE.key().asString(),
+        ItemType.IRON_AXE.key().asString(),
+        ItemType.IRON_HOE.key().asString(),
+        ItemType.IRON_SHOVEL.key().asString(),
 
-       add(ItemType.DIAMOND_SWORD.key().asString());
-       add(ItemType.DIAMOND_PICKAXE.key().asString());
-       add(ItemType.DIAMOND_AXE.key().asString());
-       add(ItemType.DIAMOND_HOE.key().asString());
-       add(ItemType.DIAMOND_SHOVEL.key().asString());
+        ItemType.DIAMOND_SWORD.key().asString(),
+        ItemType.DIAMOND_PICKAXE.key().asString(),
+        ItemType.DIAMOND_AXE.key().asString(),
+        ItemType.DIAMOND_HOE.key().asString(),
+        ItemType.DIAMOND_SHOVEL.key().asString(),
 
-       add(ItemType.GOLDEN_SWORD.key().asString());
-       add(ItemType.GOLDEN_PICKAXE.key().asString());
-       add(ItemType.GOLDEN_AXE.key().asString());
-       add(ItemType.GOLDEN_HOE.key().asString());
-       add(ItemType.GOLDEN_SHOVEL.key().asString());
+        ItemType.GOLDEN_SWORD.key().asString(),
+        ItemType.GOLDEN_PICKAXE.key().asString(),
+        ItemType.GOLDEN_AXE.key().asString(),
+        ItemType.GOLDEN_HOE.key().asString(),
+        ItemType.GOLDEN_SHOVEL.key().asString(),
 
-       add(ItemType.NETHERITE_SWORD.key().asString());
-       add(ItemType.NETHERITE_PICKAXE.key().asString());
-       add(ItemType.NETHERITE_AXE.key().asString());
-       add(ItemType.NETHERITE_HOE.key().asString());
-       add(ItemType.NETHERITE_SHOVEL.key().asString());
+        ItemType.NETHERITE_SWORD.key().asString(),
+        ItemType.NETHERITE_PICKAXE.key().asString(),
+        ItemType.NETHERITE_AXE.key().asString(),
+        ItemType.NETHERITE_HOE.key().asString(),
+        ItemType.NETHERITE_SHOVEL.key().asString(),
 
-       add(ItemType.COPPER_PICKAXE.key().asString());
-       add(ItemType.COPPER_SHOVEL.key().asString());
-       add(ItemType.COPPER_SWORD.key().asString());
-       add(ItemType.COPPER_AXE.key().asString());
-       add(ItemType.COPPER_HOE.key().asString());
-    }};
+        ItemType.COPPER_PICKAXE.key().asString(),
+        ItemType.COPPER_SHOVEL.key().asString(),
+        ItemType.COPPER_SWORD.key().asString(),
+        ItemType.COPPER_AXE.key().asString(),
+        ItemType.COPPER_HOE.key().asString()
+    );
 
-    private static final Set<String> leather_items = new HashSet<>() {{
-        add(ItemType.LEATHER_HELMET.key().asString());
-        add(ItemType.LEATHER_CHESTPLATE.key().asString());
-        add(ItemType.LEATHER_LEGGINGS.key().asString());
-        add(ItemType.LEATHER_BOOTS.key().asString());
-        add(ItemType.LEATHER_HORSE_ARMOR.key().asString());
-    }};
+    private static final Set<String> leather_items = Set.of(
+        ItemType.LEATHER_HELMET.key().asString(),
+        ItemType.LEATHER_CHESTPLATE.key().asString(),
+        ItemType.LEATHER_LEGGINGS.key().asString(),
+        ItemType.LEATHER_BOOTS.key().asString(),
+        ItemType.LEATHER_HORSE_ARMOR.key().asString()
+    );
 
-    private static final Set<String> armor = new HashSet<>() {{
-        add(ItemType.CHAINMAIL_HELMET.key().asString());
-        add(ItemType.CHAINMAIL_CHESTPLATE.key().asString());
-        add(ItemType.CHAINMAIL_LEGGINGS.key().asString());
-        add(ItemType.CHAINMAIL_BOOTS.key().asString());
+    private static final Set<String> armor = Set.of(
+        ItemType.CHAINMAIL_HELMET.key().asString(),
+        ItemType.CHAINMAIL_CHESTPLATE.key().asString(),
+        ItemType.CHAINMAIL_LEGGINGS.key().asString(),
+        ItemType.CHAINMAIL_BOOTS.key().asString(),
 
-        add(ItemType.IRON_HELMET.key().asString());
-        add(ItemType.IRON_CHESTPLATE.key().asString());
-        add(ItemType.IRON_LEGGINGS.key().asString());
-        add(ItemType.IRON_BOOTS.key().asString());
+        ItemType.IRON_HELMET.key().asString(),
+        ItemType.IRON_CHESTPLATE.key().asString(),
+        ItemType.IRON_LEGGINGS.key().asString(),
+        ItemType.IRON_BOOTS.key().asString(),
 
-        add(ItemType.DIAMOND_HELMET.key().asString());
-        add(ItemType.DIAMOND_CHESTPLATE.key().asString());
-        add(ItemType.DIAMOND_LEGGINGS.key().asString());
-        add(ItemType.DIAMOND_BOOTS.key().asString());
+        ItemType.DIAMOND_HELMET.key().asString(),
+        ItemType.DIAMOND_CHESTPLATE.key().asString(),
+        ItemType.DIAMOND_LEGGINGS.key().asString(),
+        ItemType.DIAMOND_BOOTS.key().asString(),
 
-        add(ItemType.GOLDEN_HELMET.key().asString());
-        add(ItemType.GOLDEN_CHESTPLATE.key().asString());
-        add(ItemType.GOLDEN_LEGGINGS.key().asString());
-        add(ItemType.GOLDEN_BOOTS.key().asString());
+        ItemType.GOLDEN_HELMET.key().asString(),
+        ItemType.GOLDEN_CHESTPLATE.key().asString(),
+        ItemType.GOLDEN_LEGGINGS.key().asString(),
+        ItemType.GOLDEN_BOOTS.key().asString(),
 
-        add(ItemType.NETHERITE_HELMET.key().asString());
-        add(ItemType.NETHERITE_CHESTPLATE.key().asString());
-        add(ItemType.NETHERITE_LEGGINGS.key().asString());
-        add(ItemType.NETHERITE_BOOTS.key().asString());
+        ItemType.NETHERITE_HELMET.key().asString(),
+        ItemType.NETHERITE_CHESTPLATE.key().asString(),
+        ItemType.NETHERITE_LEGGINGS.key().asString(),
+        ItemType.NETHERITE_BOOTS.key().asString(),
 
-        add(ItemType.TURTLE_HELMET.key().asString());
+        ItemType.TURTLE_HELMET.key().asString(),
 
-        add(ItemType.COPPER_HELMET.key().asString());
-        add(ItemType.COPPER_CHESTPLATE.key().asString());
-        add(ItemType.COPPER_LEGGINGS.key().asString());
-        add(ItemType.COPPER_BOOTS.key().asString());
+        ItemType.COPPER_HELMET.key().asString(),
+        ItemType.COPPER_CHESTPLATE.key().asString(),
+        ItemType.COPPER_LEGGINGS.key().asString(),
+        ItemType.COPPER_BOOTS.key().asString(),
 
-        addAll(leather_items);
-    }};
+        ItemType.LEATHER_HELMET.key().asString(),
+        ItemType.LEATHER_CHESTPLATE.key().asString(),
+        ItemType.LEATHER_LEGGINGS.key().asString(),
+        ItemType.LEATHER_BOOTS.key().asString(),
+        ItemType.LEATHER_HORSE_ARMOR.key().asString()
+    );
 
-    private static final Set<String> potions = new HashSet<>() {{
-        add(ItemType.POTION.key().asString());
-        add(ItemType.SPLASH_POTION.key().asString());
-        add(ItemType.LINGERING_POTION.key().asString());
-    }};
+    private static final Set<String> potions = Set.of(
+        ItemType.POTION.key().asString(),
+        ItemType.SPLASH_POTION.key().asString(),
+        ItemType.LINGERING_POTION.key().asString()
+    );
 
     protected final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
     protected ItemStack itemStack;
@@ -177,30 +181,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public B build() {
         return (B) this;
     }
-
-    /*public @NotNull final GuiItem<Player, ItemStack> asGuiItem(@NotNull final Audience audience, @NotNull final SimpleGuiClickAction<Player> action) {
-        return new SimpleGuiItem<>(asItemStack(audience), action);
-    }
-
-    public @NotNull final GuiItem<Player, ItemStack> asGuiItem(@NotNull final Audience audience, @NotNull final GuiClickAction<Player> action) {
-        return new SimpleGuiItem<>(asItemStack(audience), action);
-    }
-
-    public @NotNull final GuiItem<Player, ItemStack> asGuiItem(@NotNull final Audience audience) {
-        return new SimpleGuiItem<>(asItemStack(audience), new EmptyGuiClickAction<>());
-    }
-
-    public @NotNull final GuiItem<Player, ItemStack> asGuiItem(@NotNull final SimpleGuiClickAction<Player> action) {
-        return asGuiItem(Audience.empty(), action);
-    }
-
-    public @NotNull final GuiItem<Player, ItemStack> asGuiItem(@NotNull final GuiClickAction<Player> action) {
-        return asGuiItem(Audience.empty(), action);
-    }
-
-    public @NotNull final GuiItem<Player, ItemStack> asGuiItem() {
-        return asGuiItem(Audience.empty());
-    }*/
 
     public @NotNull final GuiItem asGuiItem(@NotNull final Audience audience, @Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
         return new GuiItem(asItemStack(audience), action);
