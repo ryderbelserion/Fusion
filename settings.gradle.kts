@@ -11,11 +11,7 @@ listOf(
     //"velocity",
     "core",
 
-    // test plugin
-    "plugin",
-
     // stand alone
-    //"addons",
     "files"
 ).forEach {
     includeProject(it)
