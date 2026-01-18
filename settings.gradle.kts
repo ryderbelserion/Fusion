@@ -9,7 +9,7 @@ rootProject.name = "Fusion"
 
 listOf(
     //"velocity",
-    "core",
+    //"core",
 
     // stand alone
     "files"
@@ -17,13 +17,13 @@ listOf(
     includeProject(it)
 }
 
-listOf(
-    "minecraft/kyori" to "kyori",
+/*listOf(
+    //"minecraft/kyori" to "kyori",
 
-    "minecraft/paper" to "paper"
+    //"minecraft/paper" to "paper"
 ).forEach {
     includeProject(it.first, it.second)
-}
+}*/
 
 fun includeProject(name: String) {
     includeProject(name) {
