@@ -43,7 +43,7 @@ public class FileManager extends IFileManager<FileManager> {
     public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
         extractFolder(this.source, folder.getFileName().toString(), folder.getParent());
 
-        for (final Path path : getFiles(folder, fileType.getExtension(), getDepth())) {
+        for (final Path path : getFilesByPath(folder, fileType.getExtension(), getDepth())) {
             addFile(path, fileType, consumer);
         }
 
@@ -81,7 +81,7 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder) {
-        for (final Path path : getFiles(folder, ".yml", getDepth())) {
+        for (final Path path : getFilesByPath(folder, ".yml", getDepth())) {
             addFile(path, options, builder);
         }
 
@@ -356,11 +356,6 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public final int getDirectorySize(@NotNull final Path path, @NotNull final String extension) {
-        return getFiles(path, extension, getDepth()).size();
-    }
-
-    @Override
     public void setDepth(final int depth) {
         this.depth = depth;
     }
@@ -407,8 +402,8 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull final List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean removeExtension) {
-        final List<Path> files = getFiles(folder.isEmpty() ? path : path.resolve(folder), List.of(extension), depth);
+    public @NotNull final List<String> getFileByNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean removeExtension) {
+        final List<Path> files = getFilesByPath(folder.isEmpty() ? path : path.resolve(folder), List.of(extension), depth);
 
         final List<String> names = new ArrayList<>();
 
@@ -424,7 +419,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull final List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions, final int depth) {
+    public @NotNull final List<Path> getFilesByPath(@NotNull final Path path, @NotNull final List<String> extensions, final int depth) {
         final List<Path> files = new ArrayList<>();
 
         if (Files.notExists(path) || !Files.isDirectory(path)) return new ArrayList<>();

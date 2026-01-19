@@ -2,7 +2,13 @@
 paperweight = "2.0.0-beta.19" # https://github.com/PaperMC/paperweight
 configurate = "4.2.0" # https://github.com/SpongePowered/Configurate
 adventure = "4.26.1" # https://github.com/KyoriPowered/adventure
+paper = "1.21.11-R0.1-SNAPSHOT" # https://github.com/PaperMC/Paper
 jalu = "1.4.3" # https://github.com/AuthMe/ConfigMe
+
+## Minecraft
+minecraft = "1.21.11" # https://minecraft.net
+
+placeholderapi = "2.11.6" # https://github.com/placeholderapi
 
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 run-paper = "3.0.2" # https://github.com/jpenilla/run-task
@@ -24,6 +30,9 @@ configurate-gson = { group = "org.spongepowered", name = "configurate-gson", ver
 shadow = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadow" }
 # https://github.com/jpenilla/run-task
 run-paper = { module = "xyz.jpenilla:run-task", version.ref = "run-paper" }
+
+# https://github.com/placeholderapi
+placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
 
 # https://github.com/KyoriPowered/adventure
 kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }

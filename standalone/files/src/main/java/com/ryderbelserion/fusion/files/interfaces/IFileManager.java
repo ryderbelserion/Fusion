@@ -90,19 +90,21 @@ public abstract class IFileManager<I> {
 
     public abstract @NotNull I writeFile(@NotNull final Path path, @NotNull final String content);
 
-    public abstract @NotNull List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean removeExtension);
+    public abstract @NotNull List<String> getFileByNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean removeExtension);
 
-    public @NotNull List<String> getFileNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final boolean removeExtension) {
-        return getFileNames(folder, path, extension, 1, removeExtension);
+    public @NotNull List<String> getFileByNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final boolean removeExtension) {
+        return getFileByNames(folder, path, extension, 1, removeExtension);
     }
 
-    public abstract @NotNull List<Path> getFiles(@NotNull final Path path, @NotNull final List<String> extensions, final int depth);
+    public abstract @NotNull List<Path> getFilesByPath(@NotNull final Path path, @NotNull final List<String> extensions, final int depth);
 
-    public @NotNull List<Path> getFiles(@NotNull final Path path, @NotNull final String extension, final int depth) {
-        return getFiles(path, List.of(extension), depth);
+    public @NotNull List<Path> getFilesByPath(@NotNull final Path path, @NotNull final String extension, final int depth) {
+        return getFilesByPath(path, List.of(extension), depth);
     }
 
-    public abstract int getDirectorySize(@NotNull final Path path, @NotNull final String extension);
+    public int getDirectorySize(@NotNull final Path path, @NotNull final String extension) {
+        return getFilesByPath(path, extension, getDepth()).size();
+    }
 
     public @NotNull I compressFile(@NotNull final Path path, @NotNull final String content) {
         return compressFile(path, null, content);
