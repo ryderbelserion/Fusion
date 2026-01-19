@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.paper.builders.items.types;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.builders.items.BaseItemBuilder;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
@@ -17,6 +18,7 @@ import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.util.Map;
 import java.util.UUID;
 
 public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
@@ -92,7 +94,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         final NamespacedKey key = Registry.SOUNDS.getKey(value);
 
         if (key == null) {
-            this.fusion.log("warn", "No valid NamespacedKey found for {}", sound);
+            this.fusion.log(Level.WARNING, "No valid NamespacedKey found for {}", Map.of("{}", sound));
 
             return this;
         }

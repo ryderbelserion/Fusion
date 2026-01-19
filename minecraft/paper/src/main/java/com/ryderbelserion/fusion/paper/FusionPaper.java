@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.paper;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.Level;
@@ -18,6 +19,7 @@ import org.jspecify.annotations.Nullable;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 public class FusionPaper extends FusionKyori<Audience> {
 
@@ -73,6 +75,10 @@ public class FusionPaper extends FusionKyori<Audience> {
 
     public @NotNull final Server getServer() {
         return this.server;
+    }
+
+    public @NotNull final PlayerProfile createProfile(@NotNull final UUID uuid, @Nullable final String name) {
+        return this.server.createProfile(uuid, name);
     }
 
     public final boolean isPluginEnabled(@NotNull final String plugin) {
