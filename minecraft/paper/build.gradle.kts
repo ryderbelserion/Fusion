@@ -12,5 +12,6 @@ repositories {
 dependencies {
     api(project(":fusion-kyori"))
 
+    compileOnly(libs.headdatabaseapi)
     compileOnly(libs.placeholderapi)
 }
