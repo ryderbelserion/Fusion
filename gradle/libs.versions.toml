@@ -11,6 +11,10 @@ minecraft = "1.21.11" # https://minecraft.net
 headdatabaseapi = "1.3.1" # https://github.com/Arcaniax-Development/HeadDatabase-API
 placeholderapi = "2.11.6" # https://github.com/placeholderapi
 
+itemsadder = "4.0.10" # https://github.com/ItemsAdder
+oraxen = "1.190.0" # https://github.com/oraxen
+nexo = "1.6.0" # https://github.com/Nexo-MC
+
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 run-paper = "3.0.2" # https://github.com/jpenilla/run-task
 shadow = "9.3.1" # https://github.com/GradleUp/shadow
@@ -37,6 +41,13 @@ headdatabaseapi = { module = "com.arcaniax:HeadDatabase-API", version.ref = "hea
 # https://github.com/placeholderapi
 placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }
 
+# https://github.com/ItemsAdder
+itemsadder = { module = "dev.lone:api-itemsadder", version.ref = "itemsadder" }
+# https://github.com/oraxen
+oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
+# https://github.com/Nexo-MC
+nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
+
 # https://github.com/KyoriPowered/adventure
 kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }
 kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
@@ -49,6 +60,14 @@ adventure = [
     "kyori-logger",
     "kyori-text",
     "kyori-api"
+]
+
+shared = [
+    "headdatabaseapi",
+    "placeholderapi",
+    "itemsadder",
+    "oraxen",
+    "nexo"
 ]
 
 build = [

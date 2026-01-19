@@ -9,6 +9,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,13 +23,15 @@ public class FusionPaper extends FusionKyori<Audience> {
 
     private final PluginManager pluginManager;
     private final ComponentLogger logger;
+    private final Server server;
 
     public FusionPaper(@NotNull final JavaPlugin plugin, @NotNull final Path source) {
         super(source, plugin.getDataPath());
 
         this.logger = plugin.getComponentLogger();
+        this.server = plugin.getServer();
 
-        this.pluginManager = plugin.getServer().getPluginManager();
+        this.pluginManager = this.server.getPluginManager();
     }
 
     private HeadDatabaseAPI api;
@@ -68,5 +71,9 @@ public class FusionPaper extends FusionKyori<Audience> {
 
     public @NotNull final Optional<HeadDatabaseAPI> getHeadApi() {
         return Optional.ofNullable(this.api);
+    }
+
+    public @NotNull final Server getServer() {
+        return this.server;
     }
 }
