@@ -51,9 +51,7 @@ public class FusionPaper extends FusionKyori<Audience> {
 
     @Override
     public String papi(@Nullable final Audience sender, @NotNull final String message) {
-        final boolean isPapiAvailable = this.pluginManager.isPluginEnabled("PlaceholderAPI");
-
-        return isPapiAvailable && sender instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
+        return isPluginEnabled("PlaceholderAPI") && sender instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
     }
 
     @Override
@@ -75,5 +73,9 @@ public class FusionPaper extends FusionKyori<Audience> {
 
     public @NotNull final Server getServer() {
         return this.server;
+    }
+
+    public final boolean isPluginEnabled(@NotNull final String plugin) {
+        return this.pluginManager.isPluginEnabled(plugin);
     }
 }

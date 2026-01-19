@@ -15,6 +15,7 @@ import com.ryderbelserion.fusion.paper.builders.items.types.custom.CustomBuilder
 import com.ryderbelserion.fusion.paper.builders.items.types.fireworks.FireworkBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.fireworks.FireworkStarBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.tools.ToolBuilder;
+import com.ryderbelserion.fusion.paper.enums.ItemState;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import dev.lone.itemsadder.api.CustomStack;
@@ -146,6 +147,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     );
 
     protected final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
+    
     protected ItemStack itemStack;
     protected ItemType itemType;
 
@@ -229,7 +231,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B displayName(@NotNull final Component displayName, @NotNull final DataComponentTypes type) {
+    public @NotNull B displayName(@NotNull final Component displayName, @NotNull final ItemState itemState) {
         this.type = switch (itemState) {
             case ITEM_NAME -> DataComponentTypes.ITEM_NAME;
             case CUSTOM_NAME -> DataComponentTypes.CUSTOM_NAME;
@@ -280,7 +282,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         switch (plugin.toLowerCase()) {
             case "nexo" -> {
-                if (this.fusion.isModReady(ModSupport.nexo)) {
+                if (this.fusion.isPluginEnabled("Nexo")) {
                     getNexo(itemStack);
 
                     return (B) this;
@@ -290,7 +292,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             }
 
             case "oraxen" -> {
-                if (this.fusion.isModReady(ModSupport.oraxen)) {
+                if (this.fusion.isPluginEnabled("Oraxen")) {
                     getOraxen(itemStack);
 
                     return (B) this;
@@ -300,7 +302,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             }
 
             case "itemsadder" -> {
-                if (this.fusion.isModReady(ModSupport.items_adder)) {
+                if (this.fusion.isPluginEnabled("ItemsAdder")) {
                     getItemsAdder(itemStack);
 
                     return (B) this;
@@ -312,19 +314,19 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             case "none" -> setItem(itemStack);
 
             default -> {
-                if (this.fusion.isModReady(ModSupport.nexo)) {
+                if (this.fusion.isPluginEnabled("Nexo")) {
                     getNexo(itemStack);
 
                     return (B) this;
                 }
 
-                if (this.fusion.isModReady(ModSupport.items_adder)) {
+                if (this.fusion.isPluginEnabled("ItemsAdder")) {
                     getItemsAdder(itemStack);
 
                     return (B) this;
                 }
 
-                if (this.fusion.isModReady(ModSupport.oraxen)) {
+                if (this.fusion.isPluginEnabled("Oraxen")) {
                     getOraxen(itemStack);
 
                     return (B) this;
