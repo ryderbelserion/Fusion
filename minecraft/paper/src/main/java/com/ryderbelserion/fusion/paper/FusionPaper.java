@@ -2,7 +2,6 @@ package com.ryderbelserion.fusion.paper;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
