@@ -46,8 +46,6 @@ public class FusionPaper extends FusionKyori<Audience> {
             this.api = new  HeadDatabaseAPI();
         }
 
-        FusionProvider.register(this);
-
         return this;
     }
 

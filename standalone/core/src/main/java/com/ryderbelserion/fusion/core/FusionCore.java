@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.core;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
+import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.config.FusionConfig;
 import com.ryderbelserion.fusion.files.FileManager;
@@ -46,6 +47,8 @@ public abstract class FusionCore {
     }
 
     public FusionCore init() {
+        FusionProvider.register(this);
+
         if (Files.notExists(this.path)) {
             try {
                 Files.createDirectory(this.path);
