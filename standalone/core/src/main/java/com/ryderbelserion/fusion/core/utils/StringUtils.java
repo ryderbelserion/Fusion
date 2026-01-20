@@ -2,8 +2,11 @@ package com.ryderbelserion.fusion.core.utils;
 
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
+import com.ryderbelserion.fusion.files.FileException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.serialize.SerializationException;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -17,6 +20,16 @@ public class StringUtils {
 
     private static final char LF = '\n';
     private static final char CR = '\r';
+
+    public static @NotNull List<String> getStringList(@NotNull final CommentedConfigurationNode node, @NotNull final String defaultValue) {
+        try {
+            final List<String> list = node.getList(String.class);
+
+            return list != null ? list : List.of(defaultValue);
+        } catch (SerializationException exception) {
+            throw new FileException(String.format("Failed to serialize %s!", node.path()), exception);
+        }
+    }
 
     public static @NotNull Optional<Boolean> tryParseBoolean(@NotNull final String value) {
         try {
