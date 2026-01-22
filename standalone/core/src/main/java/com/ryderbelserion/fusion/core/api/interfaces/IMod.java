@@ -3,7 +3,6 @@ package com.ryderbelserion.fusion.core.api.interfaces;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 public abstract class IMod {
 
@@ -25,10 +24,6 @@ public abstract class IMod {
 
     public boolean isIgnored(@NotNull final UUID uuid, @NotNull final UUID target) {
         return false;
-    }
-
-    public String getPrimaryGroup(@NotNull final UUID uuid) {
-        return "";
     }
 
     public boolean isVanished(@NotNull final UUID uuid) {
