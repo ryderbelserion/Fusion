@@ -7,6 +7,16 @@ import java.util.function.Consumer;
 
 public abstract class IMod {
 
+    private boolean isPermissionPlugin = false;
+
+    public void setPermissionPlugin(final boolean isPermissionPlugin) {
+        this.isPermissionPlugin = isPermissionPlugin;
+    }
+
+    public final boolean isPermissionPlugin() {
+        return this.isPermissionPlugin;
+    }
+
     public abstract void setKey(@NotNull final FusionKey key);
 
     public abstract @NotNull FusionKey key();
