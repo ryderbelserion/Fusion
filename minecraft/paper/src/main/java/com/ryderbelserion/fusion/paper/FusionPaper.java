@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.paper;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
@@ -64,6 +65,11 @@ public class FusionPaper extends FusionKyori<Audience> {
             case ERROR -> this.logger.error(component);
             case INFO -> this.logger.info(component);
         }
+    }
+
+    @Override
+    public final boolean isModReady(@NotNull final FusionKey key) {
+        return this.pluginManager.isPluginEnabled(key.getValue());
     }
 
     public @NotNull final Optional<HeadDatabaseAPI> getHeadApi() {

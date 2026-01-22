@@ -2,8 +2,10 @@ package com.ryderbelserion.fusion.core;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
+import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
 import com.ryderbelserion.fusion.core.config.FusionConfig;
 import com.ryderbelserion.fusion.files.FileManager;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +20,7 @@ import java.util.Map;
 public abstract class FusionCore {
 
     protected final SettingsManager config;
+    private ModRegistry modRegistry;
     private final FileManager fileManager;
     private final Path path;
 
@@ -38,6 +41,8 @@ public abstract class FusionCore {
         this.log(level, message, new HashMap<>());
     }
 
+    public abstract boolean isModReady(@NotNull final FusionKey key);
+
     public FusionCore reload() {
         if (this.config != null) {
             this.config.reload();
@@ -56,6 +61,9 @@ public abstract class FusionCore {
                 exception.printStackTrace();
             }
         }
+
+        this.modRegistry = new ModRegistry();
+        this.modRegistry.init();
 
         return this;
     }
@@ -129,6 +137,10 @@ public abstract class FusionCore {
 
     public final int getDepth() {
         return this.config.getProperty(FusionConfig.recursion_depth);
+    }
+
+    public @NotNull final ModRegistry getModRegistry() {
+        return this.modRegistry;
     }
 
     public @NotNull final FileManager getFileManager() {
