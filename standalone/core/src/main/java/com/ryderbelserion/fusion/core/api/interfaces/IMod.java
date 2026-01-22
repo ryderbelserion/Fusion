@@ -7,38 +7,28 @@ import java.util.function.Consumer;
 
 public abstract class IMod {
 
-    private boolean isPermissionPlugin = false;
+    private final FusionKey key;
 
-    public void setPermissionPlugin(final boolean isPermissionPlugin) {
-        this.isPermissionPlugin = isPermissionPlugin;
+    public IMod(@NotNull final FusionKey key) {
+        this.key = key;
     }
-
-    public final boolean isPermissionPlugin() {
-        return this.isPermissionPlugin;
-    }
-
-    public abstract void setKey(@NotNull final FusionKey key);
-
-    public abstract @NotNull FusionKey key();
 
     public abstract boolean isEnabled();
+
+    public IMod enable() {
+        return this;
+    }
+
+    public IMod disable() {
+        return this;
+    }
 
     public boolean isIgnored(@NotNull final UUID uuid, @NotNull final UUID target) {
         return false;
     }
 
-    public IMod start() {
-        return this;
-    }
-
-    public IMod stop() {
-        return this;
-    }
-
-    public IMod accept(@NotNull final Consumer<IMod> consumer) {
-        consumer.accept(this);
-
-        return this;
+    public String getPrimaryGroup(@NotNull final UUID uuid) {
+        return "";
     }
 
     public boolean isVanished(@NotNull final UUID uuid) {
@@ -51,5 +41,9 @@ public abstract class IMod {
 
     public boolean isAfk(@NotNull final UUID uuid) {
         return false;
+    }
+
+    public @NotNull final FusionKey getKey() {
+        return this.key;
     }
 }

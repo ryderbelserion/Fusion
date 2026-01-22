@@ -10,20 +10,12 @@ public class Mod extends IMod {
 
     private final FusionCore fusion = FusionProvider.getInstance();
 
-    private FusionKey key;
-
-    @Override
-    public void setKey(@NotNull final FusionKey key) {
-        this.key = key;
-    }
-
-    @Override
-    public @NotNull final FusionKey key() {
-        return this.key;
+    public Mod(@NotNull final FusionKey key) {
+        super(key);
     }
 
     @Override
     public boolean isEnabled() {
-        return this.fusion.isModReady(this.key);
+        return this.fusion.isModReady(getKey());
     }
 }
