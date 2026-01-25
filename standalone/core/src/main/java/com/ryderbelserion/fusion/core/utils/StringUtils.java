@@ -1,7 +1,5 @@
 package com.ryderbelserion.fusion.core.utils;
 
-import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.files.FileException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,19 +14,25 @@ public class StringUtils {
     private static final Pattern BRACKET_PATTERN = Pattern.compile("\\{(.*?)}");
     private static final Pattern ANGLE_PATTERN = Pattern.compile("[<>]");
 
-    private static final FusionCore fusion = FusionProvider.getInstance();
-
     private static final char LF = '\n';
     private static final char CR = '\r';
 
-    public static @NotNull List<String> getStringList(@NotNull final CommentedConfigurationNode node, @NotNull final String defaultValue) {
+    public static @NotNull List<String> getStringList(@NotNull final CommentedConfigurationNode node, @NotNull final List<String> defaultValues) {
         try {
             final List<String> list = node.getList(String.class);
 
-            return list != null ? list : List.of(defaultValue);
+            return list != null ? list : defaultValues;
         } catch (SerializationException exception) {
             throw new FileException(String.format("Failed to serialize %s!", node.path()), exception);
         }
+    }
+
+    public static @NotNull List<String> getStringList(@NotNull final CommentedConfigurationNode node, @NotNull final String defaultValue) {
+        return getStringList(node, List.of(defaultValue));
+    }
+
+    public static @NotNull List<String> getStringList(@NotNull final CommentedConfigurationNode node) {
+        return getStringList(node, List.of());
     }
 
     public static @NotNull Optional<Boolean> tryParseBoolean(@NotNull final String value) {
