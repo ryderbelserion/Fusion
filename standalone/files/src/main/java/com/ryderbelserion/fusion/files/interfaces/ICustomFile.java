@@ -61,7 +61,7 @@ public abstract class ICustomFile<I, C, L, O> {
             try {
                 return loadConfig();
             } catch (final IOException exception) {
-                throw new FileException("Failed to load file %s".formatted(getPath()), exception);
+                throw new FileException("Failed to load file %s".formatted(path), exception);
             }
         }).join();
 

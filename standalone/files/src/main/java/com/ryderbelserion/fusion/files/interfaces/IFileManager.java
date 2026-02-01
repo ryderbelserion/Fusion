@@ -84,6 +84,10 @@ public abstract class IFileManager<I> {
 
     public abstract @NotNull I extractFile(@NotNull final Path jarPath, @NotNull final Path path);
 
+    public abstract @NotNull I extractFile(@NotNull final String fileName, @NotNull final Path output);
+
+    public abstract @NotNull I extractFile(@NotNull final String fileName);
+
     public abstract @NotNull I compressFolder(@NotNull final Path path, @NotNull final String content);
 
     public abstract @NotNull I compressFile(@NotNull final Path path, @Nullable final Path folder, @NotNull final String content);

@@ -13,6 +13,7 @@ import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
@@ -231,6 +232,44 @@ public class FileManager extends IFileManager<FileManager> {
         } catch (final IOException exception) {
             throw new FileException("Failed to extract folder %s".formatted(path), exception);
         }
+
+        return this;
+    }
+
+    @Override
+    public @NotNull FileManager extractFile(@NotNull final String fileName, @NotNull final Path output) {
+        if (Files.exists(output)) {
+            return this;
+        }
+
+        final Path parent = output.getParent();
+
+        try {
+            Files.createDirectories(parent);
+        } catch (final IOException ignored) {}
+
+        try (final InputStream stream = getClass().getResourceAsStream(fileName); final FileOutputStream outputStream = new FileOutputStream(output.toFile())) {
+            if (stream == null) {
+                return this;
+            }
+
+            byte[] buffer = new byte[1024];
+
+            int counter;
+
+            while ((counter = stream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, counter);
+            }
+        } catch (final Exception exception) {
+            exception.printStackTrace();
+        }
+
+        return this;
+    }
+
+    @Override
+    public @NotNull FileManager extractFile(@NotNull final String fileName) {
+        extractFile(fileName, this.path);
 
         return this;
     }
