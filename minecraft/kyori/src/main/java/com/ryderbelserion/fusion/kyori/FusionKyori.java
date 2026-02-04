@@ -18,6 +18,14 @@ public abstract class FusionKyori<S> extends FusionCore {
         super(source, path);
     }
 
+    public @NotNull final String parse(@Nullable final S sender, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
+        return replacePlaceholders(papi(sender, message), placeholders);
+    }
+
+    public @NotNull final String parse(@Nullable final S sender, @NotNull final String message) {
+        return parse(sender, message, Map.of());
+    }
+
     public abstract String papi(@Nullable final S sender, @NotNull final String message);
 
     public @NotNull final Component asComponent(@NotNull final String message,
