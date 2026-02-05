@@ -64,7 +64,7 @@ public abstract class FoliaScheduler implements Runnable {
 
         ScheduledTask task;
 
-        long maxDelay = Math.max(1, delay);
+        long maxDelay = Math.max(0, delay);
         long maxInterval = Math.max(1, interval);
 
         switch (this.type) {
@@ -88,7 +88,7 @@ public abstract class FoliaScheduler implements Runnable {
 
         ScheduledTask task;
 
-        long maxDelay = Math.max(1, delay);
+        long maxDelay = Math.max(0, delay);
 
         switch (this.type) {
             case global_scheduler -> task = this.server.getGlobalRegionScheduler().runDelayed(this.plugin, scheduledTask -> this.run(), maxDelay);
