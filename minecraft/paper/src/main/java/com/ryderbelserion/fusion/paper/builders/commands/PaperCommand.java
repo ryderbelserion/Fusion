@@ -6,7 +6,7 @@ import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 
-public abstract class PaperCommand extends AbstractCommand<CommandSourceStack, PaperCommandContext> {
+public abstract class PaperCommand extends AbstractCommand<PaperCommand, CommandSourceStack, PaperCommandContext> {
 
     private final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
 

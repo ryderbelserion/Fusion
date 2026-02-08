@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public abstract class AbstractCommand<S, I extends AbstractCommandContext<S>> {
+public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>> {
 
     private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
@@ -107,7 +107,7 @@ public abstract class AbstractCommand<S, I extends AbstractCommandContext<S>> {
         return builder.buildFuture();
     }
 
-    public abstract @NotNull AbstractCommand<S, I> registerPermissions();
+    public abstract @NotNull C registerPermissions();
 
     public abstract @NotNull LiteralCommandNode<S> literal();
 
