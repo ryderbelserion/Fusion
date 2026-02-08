@@ -7,6 +7,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.mojang.context.AbstractCommandContext;
+import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.mojang.enums.SuggestionType;
 import com.ryderbelserion.fusion.mojang.serializers.MessageComponentSerializer;
 import org.jetbrains.annotations.NotNull;
@@ -107,11 +108,13 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
         return builder.buildFuture();
     }
 
-    public abstract @NotNull C registerPermissions();
+    public abstract @NotNull List<PermissionContext> getPermissions();
+
+    public @NotNull C registerPermissions() {
+        return (C) this;
+    }
 
     public abstract @NotNull LiteralCommandNode<S> literal();
-
-    public abstract @NotNull List<String> getPermissions();
 
     public abstract boolean requirement(@NotNull final S context);
 
