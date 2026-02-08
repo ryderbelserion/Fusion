@@ -111,6 +111,8 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
     public abstract @NotNull List<PermissionContext> getPermissions();
 
     public @NotNull C registerPermissions() {
+        getPermissions().forEach(this.fusion::registerPermission);
+
         return (C) this;
     }
 
