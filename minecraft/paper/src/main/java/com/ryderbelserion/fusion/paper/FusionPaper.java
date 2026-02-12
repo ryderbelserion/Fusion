@@ -6,6 +6,7 @@ import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
+import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
@@ -14,6 +15,7 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -58,7 +60,12 @@ public class FusionPaper extends FusionKyori<Audience> {
 
     @Override
     public void registerPermission(@NotNull final PermissionContext context) {
-        final Permission permission = new Permission(context.getPermission(), context.getDescription(), context.getChildren());
+        final Permission permission = new Permission(context.getPermission(), context.getDescription(), switch (context.getType()) {
+            case TRUE -> PermissionDefault.TRUE;
+            case FALSE -> PermissionDefault.FALSE;
+            case OP -> PermissionDefault.OP;
+            case NOT_OP -> PermissionDefault.NOT_OP;
+        }, context.getChildren());
 
         this.pluginManager.addPermission(permission);
     }

@@ -3,6 +3,7 @@ package com.ryderbelserion.fusion.core.utils;
 import com.ryderbelserion.fusion.files.FileException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import java.util.List;
@@ -32,6 +33,24 @@ public class StringUtils {
     }
 
     public static @NotNull List<String> getStringList(@NotNull final CommentedConfigurationNode node) {
+        return getStringList(node, List.of());
+    }
+
+    public static @NotNull List<String> getStringList(@NotNull final BasicConfigurationNode node, @NotNull final List<String> defaultValues) {
+        try {
+            final List<String> list = node.getList(String.class);
+
+            return list != null ? list : defaultValues;
+        } catch (SerializationException exception) {
+            throw new FileException(String.format("Failed to serialize %s!", node.path()), exception);
+        }
+    }
+
+    public static @NotNull List<String> getStringList(@NotNull final BasicConfigurationNode node, @NotNull final String defaultValue) {
+        return getStringList(node, List.of(defaultValue));
+    }
+
+    public static @NotNull List<String> getStringList(@NotNull final BasicConfigurationNode node) {
         return getStringList(node, List.of());
     }
 
