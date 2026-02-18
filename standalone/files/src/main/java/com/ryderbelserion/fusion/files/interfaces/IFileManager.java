@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.jar.JarEntry;
 
 public abstract class IFileManager<I> {
 
@@ -78,15 +80,21 @@ public abstract class IFileManager<I> {
         return getFile(path).map(LogCustomFile.class::cast);
     }
 
+    public abstract @NotNull I extract(@NotNull final Path source, @NotNull final String input, @NotNull final String output, @NotNull final Predicate<? super JarEntry> predicate);
+
+    public @NotNull final I extractFolder(@NotNull final Path source, @NotNull final String input, @NotNull final String output) {
+        return extract(source, input, output, entry -> !entry.isDirectory() && entry.getName().startsWith(input));
+    }
+
+    public @NotNull final I extractFolder(@NotNull final Path source, @NotNull final String input) {
+        return extractFolder(source, input, input);
+    }
+
+    public @NotNull final I extractFile(@NotNull final Path source, @NotNull final String output) {
+        return extract(source, output, output, entry -> entry.getName().equalsIgnoreCase(output));
+    }
+
     public abstract @NotNull I extractFolder(@NotNull final Path jarPath, @NotNull final String folder, @NotNull final Path output);
-
-    public abstract @NotNull I extractFile(@NotNull final Path jarPath, @NotNull final String fileName, @NotNull final Path output);
-
-    public abstract @NotNull I extractFile(@NotNull final Path jarPath, @NotNull final Path path);
-
-    public abstract @NotNull I extractFile(@NotNull final String fileName, @NotNull final Path output);
-
-    public abstract @NotNull I extractFile(@NotNull final String fileName);
 
     public abstract @NotNull I compressFolder(@NotNull final Path path, @NotNull final String content);
 

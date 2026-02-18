@@ -13,13 +13,13 @@ import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
@@ -187,6 +187,79 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
+    public @NotNull FileManager extract(@NotNull final Path source, @NotNull final String input, @NotNull final String output, @NotNull final Predicate<? super JarEntry> predicate) {
+        final boolean hasExtension = input.contains(".");
+
+        try (final JarFile jarFile = new JarFile(source.toFile())) {
+            final Set<JarEntry> map = jarFile.stream()
+                    .filter(entry -> !entry.getName().endsWith(".class")) // filter .class files
+                    .filter(entry -> !entry.getName().startsWith("META-INF")) // filter meta inf
+                    .filter(predicate) // custom predicate
+                    .collect(Collectors.toSet());
+
+            for (final JarEntry entry : map) {
+                final String entryName = entry.getName();
+
+                if (hasExtension) {
+                    final Path location = this.path.resolve(output);
+
+                    if (Files.exists(location)) {
+                        continue;
+                    }
+
+                    try (final InputStream stream = jarFile.getInputStream(entry)) {
+                        Files.copy(stream, location);
+                    } catch (final IOException exception) {
+                        throw new FileException("Failed to copy %s to %s".formatted(entryName, location), exception);
+                    }
+
+                    continue;
+                }
+
+                final String[] splitter = entryName.split("/");
+
+                if (output.isBlank()) { // if output is blank, we assume that we want the file in the root folder.
+                    final Path path = this.path.resolve(splitter[1]);
+
+                    if (Files.exists(path)) {
+                        continue;
+                    }
+
+                    try (final InputStream stream = jarFile.getInputStream(entry)) {
+                        Files.copy(stream, path);
+                    } catch (final IOException exception) {
+                        throw new FileException("Failed to copy %s to %s".formatted(entryName, path), exception);
+                    }
+
+                    continue;
+                }
+
+                final Path directory = this.path.resolve(input);
+
+                if (!Files.exists(directory)) {
+                    Files.createDirectories(directory);
+                }
+
+                final Path path = directory.resolve(splitter[1]);
+
+                if (Files.exists(path)) {
+                    continue;
+                }
+
+                try (final InputStream stream = jarFile.getInputStream(entry)) {
+                    Files.copy(stream, path);
+                } catch (final IOException exception) {
+                    throw new FileException("Failed to copy %s to %s".formatted(entryName, path), exception);
+                }
+            }
+        } catch (final IOException exception) {
+            exception.printStackTrace();
+        }
+
+        return this;
+    }
+
+    @Override
     public @NotNull FileManager extractFolder(@NotNull final Path jarFile, @NotNull final String folder, @NotNull final Path output) {
         final Path path = output.resolve(folder);
 
@@ -232,92 +305,6 @@ public class FileManager extends IFileManager<FileManager> {
         } catch (final IOException exception) {
             throw new FileException("Failed to extract folder %s".formatted(path), exception);
         }
-
-        return this;
-    }
-
-    @Override
-    public @NotNull FileManager extractFile(@NotNull final String fileName, @NotNull final Path output) {
-        if (Files.exists(output)) {
-            return this;
-        }
-
-        final Path parent = output.getParent();
-
-        try {
-            Files.createDirectories(parent);
-        } catch (final IOException ignored) {}
-
-        try (final InputStream stream = getClass().getResourceAsStream(fileName); final FileOutputStream outputStream = new FileOutputStream(output.toFile())) {
-            if (stream == null) {
-                return this;
-            }
-
-            byte[] buffer = new byte[1024];
-
-            int counter;
-
-            while ((counter = stream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, counter);
-            }
-        } catch (final Exception exception) {
-            exception.printStackTrace();
-        }
-
-        return this;
-    }
-
-    @Override
-    public @NotNull FileManager extractFile(@NotNull final String fileName) {
-        extractFile(fileName, this.path);
-
-        return this;
-    }
-
-    @Override
-    public @NotNull FileManager extractFile(@NotNull final Path jarFile, @NotNull final String fileName, @NotNull final Path output) {
-        if (Files.exists(output)) {
-            return this;
-        }
-
-        final Path parent = output.getParent();
-
-        if (!Files.exists(parent) && Files.isDirectory(parent)) {
-            try {
-                Files.createDirectory(parent);
-            } catch (final IOException exception) {
-                throw new FileException("Failed to create %s".formatted(parent));
-            }
-        }
-
-        try (final JarFile jar = new JarFile(jarFile.toFile())) {
-            final Set<JarEntry> entries = jar.stream().filter(entry -> !entry.getName().endsWith(".class"))
-                    .filter(entry -> !entry.getName().startsWith("META-INF"))
-                    .filter(entry -> !entry.isDirectory())
-                    .filter(entry -> entry.getName().equalsIgnoreCase(fileName))
-                    .collect(Collectors.toSet());
-
-            for (final JarEntry entry : entries) {
-                if (Files.exists(output)) {
-                    continue;
-                }
-
-                try (final InputStream stream = jar.getInputStream(entry)) {
-                    Files.copy(stream, output);
-                } catch (final IOException exception) {
-                    throw new FileException("Failed to copy %s to %s".formatted(entry.getName(), output), exception);
-                }
-            }
-        } catch (final IOException exception) {
-            throw new FileException("Failed to extract file %s".formatted(fileName), exception);
-        }
-
-        return this;
-    }
-
-    @Override
-    public @NotNull FileManager extractFile(@NotNull final Path jarFile, @NotNull final Path path) {
-        extractFile(jarFile, path.getFileName().toString(), path);
 
         return this;
     }

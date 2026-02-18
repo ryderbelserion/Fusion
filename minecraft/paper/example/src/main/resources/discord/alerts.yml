@@ -1,0 +1,102 @@
+# All alerts handled by ChatterBox
+alerts:
+  # Tracks different events for servers like start/stop
+  server:
+    # The default server, multi-server not supported yet.
+    default:
+      # A list of discord channels.
+      channels: []
+      # The embed to send in chat.
+      embed:
+        # Sent when the server is online.
+        online:
+          # The title of the embed.
+          title: "The server has started!"
+          # The color of the embed, like a hex color.
+          color: "#0eeb6a"
+          # The footer of the embed.
+          footer: "{timestamp}"
+          # Media related settings like images
+          media: # The thumbnail, must be a picture url.
+            # If empty, or not present. this does nothing.
+            thumbnail: ""
+            # The image, must be a picture url.
+            # If empty, or not present. this does nothing.
+            image: ""
+        # Sent when the server is offline.
+        offline:
+          # The title of the embed.
+          title: "The server has stopped!"
+          # The color of the embed, like a hex color.
+          color: "#e0240b"
+          # The footer of the embed.
+          footer: "{timestamp}"
+          # Media related settings like images
+          media: # The thumbnail, must be a picture url.
+            # If empty, or not present. this does nothing.
+            thumbnail: ""
+            # The image, must be a picture url.
+            # If empty, or not present. this does nothing.
+            image: ""
+  player:
+    # Sent when a player sends a message.
+    chat-alert:
+      # A list of discord channels.
+      channels: []
+      # The message to send to discord.
+      discord:
+        # The message to sent discord.
+        message: "{player} > {message}"
+      # The message sent to minecraft.
+      #
+      # A list of available placeholders:
+      # {player}
+      # {message_display_format}
+      # {message_raw_format}
+      # {message}
+
+      # {primary_color}
+      # {secondary_color}
+
+      # {role}
+      minecraft:
+        # The message sent to Minecraft.
+        message: "{player} > {message}"
+    # Sent when a player joins the server.
+    join-alert:
+      # A list of discord channels.
+      channels: []
+      # The embed to send in chat.
+      embed:
+        # The title of the embed.
+        title: "{player} has joined!"
+        # The color of the embed, like a hex color.
+        color: "#0eeb6a"
+        # The footer of the embed.
+        footer: "{timestamp}"
+        # Media related settings like images
+        media: # The thumbnail, must be a picture url.
+          # If empty, or not present. this does nothing.
+          thumbnail: ""
+          # The image, must be a picture url.
+          # If empty, or not present. this does nothing.
+          image: ""
+    # Sent when a player leaves the server.
+    quit-alert:
+      # A list of discord channels.
+      channels: []
+      # The embed to send in chat.
+      embed:
+        # The title of the embed.
+        title: "{player} has quit!"
+        # The color of the embed, like a hex color.
+        color: "#e0240b"
+        # The footer of the embed.
+        footer: "{timestamp}"
+        # Media related settings like images
+        media: # The thumbnail, must be a picture url.
+          # If empty, or not present. this does nothing.
+          thumbnail: ""
+          # The image, must be a picture url.
+          # If empty, or not present. this does nothing.
+          image: ""
