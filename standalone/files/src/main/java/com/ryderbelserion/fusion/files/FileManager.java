@@ -188,8 +188,6 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NotNull FileManager extract(@NotNull final Path source, @NotNull final String input, @NotNull final String output, @NotNull final Predicate<? super JarEntry> predicate) {
-        final boolean hasExtension = input.contains(".");
-
         try (final JarFile jarFile = new JarFile(source.toFile())) {
             final Set<JarEntry> map = jarFile.stream()
                     .filter(entry -> !entry.getName().endsWith(".class")) // filter .class files
@@ -200,56 +198,16 @@ public class FileManager extends IFileManager<FileManager> {
             for (final JarEntry entry : map) {
                 final String entryName = entry.getName();
 
-                if (hasExtension) {
-                    final Path location = this.path.resolve(output);
+                final Path location = this.path.resolve(output);
 
-                    if (Files.exists(location)) {
-                        continue;
-                    }
-
-                    try (final InputStream stream = jarFile.getInputStream(entry)) {
-                        Files.copy(stream, location);
-                    } catch (final IOException exception) {
-                        throw new FileException("Failed to copy %s to %s".formatted(entryName, location), exception);
-                    }
-
-                    continue;
-                }
-
-                final String[] splitter = entryName.split("/");
-
-                if (output.isBlank()) { // if output is blank, we assume that we want the file in the root folder.
-                    final Path path = this.path.resolve(splitter[1]);
-
-                    if (Files.exists(path)) {
-                        continue;
-                    }
-
-                    try (final InputStream stream = jarFile.getInputStream(entry)) {
-                        Files.copy(stream, path);
-                    } catch (final IOException exception) {
-                        throw new FileException("Failed to copy %s to %s".formatted(entryName, path), exception);
-                    }
-
-                    continue;
-                }
-
-                final Path directory = this.path.resolve(input);
-
-                if (!Files.exists(directory)) {
-                    Files.createDirectories(directory);
-                }
-
-                final Path path = directory.resolve(splitter[1]);
-
-                if (Files.exists(path)) {
+                if (Files.exists(location)) {
                     continue;
                 }
 
                 try (final InputStream stream = jarFile.getInputStream(entry)) {
-                    Files.copy(stream, path);
+                    Files.copy(stream, location);
                 } catch (final IOException exception) {
-                    throw new FileException("Failed to copy %s to %s".formatted(entryName, path), exception);
+                    throw new FileException("Failed to copy %s to %s".formatted(entryName, location), exception);
                 }
             }
         } catch (final IOException exception) {

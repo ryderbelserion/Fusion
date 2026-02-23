@@ -56,7 +56,7 @@ public abstract class ICustomFile<I, C, L, O> {
             }
 
             if (hasAction(FileAction.EXTRACT_FOLDER)) {
-                this.fileManager.extractFolder(this.source, name, parent.getFileName().toString());
+                this.fileManager.extractFolder(this.source, name, parent);
             }
         }
 

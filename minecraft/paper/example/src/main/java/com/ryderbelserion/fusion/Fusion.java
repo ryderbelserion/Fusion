@@ -22,8 +22,8 @@ public class Fusion extends JavaPlugin {
 
         final FileManager fileManager = this.fusion.getFileManager();
 
-        fileManager.extractFolder(source, "velocity", ""); // extract to root dir
-        fileManager.extractFolder(source, "discord"); // extract previously.
+        //fileManager.extractFolder(source, "velocity", ""); // extract to root dir
+        //fileManager.extractFolder(source, "discord"); // extract previously.
 
         fileManager.addFile( // extract normally
                 path.resolve("test.yml"),
