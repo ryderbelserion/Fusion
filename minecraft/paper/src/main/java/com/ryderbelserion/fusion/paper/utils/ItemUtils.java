@@ -1,16 +1,23 @@
 package com.ryderbelserion.fusion.paper.utils;
 
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
+import net.minecraft.commands.arguments.item.ItemParser;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.world.item.Item;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.banner.PatternType;
+import org.bukkit.craftbukkit.CraftRegistry;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -31,6 +38,32 @@ public class ItemUtils {
 
     public static @NotNull RegistryAccess getRegistryAccess() {
         return RegistryAccess.registryAccess();
+    }
+
+    public static @Nullable ItemStack getItemStack(@NotNull final String context) {
+        ItemParser.ItemResult parser = null;
+
+        try {
+            parser = new ItemParser(CraftRegistry.getMinecraftRegistry()).parse(new StringReader(context));
+        } catch (final CommandSyntaxException exception) {
+            exception.printStackTrace();
+        }
+
+        if (parser == null) {
+            return null;
+        }
+
+        final Item item = parser.item().value();
+
+        final net.minecraft.world.item.ItemStack itemStack = new net.minecraft.world.item.ItemStack(item);
+
+        final DataComponentPatch component = parser.components();
+
+        if (component != null) {
+            itemStack.applyComponents(component);
+        }
+
+        return CraftItemStack.asCraftMirror(itemStack);
     }
 
     public static @NotNull Optional<DataComponentType> getDataComponentType(@NotNull final String value) {
