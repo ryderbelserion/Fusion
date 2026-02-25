@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedConfigurationNode, YamlConfigurationLoader, ConfigurationOptions> implements IConfigurate {
 
     public YamlCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<YamlCustomFile> consumer) {
-        super(fileManager, fileManager.getSource(), path);
+        super(fileManager, path);
 
         this.options = ConfigurationOptions.defaults();
 

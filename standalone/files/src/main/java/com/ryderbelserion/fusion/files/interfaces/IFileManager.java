@@ -80,7 +80,7 @@ public abstract class IFileManager<I> {
         return getFile(path).map(LogCustomFile.class::cast);
     }
 
-    public abstract @NotNull I extract(@NotNull final Path source, @NotNull final String input, @NotNull final String output, @NotNull final Predicate<? super JarEntry> predicate);
+    public abstract @NotNull I extract(@NotNull final String input, @NotNull final String output, @NotNull final Predicate<? super JarEntry> predicate);
 
     /*public @NotNull final I extractFolder(@NotNull final Path source, @NotNull final String input, @NotNull final String output) {
         return extract(source, input, output, entry -> !entry.isDirectory() && entry.getName().startsWith(input));
@@ -90,11 +90,11 @@ public abstract class IFileManager<I> {
         return extractFolder(source, input, input);
     }*/
 
-    public @NotNull final I extractFile(@NotNull final Path source, @NotNull final String output) {
-        return extract(source, output, output, entry -> entry.getName().equalsIgnoreCase(output));
+    public @NotNull final I extractFile(@NotNull final String output) {
+        return extract(output, output, entry -> entry.getName().equalsIgnoreCase(output));
     }
 
-    public abstract @NotNull I extractFolder(@NotNull final Path jarPath, @NotNull final String folder, @NotNull final Path output);
+    public abstract @NotNull I extractFolder(@NotNull final String folder, @NotNull final Path output);
 
     public abstract @NotNull I compressFolder(@NotNull final Path path, @NotNull final String content);
 

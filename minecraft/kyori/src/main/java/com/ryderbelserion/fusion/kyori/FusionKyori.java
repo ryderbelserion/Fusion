@@ -15,8 +15,8 @@ import java.util.Map;
 
 public abstract class FusionKyori<S> extends FusionCore {
 
-    public FusionKyori(@NotNull final Path source, final Path path) {
-        super(source, path);
+    public FusionKyori(@NotNull final Path path) {
+        super(path);
     }
 
     public @NotNull final String parse(@Nullable final S sender, @NotNull final String message, @NotNull final Map<String, String> placeholders) {

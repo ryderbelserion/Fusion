@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 public final class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFile, Object, Object> {
 
     public LogCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<LogCustomFile> consumer) {
-        super(fileManager, path, path);
+        super(fileManager, path);
 
         consumer.accept(this);
     }

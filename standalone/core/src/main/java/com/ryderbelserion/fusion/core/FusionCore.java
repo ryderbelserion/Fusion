@@ -24,14 +24,14 @@ public abstract class FusionCore {
     private final FileManager fileManager;
     private final Path path;
 
-    public FusionCore(@NotNull final Path source, final Path path) {
+    public FusionCore(@NotNull final Path path) {
         this.config = SettingsManagerBuilder
                 .withYamlFile(path.resolve("fusion.yml"))
                 .configurationData(FusionConfig.class)
                 .useDefaultMigrationService()
                 .create();
 
-        this.fileManager = new FileManager(source, path);
+        this.fileManager = new FileManager(path);
         this.path = path;
     }
 

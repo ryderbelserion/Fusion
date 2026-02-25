@@ -10,7 +10,6 @@ import com.ryderbelserion.fusion.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
@@ -31,18 +30,16 @@ public class FileManager extends IFileManager<FileManager> {
 
     protected final Map<Path, ICustomFile<?, ?, ?, ?>> files = new HashMap<>();
 
-    protected final Path source;
     private final Path path;
     private int depth = 1;
 
-    public FileManager(@NotNull final Path source, @NotNull final Path path) {
-        this.source = source;
+    public FileManager(@NotNull final Path path) {
         this.path = path;
     }
 
     @Override
     public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
-        extractFolder(this.source, folder.getFileName().toString(), folder.getParent());
+        extractFolder(folder.getFileName().toString(), folder.getParent());
 
         for (final Path path : getFilesByPath(folder, fileType.getExtension(), getDepth())) {
             addFile(path, fileType, consumer);
@@ -187,8 +184,8 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager extract(@NotNull final Path source, @NotNull final String input, @NotNull final String output, @NotNull final Predicate<? super JarEntry> predicate) {
-        try (final JarFile jarFile = new JarFile(source.toFile())) {
+    public @NotNull FileManager extract(@NotNull final String input, @NotNull final String output, @NotNull final Predicate<? super JarEntry> predicate) {
+        try (final JarFile jarFile = new JarFile(getClass().getProtectionDomain().getCodeSource().getLocation().getPath())) {
             final Set<JarEntry> map = jarFile.stream()
                     .filter(entry -> !entry.getName().endsWith(".class")) // filter .class files
                     .filter(entry -> !entry.getName().startsWith("META-INF")) // filter meta inf
@@ -218,7 +215,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager extractFolder(@NotNull final Path jarFile, @NotNull final String folder, @NotNull final Path output) {
+    public @NotNull FileManager extractFolder(@NotNull final String folder, @NotNull final Path output) {
         final Path path = output.resolve(folder);
 
         if (Files.exists(path)) { // do not extract if path exists.
@@ -233,7 +230,7 @@ public class FileManager extends IFileManager<FileManager> {
             }
         }
 
-        try (final JarFile jar = new JarFile(jarFile.toFile())) {
+        try (final JarFile jar = new JarFile(getClass().getProtectionDomain().getCodeSource().getLocation().getPath())) {
             final Set<JarEntry> entries = jar.stream().filter(entry -> !entry.getName().endsWith(".class"))
                     .filter(entry -> !entry.getName().startsWith("META-INF"))
                     .filter(entry -> !entry.isDirectory())
@@ -431,10 +428,5 @@ public class FileManager extends IFileManager<FileManager> {
     @Override
     public @NotNull final Map<Path, ICustomFile<?, ?, ?, ?>> getFiles() {
         return Collections.unmodifiableMap(this.files);
-    }
-
-    @ApiStatus.Internal
-    public @NotNull final Path getSource() {
-        return this.source;
     }
 }

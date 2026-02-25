@@ -31,8 +31,8 @@ public class FusionPaper extends FusionKyori<Audience> {
     private final ComponentLogger logger;
     private final Server server;
 
-    public FusionPaper(@NotNull final JavaPlugin plugin, @NotNull final Path source) {
-        super(source, plugin.getDataPath());
+    public FusionPaper(@NotNull final JavaPlugin plugin) {
+        super(plugin.getDataPath());
 
         this.logger = plugin.getComponentLogger();
         this.server = plugin.getServer();

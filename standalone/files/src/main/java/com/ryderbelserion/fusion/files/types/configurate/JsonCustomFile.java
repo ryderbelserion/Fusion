@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurationNode, GsonConfigurationLoader, ConfigurationOptions> implements IConfigurate {
 
     public JsonCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<JsonCustomFile> consumer) {
-        super(fileManager, fileManager.getSource(), path);
+        super(fileManager, path);
 
         this.options = ConfigurationOptions.defaults();
 

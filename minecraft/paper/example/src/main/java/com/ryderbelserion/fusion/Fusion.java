@@ -1,5 +1,7 @@
 package com.ryderbelserion.fusion;
 
+import com.ryderbelserion.fusion.files.FileManager;
+import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import org.bukkit.entity.Player;
@@ -17,8 +19,14 @@ public class Fusion extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        this.fusion = new FusionPaper(this, getFile().toPath());
+        this.fusion = new FusionPaper(this);
         this.fusion.init();
+
+        final FileManager fileManager = this.fusion.getFileManager();
+
+        fileManager.addFolder(getDataPath().resolve("crates"), FileType.YAML);
+
+        fileManager.addFile(getDataPath().resolve("test.yml"), FileType.YAML);
 
         getServer().getPluginManager().registerEvents(this, this);
     }
