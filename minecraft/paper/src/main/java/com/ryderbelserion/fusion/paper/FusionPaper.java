@@ -71,6 +71,19 @@ public class FusionPaper extends FusionKyori<Audience> {
     }
 
     @Override
+    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception, @NotNull final Map<String, String> placeholders) {
+        if (!this.isVerbose()) return;
+
+        final Component component = asComponent(message, placeholders);
+
+        switch (level) {
+            case WARNING -> this.logger.warn(component, exception);
+            case ERROR -> this.logger.error(component, exception);
+            case INFO -> this.logger.info(component, exception);
+        }
+    }
+
+    @Override
     public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
         if (!this.isVerbose()) return;
 
