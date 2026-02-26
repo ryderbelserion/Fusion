@@ -7,6 +7,7 @@ import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -17,6 +18,25 @@ public class StringUtils {
 
     private static final char LF = '\n';
     private static final char CR = '\r';
+
+    public static @NotNull String replacePlaceholders(@NotNull final String message, @NotNull final Map<String, String> placeholders) {
+        String safeMessage = message;
+
+        if (!placeholders.isEmpty()) {
+            for (final Map.Entry<String, String> key : placeholders.entrySet()) {
+                if (key == null) continue;
+
+                final String placeholder = key.getKey();
+                final String value = key.getValue();
+
+                if (placeholder != null && value != null) {
+                    safeMessage = safeMessage.replace(placeholder, value).replace(placeholder.toLowerCase(), value);
+                }
+            }
+        }
+
+        return safeMessage;
+    }
 
     public static @NotNull List<String> getStringList(@NotNull final CommentedConfigurationNode node, @NotNull final List<String> defaultValues) {
         try {
