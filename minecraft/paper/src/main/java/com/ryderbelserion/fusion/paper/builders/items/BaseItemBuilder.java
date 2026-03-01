@@ -7,7 +7,7 @@ import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiAction;
-import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiItem;
+import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
 import com.ryderbelserion.fusion.paper.builders.items.types.PatternBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.PotionBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.SkullBuilder;
@@ -183,7 +183,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull final GuiItem asGuiItem(@NotNull final Audience audience, @Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
+    public @NotNull final GuiItem asGuiItem(@NotNull final Audience audience, @NotNull final GuiAction<@NotNull InventoryClickEvent> action) {
         return new GuiItem(asItemStack(audience), action);
     }
 
@@ -192,7 +192,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public @NotNull final GuiItem asGuiItem(@NotNull final Audience audience) {
-        return asGuiItem(audience, null);
+        return asGuiItem(audience, action -> {});
     }
 
     public @NotNull final GuiItem asGuiItem() {
