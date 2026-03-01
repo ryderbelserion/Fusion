@@ -8,6 +8,7 @@ import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
 import com.ryderbelserion.fusion.paper.builders.gui.GuiManager;
+import com.ryderbelserion.fusion.paper.builders.gui.types.GuiListener;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
@@ -31,6 +32,7 @@ public class FusionPaper extends FusionKyori<Audience> {
     private final PluginManager pluginManager;
     private final ComponentLogger logger;
     private final GuiManager guiManager;
+    private final JavaPlugin plugin;
     private final Server server;
 
     public FusionPaper(@NotNull final JavaPlugin plugin) {
@@ -39,6 +41,7 @@ public class FusionPaper extends FusionKyori<Audience> {
         this.logger = plugin.getComponentLogger();
         this.guiManager = new GuiManager();
         this.server = plugin.getServer();
+        this.plugin = plugin;
 
         this.pluginManager = this.server.getPluginManager();
     }
@@ -52,6 +55,8 @@ public class FusionPaper extends FusionKyori<Audience> {
         if (this.pluginManager.isPluginEnabled("HeadDatabaseAPI") && this.api == null) {
             this.api = new  HeadDatabaseAPI();
         }
+
+        this.server.getPluginManager().registerEvents(new GuiListener(), this.plugin);
 
         return this;
     }
