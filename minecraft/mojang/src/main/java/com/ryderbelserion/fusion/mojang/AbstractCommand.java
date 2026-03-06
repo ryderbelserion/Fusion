@@ -30,7 +30,7 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
             final int ceiling
     ) {
         final boolean isBlank = tooltip.isBlank();
-        final Message message = isBlank ? MessageComponentSerializer.message().serialize(Component.empty()) : MessageComponentSerializer.message().serialize(this.fusion.asComponent(tooltip));
+        final Message message = isBlank ? null : MessageComponentSerializer.message().serialize(this.fusion.asComponent(tooltip));
 
         return suggestArgument(builder, consumer -> {
             switch (type) {
@@ -84,20 +84,22 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
             @NotNull final Collection<String> values,
             @NotNull final String tooltip
     ) {
-        return suggestArgument(builder, consumer -> {
-            final boolean isBlank = tooltip.isBlank();
-            final Message message = isBlank ? MessageComponentSerializer.message().serialize(Component.empty()) : MessageComponentSerializer.message().serialize(this.fusion.asComponent(tooltip));
+        final boolean isBlank = tooltip.isBlank();
+        final Message message = isBlank ? null : MessageComponentSerializer.message().serialize(this.fusion.asComponent(tooltip));
 
+        return suggestArgument(builder, consumer -> {
             for (final String value : values) {
+                if (!value.isBlank()) {
+                    continue;
+                }
+
                 if (isBlank) {
-                    consumer.suggest(value, message);
+                    consumer.suggest(value);
 
                     continue;
                 }
 
-                if (!value.isBlank()) {
-                    consumer.suggest(value);
-                }
+                consumer.suggest(value, message);
             }
         });
     }
