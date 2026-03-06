@@ -10,6 +10,7 @@ import com.ryderbelserion.fusion.mojang.context.AbstractCommandContext;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.mojang.enums.SuggestionType;
 import com.ryderbelserion.fusion.mojang.serializers.MessageComponentSerializer;
+import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.List;
@@ -28,8 +29,8 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
             final int amount,
             final int ceiling
     ) {
-        final Message message = MessageComponentSerializer.message().serialize(this.fusion.asComponent(tooltip));
         final boolean isBlank = tooltip.isBlank();
+        final Message message = isBlank ? MessageComponentSerializer.message().serialize(Component.empty()) : MessageComponentSerializer.message().serialize(this.fusion.asComponent(tooltip));
 
         return suggestArgument(builder, consumer -> {
             switch (type) {
@@ -84,8 +85,8 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
             @NotNull final String tooltip
     ) {
         return suggestArgument(builder, consumer -> {
-            final Message message = MessageComponentSerializer.message().serialize(this.fusion.asComponent(tooltip));
             final boolean isBlank = tooltip.isBlank();
+            final Message message = isBlank ? MessageComponentSerializer.message().serialize(Component.empty()) : MessageComponentSerializer.message().serialize(this.fusion.asComponent(tooltip));
 
             for (final String value : values) {
                 if (isBlank) {
