@@ -94,7 +94,9 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
                     continue;
                 }
 
-                consumer.suggest(value);
+                if (!value.isBlank()) {
+                    consumer.suggest(value);
+                }
             }
         });
     }
