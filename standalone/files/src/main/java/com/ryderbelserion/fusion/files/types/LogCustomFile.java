@@ -19,11 +19,13 @@ public final class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFil
 
     @Override
     public @NotNull LogCustomFile loadConfig() throws IOException {
-        if (Files.exists(getPath())) {
+        final Path path = getPath();
+
+        if (Files.exists(path)) {
             return this;
         }
 
-        Files.createFile(getPath());
+        Files.createFile(path);
 
         return this;
     }

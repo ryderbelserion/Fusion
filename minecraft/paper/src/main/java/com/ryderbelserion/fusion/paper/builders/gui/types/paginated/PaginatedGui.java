@@ -26,14 +26,22 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
     private int pageSize;
 
     public PaginatedGui(@NotNull final JavaPlugin plugin, @NotNull final Audience player, @NotNull final String title, final int pageSize, @NotNull final InventoryType type) {
-        this(plugin, player, title, pageSize, type.getDefaultSize());
+        this(plugin, player, title, pageSize, type.getDefaultSize() / 9);
     }
 
-    public PaginatedGui(@NotNull final JavaPlugin plugin, @NotNull final Audience player, @NotNull final String title, final int pageSize, final int size) {
-        super(plugin, player, title, size);
+    public PaginatedGui(@NotNull final JavaPlugin plugin, @NotNull final Audience player, @NotNull final String title, final int pageSize, final int rows) {
+        super(plugin, player, title, rows);
 
         this.pageSize = pageSize == 0 ? calculate() : pageSize;
-        this.currentPage = new HashMap<>(size);
+        this.currentPage = new HashMap<>(this.size);
+    }
+
+    public static @NotNull PaginatedGui gui(@NotNull final JavaPlugin plugin, @NotNull final Audience player, @NotNull final String title, final int pageSize, @NotNull final InventoryType type) {
+        return new PaginatedGui(plugin, player, title, pageSize, type);
+    }
+
+    public static @NotNull PaginatedGui gui(@NotNull final JavaPlugin plugin, @NotNull final Audience player, @NotNull final String title, final int pageSize, final int rows) {
+        return new PaginatedGui(plugin, player, title, pageSize, rows);
     }
 
     public PaginatedGui interact(@NotNull final InventoryClickEvent event) {
