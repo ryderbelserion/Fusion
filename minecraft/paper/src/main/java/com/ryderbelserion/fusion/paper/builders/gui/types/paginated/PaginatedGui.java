@@ -134,6 +134,8 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
     public PaginatedGui setPageItem(final int slot, @NotNull final ItemStack itemStack) {
         if (!this.currentPage.containsKey(slot)) return this;
 
+        if (this.items.containsKey(slot)) return this; // if filler item exists, do not add.
+
         final GuiItem guiItem = this.currentPage.get(slot);
 
         this.inventory.setItem(slot, guiItem.setItemStack(itemStack));
@@ -142,6 +144,8 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
     }
 
     public PaginatedGui setPageItem(final int slot, @NotNull final GuiItem guiItem) {
+        if (this.items.containsKey(slot)) return this; // if filler item exists, do not add.
+
         final boolean hasItem = this.currentPage.containsKey(slot);
 
         this.currentPage.put(slot, guiItem);
@@ -158,6 +162,8 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
 
     public void addPageItem(@NotNull final GuiItem guiItem) {
         final int slot = guiItem.getSlot();
+
+        if (this.items.containsKey(slot)) return; // if filler item exists, do not add.
 
         this.pageItems.put(slot, guiItem);
 
