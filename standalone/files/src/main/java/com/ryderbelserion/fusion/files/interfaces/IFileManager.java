@@ -90,6 +90,8 @@ public abstract class IFileManager<I> {
         return extractFolder(source, input, input);
     }*/
 
+    public abstract @NotNull I extractFile(@NotNull final String fileName, @NotNull final Path output);
+
     public @NotNull final I extractFile(@NotNull final String output) {
         return extract(output, output, entry -> entry.getName().equalsIgnoreCase(output));
     }

@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
@@ -209,6 +210,47 @@ public class FileManager extends IFileManager<FileManager> {
             }
         } catch (final IOException exception) {
             exception.printStackTrace();
+        }
+
+        return this;
+    }
+
+    @Override
+    public @NotNull FileManager extractFile(@NotNull final String fileName, @NotNull final Path output) {
+        if (Files.exists(output)) {
+            return this;
+        }
+
+        final Path parent = output.getParent();
+
+        if (!Files.exists(parent) && Files.isDirectory(parent)) {
+            try {
+                Files.createDirectory(parent);
+            } catch (final IOException exception) {
+                throw new FileException("Failed to create %s".formatted(parent));
+            }
+        }
+
+        try (final JarFile jarFile = new JarFile(Path.of(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
+            final Set<JarEntry> entries = jarFile.stream().filter(entry -> !entry.getName().endsWith(".class"))
+                    .filter(entry -> !entry.getName().startsWith("META-INF"))
+                    .filter(entry -> !entry.isDirectory())
+                    .filter(entry -> entry.getName().equalsIgnoreCase(fileName))
+                    .collect(Collectors.toSet());
+
+            for (final JarEntry entry : entries) {
+                if (Files.exists(output)) {
+                    continue;
+                }
+
+                try (final InputStream stream = jarFile.getInputStream(entry)) {
+                    Files.copy(stream, output);
+                } catch (final IOException exception) {
+                    throw new FileException("Failed to copy %s to %s".formatted(entry.getName(), output), exception);
+                }
+            }
+        } catch (final IOException | URISyntaxException exception) {
+            throw new FileException("Failed to extract file %s".formatted(fileName), exception);
         }
 
         return this;
