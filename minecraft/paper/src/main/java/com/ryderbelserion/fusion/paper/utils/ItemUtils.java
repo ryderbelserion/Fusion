@@ -8,6 +8,7 @@ import com.ryderbelserion.fusion.paper.FusionPaper;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
+import net.minecraft.commands.arguments.item.ItemInput;
 import net.minecraft.commands.arguments.item.ItemParser;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.world.item.Item;
@@ -41,7 +42,7 @@ public class ItemUtils {
     }
 
     public static @Nullable ItemStack getItemStack(@NotNull final String context) {
-        ItemParser.ItemResult parser = null;
+        ItemInput parser = null;
 
         try {
             parser = new ItemParser(CraftRegistry.getMinecraftRegistry()).parse(new StringReader(context));
@@ -59,9 +60,7 @@ public class ItemUtils {
 
         final DataComponentPatch component = parser.components();
 
-        if (component != null) {
-            itemStack.applyComponents(component);
-        }
+        itemStack.applyComponents(component);
 
         return CraftItemStack.asCraftMirror(itemStack);
     }

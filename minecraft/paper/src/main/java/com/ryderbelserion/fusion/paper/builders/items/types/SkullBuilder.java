@@ -44,7 +44,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
     public @NotNull SkullBuilder withUrl(@NotNull final String url) {
         if (url.isEmpty()) return this;
 
-        final String newUrl = "https://textures.minecraft.net/texture/" + url;
+        final String newUrl = url.startsWith("https://textures.minecraft.net/texture/") ? url : "https://textures.minecraft.net/texture/" + url;
 
         final PlayerProfile profile = this.fusion.createProfile(UUID.randomUUID(), null);
 
