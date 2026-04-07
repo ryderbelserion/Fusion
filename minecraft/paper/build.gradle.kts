@@ -6,7 +6,7 @@ plugins {
 project.group = "${rootProject.name}.paper"
 
 repositories {
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://repo.extendedclip.com/releases/")
 
     maven("https://repo.nexomc.com/releases/")
 
@@ -16,31 +16,8 @@ repositories {
 }
 
 dependencies {
-    /*implementation(libs.configurate.gson) {
-        exclude(
-            group = "org.gson",
-            module = "gson"
-        )
-
-        exclude(
-            group = "org.spongepowered",
-            module = "configurate-core"
-        )
-
-        exclude(
-            group = "com.google.errorprone",
-            module = "error_prone_annotations"
-        )
-    }
-
-    implementation(libs.jalu) {
-        exclude(
-            group = "org.yaml",
-            module = "snakeyaml",
-        )
-    }*/
+    api(project(":fusion-mojang"))
+    api(project(":fusion-kyori"))
 
     compileOnly(libs.bundles.shared)
-
-    api(project(":fusion-kyori"))
 }

@@ -8,19 +8,17 @@ pluginManagement {
 rootProject.name = "Fusion"
 
 listOf(
-    //"velocity",
-    "core",
+    //"minecraft/kyori" to "kyori",
 
-    // stand alone
-    "files"
-).forEach {
-    includeProject(it)
-}
+    "minecraft/mojang" to "mojang",
 
-listOf(
+
+    "/minecraft/paper/example" to "example",
+    "minecraft/paper" to "paper",
     "minecraft/kyori" to "kyori",
 
-    "minecraft/paper" to "paper"
+    "standalone/files" to "files",
+    "standalone/core" to "core"
 ).forEach {
     includeProject(it.first, it.second)
 }

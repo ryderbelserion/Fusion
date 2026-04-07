@@ -5,6 +5,8 @@ plugins {
     `java-library`
 }
 
+val libs: VersionCatalog = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
+
 tasks {
     javadoc {
         val name = rootProject.name
@@ -33,7 +35,7 @@ tasks {
 
         repositories {
             maven {
-                url = uri("https://repo.crazycrew.us/releases/")
+                url = uri(libs.findVersion("url").get().toString())
                 credentials(PasswordCredentials::class)
                 authentication.create<BasicAuthentication>("basic")
             }

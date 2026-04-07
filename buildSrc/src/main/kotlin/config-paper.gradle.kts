@@ -4,7 +4,7 @@ plugins {
     id("config-java")
 }
 
-val libs = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
+val libs: VersionCatalog = extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
 
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/")

@@ -1,0 +1,22 @@
+root:
+  # The bot token
+  token: ""
+  # Supply the guild id of your discord server.
+  # This allows our features to work internally.
+  guild-id: ""
+  # Should the discord bot be enabled?
+  enabled: false
+  # Alert settings
+  alerts:
+    # Tracks different events for servers like start/stop.
+    # You can configure this in alerts.yml
+    server: true
+    # Tracks different events for players like join/quit.
+    # You can configure this in alerts.yml
+    player: true
+  # Bot Presence Settings
+  presence:
+    # Should this be enabled?
+    enabled: false
+    # Available Placeholders: {count}
+    status: "Watching {count} players"

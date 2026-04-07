@@ -1,41 +1,11 @@
 package com.ryderbelserion.fusion.paper.utils;
 
-import com.ryderbelserion.fusion.core.api.FusionProvider;
-import com.ryderbelserion.fusion.kyori.FusionKyori;
-import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
-import net.minecraft.network.protocol.game.ClientboundOpenScreenPacket;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.inventory.MenuType;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
-import org.bukkit.craftbukkit.entity.CraftEntity;
-import org.bukkit.craftbukkit.inventory.CraftContainer;
-import org.bukkit.craftbukkit.util.CraftChatMessage;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ColorUtils {
-
-    public static void updateTitle(@NotNull final Player player, @NotNull final String title, @NotNull final Map<String, String> placeholders) {
-        final ServerPlayer entityPlayer = (ServerPlayer) ((CraftEntity) player).getHandle();
-
-        final int containerId = entityPlayer.containerMenu.containerId;
-
-        final MenuType<?> windowType = CraftContainer.getNotchInventoryType(player.getOpenInventory().getTopInventory());
-
-        final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
-
-        entityPlayer.connection.send(new ClientboundOpenScreenPacket(containerId, windowType, CraftChatMessage.fromJSON(JSONComponentSerializer.json().serialize(fusion.parse(player, title, placeholders)))));
-
-        player.updateInventory();
-    }
-
-    public static void updateTitle(@NotNull final Player player, @NotNull final String title) {
-        updateTitle(player, title, new HashMap<>());
-    }
 
     public static @NotNull DyeColor getDyeColor(@NotNull final String value) {
         if (value.isEmpty()) return DyeColor.WHITE;

@@ -1,115 +1,82 @@
 package com.ryderbelserion.fusion.kyori;
 
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.interfaces.permissions.enums.Mode;
-import com.ryderbelserion.fusion.kyori.mods.ModManager;
-import net.kyori.adventure.audience.Audience;
+import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-public abstract class FusionKyori extends FusionCore {
+public abstract class FusionKyori<S> extends FusionCore {
 
-    private final ComponentLogger logger;
-    private final ModManager modManager;
-
-    public FusionKyori(@NotNull final Path path, @NotNull final ComponentLogger logger) {
+    public FusionKyori(@NotNull final Path path) {
         super(path);
-
-        this.modManager = new ModManager();
-        this.logger = logger;
     }
 
-    public abstract Component parse(@Nullable final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags);
-
-    public abstract Component parse(@NotNull final String message, @NotNull final Map<String, String> placeholders, @NotNull final List<TagResolver> tags);
-
-    public Component parse(@NotNull final Audience audience, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
-        return parse(audience, message, placeholders, List.of());
+    public @NotNull final String parse(@Nullable final S sender, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
+        return replacePlaceholders(papi(sender, message), placeholders);
     }
 
-    public Component parse(@NotNull final Audience audience, @NotNull final String message) {
-        return parse(audience, message, Map.of());
+    public @NotNull final String parse(@Nullable final S sender, @NotNull final String message) {
+        return parse(sender, message, Map.of());
     }
 
-    public Component parse(@NotNull final String message, @NotNull final Map<String, String> placeholders) {
-        return parse(message, placeholders, List.of());
+    public abstract String papi(@Nullable final S sender, @NotNull final String message);
+
+    public @NotNull final Component asComponent(@NotNull final String message,
+                                                @NotNull final Map<String, String> placeholders,
+                                                @NotNull final List<TagResolver> tags
+    ) {
+        final List<TagResolver> resolvers = new ArrayList<>(tags);
+
+        resolvers.add(TagResolver.standard());
+
+        final MiniMessage builder = MiniMessage.builder()
+                .tags(TagResolver.builder().resolvers(resolvers).build())
+                .build();
+
+        return builder.deserialize(replacePlaceholders(message, placeholders))
+                .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
-    public Component parse(@NotNull final String message) {
-        return parse(message, Map.of(), List.of());
+    public @NotNull final Component asComponent(@Nullable final S sender,
+                                          @NotNull final String message,
+                                          @NotNull final Map<String, String> placeholders,
+                                          @NotNull final List<TagResolver> tags
+    ) {
+        return asComponent(papi(sender, message), placeholders, tags);
     }
 
-    public abstract String papi(@Nullable final Audience audience, @NotNull final String message);
-
-    public abstract boolean hasPermission(@NotNull final Audience audience, @NotNull final String permission);
-
-    public abstract void registerPermission(@NotNull final Mode mode, @NotNull final String parent, @NotNull final String description, @NotNull final Map<String, Boolean> children);
-
-    public void registerPermission(@NotNull final Mode mode, @NotNull final String parent, @NotNull final String description) {
-        registerPermission(mode, parent, description, Map.of());
+    public @NotNull final Component asComponent(@NotNull final S audience,
+                           @NotNull final String message,
+                           @NotNull final Map<String, String> placeholders
+    ) {
+        return asComponent(audience, message, placeholders, List.of());
     }
 
-    public abstract void unregisterPermission(@NotNull final String parent);
-
-    public abstract boolean isPermissionRegistered(@NotNull final String parent);
-
-    @SuppressWarnings("DuplicatedCode")
-    public void log(@NotNull final String type, @NotNull final String message, @NotNull final Throwable throwable) {
-        if (!this.isVerbose()) return;
-
-        final Component component = MiniMessage.miniMessage().deserialize(message);
-
-        switch (type) {
-            case "info" -> this.logger.info(component, throwable);
-            case "error" -> this.logger.error(component, throwable);
-            case "warn" -> this.logger.warn(component, throwable);
-        }
+    public @NotNull final Component asComponent(@NotNull final S audience,
+                           @NotNull final String message
+    ) {
+        return asComponent(audience, message, Map.of());
     }
 
-    @SuppressWarnings("DuplicatedCode")
-    public void log(@NotNull final String type, @NotNull final String message, @NotNull final Object... args) {
-        if (!this.isVerbose()) return;
-
-        final Component component = MiniMessage.miniMessage().deserialize(message);
-
-        switch (type) {
-            case "info" -> this.logger.info(component, args);
-            case "error" -> this.logger.error(component, args);
-            case "warn" -> this.logger.warn(component, args);
-        }
+    public @NotNull final Component asComponent(@NotNull final String message,
+                           @NotNull final Map<String, String> placeholders
+    ) {
+        return asComponent(message, placeholders, List.of());
     }
 
-    public <T> @Nullable T createProfile(@NotNull final UUID uuid, @Nullable final String name) {
-        return null;
+    public @NotNull final Component asComponent(@NotNull final String message) {
+        return asComponent(message, Map.of(), List.of());
     }
 
-    public @NotNull final ComponentLogger getLogger() {
-        return this.logger;
-    }
+    public void registerPermission(@NotNull final PermissionContext permission) {
 
-    public @NotNull final ModManager getModManager() {
-        return this.modManager;
-    }
-
-    public FusionKyori init() {
-        final Path dataPath = getDataPath();
-
-        if (Files.notExists(dataPath)) {
-            try {
-                Files.createDirectory(dataPath);
-            } catch (final IOException exception) {
-                exception.printStackTrace();
-            }
-        }
-
-        return null;
     }
 }
