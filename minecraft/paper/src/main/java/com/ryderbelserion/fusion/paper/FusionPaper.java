@@ -6,9 +6,9 @@ import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
-import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
 import com.ryderbelserion.fusion.paper.builders.gui.GuiManager;
 import com.ryderbelserion.fusion.paper.builders.gui.types.GuiListener;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
@@ -22,13 +22,13 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
-import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 public class FusionPaper extends FusionKyori<Audience> {
 
+    private final PaperFileManager fileManager;
     private final PluginManager pluginManager;
     private final ComponentLogger logger;
     private final GuiManager guiManager;
@@ -38,6 +38,7 @@ public class FusionPaper extends FusionKyori<Audience> {
     public FusionPaper(@NotNull final JavaPlugin plugin) {
         super(plugin.getDataPath());
 
+        this.fileManager = new PaperFileManager(this.getDataPath());
         this.logger = plugin.getComponentLogger();
         this.guiManager = new GuiManager();
         this.server = plugin.getServer();
@@ -107,6 +108,11 @@ public class FusionPaper extends FusionKyori<Audience> {
     @Override
     public final boolean isModReady(@NotNull final FusionKey key) {
         return this.pluginManager.isPluginEnabled(key.getValue());
+    }
+
+    @Override
+    public @NotNull final PaperFileManager getFileManager() {
+        return this.fileManager;
     }
 
     public @NotNull final Optional<HeadDatabaseAPI> getHeadApi() {

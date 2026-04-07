@@ -19,7 +19,6 @@ import java.util.Map;
 public abstract class FusionCore {
 
     protected final SettingsManager config;
-    private ModRegistry modRegistry;
     private final FileManager fileManager;
     private final Path path;
 
@@ -33,6 +32,8 @@ public abstract class FusionCore {
         this.fileManager = new FileManager(path);
         this.path = path;
     }
+
+    private ModRegistry modRegistry;
 
     public abstract void log(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception, @NotNull final Map<String, String> placeholders);
 
@@ -124,6 +125,10 @@ public abstract class FusionCore {
         Files.deleteIfExists(path);
     }
 
+    public @NotNull FileManager getFileManager() {
+        return this.fileManager;
+    }
+
     public @NotNull final String getNumberFormat() {
         return this.config.getProperty(FusionConfig.number_format);
     }
@@ -146,10 +151,6 @@ public abstract class FusionCore {
 
     public @NotNull final ModRegistry getModRegistry() {
         return this.modRegistry;
-    }
-
-    public @NotNull final FileManager getFileManager() {
-        return this.fileManager;
     }
 
     public @NotNull final Path getDataPath() {

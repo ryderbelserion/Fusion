@@ -33,13 +33,17 @@ public class PaperFileManager extends FileManager {
     }
 
     public PaperFileManager addPaperFolder(@NotNull final Path folder, @NotNull final Consumer<PaperCustomFile> consumer) {
-        //extractFolder(this.source, folder.getFileName().toString(), folder.getParent());
+        extractFolder(folder.getFileName().toString(), folder.getParent());
 
-        //for (final Path path : getFiles(folder, ".yml", getDepth())) {
-        //    addPaperFile(path, consumer);
-        //}
+        for (final Path path : getFilesByPath(folder, ".yml", getDepth())) {
+            addPaperFile(path, consumer);
+        }
 
         return this;
+    }
+
+    public PaperCustomFile buildPaperFile(@NotNull final Path path, @NotNull final Consumer<PaperCustomFile> consumer) {
+        return new PaperCustomFile(this, path, consumer);
     }
 
     public PaperFileManager savePaperFile(@NotNull final PaperCustomFile customFile) {
@@ -58,31 +62,11 @@ public class PaperFileManager extends FileManager {
         return getFile(path).map(PaperCustomFile.class::cast);
     }
 
-    public final PaperFileManager addNbtFolder(@NotNull final Path folder) {
-        //extractFolder(this.source, folder.getFileName().toString(), folder.getParent());
-
-        //for (final Path path : getFiles(folder, ".nbt", getDepth())) {
-        //    addNbtFile(path);
-        //}
-
-        return this;
-    }
-
     public final PaperFileManager addPaperFile(@NotNull final Path path) {
         return addPaperFile(path, consumer -> consumer.addAction(FileAction.EXTRACT_FILE));
     }
 
     public PaperFileManager addPaperFolder(@NotNull final Path folder) {
         return addPaperFolder(folder, consumer -> consumer.addAction(FileAction.EXTRACT_FOLDER));
-    }
-
-    public final PaperFileManager addNbtFile(@NotNull final Path path) {
-        if (this.files.containsKey(path)) {
-            return this;
-        }
-
-        //addFile(path, new NbtCustomFile(this.plugin, this, path));
-
-        return this;
     }
 }
