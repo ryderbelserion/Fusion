@@ -22,8 +22,21 @@ public class GuiFiller {
         this.builder = builder;
     }
 
-    public void fill(@NotNull final GuiBorder type, @NotNull final ItemStack itemStack) {
-        fills(type, itemStack);
+    public void fill(@NotNull final GuiBorder type, @NotNull final ItemStack... items) {
+        fills(type, items);
+    }
+
+    public void fillBottom(@NotNull final ItemStack... items) {
+        fills(GuiBorder.BOTTOM, items);
+    }
+
+    public void fillTop(@NotNull final ItemStack... items) {
+        fills(GuiBorder.TOP, items);
+    }
+
+    public void fillBoth(@NotNull final ItemStack... items) {
+        fillBottom(items);
+        fillTop(items);
     }
 
     public void fills(@NotNull final GuiBorder type, @NotNull final ItemStack... items) {
