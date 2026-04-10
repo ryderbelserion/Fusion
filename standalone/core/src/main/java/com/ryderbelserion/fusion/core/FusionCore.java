@@ -35,9 +35,18 @@ public abstract class FusionCore {
 
     private ModRegistry modRegistry;
 
-    public abstract void log(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception, @NotNull final Map<String, String> placeholders);
+    public abstract void log(
+            @NotNull final Level level,
+            @NotNull final String message,
+            @NotNull final Exception exception,
+            @NotNull final Map<String, String> placeholders
+    );
 
-    public abstract void log(@NotNull final Level level, @NotNull final String message, @NotNull final Map<String, String> placeholders);
+    public abstract void log(
+            @NotNull final Level level,
+            @NotNull final String message,
+            @NotNull final Map<String, String> placeholders
+    );
 
     public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception) {
         this.log(level, message, exception, Map.of());
@@ -74,18 +83,32 @@ public abstract class FusionCore {
         return this;
     }
 
-    public @NotNull final List<String> getFilesByName(@NotNull final String folder,
-                                                      @NotNull final Path path,
-                                                      @NotNull final String extension,
-                                                      final int depth,
-                                                      final boolean removeExtension) {
+    public @NotNull final List<String> getFilesByName(
+            @NotNull final String folder,
+            @NotNull final Path path,
+            @NotNull final String extension,
+            final int depth,
+            final boolean removeExtension
+    ) {
 
         return this.fileManager.getFileByNames(folder, path, extension, depth, removeExtension);
     }
 
-    public @NotNull final List<Path> getFilesByPath(@NotNull final Path path,
-                                              @NotNull final List<String> extensions) {
-        return this.fileManager.getFilesByPath(path, extensions, 1);
+    public @NotNull final List<String> getFilesByName(
+            @NotNull final String folder,
+            @NotNull final Path path,
+            @NotNull final String extension,
+            final boolean removeExtension
+    ) {
+
+        return this.fileManager.getFileByNames(folder, path, extension, removeExtension);
+    }
+
+    public @NotNull final List<Path> getFilesByPath(
+            @NotNull final Path path,
+            @NotNull final List<String> extensions
+    ) {
+        return this.fileManager.getFilesByPath(path, extensions, getDepth());
     }
 
     public String replacePlaceholders(@NotNull final String message, @NotNull final Map<String, String> placeholders) {

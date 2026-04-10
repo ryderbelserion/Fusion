@@ -14,7 +14,7 @@ public class PaperFileManager extends FileManager {
         super(path);
     }
 
-    public final PaperFileManager addPaperFile(@NotNull final Path path, @NotNull final Consumer<PaperCustomFile> consumer) {
+    public @NotNull final PaperFileManager addPaperFile(@NotNull final Path path, @NotNull final Consumer<PaperCustomFile> consumer) {
         if (this.files.containsKey(path)) {
             final PaperCustomFile customFile = (PaperCustomFile) this.files.get(path);
 
@@ -32,7 +32,17 @@ public class PaperFileManager extends FileManager {
         return this;
     }
 
-    public PaperFileManager addPaperFolder(@NotNull final Path folder, @NotNull final Consumer<PaperCustomFile> consumer) {
+    public @NotNull final PaperFileManager addPaperFile(@NotNull final PaperCustomFile customFile) {
+        addFile(customFile.getPath(), customFile);
+
+        return this;
+    }
+
+    public @NotNull final PaperFileManager addPaperFile(@NotNull final Path path) {
+        return addPaperFile(path, consumer -> consumer.addAction(FileAction.EXTRACT_FILE));
+    }
+
+    public @NotNull final PaperFileManager addPaperFolder(@NotNull final Path folder, @NotNull final Consumer<PaperCustomFile> consumer) {
         extractFolder(folder.getFileName().toString(), folder.getParent());
 
         for (final Path path : getFilesByPath(folder, ".yml", getDepth())) {
@@ -42,31 +52,21 @@ public class PaperFileManager extends FileManager {
         return this;
     }
 
-    public PaperCustomFile buildPaperFile(@NotNull final Path path, @NotNull final Consumer<PaperCustomFile> consumer) {
+    public @NotNull final PaperFileManager addPaperFolder(@NotNull final Path folder) {
+        return addPaperFolder(folder, consumer -> consumer.addAction(FileAction.EXTRACT_FOLDER));
+    }
+
+    public @NotNull final PaperCustomFile buildPaperFile(@NotNull final Path path, @NotNull final Consumer<PaperCustomFile> consumer) {
         return new PaperCustomFile(this, path, consumer);
     }
 
-    public PaperFileManager savePaperFile(@NotNull final PaperCustomFile customFile) {
+    public @NotNull final PaperFileManager savePaperFile(@NotNull final PaperCustomFile customFile) {
         customFile.save();
 
         return this;
     }
 
-    public PaperFileManager addPaperFile(@NotNull final PaperCustomFile customFile) {
-        addFile(customFile.getPath(), customFile);
-
-        return this;
-    }
-
-    public @NotNull Optional<PaperCustomFile> getPaperFile(@NotNull final Path path) {
+    public @NotNull final Optional<PaperCustomFile> getPaperFile(@NotNull final Path path) {
         return getFile(path).map(PaperCustomFile.class::cast);
-    }
-
-    public final PaperFileManager addPaperFile(@NotNull final Path path) {
-        return addPaperFile(path, consumer -> consumer.addAction(FileAction.EXTRACT_FILE));
-    }
-
-    public PaperFileManager addPaperFolder(@NotNull final Path folder) {
-        return addPaperFolder(folder, consumer -> consumer.addAction(FileAction.EXTRACT_FOLDER));
     }
 }
