@@ -23,3 +23,6 @@ jobs:
           chmod +x ./publish.sh
       - name: Publish Fusion
         run: ./publish.sh
+        env:
+          GRADLE_USERNAME: ${{ secrets.GRADLE_USERNAME }}
+          GRADLE_PASSWORD: ${{ secrets.GRADLE_PASSWORD }}
