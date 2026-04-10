@@ -36,7 +36,16 @@ tasks {
         repositories {
             maven {
                 url = uri(libs.findVersion("url").get().toString())
-                credentials(PasswordCredentials::class)
+
+                runCatching {
+                    credentials {
+                        username = System.getenv("USERNAME")
+                        password = System.getenv("PASSWORD")
+                    }
+                }.onFailure {
+                    credentials(PasswordCredentials::class)
+                }
+
                 authentication.create<BasicAuthentication>("basic")
             }
         }
