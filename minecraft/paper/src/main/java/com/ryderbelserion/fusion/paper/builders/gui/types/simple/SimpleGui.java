@@ -60,11 +60,20 @@ public class SimpleGui extends GuiBuilder<SimpleGui> {
         return this;
     }
 
-    public static @NotNull SimpleGui gui(@NotNull final JavaPlugin plugin, @NotNull final Audience player, @NotNull final String title, final int rows) {
+    public static @NotNull SimpleGui gui(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final Audience player,
+            @NotNull final String title,
+            final int rows
+    ) {
         return new SimpleGui(plugin, player, title, rows);
     }
 
-    public static @NotNull SimpleGui gui(@NotNull final JavaPlugin plugin, @NotNull final String title, final int rows) {
+    public static @NotNull SimpleGui gui(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final String title,
+            final int rows
+    ) {
         return gui(plugin, Audience.empty(), title, rows);
     }
 }

@@ -29,10 +29,28 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
             @NotNull final JavaPlugin plugin,
             @NotNull final Audience player,
             @NotNull final String title,
+            @NotNull final InventoryType type
+    ) {
+        this(plugin, player, title, 0, type.getDefaultSize() / 9);
+    }
+
+    public PaginatedGui(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final Audience player,
+            @NotNull final String title,
             final int pageSize,
             @NotNull final InventoryType type
     ) {
         this(plugin, player, title, pageSize, type.getDefaultSize() / 9);
+    }
+
+    public PaginatedGui(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final Audience player,
+            @NotNull final String title,
+            final int rows
+    ) {
+        this(plugin, player, title, 0, rows);
     }
 
     public PaginatedGui(
@@ -61,9 +79,41 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
             @NotNull final JavaPlugin plugin,
             @NotNull final Audience player,
             @NotNull final String title,
+            @NotNull final InventoryType type
+    ) {
+        return new PaginatedGui(plugin, player, title, 0, type);
+    }
+
+    public static @NotNull PaginatedGui gui(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final String title,
+            @NotNull final InventoryType type
+    ) {
+        return new PaginatedGui(plugin, Audience.empty(), title, type);
+    }
+
+    public static @NotNull PaginatedGui gui(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final Audience player,
+            @NotNull final String title,
             final int pageSize, final int rows
     ) {
         return new PaginatedGui(plugin, player, title, pageSize, rows);
+    }
+
+    public static @NotNull PaginatedGui gui(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final Audience player,
+            @NotNull final String title, final int rows
+    ) {
+        return new PaginatedGui(plugin, player, title, 0, rows);
+    }
+
+    public static @NotNull PaginatedGui gui(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final String title, final int rows
+    ) {
+        return new PaginatedGui(plugin, Audience.empty(), title, rows);
     }
 
     public PaginatedGui interact(@NotNull final InventoryClickEvent event) {
