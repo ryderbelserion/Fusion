@@ -12,8 +12,7 @@ listOf(
 
     "minecraft/mojang" to "mojang",
 
-
-    "/minecraft/paper/example" to "example",
+    //"minecraft/paper/example" to "example",
     "minecraft/paper" to "paper",
     "minecraft/kyori" to "kyori",
 
