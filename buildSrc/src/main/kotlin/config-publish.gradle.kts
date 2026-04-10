@@ -37,13 +37,9 @@ tasks {
             maven {
                 url = uri(libs.findVersion("url").get().toString())
 
-                runCatching {
-                    credentials {
-                        username = System.getenv("USERNAME")
-                        password = System.getenv("PASSWORD")
-                    }
-                }.onFailure {
-                    credentials(PasswordCredentials::class)
+                credentials {
+                    username = System.getenv("GRADLE_USERNAME")
+                    password = System.getenv("GRADLE_PASSWORD")
                 }
 
                 authentication.create<BasicAuthentication>("basic")
