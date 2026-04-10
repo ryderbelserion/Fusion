@@ -41,8 +41,6 @@ tasks {
                     username = System.getenv("GRADLE_USERNAME")
                     password = System.getenv("GRADLE_PASSWORD")
                 }
-
-                authentication.create<BasicAuthentication>("basic")
             }
         }
     }
