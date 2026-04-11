@@ -198,6 +198,10 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
         return (B) this;
     }
 
+    public B addSlotAction(final int row, final int column, @NotNull final ItemStack itemStack, @NotNull final GuiAction<InventoryClickEvent> action) {
+        return addSlotAction(getSlotFromColumn(row, column), itemStack, action);
+    }
+
     public B addSlotAction(final int slot, @NotNull final ItemStack itemStack, @NotNull final GuiAction<InventoryClickEvent> action) {
         this.items.put(slot, new GuiItem(itemStack, action));
 

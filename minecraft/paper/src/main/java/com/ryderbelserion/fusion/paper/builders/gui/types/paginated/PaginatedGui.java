@@ -202,11 +202,11 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
         updatePage();
     }
 
-    public void updatePageItem(final int row, final int col, @NotNull final ItemStack itemStack) {
+    public void setPageItem(final int row, final int col, @NotNull final ItemStack itemStack) {
         setPageItem(getSlotFromColumn(row, col), itemStack);
     }
 
-    public void updatePageItem(final int row, final int col, @NotNull final GuiItem guiItem) {
+    public void setPageItem(final int row, final int col, @NotNull final GuiItem guiItem) {
         setPageItem(getSlotFromColumn(row, col), guiItem);
     }
 
