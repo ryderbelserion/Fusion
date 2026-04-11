@@ -37,9 +37,14 @@ tasks {
             maven {
                 url = uri(libs.findVersion("url").get().toString())
 
-                credentials {
-                    username = System.getenv("GRADLE_USERNAME")
-                    password = System.getenv("GRADLE_PASSWORD")
+
+                runCatching {
+                    credentials {
+                        username = System.getenv("GRADLE_USERNAME")
+                        password = System.getenv("GRADLE_PASSWORD")
+                    }
+                }.onFailure {
+
                 }
             }
         }
