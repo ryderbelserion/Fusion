@@ -63,8 +63,10 @@ public class FusionPaper extends FusionKyori<Audience> {
         return this;
     }
 
-    public void setPlugin(@NotNull final JavaPlugin plugin) {
+    public FusionPaper setPlugin(@NotNull final JavaPlugin plugin) {
         this.plugin = plugin;
+
+        return this;
     }
 
     @Override
