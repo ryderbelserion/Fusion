@@ -50,4 +50,20 @@ public class GuiItem {
     public int getSlot() {
         return this.slot;
     }
+
+    public static GuiItem of(@NotNull final ItemType itemType, final int amount, @NotNull final GuiAction<InventoryClickEvent> action) {
+        return new GuiItem(itemType, amount, action);
+    }
+
+    public static GuiItem of(@NotNull final ItemType itemType, final int amount) {
+        return of(itemType, amount, _ -> {});
+    }
+
+    public static GuiItem of(@NotNull final ItemType itemType, @NotNull final GuiAction<InventoryClickEvent> action) {
+        return new GuiItem(itemType, 1, action);
+    }
+
+    public static GuiItem of(@NotNull final ItemType itemType) {
+        return of(itemType, 1);
+    }
 }
