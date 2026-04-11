@@ -10,11 +10,18 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import java.util.Map;
 
 public class SimpleGui extends GuiBuilder<SimpleGui> {
 
-    public SimpleGui(@NotNull final JavaPlugin plugin, @NotNull final Audience player, @NotNull final String title, final int rows) {
-        super(plugin, player, title, rows);
+    public SimpleGui(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final Audience player,
+            @NotNull final String title,
+            final int rows,
+            @NotNull final Map<String, String> placeholders
+    ) {
+        super(plugin, player, title, rows, placeholders);
     }
 
     public SimpleGui interact(@NotNull final InventoryClickEvent event) {
@@ -64,9 +71,28 @@ public class SimpleGui extends GuiBuilder<SimpleGui> {
             @NotNull final JavaPlugin plugin,
             @NotNull final Audience player,
             @NotNull final String title,
+            final int rows,
+            @NotNull final Map<String, String> placeholders
+    ) {
+        return new SimpleGui(plugin, player, title, rows, placeholders);
+    }
+
+    public static @NotNull SimpleGui gui(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final String title,
+            final int rows,
+            @NotNull final Map<String, String> placeholders
+    ) {
+        return gui(plugin, Audience.empty(), title, rows, placeholders);
+    }
+
+    public static @NotNull SimpleGui gui(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final Audience player,
+            @NotNull final String title,
             final int rows
     ) {
-        return new SimpleGui(plugin, player, title, rows);
+        return gui(plugin, player, title, rows, Map.of());
     }
 
     public static @NotNull SimpleGui gui(

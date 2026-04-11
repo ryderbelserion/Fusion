@@ -73,33 +73,55 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
 
     protected String title;
 
-    public GuiBuilder(@NotNull final JavaPlugin plugin, @NotNull final Audience player, @NotNull final String title, @NotNull final InventoryType type) {
+    public GuiBuilder(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final Audience player,
+            @NotNull final String title,
+            @NotNull final InventoryType type,
+            @NotNull final Map<String, String> placeholders
+    ) {
         this.plugin = plugin;
 
         final Server server = this.plugin.getServer();
 
-        this.inventory = server.createInventory(this, type, this.fusion.asComponent(player, this.title = title));
+        this.inventory = server.createInventory(this, type, this.fusion.asComponent(player, this.title = title, placeholders));
         this.filler = new GuiFiller(this);
         this.size = type.getDefaultSize();
         this.rows = this.size / 9;
     }
 
-    public GuiBuilder(@NotNull final JavaPlugin plugin, @NotNull final String title, @NotNull final InventoryType type) {
-        this(plugin, Audience.empty(), title, type);
+    public GuiBuilder(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final String title,
+            @NotNull final InventoryType type,
+            @NotNull final Map<String, String> placeholders
+    ) {
+        this(plugin, Audience.empty(), title, type, placeholders);
     }
 
-    public GuiBuilder(@NotNull final JavaPlugin plugin, @NotNull final Audience player, @NotNull final String title, final int rows) {
+    public GuiBuilder(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final Audience player,
+            @NotNull final String title,
+            final int rows,
+            @NotNull final Map<String, String> placeholders
+    ) {
         this.plugin = plugin;
 
         final Server server = this.plugin.getServer();
 
-        this.inventory = server.createInventory(this, this.size = rows * 9, this.fusion.asComponent(player, this.title = title));
+        this.inventory = server.createInventory(this, this.size = rows * 9, this.fusion.asComponent(player, this.title = title, placeholders));
         this.filler = new GuiFiller(this);
         this.rows = rows;
     }
 
-    public GuiBuilder(@NotNull final JavaPlugin plugin, @NotNull final String title, final int rows) {
-        this(plugin, Audience.empty(), title, rows);
+    public GuiBuilder(
+            @NotNull final JavaPlugin plugin,
+            @NotNull final String title,
+            final int rows,
+            @NotNull final Map<String, String> placeholders
+    ) {
+        this(plugin, Audience.empty(), title, rows, placeholders);
     }
 
     protected GuiAction<InventoryClickEvent> bottomAction;
