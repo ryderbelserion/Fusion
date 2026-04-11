@@ -91,6 +91,17 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
 
     public PaginatedGui open(
             @NotNull final Player player,
+            @NotNull final Consumer<PaginatedGui> consumer
+    ) {
+        build();
+
+        consumer.accept(this);
+
+        return open(player);
+    }
+
+    public PaginatedGui open(
+            @NotNull final Player player,
             final int openPage
     ) {
         return open(player, openPage, _ -> {});
