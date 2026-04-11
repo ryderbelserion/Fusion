@@ -177,6 +177,18 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
         return this;
     }
 
+    public void setPageItem(final int row, final int column, @NotNull final ItemStack itemStack, @NotNull final GuiAction<InventoryClickEvent> action) {
+        setPageItem(row, column, new GuiItem(itemStack, action));
+    }
+
+    public void setPageItem(final int row, final int column, @NotNull final ItemStack itemStack) {
+        setPageItem(getSlotFromColumn(row, column), itemStack);
+    }
+
+    public void setPageItem(final int row, final int column, @NotNull final GuiItem guiItem) {
+        setPageItem(getSlotFromColumn(row, column), guiItem);
+    }
+
     public void addPageItem(@NotNull final GuiItem guiItem) {
         final int slot = guiItem.getSlot();
 
@@ -200,14 +212,6 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
         this.pageItems.remove(slot);
 
         updatePage();
-    }
-
-    public void setPageItem(final int row, final int col, @NotNull final ItemStack itemStack) {
-        setPageItem(getSlotFromColumn(row, col), itemStack);
-    }
-
-    public void setPageItem(final int row, final int col, @NotNull final GuiItem guiItem) {
-        setPageItem(getSlotFromColumn(row, col), guiItem);
     }
 
     public final int getPreviousPage() {
