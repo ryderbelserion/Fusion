@@ -5,6 +5,7 @@ import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiState;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiAction;
 import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
 import net.kyori.adventure.audience.Audience;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -14,6 +15,7 @@ import org.bukkit.inventory.ItemType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class PaginatedGui extends GuiBuilder<PaginatedGui> {
 
@@ -66,6 +68,32 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
 
         this.pageSize = pageSize == 0 ? calculate() : pageSize;
         this.currentPage = new HashMap<>(this.size);
+    }
+
+    @Override
+    public PaginatedGui open(@NotNull final Player player) {
+        super.open(player);
+
+        return this;
+    }
+
+    public PaginatedGui open(
+            @NotNull final Player player,
+            final int openPage,
+            @NotNull final Consumer<PaginatedGui> consumer
+    ) {
+        build(openPage);
+
+        consumer.accept(this);
+
+        return open(player);
+    }
+
+    public PaginatedGui open(
+            @NotNull final Player player,
+            final int openPage
+    ) {
+        return open(player, openPage, _ -> {});
     }
 
     @Override
