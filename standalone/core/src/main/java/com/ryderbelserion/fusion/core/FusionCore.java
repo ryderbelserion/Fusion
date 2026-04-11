@@ -39,22 +39,14 @@ public abstract class FusionCore {
             @NotNull final Level level,
             @NotNull final String message,
             @NotNull final Exception exception,
-            @NotNull final Map<String, String> placeholders
+            @NotNull final Object... args
     );
 
     public abstract void log(
             @NotNull final Level level,
             @NotNull final String message,
-            @NotNull final Map<String, String> placeholders
+            @NotNull final Object... args
     );
-
-    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception) {
-        this.log(level, message, exception, Map.of());
-    }
-
-    public void log(@NotNull final Level level, @NotNull final String message) {
-        this.log(level, message, Map.of());
-    }
 
     public abstract boolean isModReady(@NotNull final FusionKey key);
 
