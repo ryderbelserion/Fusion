@@ -9,6 +9,7 @@ import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.paper.builders.gui.GuiManager;
 import com.ryderbelserion.fusion.paper.builders.gui.types.GuiListener;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
+import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
@@ -29,23 +30,35 @@ import java.util.UUID;
 public class FusionPaper extends FusionKyori<Audience> {
 
     private final PaperFileManager fileManager;
-    private final PluginManager pluginManager;
     private final ComponentLogger logger;
-    private final GuiManager guiManager;
-    private final Server server;
 
+    private final boolean isBootstrap;
+
+    private PluginManager pluginManager;
+    private GuiManager guiManager;
     private JavaPlugin plugin;
+    private Server server;
 
     public FusionPaper(@NotNull final JavaPlugin plugin) {
         super(plugin.getDataPath());
 
         this.fileManager = new PaperFileManager(this.getDataPath());
         this.logger = plugin.getComponentLogger();
-        this.guiManager = new GuiManager();
         this.server = plugin.getServer();
         this.plugin = plugin;
 
         this.pluginManager = this.server.getPluginManager();
+
+        this.isBootstrap = false;
+    }
+
+    public FusionPaper(@NotNull final BootstrapContext context) {
+        super(context.getDataDirectory());
+
+        this.fileManager = new PaperFileManager(this.getDataPath());
+        this.logger = context.getLogger();
+
+        this.isBootstrap = true;
     }
 
     private HeadDatabaseAPI api;
@@ -53,6 +66,12 @@ public class FusionPaper extends FusionKyori<Audience> {
     @Override
     public final FusionPaper init() {
         super.init();
+
+        if (this.isBootstrap) {
+
+        }
+
+        this.guiManager = new GuiManager();
 
         if (this.pluginManager.isPluginEnabled("HeadDatabaseAPI") && this.api == null) {
             this.api = new  HeadDatabaseAPI();
@@ -64,6 +83,7 @@ public class FusionPaper extends FusionKyori<Audience> {
     }
 
     public FusionPaper setPlugin(@NotNull final JavaPlugin plugin) {
+        this.server = plugin.getServer();
         this.plugin = plugin;
 
         return this;
