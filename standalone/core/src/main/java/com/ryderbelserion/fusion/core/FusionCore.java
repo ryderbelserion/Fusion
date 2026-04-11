@@ -103,6 +103,13 @@ public abstract class FusionCore {
         return this.fileManager.getFilesByPath(path, extensions, getDepth());
     }
 
+    public @NotNull final List<Path> getFilesByPath(
+            @NotNull final Path path,
+            @NotNull final String extension
+    ) {
+        return this.fileManager.getFilesByPath(path, extension, getDepth());
+    }
+
     public String replacePlaceholders(@NotNull final String message, @NotNull final Map<String, String> placeholders) {
         String safeMessage = message;
 

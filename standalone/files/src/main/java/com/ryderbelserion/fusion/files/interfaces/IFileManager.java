@@ -99,7 +99,7 @@ public abstract class IFileManager<I> {
     public abstract @NotNull List<String> getFileByNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean removeExtension);
 
     public @NotNull List<String> getFileByNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final boolean removeExtension) {
-        return getFileByNames(folder, path, extension, 1, removeExtension);
+        return getFileByNames(folder, path, extension, getDepth(), removeExtension);
     }
 
     public abstract @NotNull List<Path> getFilesByPath(@NotNull final Path path, @NotNull final List<String> extensions, final int depth);
