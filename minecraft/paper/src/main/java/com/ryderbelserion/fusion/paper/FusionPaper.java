@@ -32,8 +32,9 @@ public class FusionPaper extends FusionKyori<Audience> {
     private final PluginManager pluginManager;
     private final ComponentLogger logger;
     private final GuiManager guiManager;
-    private final JavaPlugin plugin;
     private final Server server;
+
+    private JavaPlugin plugin;
 
     public FusionPaper(@NotNull final JavaPlugin plugin) {
         super(plugin.getDataPath());
@@ -50,7 +51,7 @@ public class FusionPaper extends FusionKyori<Audience> {
     private HeadDatabaseAPI api;
 
     @Override
-    public final FusionCore init() {
+    public final FusionPaper init() {
         super.init();
 
         if (this.pluginManager.isPluginEnabled("HeadDatabaseAPI") && this.api == null) {
@@ -60,6 +61,10 @@ public class FusionPaper extends FusionKyori<Audience> {
         this.server.getPluginManager().registerEvents(new GuiListener(), this.plugin);
 
         return this;
+    }
+
+    public void setPlugin(@NotNull final JavaPlugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
