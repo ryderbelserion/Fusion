@@ -69,6 +69,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
     protected final JavaPlugin plugin;
     protected final GuiFiller filler;
     protected final int size;
+    protected final int rows;
 
     protected String title;
 
@@ -80,6 +81,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
         this.inventory = server.createInventory(this, type, this.fusion.asComponent(player, this.title = title));
         this.filler = new GuiFiller(this);
         this.size = type.getDefaultSize();
+        this.rows = this.size / 9;
     }
 
     public GuiBuilder(@NotNull final JavaPlugin plugin, @NotNull final String title, @NotNull final InventoryType type) {
@@ -93,6 +95,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
 
         this.inventory = server.createInventory(this, this.size = rows * 9, this.fusion.asComponent(player, this.title = title));
         this.filler = new GuiFiller(this);
+        this.rows = rows;
     }
 
     public GuiBuilder(@NotNull final JavaPlugin plugin, @NotNull final String title, final int rows) {
@@ -108,12 +111,20 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
 
     public abstract B interact(@NotNull final InventoryClickEvent event);
 
-    public B build(@NotNull final Player player) {
+    public B open(@NotNull final Player player) {
         if (player.isSleeping()) return (B) this;
 
         player.openInventory(this.inventory);
 
         return (B) this;
+    }
+
+    public B build(final int openPage) {
+        return (B) this;
+    }
+
+    public B build() {
+        return build(1);
     }
 
     public B removeItem(final int row, final int column) {
@@ -247,6 +258,10 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
         this.states.add(state);
 
         return (B) this;
+    }
+
+    public final int getRows() {
+        return this.rows;
     }
 
     // Internal methods
