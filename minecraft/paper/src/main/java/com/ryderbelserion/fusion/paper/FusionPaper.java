@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.paper;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
@@ -23,7 +22,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,8 +29,6 @@ public class FusionPaper extends FusionKyori<Audience> {
 
     private final PaperFileManager fileManager;
     private final ComponentLogger logger;
-
-    private final boolean isBootstrap;
 
     private PluginManager pluginManager;
     private GuiManager guiManager;
@@ -48,8 +44,6 @@ public class FusionPaper extends FusionKyori<Audience> {
         this.plugin = plugin;
 
         this.pluginManager = this.server.getPluginManager();
-
-        this.isBootstrap = false;
     }
 
     public FusionPaper(@NotNull final BootstrapContext context) {
@@ -57,8 +51,6 @@ public class FusionPaper extends FusionKyori<Audience> {
 
         this.fileManager = new PaperFileManager(this.getDataPath());
         this.logger = context.getLogger();
-
-        this.isBootstrap = true;
     }
 
     private HeadDatabaseAPI api;
@@ -67,23 +59,21 @@ public class FusionPaper extends FusionKyori<Audience> {
     public final FusionPaper init() {
         super.init();
 
-        if (this.isBootstrap) {
-
-        }
-
         this.guiManager = new GuiManager();
 
         if (this.pluginManager.isPluginEnabled("HeadDatabaseAPI") && this.api == null) {
             this.api = new  HeadDatabaseAPI();
         }
 
-        this.server.getPluginManager().registerEvents(new GuiListener(), this.plugin);
+        this.pluginManager.registerEvents(new GuiListener(), this.plugin);
 
         return this;
     }
 
     public FusionPaper setPlugin(@NotNull final JavaPlugin plugin) {
         this.server = plugin.getServer();
+        this.pluginManager = this.server.getPluginManager();
+
         this.plugin = plugin;
 
         return this;
