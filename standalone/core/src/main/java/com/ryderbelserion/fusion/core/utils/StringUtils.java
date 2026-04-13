@@ -1,12 +1,19 @@
 package com.ryderbelserion.fusion.core.utils;
 
+import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.files.FileException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
+
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -15,6 +22,8 @@ public class StringUtils {
 
     private static final Pattern BRACKET_PATTERN = Pattern.compile("\\{(.*?)}");
     private static final Pattern ANGLE_PATTERN = Pattern.compile("[<>]");
+
+    private static final FusionCore fusion = FusionProvider.getInstance();
 
     private static final char LF = '\n';
     private static final char CR = '\r';
@@ -100,6 +109,26 @@ public class StringUtils {
 
     public static @NotNull String replaceBrackets(@NotNull final String input) {
         return BRACKET_PATTERN.matcher(input).replaceAll("<$1>");
+    }
+
+    public static @NotNull String fromInteger(final int number) {
+        return NumberFormat.getIntegerInstance(Locale.US).format(number);
+    }
+
+    public static @NotNull String fromDouble(final double number) {
+        return NumberFormat.getNumberInstance(Locale.US).format(number);
+    }
+
+    public static @NotNull String format(final double value) {
+        final DecimalFormat decimalFormat = new DecimalFormat(fusion.getNumberFormat());
+
+        decimalFormat.setRoundingMode(mode());
+
+        return decimalFormat.format(value);
+    }
+
+    public static @NotNull RoundingMode mode() {
+        return RoundingMode.valueOf(fusion.getRounding().toUpperCase());
     }
 
     public static @NotNull String toString(@NotNull final List<String> list) {
