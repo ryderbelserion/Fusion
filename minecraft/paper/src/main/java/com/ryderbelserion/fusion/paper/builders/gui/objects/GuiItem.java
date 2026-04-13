@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class GuiItem {
 
-    private final GuiAction<InventoryClickEvent> action;
+    private GuiAction<InventoryClickEvent> action;
     private ItemStack itemStack;
     private int slot;
 
@@ -31,6 +31,10 @@ public class GuiItem {
 
     public @NotNull final GuiAction<InventoryClickEvent> getAction() {
         return this.action;
+    }
+
+    public void setAction(@NotNull final GuiAction<InventoryClickEvent> action) {
+        this.action = action;
     }
 
     public @NotNull final ItemStack setItemStack(@NotNull final ItemStack itemStack) {
