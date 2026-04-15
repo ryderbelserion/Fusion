@@ -22,16 +22,8 @@ public class GuiFiller {
         this.builder = builder;
     }
 
-    public void fill(@NotNull final GuiBorder type, @NotNull final ItemStack... items) {
-        fills(type, items);
-    }
-
     public void fillBottom(@NotNull final ItemStack... items) {
-        fills(GuiBorder.BOTTOM, items);
-    }
-
-    public void fillTop(@NotNull final ItemStack... items) {
-        fills(GuiBorder.TOP, items);
+        fill(GuiBorder.BOTTOM, items);
     }
 
     public void fillBoth(@NotNull final ItemStack... items) {
@@ -39,7 +31,11 @@ public class GuiFiller {
         fillTop(items);
     }
 
-    public void fills(@NotNull final GuiBorder type, @NotNull final ItemStack... items) {
+    public void fillTop(@NotNull final ItemStack... items) {
+        fill(GuiBorder.TOP, items);
+    }
+
+    public void fill(@NotNull final GuiBorder type, @NotNull final ItemStack... items) {
         final List<ItemStack> sorted = sort(Arrays.asList(items));
 
         switch (type) {
@@ -89,8 +85,8 @@ public class GuiFiller {
             case RIGHT_SIDE -> this.grids(1, 9, this.size, 9, items);
 
             case BOTH_SIDES -> {
-                fills(GuiBorder.LEFT_SIDE, items);
-                fills(GuiBorder.RIGHT_SIDE, items);
+                this.grids(1, 1, this.size, 1, items);
+                this.grids(1, 9, this.size, 9, items);
             }
         }
     }
