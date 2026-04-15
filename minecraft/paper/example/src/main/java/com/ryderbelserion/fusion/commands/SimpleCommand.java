@@ -42,9 +42,21 @@ public class SimpleCommand extends PaperCommand {
 
         gui.getFiller().fill(GuiBorder.BORDER, ItemType.BLACK_STAINED_GLASS_PANE.createItemStack());
 
-        gui.addPageItem(new GuiItem(ItemType.RED_TERRACOTTA.createItemStack()));
+        for (int count = 1; count < 31; count++) {
+            gui.addPageItem(new GuiItem(ItemType.RED_TERRACOTTA.createItemStack()));
+        }
 
-        //gui.setPageItem(13, ItemType.CHEST.createItemStack());
+        if (gui.getMaxPages() > 1) {
+            gui.addSlotAction(32, ItemType.ARROW.createItemStack(), event -> {
+                gui.nextPage();
+
+                final int page = gui.getPageNumber();
+
+                if (page >= gui.getMaxPages()) {
+                    gui.updatePageItem(32, ItemType.BLACK_STAINED_GLASS_PANE.createItemStack());
+                }
+            });
+        }
 
         gui.addState(GuiState.block_all_interactions);
 

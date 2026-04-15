@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.paper.builders.gui.types.paginated;
 
+import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.builders.gui.GuiBuilder;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiState;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiAction;
@@ -19,8 +20,7 @@ import java.util.function.Consumer;
 
 public class PaginatedGui extends GuiBuilder<PaginatedGui> {
 
-    protected final Map<Integer, GuiItem> pageItems = new HashMap<>(); // items to loop, and populate through later.
-
+    protected final List<GuiItem> pageItems = new ArrayList<>();
     protected final Map<Integer, GuiItem> currentPage;
 
     private int pageNumber = 1;
@@ -66,13 +66,17 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
     ) {
         super(plugin, player, title, rows, placeholders);
 
-        this.pageSize = pageSize == 0 ? calculate() : pageSize;
         this.currentPage = new HashMap<>(this.size);
+        this.pageSize = pageSize;
     }
 
     @Override
     public PaginatedGui open(@NotNull final Player player) {
-        super.open(player);
+        if (player.isSleeping()) return this;
+
+        build(1);
+
+        player.openInventory(this.inventory);
 
         return this;
     }
@@ -82,9 +86,7 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
             final int openPage,
             @NotNull final Consumer<PaginatedGui> consumer
     ) {
-        build(openPage);
-
-        consumer.accept(this);
+        consumer.accept(build(openPage));
 
         return open(player);
     }
@@ -93,9 +95,7 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
             @NotNull final Player player,
             @NotNull final Consumer<PaginatedGui> consumer
     ) {
-        build();
-
-        consumer.accept(this);
+        consumer.accept(build(1));
 
         return open(player);
     }
@@ -162,7 +162,7 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
         GuiItem guiItem = this.items.get(slot);
 
         if (guiItem == null) {
-            guiItem = this.pageItems.get(slot);
+            guiItem = this.currentPage.get(slot);
         }
 
         if (guiItem == null) {
@@ -174,77 +174,77 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
         return this;
     }
 
-    public PaginatedGui setPageItem(
+    public void addPageItem(@NotNull final GuiItem guiItem) {
+        this.pageItems.add(guiItem);
+    }
+
+    public void addPageItem(@NotNull final GuiItem... items) {
+        this.pageItems.addAll(Arrays.asList(items));
+    }
+
+    public void updatePageItem(final int row, final int column, @NotNull final ItemStack itemStack) {
+        updatePageItem(getSlotFromColumn(row, column), itemStack);
+    }
+
+    public PaginatedGui updatePageItem(
             final int slot,
             @NotNull final ItemStack itemStack,
             @NotNull final GuiAction<InventoryClickEvent> action
     ) {
-        return setPageItem(slot, new GuiItem(itemStack, action));
+        return updatePageItem(slot, new GuiItem(itemStack, action));
     }
 
-    public PaginatedGui setPageItem(final int slot, @NotNull final GuiAction<InventoryClickEvent> action) {
-        return setPageItem(slot, ItemType.AIR.createItemStack(), action);
+    public PaginatedGui updatePageItem(
+            final int slot,
+            @NotNull final GuiAction<InventoryClickEvent> action
+    ) {
+        return updatePageItem(slot, ItemType.AIR.createItemStack(), action);
     }
 
-    public PaginatedGui setPageItem(@NotNull final GuiAction<InventoryClickEvent> action) {
-        return setPageItem(this.inventory.firstEmpty(), action);
+    public PaginatedGui updatePageItem(
+            @NotNull final GuiAction<InventoryClickEvent> action
+    ) {
+        return updatePageItem(this.inventory.firstEmpty(), action);
     }
 
-    public PaginatedGui setPageItem(final int slot, @NotNull final ItemStack itemStack) {
+    public PaginatedGui updatePageItem(
+            final int slot,
+            @NotNull final ItemStack itemStack
+    ) {
+        return updatePageItem(slot, new GuiItem(itemStack, _ -> {}));
+    }
+
+    public PaginatedGui updatePageItem(
+            final int slot,
+            @NotNull final GuiItem guiItem
+    ) {
         if (!this.currentPage.containsKey(slot)) return this;
 
-        if (this.items.containsKey(slot)) return this; // if filler item exists, do not add.
-
-        final GuiItem guiItem = this.currentPage.get(slot);
-
-        this.inventory.setItem(slot, guiItem.setItemStack(itemStack));
-
-        return this;
-    }
-
-    public PaginatedGui setPageItem(final int slot, @NotNull final GuiItem guiItem) {
-        if (this.items.containsKey(slot)) return this; // if filler item exists, do not add.
-
-        final boolean hasItem = this.currentPage.containsKey(slot);
+        final int index = this.pageItems.indexOf(this.currentPage.get(slot));
 
         this.currentPage.put(slot, guiItem);
-        this.pageItems.put(slot, guiItem);
+        this.pageItems.set(index, guiItem);
 
-        if (!hasItem) {
-            updatePage();
-        } else {
-            this.inventory.setItem(slot, guiItem.getItemStack());
-        }
+        this.inventory.setItem(slot, guiItem.getItemStack());
 
         return this;
     }
 
-    public void setPageItem(final int row, final int column, @NotNull final ItemStack itemStack, @NotNull final GuiAction<InventoryClickEvent> action) {
-        setPageItem(row, column, new GuiItem(itemStack, action));
+    public void updatePageItem(
+            final int row,
+            final int column,
+            @NotNull final ItemStack itemStack,
+            @NotNull final GuiAction<InventoryClickEvent> action
+    ) {
+        updatePageItem(row, column, new GuiItem(itemStack, action));
     }
 
-    public void setPageItem(final int row, final int column, @NotNull final ItemStack itemStack) {
-        setPageItem(getSlotFromColumn(row, column), itemStack);
-    }
-
-    public void setPageItem(final int row, final int column, @NotNull final GuiItem guiItem) {
-        setPageItem(getSlotFromColumn(row, column), guiItem);
-    }
-
-    public void addPageItem(@NotNull final GuiItem guiItem) {
-        final int slot = guiItem.getSlot();
-
-        if (this.items.containsKey(slot)) return; // if filler item exists, do not add.
-
-        this.pageItems.put(slot, guiItem);
-
-        updatePage();
-    }
-
-    public void addPageItem(@NotNull final GuiItem... items) {
-        for (final GuiItem guiItem : items) {
-            addPageItem(guiItem);
-        }
+    public void updatePageItem(
+            final int row,
+            final int column,
+            @NotNull final GuiItem guiItem
+    ) {
+        updatePageItem(getSlotFromColumn(row, column), guiItem);
     }
 
     public void removePageItem(final int slot) {
@@ -316,7 +316,7 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
         int counter = 0;
 
         for (int slot = 0; slot < this.size; slot++) {
-            // do not count static slots for pagination.
+            // do not count static or empty slots for pagination.
             if (!this.items.containsKey(slot) && this.inventory.getItem(slot) == null) {
                 counter++;
             }
@@ -325,10 +325,10 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
         return this.pageSize = Math.max(1, counter);
     }
 
-    public List<GuiItem> getPageItems(final int page) {
-        final int target = page - 1;
-
+    public @NotNull final List<GuiItem> getPageItems(final int page) {
         final List<GuiItem> guiPage = new ArrayList<>();
+
+        final int target = page - 1;
 
         int max = ((target * this.pageSize) + this.pageSize);
         if (max > this.pageItems.size()) max = this.pageItems.size();
@@ -341,9 +341,9 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
     }
 
     public void populatePage() {
-        final Iterator<GuiItem> iterator = getPageItems(this.pageNumber).iterator();
-
         int slot = 0;
+
+        final Iterator<GuiItem> iterator = getPageItems(this.pageNumber).iterator();
 
         while (iterator.hasNext()) {
             if (slot >= this.size) {
@@ -351,7 +351,14 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
             }
 
             // do not count static slots for pagination.
-            if (this.items.containsKey(slot) || this.inventory.getItem(slot) != null) {
+            if (this.items.containsKey(slot)) {
+                slot++;
+
+                continue;
+            }
+
+            // if the slot is already in the map for current page, continue.
+            if (this.currentPage.containsKey(slot) && this.inventory.getItem(slot) != null) {
                 slot++;
 
                 continue;
@@ -359,8 +366,8 @@ public class PaginatedGui extends GuiBuilder<PaginatedGui> {
 
             final GuiItem guiItem = iterator.next();
 
-            this.inventory.setItem(slot, guiItem.getItemStack());
             this.currentPage.put(slot, guiItem);
+            this.inventory.setItem(slot, guiItem.getItemStack());
 
             slot++;
         }
