@@ -8,11 +8,9 @@ pluginManagement {
 rootProject.name = "Fusion"
 
 listOf(
-    //"minecraft/kyori" to "kyori",
+    "minecraft/paper/example" to "example",
 
     "minecraft/mojang" to "mojang",
-
-    //"minecraft/paper/example" to "example",
     "minecraft/paper" to "paper",
     "minecraft/kyori" to "kyori",
 

@@ -1,15 +1,12 @@
 package com.ryderbelserion.fusion;
 
-import com.ryderbelserion.fusion.files.FileManager;
-import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.paper.FusionPaper;
-import com.ryderbelserion.fusion.paper.utils.ItemUtils;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.ryderbelserion.fusion.commands.SimpleCommand;import com.ryderbelserion.fusion.paper.FusionPaper;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,31 +19,17 @@ public class Fusion extends JavaPlugin implements Listener {
         this.fusion = new FusionPaper(this);
         this.fusion.init();
 
-        final FileManager fileManager = this.fusion.getFileManager();
+        final LifecycleEventManager<Plugin> eventManager = getLifecycleManager();
 
-        fileManager.addFolder(getDataPath().resolve("crates"), FileType.YAML);
+        // Register commands.
+        eventManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
+            LiteralArgumentBuilder<CommandSourceStack> root = new SimpleCommand(this).registerPermissions().literal().createBuilder();
 
-        fileManager.addFile(getDataPath().resolve("test.yml"), FileType.YAML);
-
-        getServer().getPluginManager().registerEvents(this, this);
+            event.registrar().register(root.build(), "The base command for Fusion!");
+        });
     }
 
     public @NotNull final FusionPaper getFusion() {
         return this.fusion;
-    }
-
-    @EventHandler
-    public void onPlayerJoin(@NotNull final PlayerJoinEvent event) {
-        final Player player = event.getPlayer();
-
-        ItemStack itemStack = ItemUtils.getItemStack("potion[potion_contents={custom_color:15961002,custom_effects:[{id:absorption,duration:400,amplifier:2,ambient:1b},{id:invisibility,duration:200,amplifier:1}]},custom_name=[{\"text\":\"H\",\"italic\":false,\"color\":\"#ff0000\"},{\"text\":\"e\",\"italic\":false,\"color\":\"#cc3938\"},{\"text\":\"l\",\"italic\":false,\"color\":\"#987270\"},{\"text\":\"l\",\"italic\":false,\"color\":\"#65aaa8\"},{\"text\":\"o\",\"italic\":false,\"color\":\"#31e3e0\"}]]");
-
-        if (itemStack == null) {
-            return;
-        }
-
-        final PlayerInventory inventory = player.getInventory();
-
-        inventory.addItem(itemStack);
     }
 }
