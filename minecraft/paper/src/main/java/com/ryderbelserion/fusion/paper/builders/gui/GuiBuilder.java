@@ -209,7 +209,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
     }
 
     public B setTitle(@NotNull final Player player, @NotNull final String title, @NotNull final Map<String, String> placeholders) {
-        this.title = GuiUtils.updateTitle(player, title, placeholders);
+        this.title = GuiUtils.updateTitle(player, this.inventory, title, placeholders);
 
         return (B) this;
     }

@@ -10,6 +10,7 @@ import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.craftbukkit.inventory.CraftContainer;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,22 +19,22 @@ public class GuiUtils {
 
     private static final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
 
-    public static String updateTitle(@NotNull final Player player, @NotNull final String title, @NotNull final Map<String, String> placeholders) {
+    public static String updateTitle(@NotNull final Player player, @NotNull final Inventory inventory, @NotNull final String origin, @NotNull final Map<String, String> placeholders) {
         final ServerPlayer entityPlayer = (ServerPlayer) ((CraftEntity) player).getHandle();
 
         final int containerId = entityPlayer.containerMenu.containerId;
 
-        final MenuType<?> windowType = CraftContainer.getNotchInventoryType(player.getOpenInventory().getTopInventory());
+        final MenuType<?> windowType = CraftContainer.getNotchInventoryType(inventory);
 
-        final String parsed = fusion.replacePlaceholders(title, placeholders);
+        final String title = fusion.replacePlaceholders(origin, placeholders);
 
-        entityPlayer.connection.send(new ClientboundOpenScreenPacket(containerId, windowType, CraftChatMessage.fromJSON(JSONComponentSerializer.json().serialize(fusion.asComponent(player, parsed)))));
+        entityPlayer.connection.send(new ClientboundOpenScreenPacket(containerId, windowType, CraftChatMessage.fromJSON(JSONComponentSerializer.json().serialize(fusion.asComponent(player, title)))));
         entityPlayer.containerMenu.sendAllDataToRemote();
 
-        return parsed;
+        return title;
     }
 
-    public static String updateTitle(@NotNull final Player player, @NotNull final String title) {
-        return updateTitle(player, title, new HashMap<>());
+    public static String updateTitle(@NotNull final Player player, @NotNull final Inventory inventory, @NotNull final String origin) {
+        return updateTitle(player, inventory, origin, new HashMap<>());
     }
 }
