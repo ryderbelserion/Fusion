@@ -25,10 +25,12 @@ public class GuiUtils {
 
         final MenuType<?> windowType = CraftContainer.getNotchInventoryType(player.getOpenInventory().getTopInventory());
 
-        entityPlayer.connection.send(new ClientboundOpenScreenPacket(containerId, windowType, CraftChatMessage.fromJSON(JSONComponentSerializer.json().serialize(fusion.asComponent(player, title, placeholders)))));
+        final String parsed = fusion.replacePlaceholders(title, placeholders);
+
+        entityPlayer.connection.send(new ClientboundOpenScreenPacket(containerId, windowType, CraftChatMessage.fromJSON(JSONComponentSerializer.json().serialize(fusion.asComponent(player, parsed)))));
         entityPlayer.containerMenu.sendAllDataToRemote();
 
-        return title;
+        return parsed;
     }
 
     public static String updateTitle(@NotNull final Player player, @NotNull final String title) {
