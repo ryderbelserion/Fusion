@@ -18,7 +18,7 @@ public class GuiUtils {
 
     private static final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
 
-    public static void updateTitle(@NotNull final Player player, @NotNull final String title, @NotNull final Map<String, String> placeholders) {
+    public static String updateTitle(@NotNull final Player player, @NotNull final String title, @NotNull final Map<String, String> placeholders) {
         final ServerPlayer entityPlayer = (ServerPlayer) ((CraftEntity) player).getHandle();
 
         final int containerId = entityPlayer.containerMenu.containerId;
@@ -26,11 +26,12 @@ public class GuiUtils {
         final MenuType<?> windowType = CraftContainer.getNotchInventoryType(player.getOpenInventory().getTopInventory());
 
         entityPlayer.connection.send(new ClientboundOpenScreenPacket(containerId, windowType, CraftChatMessage.fromJSON(JSONComponentSerializer.json().serialize(fusion.asComponent(player, title, placeholders)))));
+        entityPlayer.containerMenu.sendAllDataToRemote();
 
-        player.updateInventory();
+        return title;
     }
 
-    public static void updateTitle(@NotNull final Player player, @NotNull final String title) {
-        updateTitle(player, title, new HashMap<>());
+    public static String updateTitle(@NotNull final Player player, @NotNull final String title) {
+        return updateTitle(player, title, new HashMap<>());
     }
 }
