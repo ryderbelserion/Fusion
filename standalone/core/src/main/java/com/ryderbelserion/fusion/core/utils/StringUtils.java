@@ -119,12 +119,20 @@ public class StringUtils {
         return NumberFormat.getNumberInstance(Locale.US).format(number);
     }
 
-    public static @NotNull String format(final double value) {
+    public static @NotNull String formatNumber(final double number, @NotNull final NumberFormat.Style style) {
+        return NumberFormat.getCompactNumberInstance(Locale.US, style).format(number);
+    }
+
+    public static @NotNull String formatNumber(final double number) {
+        return formatNumber(number, NumberFormat.Style.SHORT);
+    }
+
+    public static @NotNull String format(final double number) {
         final DecimalFormat decimalFormat = new DecimalFormat(fusion.getNumberFormat());
 
         decimalFormat.setRoundingMode(mode());
 
-        return decimalFormat.format(value);
+        return decimalFormat.format(number);
     }
 
     public static @NotNull RoundingMode mode() {
