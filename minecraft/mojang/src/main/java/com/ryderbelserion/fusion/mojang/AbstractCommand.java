@@ -121,8 +121,8 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
         return (C) this;
     }
 
-    public @NotNull Collection<String> getAliases() {
-        return Collections.emptySet();
+    public @NotNull List<String> getAliases() {
+        return List.of();
     }
 
     public @NotNull String getDescription() {
