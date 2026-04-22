@@ -11,6 +11,24 @@ public abstract class AbstractCommandContext<S> {
         this.context = context;
     }
 
+    public boolean hasArgument(@NotNull final String name, @NotNull final Class<?> clazz) {
+        final Object argument = this.context.getArgument(name, clazz);
+
+        return argument != null;
+    }
+
+    public boolean hasIntegerArgument(@NotNull final String name) {
+        return hasArgument(name, Integer.class);
+    }
+
+    public boolean hasDoubleArgument(@NotNull final String name) {
+        return hasArgument(name, Double.class);
+    }
+
+    public boolean hasStringArgument(@NotNull final String name) {
+        return hasArgument(name, String.class);
+    }
+
     public @NotNull final String getStringArgument(@NotNull final String key) {
         return this.context.getArgument(key, String.class);
     }

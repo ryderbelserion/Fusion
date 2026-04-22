@@ -5,6 +5,7 @@ import com.ryderbelserion.fusion.mojang.context.AbstractCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class PaperCommandContext extends AbstractCommandContext<CommandSourceStack> {
@@ -23,5 +24,13 @@ public class PaperCommandContext extends AbstractCommandContext<CommandSourceSta
 
     public final boolean isPlayer() {
         return getSender() instanceof Player;
+    }
+
+    public boolean hasPlayerArgument(@NotNull final String name) {
+        return hasArgument(name, Player.class);
+    }
+
+    public boolean hasItemArgument(@NotNull final String name) {
+        return hasArgument(name, ItemStack.class);
     }
 }
