@@ -31,7 +31,11 @@ public class SimpleCommand extends PaperCommand {
     public void run(@NotNull final PaperCommandContext context) {
         final CommandSender sender = context.getSender();
 
-        if (!(sender instanceof Player player)) return;
+        if (!(sender instanceof Player player)) {
+            sender.sendRichMessage("<red>You must be a player to run this command!");
+
+            return;
+        }
 
         final PaginatedGui gui = PaginatedGui.gui(
                 this.fusion,
