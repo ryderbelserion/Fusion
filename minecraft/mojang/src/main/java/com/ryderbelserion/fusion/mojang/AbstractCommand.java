@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.mojang;
 
 import com.mojang.brigadier.Message;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -21,6 +22,24 @@ import java.util.function.Consumer;
 public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>> {
 
     private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
+
+    public boolean hasArgument(@NotNull final CommandContext<S> context, @NotNull final String name, @NotNull final Class<?> clazz) {
+        final Object argument = context.getArgument(name, clazz);
+
+        return argument != null;
+    }
+
+    public boolean hasIntegerArgument(@NotNull final CommandContext<S> context, @NotNull final String name) {
+        return hasArgument(context, name, Integer.class);
+    }
+
+    public boolean hasDoubleArgument(@NotNull final CommandContext<S> context, @NotNull final String name) {
+        return hasArgument(context, name, Double.class);
+    }
+
+    public boolean hasStringArgument(@NotNull final CommandContext<S> context, @NotNull final String name) {
+        return hasArgument(context, name, String.class);
+    }
 
     public @NotNull CompletableFuture<Suggestions> suggestArgument(
             @NotNull final SuggestionsBuilder builder,
