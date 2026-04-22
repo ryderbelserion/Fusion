@@ -12,6 +12,7 @@ import com.ryderbelserion.fusion.mojang.enums.SuggestionType;
 import com.ryderbelserion.fusion.mojang.serializers.MessageComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -118,6 +119,14 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
         getPermissions().forEach(this.fusion::registerPermission);
 
         return (C) this;
+    }
+
+    public @NotNull Collection<String> getAliases() {
+        return Collections.emptySet();
+    }
+
+    public @NotNull String getDescription() {
+        return "";
     }
 
     public abstract @NotNull LiteralCommandNode<S> literal();
