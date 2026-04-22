@@ -3,9 +3,14 @@ package com.ryderbelserion.fusion.mojang.context;
 import com.mojang.brigadier.context.CommandContext;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class AbstractCommandContext<S> {
 
     protected final CommandContext<S> context;
+
+    protected final List<String> args = new ArrayList<>();
 
     public AbstractCommandContext(@NotNull final CommandContext<S> context) {
         this.context = context;
@@ -43,6 +48,14 @@ public abstract class AbstractCommandContext<S> {
 
     public final float getFloatArgument(@NotNull final String key) {
         return this.context.getArgument(key, Float.class);
+    }
+
+    public void addArgument(@NotNull final String key) {
+        this.args.add(key);
+    }
+
+    public boolean hasArgument(@NotNull final String key) {
+        return this.args.contains(key);
     }
 
     public @NotNull final CommandContext<S> getContext() {
