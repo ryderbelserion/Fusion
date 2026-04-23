@@ -8,108 +8,95 @@ import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.mojang.context.AbstractCommandContext;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
-import com.ryderbelserion.fusion.mojang.enums.SuggestionType;
 import com.ryderbelserion.fusion.mojang.serializers.MessageComponentSerializer;
 import org.jetbrains.annotations.NotNull;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>> {
 
     private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
-    public @NotNull CompletableFuture<Suggestions> suggestArgument(
+    public @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(
             @NotNull final SuggestionsBuilder builder,
-            @NotNull final SuggestionType type,
             @NotNull final String tooltip,
-            final int amount,
-            final int ceiling
+            final int minimum,
+            final int maximum
     ) {
-        final boolean isBlank = tooltip.isBlank();
-        final Message message = isBlank ? null : MessageComponentSerializer.message().serialize(this.fusion.asComponent(tooltip));
+        final Message message = tooltip.isBlank() ? null : MessageComponentSerializer.message().serialize(this.fusion.asComponent(tooltip));
 
-        return suggestArgument(builder, consumer -> {
-            switch (type) {
-                case INTEGER_SUGGESTION -> {
-                    for (int initial = amount; initial <= amount; ++initial) {
-                        if (isBlank) {
-                            consumer.suggest(initial);
+        final boolean isBuilt = message != null;
 
-                            continue;
-                        }
+        for (int current = minimum; current <= maximum; ++current) {
+            double origin = current / 10.0;
 
-                        consumer.suggest(initial, message);
-                    }
-                }
+            if (isBuilt) {
+                builder.suggest(String.valueOf(origin), message);
 
-                case DOUBLE_SUGGESTION -> {
-                    int minimum = ceiling;
-
-                    while (minimum <= ceiling) {
-                        final String value = String.valueOf(minimum / 10.0);
-
-                        if (isBlank) {
-                            builder.suggest(value);
-                        } else {
-                            builder.suggest(value, message);
-                        }
-
-                        minimum++;
-                    }
-                }
-
-                case STRING_SUGGESTION -> {
-                    for (int initial = amount; initial <= amount; ++initial) {
-                        final String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
-
-                        if (isBlank) {
-                            consumer.suggest(uuid);
-
-                            continue;
-                        }
-
-                        consumer.suggest(uuid, message);
-                    }
-                }
+                continue;
             }
-        });
+
+            builder.suggest(String.valueOf(origin));
+        }
+
+        return suggestArgument(builder);
+    }
+
+    public @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(
+            @NotNull final SuggestionsBuilder builder,
+            @NotNull final String tooltip,
+            final int minimum,
+            final int maximum
+    ) {
+        final Message message = tooltip.isBlank() ? null : MessageComponentSerializer.message().serialize(this.fusion.asComponent(tooltip));
+
+        final boolean isBuilt = message != null;
+
+        for (int current = minimum; current <= minimum; ++current) {
+            if (current >= maximum) {
+                break;
+            }
+
+            if (isBuilt) {
+                builder.suggest(current, message);
+
+                continue;
+            }
+
+            builder.suggest(current);
+        }
+
+        return suggestArgument(builder);
+    }
+
+    public @NotNull CompletableFuture<Suggestions> suggestStringArgument(
+            @NotNull final SuggestionsBuilder builder,
+            @NotNull final String tooltip,
+            final int minimum
+    ) {
+        final Message message = tooltip.isBlank() ? null : MessageComponentSerializer.message().serialize(this.fusion.asComponent(tooltip));
+
+        final boolean isBuilt = message != null;
+
+        for (int current = minimum; current <= minimum; ++current) {
+            final String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
+
+            if (isBuilt) {
+                builder.suggest(uuid);
+
+                continue;
+            }
+
+            builder.suggest(uuid, message);
+        }
+
+        return suggestArgument(builder);
     }
 
     public @NotNull CompletableFuture<Suggestions> suggestArgument(
-            @NotNull final SuggestionsBuilder builder,
-            @NotNull final Collection<String> values,
-            @NotNull final String tooltip
+            @NotNull final SuggestionsBuilder builder
     ) {
-        final boolean isBlank = tooltip.isBlank();
-        final Message message = isBlank ? null : MessageComponentSerializer.message().serialize(this.fusion.asComponent(tooltip));
-
-        return suggestArgument(builder, consumer -> {
-            for (final String value : values) {
-                if (!value.isBlank()) {
-                    continue;
-                }
-
-                if (isBlank) {
-                    consumer.suggest(value);
-
-                    continue;
-                }
-
-                consumer.suggest(value, message);
-            }
-        });
-    }
-
-    public @NotNull CompletableFuture<Suggestions> suggestArgument(
-            @NotNull final SuggestionsBuilder builder,
-            @NotNull final Consumer<SuggestionsBuilder> consumer
-    ) {
-        consumer.accept(builder);
-
         return builder.buildFuture();
     }
 
@@ -121,6 +108,12 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
         return (C) this;
     }
 
+    public abstract boolean requirement(@NotNull final S context);
+
+    public abstract @NotNull LiteralCommandNode<S> literal();
+
+    public abstract void run(@NotNull final I context);
+
     public @NotNull List<String> getAliases() {
         return List.of();
     }
@@ -128,11 +121,4 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
     public @NotNull String getDescription() {
         return "";
     }
-
-    public abstract @NotNull LiteralCommandNode<S> literal();
-
-    public abstract boolean requirement(@NotNull final S context);
-
-    public abstract void run(@NotNull final I context);
-
 }
