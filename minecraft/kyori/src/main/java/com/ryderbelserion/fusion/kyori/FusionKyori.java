@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.kyori;
 
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -74,9 +73,5 @@ public abstract class FusionKyori<S> extends FusionCore {
 
     public @NotNull final Component asComponent(@NotNull final String message) {
         return asComponent(message, Map.of(), List.of());
-    }
-
-    public void registerPermission(@NotNull final PermissionContext permission) {
-
     }
 }

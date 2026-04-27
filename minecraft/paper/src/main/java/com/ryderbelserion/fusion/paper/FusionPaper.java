@@ -4,7 +4,6 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
-import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.paper.builders.gui.GuiManager;
 import com.ryderbelserion.fusion.paper.builders.gui.types.GuiListener;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
@@ -16,8 +15,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -82,18 +79,6 @@ public class FusionPaper extends FusionKyori<Audience> {
     @Override
     public String papi(@Nullable final Audience sender, @NotNull final String message) {
         return isPluginEnabled("PlaceholderAPI") && sender instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
-    }
-
-    @Override
-    public void registerPermission(@NotNull final PermissionContext context) {
-        final Permission permission = new Permission(context.getPermission(), context.getDescription(), switch (context.getType()) {
-            case TRUE -> PermissionDefault.TRUE;
-            case FALSE -> PermissionDefault.FALSE;
-            case OP -> PermissionDefault.OP;
-            case NOT_OP -> PermissionDefault.NOT_OP;
-        }, context.getChildren());
-
-        this.pluginManager.addPermission(permission);
     }
 
     @Override

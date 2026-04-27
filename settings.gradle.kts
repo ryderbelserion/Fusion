@@ -10,7 +10,6 @@ rootProject.name = "Fusion"
 listOf(
     "minecraft/paper/example" to "example",
 
-    "minecraft/mojang" to "mojang",
     "minecraft/paper" to "paper",
     "minecraft/kyori" to "kyori",
 

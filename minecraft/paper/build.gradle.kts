@@ -16,8 +16,7 @@ repositories {
 }
 
 dependencies {
-    api(project(":fusion-mojang"))
-    api(project(":fusion-kyori"))
-
     compileOnly(libs.bundles.shared)
+
+    api(project(":fusion-kyori"))
 }
