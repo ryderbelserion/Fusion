@@ -1,21 +1,22 @@
 package com.ryderbelserion.fusion;
 
-import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.commands.BaseCommand;
+import com.ryderbelserion.fusion.api.PaperCommandManager;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import java.util.List;
 
 public class Fusion extends JavaPlugin implements Listener {
 
-    private FusionPaper fusion;
+    private PaperCommandManager commandManager;
 
     @Override
     public void onEnable() {
-        this.fusion = new FusionPaper(this);
-        this.fusion.init();
-    }
+        this.commandManager = new PaperCommandManager(this);
 
-    public @NotNull final FusionPaper getFusion() {
-        return this.fusion;
+        List.of(
+                new BaseCommand()
+                //new SubCommand()
+        ).forEach(command -> this.commandManager.parse(command));
     }
 }

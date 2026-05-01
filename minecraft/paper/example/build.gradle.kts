@@ -10,7 +10,8 @@ repositories {
 }
 
 dependencies {
-    api(project(":fusion-paper"))
+    implementation(project(":fusion-commands"))
+    //implementation(project(":fusion-paper"))
 }
 
 tasks {
