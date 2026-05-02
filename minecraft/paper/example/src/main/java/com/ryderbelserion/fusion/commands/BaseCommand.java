@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.commands;
 
-import com.ryderbelserion.fusion.commands.annotations.Leaf;
+import com.ryderbelserion.fusion.commands.annotations.Flower;
+import com.ryderbelserion.fusion.commands.annotations.subs.Leaf;
 import com.ryderbelserion.fusion.commands.annotations.Tree;
 import com.ryderbelserion.fusion.commands.api.TreeCommand;
 import com.ryderbelserion.fusion.commands.types.SubCommand;
@@ -10,6 +11,11 @@ public class BaseCommand extends TreeCommand {
 
     public BaseCommand() {
         addCommand(new SubCommand());
+    }
+
+    @Flower
+    public void execute() {
+        System.out.println("The default command.");
     }
 
     @Leaf(value = "take", weight = 1)

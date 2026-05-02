@@ -1,16 +1,23 @@
 package com.ryderbelserion.fusion.commands.types;
 
-import com.ryderbelserion.fusion.commands.annotations.Leaf;
+import com.ryderbelserion.fusion.commands.annotations.Flower;
+import com.ryderbelserion.fusion.commands.annotations.subs.Branch;
+import com.ryderbelserion.fusion.commands.annotations.subs.Leaf;
 
-@Leaf(value = "sub", weight = 3)
+@Branch(value = "sub")
 public class SubCommand {
 
-    @Leaf(value = "help", weight = 4)
+    @Flower
+    public void flower() {
+        System.out.println("This is the default sub command.");
+    }
+
+    @Leaf(value = "help", weight = 3)
     public void help() {
         System.out.println("This is the help command.");
     }
 
-    @Leaf(value = "balance", weight = 5)
+    @Leaf(value = "balance", weight = 4)
     public void balance() {
         System.out.println("This is the balance command.");
     }

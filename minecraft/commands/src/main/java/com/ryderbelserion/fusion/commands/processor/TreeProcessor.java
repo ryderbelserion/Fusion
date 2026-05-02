@@ -1,13 +1,18 @@
 package com.ryderbelserion.fusion.commands.processor;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.ryderbelserion.fusion.commands.annotations.subs.Branch;
+import com.ryderbelserion.fusion.commands.annotations.Flower;
 import com.ryderbelserion.fusion.commands.annotations.Tree;
-import com.ryderbelserion.fusion.commands.annotations.Leaf;
+import com.ryderbelserion.fusion.commands.annotations.subs.Leaf;
 import org.jetbrains.annotations.NotNull;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class TreeProcessor<S> {
 
@@ -16,7 +21,11 @@ public class TreeProcessor<S> {
     private String tree;
 
     public @NotNull List<Leaf> processTree(@NotNull final Method[] methods) {
-        return Arrays.stream(methods).filter(insect -> insect.isAnnotationPresent(Leaf.class)).sorted(Comparator.comparingInt(insect -> insect.getAnnotation(Leaf.class).weight())).map(map -> map.getAnnotation(Leaf.class)).toList();
+        return Arrays.stream(methods)
+                .filter(insect -> insect.isAnnotationPresent(Leaf.class))
+                .sorted(Comparator.comparingInt(insect -> insect.getAnnotation(Leaf.class).weight()))
+                .map(map -> map.getAnnotation(Leaf.class))
+                .toList();
     }
 
     public @NotNull TreeProcessor process(@NotNull final Object object) {
@@ -26,26 +35,53 @@ public class TreeProcessor<S> {
             final Tree tree = root.getAnnotation(Tree.class);
 
             this.builder = LiteralArgumentBuilder.literal(this.tree = tree.value());
+
+            final List<Method> methods = filter(root, insect -> insect.isAnnotationPresent(Flower.class));
+
+            if (!methods.isEmpty()) {
+                this.builder.executes(_ -> invoke(methods.getFirst(), object));
+            }
+
             this.description = tree.description();
 
             return this;
         }
 
-        if (root.isAnnotationPresent(Leaf.class)) {
-            final Leaf origin = root.getAnnotation(Leaf.class);
+        if (root.isAnnotationPresent(Branch.class)) {
+            final Branch branch = root.getAnnotation(Branch.class);
 
-            final String value = origin.value();
+            final LiteralArgumentBuilder<S> builder = LiteralArgumentBuilder.literal(branch.value());
 
-            LiteralArgumentBuilder<S> builder = LiteralArgumentBuilder.literal(value);
+            final List<Method> methods = filter(root, insect -> insect.isAnnotationPresent(Flower.class));
+
+            if (!methods.isEmpty()) {
+                builder.executes(_ -> invoke(methods.getFirst(), object));
+            }
 
             for (final Leaf leaf : processTree(root.getDeclaredMethods())) {
                 builder.then(LiteralArgumentBuilder.literal(leaf.value()));
             }
 
-            this.builder = this.builder.then(LiteralArgumentBuilder.literal(value)).then(builder);
+            this.builder = this.builder.then(builder);
         }
 
         return this;
+    }
+
+    public int invoke(@NotNull final Method method, @NotNull final Object object) {
+        if (!method.trySetAccessible()) return Command.SINGLE_SUCCESS;
+
+        try {
+            method.invoke(object);
+        } catch (IllegalAccessException | InvocationTargetException exception) {
+            exception.printStackTrace();
+        }
+
+        return Command.SINGLE_SUCCESS;
+    }
+
+    public @NotNull List<Method> filter(@NotNull final Class<?> tree, @NotNull final Predicate<? super Method> predicate) {
+        return Arrays.stream(tree.getDeclaredMethods()).filter(predicate).toList();
     }
 
     public @NotNull final LiteralArgumentBuilder<S> getBuilder() {

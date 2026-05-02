@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.ryderbelserion.fusion.commands.annotations.Leaf;
+import com.ryderbelserion.fusion.commands.annotations.subs.Leaf;
 import com.ryderbelserion.fusion.commands.api.TreeCommand;
 import com.ryderbelserion.fusion.commands.processor.TreeProcessor;
 import org.jetbrains.annotations.NotNull;
