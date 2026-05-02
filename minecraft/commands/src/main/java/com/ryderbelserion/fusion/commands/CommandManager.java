@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.ryderbelserion.fusion.commands.annotations.subs.Leaf;
+import com.ryderbelserion.fusion.commands.api.LeafCommand;
 import com.ryderbelserion.fusion.commands.api.TreeCommand;
 import com.ryderbelserion.fusion.commands.processor.TreeProcessor;
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +17,8 @@ public abstract class CommandManager<S> {
 
         final LiteralArgumentBuilder<S> builder = root.process(tree).getBuilder();
 
-        for (final Leaf leaf : root.processTree(tree.getClass().getDeclaredMethods())) {
-            builder.then(LiteralArgumentBuilder.literal(leaf.value()));
+        for (final LeafCommand leaf : root.processTree(tree.getClass().getDeclaredMethods())) {
+            builder.then(LiteralArgumentBuilder.literal(leaf.getLeaf()));
         }
 
         for (final Object index : tree.getCommands()) {

@@ -6,6 +6,7 @@ import com.ryderbelserion.fusion.commands.annotations.subs.Branch;
 import com.ryderbelserion.fusion.commands.annotations.Flower;
 import com.ryderbelserion.fusion.commands.annotations.Tree;
 import com.ryderbelserion.fusion.commands.annotations.subs.Leaf;
+import com.ryderbelserion.fusion.commands.api.LeafCommand;
 import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,11 +21,11 @@ public class TreeProcessor<S> {
     private String description;
     private String tree;
 
-    public @NotNull List<Leaf> processTree(@NotNull final Method[] methods) {
+    public @NotNull List<LeafCommand> processTree(@NotNull final Method[] methods) {
         return Arrays.stream(methods)
                 .filter(insect -> insect.isAnnotationPresent(Leaf.class))
                 .sorted(Comparator.comparingInt(insect -> insect.getAnnotation(Leaf.class).weight()))
-                .map(map -> map.getAnnotation(Leaf.class))
+                .map(map -> new LeafCommand(map.getAnnotation(Leaf.class)))
                 .toList();
     }
 
@@ -58,8 +59,8 @@ public class TreeProcessor<S> {
                 builder.executes(_ -> invoke(methods.getFirst(), object));
             }
 
-            for (final Leaf leaf : processTree(root.getDeclaredMethods())) {
-                builder.then(LiteralArgumentBuilder.literal(leaf.value()));
+            for (final LeafCommand leaf : processTree(root.getDeclaredMethods())) {
+                builder.then(LiteralArgumentBuilder.literal(leaf.getLeaf()));
             }
 
             this.builder = this.builder.then(builder);
