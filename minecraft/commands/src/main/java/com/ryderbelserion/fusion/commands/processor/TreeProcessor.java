@@ -21,11 +21,11 @@ public class TreeProcessor<S> {
     private String description;
     private String tree;
 
-    public @NotNull List<LeafCommand> processTree(@NotNull final Method[] methods) {
+    public @NotNull List<LeafCommand<S>> processTree(@NotNull final Method[] methods) {
         return Arrays.stream(methods)
                 .filter(insect -> insect.isAnnotationPresent(Leaf.class))
                 .sorted(Comparator.comparingInt(insect -> insect.getAnnotation(Leaf.class).weight()))
-                .map(map -> new LeafCommand(map.getAnnotation(Leaf.class)))
+                .map(map -> new LeafCommand<S>(map, map.getAnnotation(Leaf.class)))
                 .toList();
     }
 
@@ -60,7 +60,7 @@ public class TreeProcessor<S> {
             }
 
             for (final LeafCommand leaf : processTree(root.getDeclaredMethods())) {
-                builder.then(LiteralArgumentBuilder.literal(leaf.getLeaf()));
+                builder.then(leaf.execute(object));
             }
 
             this.builder = this.builder.then(builder);

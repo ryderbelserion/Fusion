@@ -18,7 +18,7 @@ public abstract class CommandManager<S> {
         final LiteralArgumentBuilder<S> builder = root.process(tree).getBuilder();
 
         for (final LeafCommand leaf : root.processTree(tree.getClass().getDeclaredMethods())) {
-            builder.then(LiteralArgumentBuilder.literal(leaf.getLeaf()));
+            builder.then(leaf.execute(tree));
         }
 
         for (final Object index : tree.getCommands()) {
