@@ -1,11 +1,25 @@
 package com.ryderbelserion.fusion.commands.api;
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import java.util.HashMap;
-import java.util.Map;
+import com.ryderbelserion.fusion.commands.processor.TreeProcessor;
+import org.jetbrains.annotations.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TreeCommand {
+public abstract class TreeCommand {
 
-    private final Map<String, LiteralArgumentBuilder> arguments = new HashMap<>(); //
+    private final TreeProcessor processor = new TreeProcessor();
 
+    private final List<Object> commands = new ArrayList<>();
+
+    public void addCommand(@NotNull final Object origin) {
+        this.commands.add(origin);
+    }
+
+    public @NotNull final TreeProcessor getProcessor() {
+        return this.processor;
+    }
+
+    public @NotNull final List<Object> getCommands() {
+        return this.commands;
+    }
 }

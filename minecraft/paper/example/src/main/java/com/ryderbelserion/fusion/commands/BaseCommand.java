@@ -1,12 +1,12 @@
 package com.ryderbelserion.fusion.commands;
 
 import com.ryderbelserion.fusion.commands.annotations.Leaf;
-import com.ryderbelserion.fusion.commands.annotations.Origin;
-import com.ryderbelserion.fusion.commands.api.OriginCommand;
+import com.ryderbelserion.fusion.commands.annotations.Tree;
+import com.ryderbelserion.fusion.commands.api.TreeCommand;
 import com.ryderbelserion.fusion.commands.types.SubCommand;
 
-@Origin(value = "fusion", description = "The base command for Fusion!")
-public class BaseCommand extends OriginCommand {
+@Tree(value = "fusion", description = "The base command for Fusion!")
+public class BaseCommand extends TreeCommand {
 
     public BaseCommand() {
         addCommand(new SubCommand());

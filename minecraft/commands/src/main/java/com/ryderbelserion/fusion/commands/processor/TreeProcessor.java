@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.commands.processor;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.ryderbelserion.fusion.commands.annotations.Origin;
+import com.ryderbelserion.fusion.commands.annotations.Tree;
 import com.ryderbelserion.fusion.commands.annotations.Leaf;
 import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
@@ -9,24 +9,24 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class RootProcessor<S> {
+public class TreeProcessor<S> {
 
     private LiteralArgumentBuilder<S> builder;
     private String description;
-    private String origin;
+    private String tree;
 
     public @NotNull List<Leaf> processTree(@NotNull final Method[] methods) {
         return Arrays.stream(methods).filter(insect -> insect.isAnnotationPresent(Leaf.class)).sorted(Comparator.comparingInt(insect -> insect.getAnnotation(Leaf.class).weight())).map(map -> map.getAnnotation(Leaf.class)).toList();
     }
 
-    public @NotNull RootProcessor process(@NotNull final Object object) {
+    public @NotNull TreeProcessor process(@NotNull final Object object) {
         final Class<?> root = object.getClass();
 
-        if (root.isAnnotationPresent(Origin.class)) {
-            final Origin origin = root.getAnnotation(Origin.class);
+        if (root.isAnnotationPresent(Tree.class)) {
+            final Tree tree = root.getAnnotation(Tree.class);
 
-            this.builder = LiteralArgumentBuilder.literal(this.origin = origin.value());
-            this.description = origin.description();
+            this.builder = LiteralArgumentBuilder.literal(this.tree = tree.value());
+            this.description = tree.description();
 
             return this;
         }
@@ -56,7 +56,7 @@ public class RootProcessor<S> {
         return this.description;
     }
 
-    public @NotNull final String getOrigin() {
-        return this.origin;
+    public @NotNull final String getTree() {
+        return this.tree;
     }
 }

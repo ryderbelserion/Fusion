@@ -1,29 +1,29 @@
 package com.ryderbelserion.fusion.commands;
 
-import com.ryderbelserion.fusion.commands.api.OriginCommand;
-import com.ryderbelserion.fusion.commands.processor.RootProcessor;
+import com.ryderbelserion.fusion.commands.api.TreeCommand;
+import com.ryderbelserion.fusion.commands.processor.TreeProcessor;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class CommandManager<S> {
 
-    protected final Map<String, OriginCommand> commands = new HashMap<>();
+    protected final Map<String, TreeCommand> commands = new HashMap<>();
 
-    public void parse(@NotNull final OriginCommand origin) {
-        final RootProcessor<S> root = origin.getProcessor();
+    public void parse(@NotNull final TreeCommand tree) {
+        final TreeProcessor<S> root = tree.getProcessor();
 
-        root.process(origin).processTree(root.getClass().getDeclaredMethods());
+        root.process(tree).processTree(root.getClass().getDeclaredMethods());
 
-        for (final Object index : origin.getCommands()) {
+        for (final Object index : tree.getCommands()) {
             root.process(index);
         }
 
-        final String key = root.getOrigin();
+        final String branch = root.getTree();
 
-        this.commands.putIfAbsent(key, origin);
+        this.commands.putIfAbsent(branch, tree);
 
-        init(key);
+        init(branch);
     }
 
     public abstract void init(@NotNull final String key);
