@@ -4,26 +4,25 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.commands.api.objects.LeafCommand;
 import com.ryderbelserion.fusion.commands.api.objects.TreeCommand;
 import com.ryderbelserion.fusion.commands.api.TreeProcessor;
-import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class CommandManager<S extends Audience> {
+public abstract class CommandManager<S> {
 
     protected final Map<String, TreeCommand> commands = new HashMap<>();
 
     public void parse(@NotNull final TreeCommand tree) {
         final TreeProcessor<S> root = tree.getProcessor();
 
-        final LiteralArgumentBuilder<S> builder = root.process(tree).getBuilder();
+        final LiteralArgumentBuilder<S> builder = root.process(this, tree).getBuilder();
 
-        for (final LeafCommand leaf : root.processTree(tree.getClass().getDeclaredMethods())) {
+        for (final LeafCommand leaf : root.processTree(this, tree.getClass().getDeclaredMethods())) {
             builder.then(leaf.execute(tree));
         }
 
         for (final Object index : tree.getCommands()) {
-            root.process(index);
+            root.process(this, index);
         }
 
         final String branch = root.getTree();

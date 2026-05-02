@@ -8,6 +8,7 @@ import com.ryderbelserion.fusion.commands.api.objects.TreeCommand;
 import com.ryderbelserion.fusion.commands.types.SubCommand;
 
 @Tree(value = "fusion", description = "The base command for Fusion!")
+@Permission(permission = "fusion.use")
 public class BaseCommand extends TreeCommand {
 
     public BaseCommand() {
@@ -15,6 +16,7 @@ public class BaseCommand extends TreeCommand {
     }
 
     @Flower
+    @Permission(permission = "fusion.execute")
     public void execute() {
         System.out.println("The default command.");
     }

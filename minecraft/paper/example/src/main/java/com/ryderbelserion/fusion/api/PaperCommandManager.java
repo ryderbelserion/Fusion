@@ -7,12 +7,11 @@ import com.ryderbelserion.fusion.commands.api.TreeProcessor;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-public class PaperCommandManager extends CommandManager<CommandSender> {
+public class PaperCommandManager extends CommandManager<CommandSourceStack> {
 
     private final LifecycleEventManager<Plugin> eventManager;
 
@@ -21,8 +20,8 @@ public class PaperCommandManager extends CommandManager<CommandSender> {
     }
 
     @Override
-    public boolean hasPermission(@NotNull CommandSender context, @NotNull final String permission) {
-        return context.hasPermission(permission);
+    public boolean hasPermission(@NotNull CommandSourceStack context, @NotNull final String permission) {
+        return context.getSender().hasPermission(permission);
     }
 
     @Override
