@@ -15,22 +15,8 @@ public class RootProcessor<S> {
     private String description;
     private String origin;
 
-    public @NotNull RootProcessor processTree(@NotNull final Method[] methods) {
-        final List<Method> trees = Arrays.stream(methods).filter(insect -> insect.isAnnotationPresent(Leaf.class)).sorted(Comparator.comparingInt(insect -> insect.getAnnotation(Leaf.class).weight())).toList();
-
-        if (trees.isEmpty()) return this;
-
-        for (final Method tree : trees) {
-            final Leaf leaf = tree.getAnnotation(Leaf.class);
-
-            final String value = leaf.value();
-
-            if (value.isBlank()) continue;
-
-            this.builder = this.builder.then(LiteralArgumentBuilder.literal(value));
-        }
-
-        return this;
+    public @NotNull List<Leaf> processTree(@NotNull final Method[] methods) {
+        return Arrays.stream(methods).filter(insect -> insect.isAnnotationPresent(Leaf.class)).sorted(Comparator.comparingInt(insect -> insect.getAnnotation(Leaf.class).weight())).map(map -> map.getAnnotation(Leaf.class)).toList();
     }
 
     public @NotNull RootProcessor process(@NotNull final Object object) {
@@ -39,12 +25,7 @@ public class RootProcessor<S> {
         if (root.isAnnotationPresent(Origin.class)) {
             final Origin origin = root.getAnnotation(Origin.class);
 
-            final String value = origin.value();
-
-            if (this.builder == null) {
-                this.builder = LiteralArgumentBuilder.literal(this.origin = value);
-            }
-
+            this.builder = LiteralArgumentBuilder.literal(this.origin = origin.value());
             this.description = origin.description();
 
             return this;
@@ -55,9 +36,13 @@ public class RootProcessor<S> {
 
             final String value = origin.value();
 
-            this.builder = this.builder.then(LiteralArgumentBuilder.literal(value));
+            LiteralArgumentBuilder<S> builder = LiteralArgumentBuilder.literal(value);
 
-            processTree(object.getClass().getDeclaredMethods());
+            for (final Leaf leaf : processTree(root.getDeclaredMethods())) {
+                builder.then(LiteralArgumentBuilder.literal(leaf.value()));
+            }
+
+            this.builder = this.builder.then(LiteralArgumentBuilder.literal(value)).then(builder);
         }
 
         return this;
