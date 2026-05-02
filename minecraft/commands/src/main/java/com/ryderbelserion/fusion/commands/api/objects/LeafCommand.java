@@ -1,9 +1,9 @@
-package com.ryderbelserion.fusion.commands.api;
+package com.ryderbelserion.fusion.commands.api.objects;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.ryderbelserion.fusion.commands.annotations.other.Permission;
-import com.ryderbelserion.fusion.commands.annotations.subs.Leaf;
+import com.ryderbelserion.fusion.commands.api.annotations.other.Permission;
+import com.ryderbelserion.fusion.commands.api.annotations.subs.Leaf;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.InvocationTargetException;

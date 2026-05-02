@@ -1,9 +1,9 @@
 package com.ryderbelserion.fusion.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.ryderbelserion.fusion.commands.api.LeafCommand;
-import com.ryderbelserion.fusion.commands.api.TreeCommand;
-import com.ryderbelserion.fusion.commands.processor.TreeProcessor;
+import com.ryderbelserion.fusion.commands.api.objects.LeafCommand;
+import com.ryderbelserion.fusion.commands.api.objects.TreeCommand;
+import com.ryderbelserion.fusion.commands.api.TreeProcessor;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;

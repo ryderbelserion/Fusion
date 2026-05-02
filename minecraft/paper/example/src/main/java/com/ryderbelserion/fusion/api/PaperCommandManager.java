@@ -2,8 +2,8 @@ package com.ryderbelserion.fusion.api;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.commands.CommandManager;
-import com.ryderbelserion.fusion.commands.api.TreeCommand;
-import com.ryderbelserion.fusion.commands.processor.TreeProcessor;
+import com.ryderbelserion.fusion.commands.api.objects.TreeCommand;
+import com.ryderbelserion.fusion.commands.api.TreeProcessor;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;

@@ -1,6 +1,6 @@
-package com.ryderbelserion.fusion.commands.api;
+package com.ryderbelserion.fusion.commands.api.objects;
 
-import com.ryderbelserion.fusion.commands.processor.TreeProcessor;
+import com.ryderbelserion.fusion.commands.api.TreeProcessor;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;

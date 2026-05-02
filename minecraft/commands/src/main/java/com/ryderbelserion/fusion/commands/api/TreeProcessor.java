@@ -1,12 +1,12 @@
-package com.ryderbelserion.fusion.commands.processor;
+package com.ryderbelserion.fusion.commands.api;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.ryderbelserion.fusion.commands.annotations.subs.Branch;
-import com.ryderbelserion.fusion.commands.annotations.Flower;
-import com.ryderbelserion.fusion.commands.annotations.Tree;
-import com.ryderbelserion.fusion.commands.annotations.subs.Leaf;
-import com.ryderbelserion.fusion.commands.api.LeafCommand;
+import com.ryderbelserion.fusion.commands.api.annotations.subs.Branch;
+import com.ryderbelserion.fusion.commands.api.annotations.Flower;
+import com.ryderbelserion.fusion.commands.api.annotations.Tree;
+import com.ryderbelserion.fusion.commands.api.annotations.subs.Leaf;
+import com.ryderbelserion.fusion.commands.api.objects.LeafCommand;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.InvocationTargetException;

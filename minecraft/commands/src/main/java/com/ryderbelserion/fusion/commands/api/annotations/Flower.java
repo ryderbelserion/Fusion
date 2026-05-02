@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.commands.annotations.other;
+package com.ryderbelserion.fusion.commands.api.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,5 +6,5 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.ANNOTATION_TYPE)
-public @interface Requirement {}
+@Target({ElementType.METHOD})
+public @interface Flower {}

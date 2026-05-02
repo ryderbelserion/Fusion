@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.commands.annotations.subs;
+package com.ryderbelserion.fusion.commands.api.annotations.subs;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
