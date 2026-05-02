@@ -14,11 +14,11 @@ public class BaseCommand extends TreeCommand {
 
     @Leaf(value = "take", weight = 1)
     public void take() {
-
+        System.out.println("This is the take command.");
     }
 
     @Leaf(value = "give", weight = 2)
     public void give() {
-
+        System.out.println("This is the give command.");
     }
 }
