@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.commands;
 
 import com.ryderbelserion.fusion.commands.annotations.Flower;
+import com.ryderbelserion.fusion.commands.annotations.other.Permission;
 import com.ryderbelserion.fusion.commands.annotations.subs.Leaf;
 import com.ryderbelserion.fusion.commands.annotations.Tree;
 import com.ryderbelserion.fusion.commands.api.TreeCommand;
@@ -19,11 +20,13 @@ public class BaseCommand extends TreeCommand {
     }
 
     @Leaf(value = "take", weight = 1)
+    @Permission(permission = "fusion.take")
     public void take() {
         System.out.println("This is the take command.");
     }
 
     @Leaf(value = "give", weight = 2)
+    @Permission(permission = "fusion.give")
     public void give() {
         System.out.println("This is the give command.");
     }

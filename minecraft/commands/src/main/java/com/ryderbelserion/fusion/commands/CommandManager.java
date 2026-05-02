@@ -4,11 +4,12 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.commands.api.LeafCommand;
 import com.ryderbelserion.fusion.commands.api.TreeCommand;
 import com.ryderbelserion.fusion.commands.processor.TreeProcessor;
+import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class CommandManager<S> {
+public abstract class CommandManager<S extends Audience> {
 
     protected final Map<String, TreeCommand> commands = new HashMap<>();
 
@@ -31,6 +32,8 @@ public abstract class CommandManager<S> {
 
         init(branch);
     }
+
+    public abstract boolean hasPermission(@NotNull final S context, @NotNull final String permission);
 
     public abstract void init(@NotNull final String key);
 }

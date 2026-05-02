@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.commands.annotations;
+package com.ryderbelserion.fusion.commands.annotations.other;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,11 +6,5 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Tree { // root command
-
-    String description() default "";
-
-    String value();
-
-}
+@Target(ElementType.ANNOTATION_TYPE)
+public @interface Requirement {}

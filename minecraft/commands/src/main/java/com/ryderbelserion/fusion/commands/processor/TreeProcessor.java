@@ -7,6 +7,7 @@ import com.ryderbelserion.fusion.commands.annotations.Flower;
 import com.ryderbelserion.fusion.commands.annotations.Tree;
 import com.ryderbelserion.fusion.commands.annotations.subs.Leaf;
 import com.ryderbelserion.fusion.commands.api.LeafCommand;
+import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,7 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class TreeProcessor<S> {
+public class TreeProcessor<S extends Audience> {
 
     private LiteralArgumentBuilder<S> builder;
     private String description;
