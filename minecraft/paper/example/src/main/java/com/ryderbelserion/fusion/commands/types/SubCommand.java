@@ -14,13 +14,13 @@ public class SubCommand {
         System.out.println("This is the default sub command.");
     }
 
-    @Leaf(value = "help", weight = 3)
+    @Leaf(value = "help")
     @Permission(permission = "fusion.help")
     public void help() {
         System.out.println("This is the help command.");
     }
 
-    @Leaf(value = "balance", weight = 4)
+    @Leaf(value = "balance")
     @Permission(permission = "fusion.balance")
     public void balance() {
         System.out.println("This is the balance command.");

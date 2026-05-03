@@ -21,13 +21,13 @@ public class BaseCommand extends AbstractCommand {
         System.out.println("The default command.");
     }
 
-    @Leaf(value = "take", weight = 1)
+    @Leaf(value = "take")
     @Permission(permission = "fusion.take")
     public void take() {
         System.out.println("This is the take command.");
     }
 
-    @Leaf(value = "give", weight = 2)
+    @Leaf(value = "give")
     @Permission(permission = "fusion.give")
     public void give() {
         System.out.println("This is the give command.");

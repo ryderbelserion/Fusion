@@ -11,6 +11,4 @@ public @interface Leaf { // tree i.e. /fusion help
 
     String value() default "";
 
-    int weight() default 0;
-
 }

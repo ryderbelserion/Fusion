@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -21,7 +20,7 @@ public abstract class RootCommand<S, M> {
     public @NotNull List<LeafCommand<S>> process(@NotNull final CommandManager<S> commandManager, @NotNull final Method[] methods) {
         return Arrays.stream(methods)
                 .filter(insect -> insect.isAnnotationPresent(Leaf.class))
-                .sorted(Comparator.comparingInt(insect -> insect.getAnnotation(Leaf.class).weight()))
+                //.sorted(Comparator.comparingInt(insect -> insect.getAnnotation(Leaf.class).weight()))
                 .map(method -> new LeafCommand<>(commandManager, method, method.getAnnotation(Leaf.class)))
                 .toList();
     }
