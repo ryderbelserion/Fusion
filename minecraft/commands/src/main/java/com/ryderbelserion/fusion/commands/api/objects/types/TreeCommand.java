@@ -5,7 +5,6 @@ import com.ryderbelserion.fusion.commands.CommandManager;
 import com.ryderbelserion.fusion.commands.api.annotations.Flower;
 import com.ryderbelserion.fusion.commands.api.annotations.Tree;
 import com.ryderbelserion.fusion.commands.api.annotations.other.Permission;
-import com.ryderbelserion.fusion.commands.api.annotations.subs.Branch;
 import com.ryderbelserion.fusion.commands.api.objects.RootCommand;
 import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
