@@ -36,7 +36,7 @@ public class TreeProcessor<S> {
     public @NotNull TreeProcessor process(@NotNull final CommandManager<S> commandManager, @NotNull final Object object) {
         final TreeCommand<S> command = new TreeCommand<>(object);
 
-        command.build(commandManager).getBuilder().ifPresent(builder -> this.builder.then(builder));
+        command.build(commandManager).getBuilder().ifPresent(builder -> this.builder = builder);
 
         this.description = command.getDescription();
 
