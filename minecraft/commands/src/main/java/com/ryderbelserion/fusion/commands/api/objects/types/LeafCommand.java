@@ -26,7 +26,7 @@ public class LeafCommand<S> {
         this.leaf = leaf.value();
     }
 
-    public LiteralArgumentBuilder<S> execute(@NotNull final Object object) {
+    public @NotNull final LiteralArgumentBuilder<S> execute(@NotNull final Object object) {
         final LiteralArgumentBuilder<S> builder = LiteralArgumentBuilder.literal(this.leaf);
 
         if (!this.permission.isBlank()) {

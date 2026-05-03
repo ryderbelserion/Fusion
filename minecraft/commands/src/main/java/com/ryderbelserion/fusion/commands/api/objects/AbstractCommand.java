@@ -11,7 +11,7 @@ public abstract class AbstractCommand {
 
     private final List<Object> commands = new ArrayList<>();
 
-    public void addCommand(@NotNull final Object origin) {
+    public final void addCommand(@NotNull final Object origin) {
         this.commands.add(origin);
     }
 

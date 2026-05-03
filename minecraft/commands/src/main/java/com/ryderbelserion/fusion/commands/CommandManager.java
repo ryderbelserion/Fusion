@@ -10,7 +10,7 @@ public abstract class CommandManager<S> {
 
     protected final Map<String, AbstractCommand> commands = new HashMap<>();
 
-    public void parse(@NotNull final AbstractCommand tree) {
+    public final void parse(@NotNull final AbstractCommand tree) {
         final TreeProcessor<S> processor = tree.getProcessor();
 
         processor.process(this, tree); // process base command
