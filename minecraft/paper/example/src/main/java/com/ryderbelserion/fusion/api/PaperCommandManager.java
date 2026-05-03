@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.api;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.commands.CommandManager;
-import com.ryderbelserion.fusion.commands.api.objects.TreeCommand;
+import com.ryderbelserion.fusion.commands.api.objects.AbstractCommand;
 import com.ryderbelserion.fusion.commands.api.TreeProcessor;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
@@ -28,7 +28,7 @@ public class PaperCommandManager extends CommandManager<CommandSourceStack> {
     public void init(@NotNull final String key) {
         if (!this.commands.containsKey(key)) return;
 
-        final TreeCommand origin = this.commands.get(key);
+        final AbstractCommand origin = this.commands.get(key);
 
         final TreeProcessor processor = origin.getProcessor();
 

@@ -1,8 +1,6 @@
 package com.ryderbelserion.fusion.commands;
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.ryderbelserion.fusion.commands.api.objects.LeafCommand;
-import com.ryderbelserion.fusion.commands.api.objects.TreeCommand;
+import com.ryderbelserion.fusion.commands.api.objects.AbstractCommand;
 import com.ryderbelserion.fusion.commands.api.TreeProcessor;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
@@ -10,22 +8,18 @@ import java.util.Map;
 
 public abstract class CommandManager<S> {
 
-    protected final Map<String, TreeCommand> commands = new HashMap<>();
+    protected final Map<String, AbstractCommand> commands = new HashMap<>();
 
-    public void parse(@NotNull final TreeCommand tree) {
-        final TreeProcessor<S> root = tree.getProcessor();
+    public void parse(@NotNull final AbstractCommand tree) {
+        final TreeProcessor<S> processor = tree.getProcessor();
 
-        final LiteralArgumentBuilder<S> builder = root.process(this, tree).getBuilder();
-
-        for (final LeafCommand leaf : root.processTree(this, tree.getClass().getDeclaredMethods())) {
-            builder.then(leaf.execute(tree));
-        }
+        processor.process(this, tree); // process base command
 
         for (final Object index : tree.getCommands()) {
-            root.process(this, index);
+            processor.processBranch(this, index); // process sub commands added in constructor
         }
 
-        final String branch = root.getTree();
+        final String branch = processor.getTree();
 
         this.commands.putIfAbsent(branch, tree);
 

@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Tree { // root command
 
-    String description() default "";
+    String desc() default "";
 
     String value();
 

@@ -16,7 +16,6 @@ public class Fusion extends JavaPlugin implements Listener {
 
         List.of(
                 new BaseCommand()
-                //new SubCommand()
         ).forEach(command -> this.commandManager.parse(command));
     }
 }

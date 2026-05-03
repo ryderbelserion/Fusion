@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class TreeCommand {
+public abstract class AbstractCommand {
 
     private final TreeProcessor processor = new TreeProcessor();
 

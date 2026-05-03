@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.commands.api.objects;
+package com.ryderbelserion.fusion.commands.api.objects.types;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
