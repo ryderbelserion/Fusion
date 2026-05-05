@@ -863,7 +863,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     private void getItemsAdder(@NotNull final String itemStack) {
         if (!CustomStack.isInRegistry(itemStack)) {
-            this.fusion.log(Level.WARNING, "The id " + itemStack + " does not exist as an ItemsAdder item!");
+            this.fusion.log(Level.WARNING, "The id %s does not exist as an ItemsAdder item!", itemStack);
 
             return;
         }
@@ -878,7 +878,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     private void getOraxen(@NotNull final String itemStack) {
         if (!OraxenItems.exists(itemStack)) {
-            this.fusion.log(Level.WARNING, "The id " + itemStack + " does not exist as an Oraxen item!");
+            this.fusion.log(Level.WARNING, "The id %s does not exist as an Oraxen item!", itemStack);
 
             return;
         }
@@ -893,7 +893,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     private void getNexo(@NotNull final String itemStack) {
         if (!NexoItems.exists(itemStack)) {
-            this.fusion.log(Level.WARNING, "The id " + itemStack + " does not exist as a Nexo item!");
+            this.fusion.log(Level.WARNING, "The id %s does not exist as a Nexo item!", itemStack);
 
             return;
         }

@@ -94,7 +94,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         final NamespacedKey key = Registry.SOUNDS.getKey(value);
 
         if (key == null) {
-            this.fusion.log(Level.WARNING, "No valid NamespacedKey found for {}", Map.of("{}", sound));
+            this.fusion.log(Level.WARNING, "No valid NamespacedKey found for %s", sound);
 
             return this;
         }
