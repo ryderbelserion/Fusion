@@ -36,6 +36,11 @@ public class BranchCommand<S> extends RootCommand<S, Method> {
     }
 
     @Override
+    public @NotNull final Optional<LiteralArgumentBuilder<S>> getBuilder() {
+        return Optional.ofNullable(this.builder);
+    }
+
+    @Override
     public @NotNull final BranchCommand<S> build(@NotNull final CommandManager manager) {
         if (!this.isBranchPresent) return this;
 
@@ -53,10 +58,10 @@ public class BranchCommand<S> extends RootCommand<S, Method> {
             this.builder.executes(_ -> invoke(methods.getFirst(), this.object));
         }
 
-        final List<LeafCommand<S>> leaves = process(manager, keys);
+        final List<LeafCommand<S>> leaves = process(keys, this.object);
 
         for (final LeafCommand<S> leaf : leaves) {
-            this.builder.then(leaf.execute(this.object));
+            leaf.getBuilder().ifPresent(builder -> this.builder.then(builder));
         }
 
         return this;
@@ -65,9 +70,5 @@ public class BranchCommand<S> extends RootCommand<S, Method> {
     @Override
     public @NotNull final String getDescription() {
         return this.branch.desc();
-    }
-
-    public @NotNull final Optional<LiteralArgumentBuilder<S>> getBuilder() {
-        return Optional.ofNullable(this.builder);
     }
 }
