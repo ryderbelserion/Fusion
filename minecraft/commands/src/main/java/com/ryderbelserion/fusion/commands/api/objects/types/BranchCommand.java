@@ -2,7 +2,6 @@ package com.ryderbelserion.fusion.commands.api.objects.types;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.commands.CommandManager;
-import com.ryderbelserion.fusion.commands.api.annotations.Flower;
 import com.ryderbelserion.fusion.commands.api.annotations.other.Permission;
 import com.ryderbelserion.fusion.commands.api.annotations.subs.Branch;
 import com.ryderbelserion.fusion.commands.api.objects.RootCommand;
@@ -52,11 +51,7 @@ public class BranchCommand<S> extends RootCommand<S, Method> {
 
         final Method[] keys = this.origin.getDeclaredMethods();
 
-        final List<Method> methods = filter(keys, insect -> insect.isAnnotationPresent(Flower.class));
-
-        if (!methods.isEmpty()) {
-            this.builder.executes(_ -> invoke(methods.getFirst(), this.object));
-        }
+        flower(this.builder, keys, this.object).ifPresent(flower -> flower.build(manager));
 
         final List<LeafCommand<S>> leaves = process(keys, this.object);
 
