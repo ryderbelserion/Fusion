@@ -1,35 +1,21 @@
 package com.ryderbelserion.fusion;
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.ryderbelserion.fusion.commands.SimpleCommand;import com.ryderbelserion.fusion.paper.FusionPaper;
-import io.papermc.paper.command.brigadier.CommandSourceStack;
-import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import com.ryderbelserion.fusion.commands.BaseCommand;
+import com.ryderbelserion.fusion.api.PaperCommandManager;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import java.util.List;
 
 public class Fusion extends JavaPlugin implements Listener {
 
-    private FusionPaper fusion;
+    private PaperCommandManager commandManager;
 
     @Override
     public void onEnable() {
-        this.fusion = new FusionPaper(this);
-        this.fusion.init();
+        this.commandManager = new PaperCommandManager(this);
 
-        final LifecycleEventManager<Plugin> eventManager = getLifecycleManager();
-
-        // Register commands.
-        eventManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
-            LiteralArgumentBuilder<CommandSourceStack> root = new SimpleCommand(this).registerPermissions().literal().createBuilder();
-
-            event.registrar().register(root.build(), "The base command for Fusion!");
-        });
-    }
-
-    public @NotNull final FusionPaper getFusion() {
-        return this.fusion;
+        List.of(
+                new BaseCommand()
+        ).forEach(command -> this.commandManager.parse(command));
     }
 }
