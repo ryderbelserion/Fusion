@@ -176,7 +176,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public BaseItemBuilder(@NotNull final String itemStack) {
-        setItem(itemStack);
+        withCustomItem(itemStack);
     }
 
     public B build() {

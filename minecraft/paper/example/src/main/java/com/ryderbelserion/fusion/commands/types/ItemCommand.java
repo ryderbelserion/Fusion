@@ -1,0 +1,73 @@
+package com.ryderbelserion.fusion.commands.types;
+
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.tree.LiteralCommandNode;
+import com.ryderbelserion.fusion.Fusion;
+import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
+import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
+import com.ryderbelserion.fusion.paper.FusionPaper;
+import com.ryderbelserion.fusion.paper.builders.commands.PaperCommand;
+import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
+import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
+import dev.lone.itemsadder.api.CustomStack;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import java.util.List;
+
+public class ItemCommand extends PaperCommand {
+
+    private final Fusion fusion;
+
+    public ItemCommand(@NotNull final Fusion fusion) {
+        this.fusion = fusion;
+    }
+
+    @Override
+    public void run(@NotNull final PaperCommandContext context) {
+        final CommandSender sender = context.getSender();
+
+        if (!(sender instanceof Player player)) {
+            sender.sendRichMessage("<red>You must be a player to run this command!");
+
+            return;
+        }
+
+        //final FusionPaper fusion = this.fusion.getFusion();
+
+        //CustomStack.getNamespacedIdsInRegistry().forEach(key -> fusion.log(Level.WARNING, "Key: %s", key));
+
+        final ItemBuilder builder = ItemBuilder.from("iageneric:red_coupon");
+
+        player.getInventory().addItem(builder.asItemStack(player));
+    }
+
+    @Override
+    public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
+        return Commands.literal("item").requires(this::requirement)
+                .executes(context -> {
+                    run(new PaperCommandContext(context));
+
+                    return Command.SINGLE_SUCCESS;
+                }).build();
+    }
+
+    @Override
+    public @NotNull final List<PermissionContext> getPermissions() {
+        return List.of(
+                new PermissionContext(
+                        "fusion.use",
+                        "The base command for Fusion!",
+                        PermissionType.TRUE
+                )
+        );
+    }
+
+    @Override
+    public final boolean requirement(@NotNull final CommandSourceStack context) {
+        return context.getSender().hasPermission(getPermissions().getFirst().getPermission());
+    }
+}
