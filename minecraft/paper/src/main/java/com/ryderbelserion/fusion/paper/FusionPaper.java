@@ -14,6 +14,7 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Server;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -74,6 +75,11 @@ public class FusionPaper extends FusionKyori<Audience> {
         this.plugin = plugin;
 
         return this;
+    }
+
+    @Override
+    public boolean hasPermission(@NotNull final Audience audience, @NotNull final String permission) {
+        return audience instanceof CommandSender sender && sender.hasPermission(permission);
     }
 
     @Override

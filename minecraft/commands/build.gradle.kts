@@ -12,4 +12,6 @@ repositories {
 dependencies {
     compileOnly(libs.bundles.adventure)
     compileOnly(libs.brigadier)
+
+    api(project(":fusion-kyori"))
 }

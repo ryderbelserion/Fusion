@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.commands.api.objects;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import com.ryderbelserion.fusion.commands.CommandManager;
 import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.InvocationTargetException;
@@ -16,7 +17,7 @@ public abstract class BasicCommand<S> {
 
     public abstract @NotNull String getDescription();
 
-    protected int invoke(@NotNull final Method method, @NotNull final Object object) {
+    protected int invoke(@NotNull final CommandContext<S> context, @NotNull final Method method, @NotNull final Object object) {
         if (!method.trySetAccessible()) return Command.SINGLE_SUCCESS;
 
         try {

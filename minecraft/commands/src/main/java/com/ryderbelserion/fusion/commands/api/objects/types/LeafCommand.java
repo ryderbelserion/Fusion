@@ -63,7 +63,7 @@ public class LeafCommand<S> extends BasicCommand<S> {
             this.builder.requires(context -> manager.hasPermission(context, this.permission));
         }
 
-        this.builder.executes(_ -> invoke(this.method, this.object));
+        this.builder.executes(context -> invoke(context, this.method, this.object));
 
         return this;
     }

@@ -39,7 +39,7 @@ public class FlowerCommand<S> extends BasicCommand<S> {
 
     @Override
     public @NotNull final FlowerCommand<S> build(@NotNull final CommandManager manager) {
-        this.builder.executes(_ -> invoke(this.method, this.object));
+        this.builder.executes(context -> invoke(context, this.method, this.object));
 
         return this;
     }

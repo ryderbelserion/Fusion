@@ -26,6 +26,8 @@ public abstract class FusionKyori<S> extends FusionCore {
         return parse(sender, message, Map.of());
     }
 
+    public abstract boolean hasPermission(@NotNull final S sender, @NotNull final String permission);
+
     public abstract String papi(@Nullable final S sender, @NotNull final String message);
 
     public @NotNull final Component asComponent(@NotNull final String message,

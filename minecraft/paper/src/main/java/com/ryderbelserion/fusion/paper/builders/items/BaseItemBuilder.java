@@ -192,18 +192,16 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public @NotNull final GuiItem asGuiItem(@NotNull final Audience audience) {
-        return asGuiItem(audience, action -> {});
+        return asGuiItem(audience, _ -> {});
     }
 
     public @NotNull final GuiItem asGuiItem() {
         return asGuiItem(Audience.empty());
     }
 
-    public @NotNull ItemStack asItemStack(@Nullable final Audience audience) {
-        final Audience safeAudience = audience == null ? Audience.empty() : audience;
-
+    public @NotNull ItemStack asItemStack(@NotNull final Audience audience) {
         if (!this.displayName.isEmpty()) {
-            this.itemStack.setData(this.type, this.fusion.asComponent(safeAudience, this.displayName, this.placeholders));
+            this.itemStack.setData(this.type, this.fusion.asComponent(audience, this.displayName, this.placeholders));
         }
 
         final List<String> lore = this.displayLore;
@@ -211,7 +209,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         if (!lore.isEmpty()) {
             final List<Component> components = new ArrayList<>(lore.size());
 
-            lore.forEach(line -> components.add(this.fusion.asComponent(safeAudience, line, placeholders)));
+            lore.forEach(line -> components.add(this.fusion.asComponent(audience, line, placeholders)));
 
             this.itemStack.setData(DataComponentTypes.LORE, ItemLore.lore(components));
         }
