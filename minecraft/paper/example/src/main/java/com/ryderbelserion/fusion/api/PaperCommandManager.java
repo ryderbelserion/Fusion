@@ -1,6 +1,8 @@
 package com.ryderbelserion.fusion.api;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.ryderbelserion.fusion.api.senders.CommandSender;
+import com.ryderbelserion.fusion.api.senders.PlayerSender;
 import com.ryderbelserion.fusion.commands.CommandManager;
 import com.ryderbelserion.fusion.commands.api.objects.AbstractCommand;
 import com.ryderbelserion.fusion.commands.api.TreeProcessor;
@@ -17,6 +19,9 @@ public class PaperCommandManager extends CommandManager<CommandSourceStack> {
 
     public PaperCommandManager(@NotNull final JavaPlugin plugin) {
         this.eventManager = plugin.getLifecycleManager();
+
+        addSender(new CommandSender());
+        addSender(new PlayerSender());
     }
 
     @Override
