@@ -6,6 +6,7 @@ import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.paper.builders.gui.GuiManager;
 import com.ryderbelserion.fusion.paper.builders.gui.types.GuiListener;
+import com.ryderbelserion.fusion.paper.commands.PaperCommandManager;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
@@ -23,11 +24,12 @@ import org.jspecify.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class FusionPaper extends FusionKyori<Audience> {
+public class FusionPaper extends FusionKyori<Audience, PaperCommandManager> {
 
     private final PaperFileManager fileManager;
     private final ComponentLogger logger;
 
+    private PaperCommandManager commandManager;
     private PluginManager pluginManager;
     private GuiManager guiManager;
     private JavaPlugin plugin;
@@ -65,6 +67,8 @@ public class FusionPaper extends FusionKyori<Audience> {
 
         this.pluginManager.registerEvents(new GuiListener(), this.plugin);
 
+        this.commandManager = new PaperCommandManager(this.plugin);
+
         return this;
     }
 
@@ -85,6 +89,11 @@ public class FusionPaper extends FusionKyori<Audience> {
     @Override
     public String papi(@Nullable final Audience sender, @NotNull final String message) {
         return isPluginEnabled("PlaceholderAPI") && sender instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
+    }
+
+    @Override
+    public @NotNull final PaperCommandManager getCommandManager() {
+        return this.commandManager;
     }
 
     @Override
@@ -116,6 +125,11 @@ public class FusionPaper extends FusionKyori<Audience> {
     @Override
     public final boolean isModReady(@NotNull final FusionKey key) {
         return this.pluginManager.isPluginEnabled(key.getValue());
+    }
+
+    @Override
+    public @NotNull final String getNamespace() {
+        return this.plugin.namespace();
     }
 
     @Override

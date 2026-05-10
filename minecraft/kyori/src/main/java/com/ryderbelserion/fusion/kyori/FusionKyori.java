@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.kyori;
 
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.kyori.commands.CommandManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class FusionKyori<S> extends FusionCore {
+public abstract class FusionKyori<S, M extends CommandManager> extends FusionCore {
 
     public FusionKyori(@NotNull final Path path) {
         super(path);
@@ -29,6 +30,8 @@ public abstract class FusionKyori<S> extends FusionCore {
     public abstract boolean hasPermission(@NotNull final S sender, @NotNull final String permission);
 
     public abstract String papi(@Nullable final S sender, @NotNull final String message);
+
+    public abstract M getCommandManager();
 
     public @NotNull final Component asComponent(@NotNull final String message,
                                                 @NotNull final Map<String, String> placeholders,

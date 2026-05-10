@@ -50,6 +50,8 @@ public abstract class FusionCore {
 
     public abstract boolean isModReady(@NotNull final FusionKey key);
 
+    public abstract String getNamespace();
+
     public FusionCore reload() {
         if (this.config != null) {
             this.config.reload();
@@ -147,10 +149,6 @@ public abstract class FusionCore {
         Files.deleteIfExists(path);
     }
 
-    public @NotNull FileManager getFileManager() {
-        return this.fileManager;
-    }
-
     public @NotNull final String getNumberFormat() {
         return this.config.getProperty(FusionConfig.number_format);
     }
@@ -173,6 +171,10 @@ public abstract class FusionCore {
 
     public @NotNull final ModRegistry getModRegistry() {
         return this.modRegistry;
+    }
+
+    public @NotNull FileManager getFileManager() {
+        return this.fileManager;
     }
 
     public @NotNull final Path getDataPath() {

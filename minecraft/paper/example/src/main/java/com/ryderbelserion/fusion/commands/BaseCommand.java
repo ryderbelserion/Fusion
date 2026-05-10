@@ -1,10 +1,10 @@
 package com.ryderbelserion.fusion.commands;
 
-import com.ryderbelserion.fusion.commands.api.annotations.Flower;
-import com.ryderbelserion.fusion.commands.api.annotations.other.Permission;
-import com.ryderbelserion.fusion.commands.api.annotations.subs.Leaf;
-import com.ryderbelserion.fusion.commands.api.annotations.Tree;
-import com.ryderbelserion.fusion.commands.api.objects.AbstractCommand;
+import com.ryderbelserion.fusion.kyori.commands.api.annotations.Flower;
+import com.ryderbelserion.fusion.kyori.commands.api.annotations.other.Permission;
+import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Leaf;
+import com.ryderbelserion.fusion.kyori.commands.api.annotations.Tree;
+import com.ryderbelserion.fusion.kyori.commands.api.objects.AbstractCommand;
 import com.ryderbelserion.fusion.commands.types.SubCommand;
 
 @Tree(value = "fusion", desc = "The base command for Fusion!")

@@ -18,5 +18,5 @@ repositories {
 dependencies {
     compileOnly(libs.bundles.shared)
 
-    api(project(":fusion-commands"))
+    api(project(":fusion-kyori"))
 }
