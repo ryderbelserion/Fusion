@@ -1,5 +1,7 @@
 package com.ryderbelserion.fusion.paper.commands.extensions;
 
+import com.ryderbelserion.fusion.core.api.FusionProvider;
+import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.commands.PaperCommandManager;
 import com.ryderbelserion.fusion.kyori.commands.api.senders.MetaKeys;
 import com.ryderbelserion.fusion.kyori.commands.api.senders.objects.SenderExtension;
@@ -13,11 +15,9 @@ import java.util.Set;
 
 public class PaperSenderExtension implements SenderExtension<Audience> {
 
-    private final PaperCommandManager commandManager;
+    private final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
 
-    public PaperSenderExtension(@NotNull final PaperCommandManager commandManager) {
-        this.commandManager = commandManager;
-    }
+    private final PaperCommandManager commandManager = this.fusion.getCommandManager();
 
     @Override
     public @NotNull final ValidationResult<?> validate(@NotNull final Class<?> target, @NotNull final Audience sender) {

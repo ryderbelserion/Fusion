@@ -4,6 +4,7 @@ import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.AbstractCommand;
 import com.ryderbelserion.fusion.kyori.commands.api.TreeProcessor;
+import com.ryderbelserion.fusion.kyori.commands.api.senders.objects.SenderExtension;
 import net.kyori.adventure.key.Key;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
@@ -41,6 +42,8 @@ public abstract class CommandManager<S> {
     public Optional<String> getMessage(@NotNull final Key key) {
         return Optional.ofNullable(this.messages.get(key));
     }
+
+    public abstract SenderExtension<?> getSenderExtension();
 
     public abstract void post(@NotNull final String key);
 

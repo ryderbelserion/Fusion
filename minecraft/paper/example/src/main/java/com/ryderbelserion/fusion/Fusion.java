@@ -9,7 +9,6 @@ import java.util.List;
 
 public class Fusion extends JavaPlugin implements Listener {
 
-    private PaperCommandManager commandManager;
     private FusionPaper fusion;
 
     @Override
@@ -17,11 +16,10 @@ public class Fusion extends JavaPlugin implements Listener {
         this.fusion = new FusionPaper(this);
         this.fusion.init();
 
-        this.commandManager = new PaperCommandManager(this);
-        this.commandManager.init();
+        final PaperCommandManager manager = this.fusion.getCommandManager();
 
         List.of(
                 new BaseCommand()
-        ).forEach(command -> this.commandManager.parse(command));
+        ).forEach(manager::parse);
     }
 }

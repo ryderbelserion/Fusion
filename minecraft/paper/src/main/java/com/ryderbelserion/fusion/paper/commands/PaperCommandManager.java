@@ -37,9 +37,10 @@ public class PaperCommandManager extends CommandManager<CommandSourceStack> {
 
     @Override
     public void init() {
-        this.senderExtension = new PaperSenderExtension(this);
+        this.senderExtension = new PaperSenderExtension();
     }
 
+    @Override
     public @NotNull final PaperSenderExtension getSenderExtension() {
         return this.senderExtension;
     }
