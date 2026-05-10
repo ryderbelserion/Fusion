@@ -21,10 +21,10 @@ public abstract class CommandManager<S> {
     public final void parse(@NotNull final AbstractCommand tree) {
         final TreeProcessor<S> processor = tree.getProcessor();
 
-        processor.process(this, tree); // process base command
+        processor.process(tree); // process base command
 
         for (final Object index : tree.getCommands()) {
-            processor.processBranch(this, index); // process sub commands added in constructor
+            processor.processBranch(index); // process sub commands added in constructor
         }
 
         final String branch = processor.getTree();
