@@ -13,8 +13,6 @@ public class LeafCommand<S> extends BasicCommand<S> {
 
     private LiteralArgumentBuilder<S> builder;
 
-    private final Parameter[] parameters;
-
     private final boolean isLeafPresent;
     private final Leaf leaf;
 
@@ -23,8 +21,6 @@ public class LeafCommand<S> extends BasicCommand<S> {
 
     public LeafCommand(@NotNull final Method method, @NotNull final Object object) {
         super(method, object);
-
-        this.parameters = this.method.getParameters();
 
         this.isLeafPresent = this.method.isAnnotationPresent(Leaf.class);
         this.leaf = this.isLeafPresent ? this.method.getAnnotation(Leaf.class) : null;

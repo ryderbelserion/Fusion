@@ -6,6 +6,7 @@ import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Leaf;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.Tree;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.AbstractCommand;
 import com.ryderbelserion.fusion.commands.types.SubCommand;
+import org.bukkit.entity.Player;
 
 @Tree(value = "fusion", desc = "The base command for Fusion!")
 @Permission(permission = "fusion.use")
@@ -17,8 +18,8 @@ public class BaseCommand extends AbstractCommand {
 
     @Flower
     @Permission(permission = "fusion.execute")
-    public void execute() {
-        System.out.println("The default command.");
+    public void execute(Player player) {
+        player.sendRichMessage("<red>This is the default command.");
     }
 
     @Leaf(value = "take")

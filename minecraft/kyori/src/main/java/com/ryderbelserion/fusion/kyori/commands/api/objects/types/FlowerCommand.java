@@ -11,8 +11,6 @@ import java.util.Optional;
 public class FlowerCommand<S> extends BasicCommand<S> {
 
     private final LiteralArgumentBuilder<S> builder;
-    private final Parameter[] parameters;
-
     private final Flower flower;
 
     public FlowerCommand(
@@ -22,7 +20,6 @@ public class FlowerCommand<S> extends BasicCommand<S> {
     ) {
         super(method, object);
 
-        this.parameters = method.getParameters();
         this.builder = builder;
 
         this.flower = this.method.getAnnotation(Flower.class);

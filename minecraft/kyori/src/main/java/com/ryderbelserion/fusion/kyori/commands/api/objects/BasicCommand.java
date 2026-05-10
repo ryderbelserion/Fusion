@@ -20,10 +20,12 @@ public abstract class BasicCommand<S> {
 
     protected final CommandManager<S, ?> commandManager = this.fusion.getCommandManager();
 
+    protected final Parameter[] parameters;
     protected final Method method;
     protected final Object object;
 
     public BasicCommand(@Nullable final Method method, @NotNull final Object object) {
+        this.parameters = method != null ? method.getParameters() : new Parameter[0];
         this.method = method;
         this.object = object;
     }
