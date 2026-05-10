@@ -53,7 +53,7 @@ public class LeafCommand<S> extends BasicCommand<S> {
             this.builder.requires(context -> this.fusion.hasPermission(context, this.permission));
         }
 
-        this.builder.executes(context -> invoke(context));
+        this.builder.executes(this::invoke);
 
         return this;
     }

@@ -40,7 +40,7 @@ public class FlowerCommand<S> extends BasicCommand<S> {
 
     @Override
     public @NotNull final FlowerCommand<S> build() {
-        this.builder.executes(context -> invoke(context));
+        this.builder.executes(this::invoke);
 
         return this;
     }

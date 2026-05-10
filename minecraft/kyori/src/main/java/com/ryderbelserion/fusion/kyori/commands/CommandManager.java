@@ -43,9 +43,9 @@ public abstract class CommandManager<S, E extends SenderExtension<S>> {
         return Optional.ofNullable(this.messages.get(key));
     }
 
-    public abstract E getSenderExtension();
-
     public abstract void post(@NotNull final String key);
+
+    public abstract E getSenderExtension();
 
     public abstract void init();
 }
