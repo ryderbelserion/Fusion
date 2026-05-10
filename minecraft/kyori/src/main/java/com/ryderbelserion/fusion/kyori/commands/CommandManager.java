@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class CommandManager<S> {
+public abstract class CommandManager<S, E extends SenderExtension<S>> {
 
     protected final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
@@ -43,7 +43,7 @@ public abstract class CommandManager<S> {
         return Optional.ofNullable(this.messages.get(key));
     }
 
-    public abstract SenderExtension<?> getSenderExtension();
+    public abstract E getSenderExtension();
 
     public abstract void post(@NotNull final String key);
 

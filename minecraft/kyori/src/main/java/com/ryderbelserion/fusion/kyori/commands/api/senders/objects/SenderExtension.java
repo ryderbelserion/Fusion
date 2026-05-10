@@ -8,7 +8,7 @@ public interface SenderExtension<S> {
 
     @NotNull ValidationResult<?> validate(final @NotNull Class<?> target, final @NotNull S sender);
 
-    @NotNull Set<Class<? extends S>> getSenders();
+    @NotNull Set<Class<?>> getSenders();
 
     default ValidationResult<?> invalid(String message) {
         return new ValidationResult.Invalid<>(message);

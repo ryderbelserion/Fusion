@@ -13,9 +13,6 @@ public class FlowerCommand<S> extends BasicCommand<S> {
     private final LiteralArgumentBuilder<S> builder;
     private final Parameter[] parameters;
 
-    private final Method method;
-    private final Object object;
-
     private final Flower flower;
 
     public FlowerCommand(
@@ -23,10 +20,10 @@ public class FlowerCommand<S> extends BasicCommand<S> {
             @NotNull final Method method,
             @NotNull final Object object
     ) {
+        super(method, object);
+
         this.parameters = method.getParameters();
         this.builder = builder;
-        this.method = method;
-        this.object = object;
 
         this.flower = this.method.getAnnotation(Flower.class);
     }
@@ -43,7 +40,7 @@ public class FlowerCommand<S> extends BasicCommand<S> {
 
     @Override
     public @NotNull final FlowerCommand<S> build() {
-        this.builder.executes(context -> invoke(context, this.method, this.object));
+        this.builder.executes(context -> invoke(context));
 
         return this;
     }

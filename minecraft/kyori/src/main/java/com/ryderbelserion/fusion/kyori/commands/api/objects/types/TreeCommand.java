@@ -17,7 +17,6 @@ public class TreeCommand<S> extends RootCommand<S, Method> {
 
     private final boolean isTreePresent;
     private final Class<?> origin;
-    private final Object object;
 
     private final Tree tree;
 
@@ -25,7 +24,8 @@ public class TreeCommand<S> extends RootCommand<S, Method> {
     private final String permission;
 
     public TreeCommand(@NotNull final Object object) {
-        this.object = object;
+        super(null, object);
+
         this.origin = this.object.getClass();
 
         this.isTreePresent = this.origin.isAnnotationPresent(Tree.class);

@@ -17,7 +17,6 @@ public class BranchCommand<S> extends RootCommand<S, Method> {
 
     private final boolean isBranchPresent;
     private final Class<?> origin;
-    private final Object object;
 
     private final Branch branch;
 
@@ -25,7 +24,8 @@ public class BranchCommand<S> extends RootCommand<S, Method> {
     private final String permission;
 
     public BranchCommand(@NotNull final Object object) {
-        this.object = object;
+        super(null, object);
+
         this.origin = this.object.getClass();
 
         this.isBranchPresent = this.origin.isAnnotationPresent(Branch.class);

@@ -16,17 +16,15 @@ public class LeafCommand<S> extends BasicCommand<S> {
     private final Parameter[] parameters;
 
     private final boolean isLeafPresent;
-    private final Method method;
-    private final Object object;
     private final Leaf leaf;
 
     private final boolean isPermissionPresent;
     private final String permission;
 
     public LeafCommand(@NotNull final Method method, @NotNull final Object object) {
-        this.parameters = method.getParameters();
-        this.method = method;
-        this.object = object;
+        super(method, object);
+
+        this.parameters = this.method.getParameters();
 
         this.isLeafPresent = this.method.isAnnotationPresent(Leaf.class);
         this.leaf = this.isLeafPresent ? this.method.getAnnotation(Leaf.class) : null;
@@ -55,7 +53,7 @@ public class LeafCommand<S> extends BasicCommand<S> {
             this.builder.requires(context -> this.fusion.hasPermission(context, this.permission));
         }
 
-        this.builder.executes(context -> invoke(context, this.method, this.object));
+        this.builder.executes(context -> invoke(context));
 
         return this;
     }

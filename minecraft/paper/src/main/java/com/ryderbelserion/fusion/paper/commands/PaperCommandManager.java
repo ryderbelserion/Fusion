@@ -12,7 +12,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-public class PaperCommandManager extends CommandManager<CommandSourceStack> {
+public class PaperCommandManager extends CommandManager<CommandSourceStack, PaperSenderExtension> {
 
     private final LifecycleEventManager<Plugin> eventManager;
 

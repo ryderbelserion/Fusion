@@ -6,6 +6,8 @@ import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Leaf;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.types.FlowerCommand;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.types.LeafCommand;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -13,8 +15,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public abstract class RootCommand<S, M> extends BasicCommand<S> { // only for TreeCommand, BranchCommand
+public abstract class RootCommand<S, M> extends BasicCommand<S> {
 
+    public RootCommand(@Nullable final Method method, @NotNull final Object object) {
+        super(method, object);
+    }
+
+    // only for TreeCommand, BranchCommand
     protected @NotNull final List<LeafCommand<S>> process(@NotNull final Method[] methods, @NotNull final Object object) {
         return Arrays.stream(methods)
                 .filter(insect -> insect.isAnnotationPresent(Leaf.class))
