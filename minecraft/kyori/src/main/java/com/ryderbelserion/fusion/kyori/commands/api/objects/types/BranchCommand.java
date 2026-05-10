@@ -1,9 +1,9 @@
 package com.ryderbelserion.fusion.kyori.commands.api.objects.types;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.ryderbelserion.fusion.kyori.commands.CommandManager;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.other.Permission;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Branch;
+import com.ryderbelserion.fusion.kyori.commands.api.objects.BasicCommand;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.RootCommand;
 import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
@@ -46,18 +46,18 @@ public class BranchCommand<S> extends RootCommand<S, Method> {
     }
 
     @Override
-    public @NotNull final BranchCommand<S> build(@NotNull final CommandManager manager) {
+    public @NotNull final BranchCommand<S> build() {
         if (!this.isBranchPresent) return this;
 
         this.builder = LiteralArgumentBuilder.literal(this.branch.value());
 
         if (this.isPermissionPresent && !this.permission.isBlank()) {
-            this.builder.requires(context -> manager.hasPermission(context, this.permission));
+            this.builder.requires(context -> this.fusion.hasPermission(context, this.permission));
         }
 
         final Method[] keys = this.origin.getDeclaredMethods();
 
-        flower(this.builder, keys, this.object).ifPresent(flower -> flower.build(manager));
+        flower(this.builder, keys, this.object).ifPresent(BasicCommand::build);
 
         final List<LeafCommand<S>> leaves = process(keys, this.object);
 

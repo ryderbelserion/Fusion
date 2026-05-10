@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.kyori.commands.api.objects.types;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.ryderbelserion.fusion.kyori.commands.CommandManager;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.Flower;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.BasicCommand;
 import org.jetbrains.annotations.NotNull;
@@ -43,7 +42,7 @@ public class FlowerCommand<S> extends BasicCommand<S> {
     }
 
     @Override
-    public @NotNull final FlowerCommand<S> build(@NotNull final CommandManager manager) {
+    public @NotNull final FlowerCommand<S> build() {
         this.builder.executes(context -> invoke(context, this.method, this.object));
 
         return this;

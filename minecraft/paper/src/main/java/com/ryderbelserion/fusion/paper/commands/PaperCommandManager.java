@@ -23,11 +23,6 @@ public class PaperCommandManager extends CommandManager<CommandSourceStack> {
     private PaperSenderExtension senderExtension;
 
     @Override
-    public boolean hasPermission(@NotNull CommandSourceStack context, @NotNull final String permission) {
-        return context.getSender().hasPermission(permission);
-    }
-
-    @Override
     public void post(@NotNull final String key) {
         if (!this.commands.containsKey(key)) return;
 

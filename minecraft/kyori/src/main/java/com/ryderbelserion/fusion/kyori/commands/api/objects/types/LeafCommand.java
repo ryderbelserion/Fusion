@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.kyori.commands.api.objects.types;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.ryderbelserion.fusion.kyori.commands.CommandManager;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.other.Permission;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Leaf;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.BasicCommand;
@@ -47,13 +46,13 @@ public class LeafCommand<S> extends BasicCommand<S> {
     }
 
     @Override
-    public @NotNull final LeafCommand<S> build(@NotNull final CommandManager manager) {
+    public @NotNull final LeafCommand<S> build() {
         if (!this.isLeafPresent) return this;
 
         this.builder = LiteralArgumentBuilder.literal(this.leaf.value());
 
         if (this.isPermissionPresent && !this.permission.isBlank()) {
-            this.builder.requires(context -> manager.hasPermission(context, this.permission));
+            this.builder.requires(context -> this.fusion.hasPermission(context, this.permission));
         }
 
         this.builder.executes(context -> invoke(context, this.method, this.object));

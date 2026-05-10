@@ -1,5 +1,7 @@
 package com.ryderbelserion.fusion.kyori.commands;
 
+import com.ryderbelserion.fusion.core.api.FusionProvider;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.AbstractCommand;
 import com.ryderbelserion.fusion.kyori.commands.api.TreeProcessor;
 import net.kyori.adventure.key.Key;
@@ -9,6 +11,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public abstract class CommandManager<S> {
+
+    protected final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
     protected final Map<String, AbstractCommand> commands = new HashMap<>();
 
@@ -37,8 +41,6 @@ public abstract class CommandManager<S> {
     public Optional<String> getMessage(@NotNull final Key key) {
         return Optional.ofNullable(this.messages.get(key));
     }
-
-    public abstract boolean hasPermission(@NotNull final S context, @NotNull final String permission);
 
     public abstract void post(@NotNull final String key);
 
