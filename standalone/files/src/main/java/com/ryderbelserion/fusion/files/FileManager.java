@@ -186,7 +186,7 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NotNull FileManager extract(@NotNull final String input, @NotNull final String output, @NotNull final Predicate<? super JarEntry> predicate) {
-        try (final JarFile jarFile = new JarFile(getClass().getProtectionDomain().getCodeSource().getLocation().getPath())) {
+        try (final JarFile jarFile = new JarFile(Path.of(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
             final Set<JarEntry> map = jarFile.stream()
                     .filter(entry -> !entry.getName().endsWith(".class")) // filter .class files
                     .filter(entry -> !entry.getName().startsWith("META-INF")) // filter meta inf
@@ -208,7 +208,7 @@ public class FileManager extends IFileManager<FileManager> {
                     throw new FileException("Failed to copy %s to %s".formatted(entryName, location), exception);
                 }
             }
-        } catch (final IOException exception) {
+        } catch (final IOException | URISyntaxException exception) {
             exception.printStackTrace();
         }
 
@@ -272,7 +272,7 @@ public class FileManager extends IFileManager<FileManager> {
             }
         }
 
-        try (final JarFile jar = new JarFile(getClass().getProtectionDomain().getCodeSource().getLocation().getPath())) {
+        try (final JarFile jar = new JarFile(Path.of(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
             final Set<JarEntry> entries = jar.stream().filter(entry -> !entry.getName().endsWith(".class"))
                     .filter(entry -> !entry.getName().startsWith("META-INF"))
                     .filter(entry -> !entry.isDirectory())
@@ -299,7 +299,7 @@ public class FileManager extends IFileManager<FileManager> {
                     }
                 }
             });
-        } catch (final IOException exception) {
+        } catch (final IOException | URISyntaxException exception) {
             throw new FileException("Failed to extract folder %s".formatted(path), exception);
         }
 

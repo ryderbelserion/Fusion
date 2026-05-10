@@ -3,6 +3,7 @@ package com.ryderbelserion.fusion;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.commands.SimpleCommand;
 import com.ryderbelserion.fusion.commands.types.ItemCommand;
+import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
@@ -21,6 +22,10 @@ public class Fusion extends JavaPlugin implements Listener {
     public void onEnable() {
         this.fusion = new FusionPaper(this);
         this.fusion.init();
+
+        final FileManager fileManager = this.fusion.getFileManager();
+
+        fileManager.extractFolder("crates", getDataPath());
 
         final LifecycleEventManager<Plugin> eventManager = getLifecycleManager();
 
