@@ -12,12 +12,10 @@ import java.util.Optional;
 
 public class BranchCommand<S> extends RootCommand<S, Method> {
 
-    private LiteralArgumentBuilder<S> builder;
-
     private final PermissionMeta<S> permissionMeta;
-    private final boolean isBranchPresent;
     private final Class<?> parent;
 
+    private final boolean isBranchPresent;
     private final Branch branch;
 
     public BranchCommand(@NotNull final Object object) {

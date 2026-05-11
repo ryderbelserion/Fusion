@@ -8,11 +8,8 @@ import com.ryderbelserion.fusion.kyori.commands.api.objects.meta.types.Permissio
 import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Optional;
 
 public class LeafCommand<S> extends BasicCommand<S> {
-
-    private LiteralArgumentBuilder<S> builder;
 
     private final PermissionMeta<S> permissionMeta;
     private final boolean isLeafPresent;
@@ -26,11 +23,6 @@ public class LeafCommand<S> extends BasicCommand<S> {
 
         this.permissionMeta = new PermissionMeta<>(this.method.isAnnotationPresent(Permission.class) ? this.method.getAnnotation(Permission.class) : null);
         this.permissionMeta.init();
-    }
-
-    @Override
-    public @NotNull final Optional<LiteralArgumentBuilder<S>> getBuilder() {
-        return Optional.ofNullable(this.builder);
     }
 
     @Override

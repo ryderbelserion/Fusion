@@ -1,6 +1,5 @@
 package com.ryderbelserion.fusion.kyori.commands.api.objects.types;
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.Tree;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.other.Permission;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.RootCommand;
@@ -8,11 +7,8 @@ import com.ryderbelserion.fusion.kyori.commands.api.objects.meta.types.Permissio
 import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Optional;
 
 public class TreeCommand<S> extends RootCommand<S, Method> {
-
-    private LiteralArgumentBuilder<S> builder;
 
     private final PermissionMeta<S> permissionMeta;
     private final boolean isTreePresent;
@@ -30,11 +26,6 @@ public class TreeCommand<S> extends RootCommand<S, Method> {
 
         this.permissionMeta = new PermissionMeta<>(this.parent.isAnnotationPresent(Permission.class) ? this.parent.getAnnotation(Permission.class) : null);
         this.permissionMeta.init();
-    }
-
-    @Override
-    public @NotNull final Optional<LiteralArgumentBuilder<S>> getBuilder() {
-        return Optional.ofNullable(this.builder);
     }
 
     @Override

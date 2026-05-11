@@ -34,7 +34,11 @@ public abstract class BasicCommand<S> implements CommandMeta {
         this.klass = this.object.getClass();
     }
 
-    public abstract @NotNull Optional<LiteralArgumentBuilder<S>> getBuilder();
+    protected LiteralArgumentBuilder<S> builder;
+
+    public @NotNull Optional<LiteralArgumentBuilder<S>> getBuilder() {
+        return Optional.ofNullable(this.builder);
+    }
 
     public abstract @NotNull Parameter[] getParameters();
 

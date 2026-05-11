@@ -8,11 +8,9 @@ import com.ryderbelserion.fusion.kyori.commands.api.objects.meta.types.Permissio
 import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.Optional;
 
 public class FlowerCommand<S> extends BasicCommand<S> {
 
-    private final LiteralArgumentBuilder<S> builder;
     private final PermissionMeta<S> permissionMeta;
     private final Flower flower;
 
@@ -34,11 +32,6 @@ public class FlowerCommand<S> extends BasicCommand<S> {
     @Override
     public @NotNull final Parameter[] getParameters() {
         return this.parameters;
-    }
-
-    @Override
-    public @NotNull final Optional<LiteralArgumentBuilder<S>> getBuilder() {
-        return Optional.ofNullable(this.builder);
     }
 
     @Override
