@@ -11,19 +11,19 @@ public class TreeProcessor<S> {
     private String description;
 
     public @NotNull TreeProcessor processBranch(@NotNull final Object object) {
-        final BranchCommand<S> command = new BranchCommand<>(object);
+        final BranchCommand<S> branch = new BranchCommand<>(object);
 
-        command.build().getBuilder().ifPresent(builder -> this.builder.then(builder));
+        branch.build().getBuilder().ifPresent(builder -> this.builder.then(builder));
 
         return this;
     }
 
     public @NotNull TreeProcessor process(@NotNull final Object object) {
-        final TreeCommand<S> command = new TreeCommand<>(object);
+        final TreeCommand<S> tree = new TreeCommand<>(object);
 
-        command.build().getBuilder().ifPresent(builder -> this.builder = builder);
+        tree.build().getBuilder().ifPresent(builder -> this.builder = builder);
 
-        this.description = command.getDescription();
+        this.description = tree.getDescription();
 
         return this;
     }

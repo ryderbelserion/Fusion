@@ -40,7 +40,7 @@ public abstract class RootCommand<S, M> extends BasicCommand<S> {
         final Class<?>[] values = this.klass.getDeclaredClasses();
 
         for (final Class<?> origin : values) {
-            final BranchCommand<S> branch = new BranchCommand(origin);
+            final BranchCommand<S> branch = new BranchCommand<>(origin);
 
             branch.build().getBuilder().ifPresent(builder::then);
         }
