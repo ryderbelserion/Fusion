@@ -12,14 +12,12 @@ import java.lang.reflect.Parameter;
 public class LeafCommand<S> extends BasicCommand<S> {
 
     private final PermissionMeta<S> permissionMeta;
-    private final boolean isLeafPresent;
     private final Leaf leaf;
 
     public LeafCommand(@NotNull final Method method, @NotNull final Object object) {
         super(method, object);
 
-        this.isLeafPresent = this.method.isAnnotationPresent(Leaf.class);
-        this.leaf = this.isLeafPresent ? this.method.getAnnotation(Leaf.class) : null;
+        this.leaf = this.method.getAnnotation(Leaf.class);
 
         this.permissionMeta = new PermissionMeta<>(this.method.isAnnotationPresent(Permission.class) ? this.method.getAnnotation(Permission.class) : null);
         this.permissionMeta.init();
@@ -32,8 +30,6 @@ public class LeafCommand<S> extends BasicCommand<S> {
 
     @Override
     public @NotNull final LeafCommand<S> build() {
-        if (!this.isLeafPresent) return this;
-
         this.builder = LiteralArgumentBuilder.literal(this.leaf.value());
 
         this.builder.requires(this.permissionMeta::hasPermission).executes(this::invoke);
