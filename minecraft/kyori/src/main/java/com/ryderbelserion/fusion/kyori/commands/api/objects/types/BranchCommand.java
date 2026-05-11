@@ -59,7 +59,7 @@ public class BranchCommand<S> extends RootCommand<S, Method> {
         final List<LeafCommand<S>> leaves = process(keys, this.object);
 
         for (final LeafCommand<S> leaf : leaves) {
-            leaf.getBuilder().ifPresent(builder -> this.builder.then(builder));
+            leaf.build().getBuilder().ifPresent(builder -> this.builder.then(builder));
         }
 
         return this;
