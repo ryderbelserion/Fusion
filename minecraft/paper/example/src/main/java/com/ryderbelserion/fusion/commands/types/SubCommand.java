@@ -25,4 +25,26 @@ public class SubCommand {
     public void balance() {
         System.out.println("This is the balance command.");
     }
+
+    @Branch(value = "smug")
+    @Permission(permission = "fusion.smug")
+    public class SmugCommand {
+
+        @Flower
+        public void flower() {
+            System.out.println("This is the default smug command.");
+        }
+
+        @Leaf(value = "debug", desc = "The debug command")
+        @Permission(permission = "fusion.debug")
+        public void debug() {
+            System.out.println("This is the debug command.");
+        }
+
+        @Leaf(value = "example", desc = "The example command")
+        @Permission(permission = "fusion.example")
+        public void example() {
+            System.out.println("This is the example command.");
+        }
+    }
 }

@@ -4,7 +4,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.Flower;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.other.Permission;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.BasicCommand;
-import com.ryderbelserion.fusion.kyori.commands.api.objects.meta.PermissionMeta;
+import com.ryderbelserion.fusion.kyori.commands.api.objects.meta.types.PermissionMeta;
 import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;

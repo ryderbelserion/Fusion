@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.kyori.commands.api.objects.meta;
+package com.ryderbelserion.fusion.kyori.commands.api.objects.meta.types;
 
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;

@@ -3,7 +3,9 @@ package com.ryderbelserion.fusion.kyori.commands.api.objects;
 import com.ryderbelserion.fusion.kyori.commands.api.TreeProcessor;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractCommand {
 

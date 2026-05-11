@@ -6,6 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.commands.CommandManager;
+import com.ryderbelserion.fusion.kyori.commands.api.objects.meta.api.CommandMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.InvocationTargetException;
@@ -14,7 +15,7 @@ import java.lang.reflect.Parameter;
 import java.util.Optional;
 import java.util.Set;
 
-public abstract class BasicCommand<S> {
+public abstract class BasicCommand<S> implements CommandMeta {
 
     protected final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
