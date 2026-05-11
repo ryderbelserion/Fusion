@@ -6,6 +6,7 @@ import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
+import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.config.FusionConfig;
 import com.ryderbelserion.fusion.files.FileManager;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +20,8 @@ import java.util.Map;
 public abstract class FusionCore {
 
     protected final SettingsManager config;
+
+    private final MessageRegistry messageRegistry;
     private final FileManager fileManager;
     private final Path path;
 
@@ -29,6 +32,7 @@ public abstract class FusionCore {
                 .useDefaultMigrationService()
                 .create();
 
+        this.messageRegistry = new MessageRegistry();
         this.fileManager = new FileManager(path);
         this.path = path;
     }
@@ -167,6 +171,10 @@ public abstract class FusionCore {
 
     public final int getDepth() {
         return this.config.getProperty(FusionConfig.recursion_depth);
+    }
+
+    public @NotNull final MessageRegistry getMessageRegistry() {
+        return this.messageRegistry;
     }
 
     public @NotNull final ModRegistry getModRegistry() {

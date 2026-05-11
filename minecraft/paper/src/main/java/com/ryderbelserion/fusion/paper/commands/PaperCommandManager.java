@@ -28,7 +28,7 @@ public class PaperCommandManager extends CommandManager<CommandSourceStack, Pape
 
         final AbstractCommand origin = this.commands.get(key);
 
-        final TreeProcessor processor = origin.getProcessor();
+        final TreeProcessor<CommandSourceStack> processor = origin.getProcessor();
 
         final LiteralArgumentBuilder<CommandSourceStack> builder = processor.getBuilder();
 

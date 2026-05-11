@@ -6,7 +6,7 @@ import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Branch;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Leaf;
 
 @Branch(value = "sub")
-@Permission(permission = "fusion.sub")
+@Permission(permission = "fusion.sub", message = "no_permission")
 public class SubCommand {
 
     @Flower

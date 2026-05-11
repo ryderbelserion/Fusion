@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.kyori;
 
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.kyori.commands.CommandManager;
+import com.ryderbelserion.fusion.kyori.commands.api.enums.PermissionMode;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -26,6 +27,8 @@ public abstract class FusionKyori<S, M extends CommandManager> extends FusionCor
     public @NotNull final String parse(@Nullable final S sender, @NotNull final String message) {
         return parse(sender, message, Map.of());
     }
+
+    public abstract void registerPermission(@NotNull final String value, @NotNull final String description, @NotNull final PermissionMode mode);
 
     public abstract boolean hasPermission(@NotNull final S sender, @NotNull final String permission);
 

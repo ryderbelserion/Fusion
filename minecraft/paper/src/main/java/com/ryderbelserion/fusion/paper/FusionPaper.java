@@ -4,6 +4,7 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
+import com.ryderbelserion.fusion.kyori.commands.api.enums.PermissionMode;
 import com.ryderbelserion.fusion.paper.builders.gui.GuiManager;
 import com.ryderbelserion.fusion.paper.builders.gui.types.GuiListener;
 import com.ryderbelserion.fusion.paper.commands.PaperCommandManager;
@@ -17,10 +18,13 @@ import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -79,6 +83,31 @@ public class FusionPaper extends FusionKyori<Audience, PaperCommandManager> {
         this.plugin = plugin;
 
         return this;
+    }
+
+    @Override
+    public void registerPermission(@NotNull final String value, @NotNull final String description, @NotNull final PermissionMode mode) {
+        PermissionDefault permissionDefault;
+
+        switch (mode) {
+            case NOT_OP -> permissionDefault = PermissionDefault.NOT_OP;
+            case TRUE -> permissionDefault = PermissionDefault.TRUE;
+            case FALSE -> permissionDefault = PermissionDefault.FALSE;
+            default -> permissionDefault = PermissionDefault.OP;
+        }
+
+        final PluginManager pluginManager = this.server.getPluginManager();
+
+        if (pluginManager.getPermission(value) != null) return;
+
+        final Permission permission = new Permission(
+                value,
+                description,
+                permissionDefault,
+                new HashMap<>()
+        );
+
+        pluginManager.addPermission(permission);
     }
 
     @Override
