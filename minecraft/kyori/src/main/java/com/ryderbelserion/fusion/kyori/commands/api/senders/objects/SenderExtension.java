@@ -9,6 +9,8 @@ public interface SenderExtension<S> {
 
     @NotNull ValidationResult<?> validate(final @NotNull Class<?> target, final @NotNull S sender);
 
+    boolean hasPermission(@NotNull final S source, @NotNull final String permission);
+
     @NotNull Audience getAudience(@NotNull final S sender);
 
     @NotNull Set<Class<?>> getSenders();

@@ -72,6 +72,7 @@ public class FusionPaper extends FusionKyori<Audience, PaperCommandManager> {
         this.pluginManager.registerEvents(new GuiListener(), this.plugin);
 
         this.commandManager = new PaperCommandManager(this.plugin);
+        this.commandManager.init();
 
         return this;
     }

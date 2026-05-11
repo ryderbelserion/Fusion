@@ -47,17 +47,17 @@ public class PermissionMeta<S> {
             return true;
         }
 
-        if (this.fusion.hasPermission(context, this.permission)) {
+        final SenderExtension<S> extension = this.commandManager.getSenderExtension();
+
+        if (extension.hasPermission(context, this.permission)) {
             return true;
         }
-
-        final SenderExtension<S> extension = this.commandManager.getSenderExtension();
 
         final Audience audience = extension.getAudience(context);
 
         final LocaleMeta meta = new LocaleMeta(audience);
 
-        getAdapterByLocale(meta.getLocale(), this.fusion.getNamespace()).ifPresent(adapter -> audience.sendMessage(this.fusion.asComponent(audience, adapter.getValue())));
+        getAdapterByLocale(meta.getLocale(), "default").ifPresent(adapter -> audience.sendMessage(this.fusion.asComponent(audience, adapter.getValue())));
 
         return false;
     }

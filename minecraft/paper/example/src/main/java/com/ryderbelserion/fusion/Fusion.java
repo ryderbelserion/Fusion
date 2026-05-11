@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion;
 
 import com.ryderbelserion.fusion.commands.BaseCommand;
+import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.paper.commands.PaperCommandManager;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import org.bukkit.event.Listener;
@@ -15,6 +16,8 @@ public class Fusion extends JavaPlugin implements Listener {
     public void onEnable() {
         this.fusion = new FusionPaper(this);
         this.fusion.init();
+
+        this.fusion.getMessageRegistry().init(FusionKey.key("default"), consumer -> {});
 
         final PaperCommandManager manager = this.fusion.getCommandManager();
 

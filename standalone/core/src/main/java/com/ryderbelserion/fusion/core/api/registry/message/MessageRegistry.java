@@ -17,7 +17,7 @@ public class MessageRegistry {
     public void init(@NotNull final FusionKey defaultKey, @NotNull final Consumer<MessageRegistry> consumer) {
         this.messages.clear();
 
-        this.defaultKey = defaultKey;
+        this.messages.put(this.defaultKey = defaultKey, new HashMap<>());
 
         consumer.accept(this);
     }
