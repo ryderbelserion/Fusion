@@ -7,6 +7,7 @@ import com.ryderbelserion.fusion.kyori.commands.api.senders.MetaKeys;
 import com.ryderbelserion.fusion.kyori.commands.api.senders.objects.SenderExtension;
 import com.ryderbelserion.fusion.kyori.commands.api.senders.results.ValidationResult;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.audience.Audience;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -32,6 +33,11 @@ public class PaperSenderExtension implements SenderExtension<CommandSourceStack>
         }
 
         return valid();
+    }
+
+    @Override
+    public @NotNull final Audience getAudience(@NotNull final CommandSourceStack source) {
+        return source.getSender();
     }
 
     @Override

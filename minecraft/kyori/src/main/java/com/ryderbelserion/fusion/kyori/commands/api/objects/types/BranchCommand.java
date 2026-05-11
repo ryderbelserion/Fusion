@@ -49,6 +49,8 @@ public class BranchCommand<S> extends RootCommand<S, Method> {
 
         this.builder = LiteralArgumentBuilder.literal(this.branch.value());
 
+        this.permissionMeta.init();
+
         this.builder.requires(this.permissionMeta::hasPermission);
 
         final Method[] keys = this.origin.getDeclaredMethods();

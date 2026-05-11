@@ -5,8 +5,11 @@ import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.message.adapter.interfaces.IMessageAdapter;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
+import com.ryderbelserion.fusion.kyori.commands.CommandManager;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.other.Permission;
 import com.ryderbelserion.fusion.kyori.commands.api.enums.PermissionMode;
+import com.ryderbelserion.fusion.kyori.commands.api.senders.objects.SenderExtension;
+import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
@@ -14,6 +17,8 @@ import java.util.Optional;
 public class PermissionMeta<S> {
 
     private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
+
+    private final CommandManager commandManager = this.fusion.getCommandManager();
 
     private final MessageRegistry registry = this.fusion.getMessageRegistry();
 
@@ -45,6 +50,14 @@ public class PermissionMeta<S> {
         if (this.fusion.hasPermission(context, this.permission)) {
             return true;
         }
+
+        final SenderExtension<S> extension = this.commandManager.getSenderExtension();
+
+        final Audience audience = extension.getAudience(context);
+
+        final LocaleMeta meta = new LocaleMeta(audience);
+
+        getAdapterByLocale(meta.getLocale(), this.fusion.getNamespace()).ifPresent(adapter -> audience.sendMessage(this.fusion.asComponent(audience, adapter.getValue())));
 
         return false;
     }

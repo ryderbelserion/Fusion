@@ -3,6 +3,7 @@ package com.ryderbelserion.fusion.kyori;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.kyori.commands.CommandManager;
 import com.ryderbelserion.fusion.kyori.commands.api.enums.PermissionMode;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;

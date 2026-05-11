@@ -5,6 +5,7 @@ import com.ryderbelserion.fusion.kyori.commands.api.annotations.Tree;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.other.Permission;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.BasicCommand;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.RootCommand;
+import com.ryderbelserion.fusion.kyori.commands.api.objects.meta.PermissionMeta;
 import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -15,13 +16,11 @@ public class TreeCommand<S> extends RootCommand<S, Method> {
 
     private LiteralArgumentBuilder<S> builder;
 
+    private final PermissionMeta<S> permissionMeta;
     private final boolean isTreePresent;
     private final Class<?> origin;
 
     private final Tree tree;
-
-    private final boolean isPermissionPresent;
-    private final String permission;
 
     public TreeCommand(@NotNull final Object object) {
         super(null, object);
@@ -31,8 +30,7 @@ public class TreeCommand<S> extends RootCommand<S, Method> {
         this.isTreePresent = this.origin.isAnnotationPresent(Tree.class);
         this.tree = this.isTreePresent ? this.origin.getAnnotation(Tree.class) : null;
 
-        this.isPermissionPresent = this.origin.isAnnotationPresent(Permission.class);
-        this.permission = this.isPermissionPresent ? this.origin.getAnnotation(Permission.class).permission() : "";
+        this.permissionMeta = new PermissionMeta<>(this.origin.isAnnotationPresent(Permission.class) ? this.origin.getAnnotation(Permission.class) : null);
     }
 
     @Override
@@ -51,9 +49,9 @@ public class TreeCommand<S> extends RootCommand<S, Method> {
 
         this.builder = LiteralArgumentBuilder.literal(this.tree.value());
 
-        if (this.isPermissionPresent && !this.permission.isBlank()) {
-            this.builder.requires(context -> this.fusion.hasPermission(context, this.permission));
-        }
+        this.permissionMeta.init();
+
+        this.builder.requires(this.permissionMeta::hasPermission);
 
         final Method[] keys = this.origin.getDeclaredMethods();
 

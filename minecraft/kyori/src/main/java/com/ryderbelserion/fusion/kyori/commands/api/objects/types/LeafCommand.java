@@ -4,6 +4,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.other.Permission;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Leaf;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.BasicCommand;
+import com.ryderbelserion.fusion.kyori.commands.api.objects.meta.PermissionMeta;
 import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -13,11 +14,9 @@ public class LeafCommand<S> extends BasicCommand<S> {
 
     private LiteralArgumentBuilder<S> builder;
 
+    private final PermissionMeta<S> permissionMeta;
     private final boolean isLeafPresent;
     private final Leaf leaf;
-
-    private final boolean isPermissionPresent;
-    private final String permission;
 
     public LeafCommand(@NotNull final Method method, @NotNull final Object object) {
         super(method, object);
@@ -25,8 +24,7 @@ public class LeafCommand<S> extends BasicCommand<S> {
         this.isLeafPresent = this.method.isAnnotationPresent(Leaf.class);
         this.leaf = this.isLeafPresent ? this.method.getAnnotation(Leaf.class) : null;
 
-        this.isPermissionPresent = this.method.isAnnotationPresent(Permission.class);
-        this.permission = this.isPermissionPresent ? this.method.getAnnotation(Permission.class).permission() : "";
+        this.permissionMeta = new PermissionMeta<>(this.method.isAnnotationPresent(Permission.class) ? this.method.getAnnotation(Permission.class) : null);
     }
 
     @Override
@@ -45,11 +43,9 @@ public class LeafCommand<S> extends BasicCommand<S> {
 
         this.builder = LiteralArgumentBuilder.literal(this.leaf.value());
 
-        if (this.isPermissionPresent && !this.permission.isBlank()) {
-            this.builder.requires(context -> this.fusion.hasPermission(context, this.permission));
-        }
+        this.permissionMeta.init();
 
-        this.builder.executes(this::invoke);
+        this.builder.requires(this.permissionMeta::hasPermission).executes(this::invoke);
 
         return this;
     }
