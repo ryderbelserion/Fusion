@@ -20,8 +20,6 @@ import java.util.Map;
 public abstract class FusionCore {
 
     protected final SettingsManager config;
-
-    private final MessageRegistry messageRegistry;
     private final FileManager fileManager;
     private final Path path;
 
@@ -32,11 +30,11 @@ public abstract class FusionCore {
                 .useDefaultMigrationService()
                 .create();
 
-        this.messageRegistry = new MessageRegistry();
         this.fileManager = new FileManager(path);
         this.path = path;
     }
 
+    private MessageRegistry messageRegistry;
     private ModRegistry modRegistry;
 
     public abstract void log(
@@ -74,6 +72,8 @@ public abstract class FusionCore {
                 exception.printStackTrace();
             }
         }
+
+        this.messageRegistry = new MessageRegistry(FusionKey.key("default"));
 
         this.modRegistry = new ModRegistry();
         this.modRegistry.init();

@@ -19,15 +19,11 @@ public class FusionKey extends IFusionKey {
     }
 
     public static FusionKey key(@NotNull final String value) {
-        if (!value.contains(":")) return key(getFusionNamespace(), value);
+        if (!value.contains(":")) return key(FusionProvider.getInstance().getNamespace(), value);
 
         final String[] split = value.split(":");
 
         return new FusionKey(split[0], split[1]);
-    }
-
-    public static String getFusionNamespace() {
-        return "fusion";
     }
 
     @Override

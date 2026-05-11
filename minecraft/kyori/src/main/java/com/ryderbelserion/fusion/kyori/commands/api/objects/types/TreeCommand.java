@@ -31,6 +31,7 @@ public class TreeCommand<S> extends RootCommand<S, Method> {
         this.tree = this.isTreePresent ? this.origin.getAnnotation(Tree.class) : null;
 
         this.permissionMeta = new PermissionMeta<>(this.origin.isAnnotationPresent(Permission.class) ? this.origin.getAnnotation(Permission.class) : null);
+        this.permissionMeta.init();
     }
 
     @Override
@@ -48,8 +49,6 @@ public class TreeCommand<S> extends RootCommand<S, Method> {
         if (!this.isTreePresent) return this;
 
         this.builder = LiteralArgumentBuilder.literal(this.tree.value());
-
-        this.permissionMeta.init();
 
         this.builder.requires(this.permissionMeta::hasPermission);
 

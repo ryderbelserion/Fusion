@@ -12,32 +12,30 @@ public class MessageRegistry {
 
     private final Map<FusionKey, Map<FusionKey, IMessageAdapter>> messages = new HashMap<>();
 
-    private FusionKey defaultKey;
+    private final FusionKey defaultKey;
 
-    public void init(@NotNull final FusionKey defaultKey, @NotNull final Consumer<MessageRegistry> consumer) {
+    public MessageRegistry(@NotNull final FusionKey defaultKey) {
+        this.defaultKey = defaultKey;
+    }
+
+    public void init(@NotNull final Consumer<MessageRegistry> consumer) {
         this.messages.clear();
 
-        this.messages.put(this.defaultKey = defaultKey, new HashMap<>());
+        this.messages.put(this.defaultKey, new HashMap<>());
 
         consumer.accept(this);
     }
 
     public void addKey(@NotNull final FusionKey key, @NotNull final FusionKey message, @NotNull final IMessageAdapter adapter) {
-        final Map<FusionKey, IMessageAdapter> keys = this.messages.getOrDefault(key, new HashMap<>());
-
-        keys.put(message, adapter);
+        this.messages.getOrDefault(key, new HashMap<>()).put(message, adapter);
     }
 
     public void removeKey(@NotNull final FusionKey key, @NotNull final FusionKey message) {
-        final Map<FusionKey, IMessageAdapter> keys = this.messages.getOrDefault(key, new HashMap<>());
-
-        keys.remove(message);
+        this.messages.getOrDefault(key, new HashMap<>()).remove(message);
     }
 
     public @NotNull Optional<IMessageAdapter> getMessageByLocale(@NotNull final FusionKey key, @NotNull final FusionKey message) {
-        final Map<FusionKey, IMessageAdapter> keys = this.messages.getOrDefault(key, this.messages.get(this.defaultKey));
-
-        return Optional.ofNullable(keys.get(message));
+        return Optional.ofNullable(this.messages.getOrDefault(key, this.messages.get(this.defaultKey)).get(message));
     }
 
     public @NotNull Optional<IMessageAdapter> getMessage(@NotNull final FusionKey message) {

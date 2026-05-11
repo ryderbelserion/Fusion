@@ -1,6 +1,5 @@
 package com.ryderbelserion.fusion.commands;
 
-import com.ryderbelserion.fusion.kyori.commands.api.enums.PermissionMode;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.Flower;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.other.Permission;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Leaf;
@@ -10,7 +9,7 @@ import com.ryderbelserion.fusion.commands.types.SubCommand;
 import org.bukkit.entity.Player;
 
 @Tree(value = "fusion", desc = "The base command for Fusion!")
-@Permission(permission = "fusion.use", message = "no_permission")
+@Permission(permission = "fusion.use")
 public class BaseCommand extends AbstractCommand {
 
     public BaseCommand() {
@@ -18,7 +17,7 @@ public class BaseCommand extends AbstractCommand {
     }
 
     @Flower
-    @Permission(permission = "fusion.execute", description = "Executes the base command!", mode = PermissionMode.OP, message = "no_permission")
+    @Permission(permission = "fusion.execute")
     public void execute(Player player) {
         player.sendRichMessage("<red>This is the default command.");
     }

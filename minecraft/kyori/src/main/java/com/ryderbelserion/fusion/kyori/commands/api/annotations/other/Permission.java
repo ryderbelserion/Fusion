@@ -16,6 +16,4 @@ public @interface Permission {
 
     String description() default "";
 
-    String message() default "";
-
 }

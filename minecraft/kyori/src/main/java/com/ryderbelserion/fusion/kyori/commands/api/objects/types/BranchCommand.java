@@ -31,6 +31,7 @@ public class BranchCommand<S> extends RootCommand<S, Method> {
         this.branch = this.isBranchPresent ? this.origin.getAnnotation(Branch.class) : null;
 
         this.permissionMeta = new PermissionMeta<>(this.origin.isAnnotationPresent(Permission.class) ? this.origin.getAnnotation(Permission.class) : null);
+        this.permissionMeta.init();
     }
 
     @Override
@@ -48,8 +49,6 @@ public class BranchCommand<S> extends RootCommand<S, Method> {
         if (!this.isBranchPresent) return this;
 
         this.builder = LiteralArgumentBuilder.literal(this.branch.value());
-
-        this.permissionMeta.init();
 
         this.builder.requires(this.permissionMeta::hasPermission);
 

@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class PaperSenderExtension implements SenderExtension<CommandSourceStack> {
@@ -28,11 +29,11 @@ public class PaperSenderExtension implements SenderExtension<CommandSourceStack>
         final LocaleMeta meta = new LocaleMeta(sender);
 
         if (Player.class.isAssignableFrom(target) && (!(sender instanceof Player))) {
-            return invalid(this.registry.getMessageByLocale(meta.getLocale(), MetaKeys.must_be_player).orElseThrow().getValue());
+            return invalid(this.registry.getMessageByLocale(meta.getLocale(), MetaKeys.must_be_player).orElseThrow(() -> new NoSuchElementException("Could not find %s".formatted(MetaKeys.must_be_player.asString()))).getValue());
         }
 
         if (ConsoleCommandSender.class.isAssignableFrom(target) && !(sender instanceof ConsoleCommandSender)) {
-            return invalid(this.registry.getMessageByLocale(meta.getLocale(), MetaKeys.must_be_console_sender).orElseThrow().getValue());
+            return invalid(this.registry.getMessageByLocale(meta.getLocale(), MetaKeys.must_be_console_sender).orElseThrow(() -> new NoSuchElementException("Could not find %s".formatted(MetaKeys.must_be_console_sender.asString()))).getValue());
         }
 
         return valid();
