@@ -22,6 +22,7 @@ public abstract class BasicCommand<S> implements CommandMeta {
     protected final CommandManager<S, ?> commandManager = this.fusion.getCommandManager();
 
     protected final Parameter[] parameters;
+    protected final Class<?> klass;
     protected final Method method;
     protected final Object object;
 
@@ -29,6 +30,8 @@ public abstract class BasicCommand<S> implements CommandMeta {
         this.parameters = method != null ? method.getParameters() : new Parameter[0];
         this.method = method;
         this.object = object;
+
+        this.klass = this.object.getClass();
     }
 
     public abstract @NotNull Optional<LiteralArgumentBuilder<S>> getBuilder();

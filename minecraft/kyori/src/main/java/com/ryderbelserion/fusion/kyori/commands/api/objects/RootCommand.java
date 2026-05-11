@@ -3,11 +3,12 @@ package com.ryderbelserion.fusion.kyori.commands.api.objects;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.Flower;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Leaf;
+import com.ryderbelserion.fusion.kyori.commands.api.objects.meta.types.PermissionMeta;
+import com.ryderbelserion.fusion.kyori.commands.api.objects.types.BranchCommand;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.types.FlowerCommand;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.types.LeafCommand;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -19,6 +20,32 @@ public abstract class RootCommand<S, M> extends BasicCommand<S> {
 
     public RootCommand(@Nullable final Method method, @NotNull final Object object) {
         super(method, object);
+    }
+
+    protected @NotNull final LiteralArgumentBuilder<S> getBrigadier(@NotNull final String value, @NotNull final PermissionMeta<S> permissionMeta) {
+        final LiteralArgumentBuilder<S> builder = LiteralArgumentBuilder.literal(value);
+
+        builder.requires(permissionMeta::hasPermission);
+
+        final Method[] keys = this.klass.getDeclaredMethods();
+
+        flower(builder, keys, this.object).ifPresent(BasicCommand::build);
+
+        final List<LeafCommand<S>> leaves = process(keys, this.object);
+
+        for (final LeafCommand<S> leaf : leaves) {
+            leaf.build().getBuilder().ifPresent(builder::then);
+        }
+
+        final Class<?>[] values = this.klass.getDeclaredClasses();
+
+        for (final Class<?> origin : values) {
+            final BranchCommand<S> branch = new BranchCommand(origin);
+
+            branch.build().getBuilder().ifPresent(builder::then);
+        }
+
+        return builder;
     }
 
     // only for TreeCommand, BranchCommand
