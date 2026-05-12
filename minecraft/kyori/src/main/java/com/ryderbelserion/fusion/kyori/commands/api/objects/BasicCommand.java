@@ -6,6 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.commands.CommandManager;
+import com.ryderbelserion.fusion.kyori.commands.api.annotations.suggestions.Suggestion;
 import com.ryderbelserion.fusion.kyori.commands.api.senders.objects.SenderExtension;
 import com.ryderbelserion.fusion.kyori.commands.api.senders.results.ValidationResult;
 import org.jetbrains.annotations.NotNull;
@@ -47,9 +48,9 @@ public abstract class BasicCommand<S> {
 
     public abstract @NotNull Parameter[] getParameters();
 
-    public abstract @NotNull String getDescription();
+    public abstract @NotNull BasicCommand<S> build();
 
-    public abstract @NotNull BasicCommand build();
+    public abstract @NotNull String getDescription();
 
     protected int invoke(
             @NotNull final CommandContext<S> context
@@ -76,6 +77,18 @@ public abstract class BasicCommand<S> {
             final Parameter index = this.parameters[0];
 
             arguments.add(this.extension.map(index.getType(), source));
+        }
+
+        for (final Parameter parameter : this.parameters) {
+            if (!parameter.isAnnotationPresent(Suggestion.class)) continue;
+
+            final Suggestion suggestion = parameter.getAnnotation(Suggestion.class);
+
+            final String name = suggestion.name();
+
+            final Object arg = context.getArgument(name, parameter.getType());
+
+            arguments.add(arg);
         }
 
         try {

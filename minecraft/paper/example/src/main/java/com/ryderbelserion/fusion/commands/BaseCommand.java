@@ -5,6 +5,7 @@ import com.ryderbelserion.fusion.kyori.commands.api.annotations.other.Permission
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Branch;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Leaf;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.Tree;
+import com.ryderbelserion.fusion.kyori.commands.api.annotations.suggestions.Suggestion;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.api.AbstractCommand;
 import com.ryderbelserion.fusion.commands.types.SubCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -27,7 +28,13 @@ public class BaseCommand extends AbstractCommand<CommandSourceStack> {
 
     @Leaf(value = "take", desc = "The take command")
     @Permission(permission = "fusion.take")
-    public void take(Player player) {
+    public void take(Player player, @Suggestion(name = "amount", type = int.class) int amount, @Suggestion(name = "value", type = int.class) int value) {
+        if (amount > 0) {
+            player.sendRichMessage("<red>The amount is greater than 0!");
+
+            return;
+        }
+
         player.sendRichMessage("<red>This is the take command.");
     }
 
