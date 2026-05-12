@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.kyori.commands;
 
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
-import com.ryderbelserion.fusion.kyori.commands.api.objects.AbstractCommand;
+import com.ryderbelserion.fusion.kyori.commands.api.objects.api.AbstractCommand;
 import com.ryderbelserion.fusion.kyori.commands.api.TreeProcessor;
 import com.ryderbelserion.fusion.kyori.commands.api.senders.objects.SenderExtension;
 import org.jetbrains.annotations.NotNull;

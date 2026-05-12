@@ -3,7 +3,7 @@ package com.ryderbelserion.fusion.paper.commands;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.paper.commands.extensions.PaperSenderExtension;
 import com.ryderbelserion.fusion.kyori.commands.CommandManager;
-import com.ryderbelserion.fusion.kyori.commands.api.objects.AbstractCommand;
+import com.ryderbelserion.fusion.kyori.commands.api.objects.api.AbstractCommand;
 import com.ryderbelserion.fusion.kyori.commands.api.TreeProcessor;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;

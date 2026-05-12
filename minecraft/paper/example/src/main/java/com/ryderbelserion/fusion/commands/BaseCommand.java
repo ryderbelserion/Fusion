@@ -5,7 +5,7 @@ import com.ryderbelserion.fusion.kyori.commands.api.annotations.other.Permission
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Branch;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Leaf;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.Tree;
-import com.ryderbelserion.fusion.kyori.commands.api.objects.AbstractCommand;
+import com.ryderbelserion.fusion.kyori.commands.api.objects.api.AbstractCommand;
 import com.ryderbelserion.fusion.commands.types.SubCommand;
 
 @Tree(value = "fusion", desc = "The base command for Fusion!")
