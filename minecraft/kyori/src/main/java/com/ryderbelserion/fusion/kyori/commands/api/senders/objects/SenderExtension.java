@@ -1,6 +1,5 @@
 package com.ryderbelserion.fusion.kyori.commands.api.senders.objects;
 
-import com.ryderbelserion.fusion.kyori.commands.api.objects.BasicCommand;
 import com.ryderbelserion.fusion.kyori.commands.api.senders.results.ValidationResult;
 import net.kyori.adventure.audience.Audience;
 import org.jetbrains.annotations.NotNull;
@@ -8,7 +7,7 @@ import java.util.Set;
 
 public interface SenderExtension<S> extends SenderMapper<S> {
 
-    @NotNull ValidationResult<String> validate(@NotNull final BasicCommand<S> command, @NotNull final Class<?> target, @NotNull final S sender);
+    @NotNull ValidationResult<String> validate(@NotNull final Class<?> target, @NotNull final S sender);
 
     boolean hasPermission(@NotNull final S source, @NotNull final String permission);
 
@@ -22,7 +21,6 @@ public interface SenderExtension<S> extends SenderMapper<S> {
 
         @Override
         default @NotNull ValidationResult<String> validate(
-                @NotNull final BasicCommand<S> command,
                 @NotNull final Class<?> target,
                 @NotNull final S sender
         ) {
@@ -30,7 +28,7 @@ public interface SenderExtension<S> extends SenderMapper<S> {
         }
 
         @Override
-        default @NotNull S map(@NotNull final S defaultSender) {
+        default @NotNull Object map(@NotNull final Class<?> type, @NotNull final S defaultSender) {
             return defaultSender;
         }
     }

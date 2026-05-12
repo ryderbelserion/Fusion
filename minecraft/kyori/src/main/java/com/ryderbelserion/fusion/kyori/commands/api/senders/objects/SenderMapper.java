@@ -4,6 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 public interface SenderMapper<S> {
 
-    @NotNull S map(@NotNull final S sender);
+    @NotNull Object map(@NotNull final Class<?> type, @NotNull final S sender);
 
 }

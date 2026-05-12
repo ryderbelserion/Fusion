@@ -52,14 +52,17 @@ public abstract class BasicCommand<S> {
     public abstract @NotNull BasicCommand build();
 
     protected int invoke(
-            @NotNull final CommandContext<S> context,
-            @NotNull final S source
+            @NotNull final CommandContext<S> context
     ) {
         if (this.method == null) return Command.SINGLE_SUCCESS;
 
         if (!this.method.trySetAccessible()) return Command.SINGLE_SUCCESS;
 
-        final ValidationResult<String> result = this.extension.validate(this, getSenderType(), source);
+        final Class<? extends S> sender = getSenderType();
+
+        final S source = context.getSource();
+
+        final ValidationResult<String> result = this.extension.validate(sender, context.getSource());
 
         if (result instanceof ValidationResult.Invalid(String message)) {
             this.extension.sendMessage(source, message);
@@ -69,10 +72,14 @@ public abstract class BasicCommand<S> {
 
         final List<Object> arguments = new ArrayList<>();
 
-        arguments.add(source);
+        if (this.parameters.length > 0) {
+            final Parameter index = this.parameters[0];
+
+            arguments.add(this.extension.map(index.getType(), source));
+        }
 
         try {
-            this.method.invoke(this.object, arguments);
+            this.method.invoke(this.object, arguments.toArray());
         } catch (IllegalAccessException | InvocationTargetException exception) {
             exception.printStackTrace();
         }
@@ -88,6 +95,7 @@ public abstract class BasicCommand<S> {
         }
 
         final Class<?> type = parameters[0].getType();
+
         final Set<Class<?>> senders = this.commandManager.getSenderExtension().getSenders();
 
         if (!senders.contains(type)) {

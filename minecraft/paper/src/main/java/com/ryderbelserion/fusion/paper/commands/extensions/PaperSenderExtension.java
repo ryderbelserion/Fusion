@@ -2,7 +2,6 @@ package com.ryderbelserion.fusion.paper.commands.extensions;
 
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
-import com.ryderbelserion.fusion.kyori.commands.api.objects.BasicCommand;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.meta.LocaleMeta;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.kyori.commands.api.senders.MetaKeys;
@@ -24,7 +23,7 @@ public class PaperSenderExtension implements SenderExtension.Default<CommandSour
     private final MessageRegistry registry = this.fusion.getMessageRegistry();
 
     @Override
-    public @NotNull final ValidationResult<String> validate(@NotNull final BasicCommand<CommandSourceStack> command, @NotNull final Class<?> target, @NotNull final CommandSourceStack source) {
+    public @NotNull final ValidationResult<String> validate(@NotNull final Class<?> target, @NotNull final CommandSourceStack source) {
         final CommandSender sender = source.getSender();
 
         final LocaleMeta meta = new LocaleMeta(sender);
@@ -41,8 +40,18 @@ public class PaperSenderExtension implements SenderExtension.Default<CommandSour
     }
 
     @Override
-    public @NotNull CommandSourceStack map(@NotNull final CommandSourceStack defaultSender) {
-        return Default.super.map(defaultSender);
+    public @NotNull Object map(@NotNull final Class<?> type, @NotNull final CommandSourceStack source) {
+        final CommandSender sender = source.getSender();
+
+        if (Player.class.isAssignableFrom(type) && sender instanceof Player player) {
+            return player;
+        }
+
+        if (ConsoleCommandSender.class.isAssignableFrom(type) && sender instanceof ConsoleCommandSender console) {
+            return console;
+        }
+
+        return sender;
     }
 
     @Override

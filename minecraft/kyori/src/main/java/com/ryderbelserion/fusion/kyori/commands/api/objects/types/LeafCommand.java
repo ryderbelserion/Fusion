@@ -32,7 +32,7 @@ public class LeafCommand<S> extends BasicCommand<S> {
 
     @Override
     public @NotNull final LeafCommand<S> build() {
-        this.builder.requires(this.permissionMeta::hasPermission).executes(context -> this.invoke(context, context.getSource()));
+        this.builder.requires(this.permissionMeta::hasPermission).executes(this::invoke);
 
         return this;
     }
