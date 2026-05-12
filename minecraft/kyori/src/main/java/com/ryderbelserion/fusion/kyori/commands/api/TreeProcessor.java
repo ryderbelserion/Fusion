@@ -10,7 +10,7 @@ public class TreeProcessor<S> {
     private LiteralArgumentBuilder<S> builder;
     private String description;
 
-    public @NotNull TreeProcessor processBranch(@NotNull final Object object) {
+    public @NotNull TreeProcessor<S> processBranch(@NotNull final Object object) {
         final BranchCommand<S> branch = new BranchCommand<>(object);
 
         branch.build().getBuilder().ifPresent(builder -> this.builder.then(builder));
@@ -18,7 +18,7 @@ public class TreeProcessor<S> {
         return this;
     }
 
-    public @NotNull TreeProcessor process(@NotNull final Object object) {
+    public @NotNull TreeProcessor<S> process(@NotNull final Object object) {
         final TreeCommand<S> tree = new TreeCommand<>(object);
 
         tree.build().getBuilder().ifPresent(builder -> this.builder = builder);

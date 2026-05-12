@@ -7,10 +7,12 @@ import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Leaf;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.Tree;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.api.AbstractCommand;
 import com.ryderbelserion.fusion.commands.types.SubCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import org.bukkit.entity.Player;
 
 @Tree(value = "fusion", desc = "The base command for Fusion!")
 @Permission(permission = "fusion.use")
-public class BaseCommand extends AbstractCommand {
+public class BaseCommand extends AbstractCommand<CommandSourceStack> {
 
     public BaseCommand() {
         addCommand(new SubCommand());
@@ -18,19 +20,19 @@ public class BaseCommand extends AbstractCommand {
 
     @Flower
     @Permission(permission = "fusion.execute")
-    public void execute() {
+    public void execute(Player player) {
         System.out.println("<red>This is the default command.");
     }
 
     @Leaf(value = "take", desc = "The take command")
     @Permission(permission = "fusion.take")
-    public void take() {
+    public void take(Player player) {
         System.out.println("This is the take command.");
     }
 
     @Leaf(value = "give", desc = "The give command")
     @Permission(permission = "fusion.give")
-    public void give() {
+    public void give(Player player) {
         System.out.println("This is the give command.");
     }
 
@@ -39,19 +41,19 @@ public class BaseCommand extends AbstractCommand {
     public static class TestCommand {
 
         @Flower
-        public void flower() {
+        public void flower(Player player) {
             System.out.println("This is the default test command.");
         }
 
         @Leaf(value = "helpme", desc = "The helpme command")
         @Permission(permission = "fusion.helpme")
-        public void helpme() {
+        public void helpme(Player player) {
             System.out.println("This is the helpme command.");
         }
 
         @Leaf(value = "bank", desc = "The bank command")
         @Permission(permission = "fusion.bank")
-        public void bank() {
+        public void bank(Player player) {
             System.out.println("This is the bank command.");
         }
     }

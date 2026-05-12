@@ -5,9 +5,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractCommand {
+public abstract class AbstractCommand<S> {
 
-    private final TreeProcessor processor = new TreeProcessor();
+    private final TreeProcessor<S> processor = new TreeProcessor();
 
     private final List<Object> commands = new ArrayList<>();
 
@@ -15,7 +15,7 @@ public abstract class AbstractCommand {
         this.commands.add(origin);
     }
 
-    public @NotNull final TreeProcessor getProcessor() {
+    public @NotNull final TreeProcessor<S> getProcessor() {
         return this.processor;
     }
 

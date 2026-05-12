@@ -6,11 +6,15 @@ import com.mojang.brigadier.context.CommandContext;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.commands.CommandManager;
+import com.ryderbelserion.fusion.kyori.commands.api.senders.objects.SenderExtension;
+import com.ryderbelserion.fusion.kyori.commands.api.senders.results.ValidationResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -19,6 +23,8 @@ public abstract class BasicCommand<S> {
     protected final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
     protected final CommandManager<S, ?> commandManager = this.fusion.getCommandManager();
+
+    protected final SenderExtension<S> extension = this.commandManager.getSenderExtension();
 
     protected final Parameter[] parameters;
     protected final Class<?> klass;
@@ -46,14 +52,27 @@ public abstract class BasicCommand<S> {
     public abstract @NotNull BasicCommand build();
 
     protected int invoke(
-            @NotNull final CommandContext<S> context
+            @NotNull final CommandContext<S> context,
+            @NotNull final S source
     ) {
         if (this.method == null) return Command.SINGLE_SUCCESS;
 
         if (!this.method.trySetAccessible()) return Command.SINGLE_SUCCESS;
 
+        final ValidationResult<String> result = this.extension.validate(this, getSenderType(), source);
+
+        if (result instanceof ValidationResult.Invalid(String message)) {
+            this.extension.sendMessage(source, message);
+
+            return Command.SINGLE_SUCCESS;
+        }
+
+        final List<Object> arguments = new ArrayList<>();
+
+        arguments.add(source);
+
         try {
-            this.method.invoke(this.object);
+            this.method.invoke(this.object, arguments);
         } catch (IllegalAccessException | InvocationTargetException exception) {
             exception.printStackTrace();
         }
@@ -61,7 +80,7 @@ public abstract class BasicCommand<S> {
         return Command.SINGLE_SUCCESS;
     }
 
-    public @NotNull Class<? extends S> getSender() {
+    public @NotNull Class<? extends S> getSenderType() {
         final Parameter[] parameters = getParameters();
 
         if (parameters.length == 0) {

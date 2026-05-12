@@ -41,6 +41,11 @@ public class PaperSenderExtension implements SenderExtension.Default<CommandSour
     }
 
     @Override
+    public @NotNull CommandSourceStack map(@NotNull final CommandSourceStack defaultSender) {
+        return Default.super.map(defaultSender);
+    }
+
+    @Override
     public boolean hasPermission(@NotNull final CommandSourceStack source, @NotNull final String permission) {
         return this.fusion.hasPermission(source.getSender(), permission);
     }
@@ -48,6 +53,13 @@ public class PaperSenderExtension implements SenderExtension.Default<CommandSour
     @Override
     public @NotNull final Audience getAudience(@NotNull final CommandSourceStack source) {
         return source.getSender();
+    }
+
+    @Override
+    public void sendMessage(@NotNull final CommandSourceStack source, @NotNull final String message) {
+        final CommandSender sender = source.getSender();
+
+        sender.sendMessage(this.fusion.asComponent(sender, message));
     }
 
     @Override

@@ -39,7 +39,7 @@ public interface SenderExtension<S> extends SenderMapper<S> {
         return new ValidationResult.Invalid<>(message);
     }
 
-    default ValidationResult<?> valid() {
+    default ValidationResult<String> valid() {
         return new ValidationResult.Valid<>();
     }
 }

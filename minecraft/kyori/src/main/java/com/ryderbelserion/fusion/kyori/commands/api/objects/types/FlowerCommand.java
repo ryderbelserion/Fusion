@@ -36,7 +36,7 @@ public class FlowerCommand<S> extends BasicCommand<S> {
 
     @Override
     public @NotNull final FlowerCommand<S> build() {
-        this.builder.requires(this.permissionMeta::hasPermission).executes(this::invoke);
+        this.builder.requires(this.permissionMeta::hasPermission).executes(context -> this.invoke(context, context.getSource()));
 
         return this;
     }

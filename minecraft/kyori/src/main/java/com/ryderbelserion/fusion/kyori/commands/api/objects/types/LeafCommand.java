@@ -21,6 +21,8 @@ public class LeafCommand<S> extends BasicCommand<S> {
 
         this.permissionMeta = new PermissionMeta<>(this.method.isAnnotationPresent(Permission.class) ? this.method.getAnnotation(Permission.class) : null);
         this.permissionMeta.init();
+
+        this.builder = LiteralArgumentBuilder.literal(this.leaf.value());
     }
 
     @Override
@@ -30,9 +32,7 @@ public class LeafCommand<S> extends BasicCommand<S> {
 
     @Override
     public @NotNull final LeafCommand<S> build() {
-        this.builder = LiteralArgumentBuilder.literal(this.leaf.value());
-
-        this.builder.requires(this.permissionMeta::hasPermission).executes(this::invoke);
+        this.builder.requires(this.permissionMeta::hasPermission).executes(context -> this.invoke(context, context.getSource()));
 
         return this;
     }
