@@ -13,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.util.List;
+import java.util.Map;
 
 public class Fusion extends JavaPlugin implements Listener {
 
@@ -31,12 +32,20 @@ public class Fusion extends JavaPlugin implements Listener {
 
         final MessageRegistry registry = this.fusion.getMessageRegistry();
 
+        registry.init();
+
         final CommentedConfigurationNode configuration = FileKeys.messages.getYamlConfig();
 
-        final FusionKey key = FusionKey.key("default");
+        final FusionKey defaultKey = registry.getDefaultKey();
 
-        registry.addKey(key, MetaKeys.must_be_console_sender, new YamlMessageAdapter(configuration, "{prefix}<red>You must be a player to use this command.", "messages", "player", "requirements", "must-be-player"));
-        registry.addKey(key, MetaKeys.must_be_player, new YamlMessageAdapter(configuration, "{prefix}<red>You must be using console to use this command.", "messages", "player", "requirements", "must-be-console-sender"));
+        registry.addKey(defaultKey, MetaKeys.must_be_player, new YamlMessageAdapter(configuration,
+                "{prefix}<red>You must be a player to use this command.",
+                Map.of("{prefix}", "<yellow>Fusion "),
+                "messages", "player", "requirements", "must-be-player"));
+        registry.addKey(defaultKey, MetaKeys.must_be_console_sender, new YamlMessageAdapter(configuration,
+                "{prefix}<red>You must be using console to use this command.",
+                Map.of("{prefix}", "<yellow>Fusion "),
+                "messages", "player", "requirements", "must-be-console-sender"));
 
         final PaperCommandManager manager = this.fusion.getCommandManager();
 

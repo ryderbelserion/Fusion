@@ -10,7 +10,7 @@ public interface ValidationResult<E> {
 
     record Invalid<E> (E message) implements ValidationResult<E> {
 
-        public Invalid(final @NotNull E message) {
+        public Invalid(@NotNull final E message) {
             this.message = message;
         }
 

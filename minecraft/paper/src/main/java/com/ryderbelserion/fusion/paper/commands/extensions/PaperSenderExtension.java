@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.paper.commands.extensions;
 
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
+import com.ryderbelserion.fusion.kyori.commands.api.objects.BasicCommand;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.meta.LocaleMeta;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.kyori.commands.api.senders.MetaKeys;
@@ -16,14 +17,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-public class PaperSenderExtension implements SenderExtension<CommandSourceStack> {
+public class PaperSenderExtension implements SenderExtension.Default<CommandSourceStack> {
 
     private final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
 
     private final MessageRegistry registry = this.fusion.getMessageRegistry();
 
     @Override
-    public @NotNull final ValidationResult<?> validate(@NotNull final Class<?> target, @NotNull final CommandSourceStack source) {
+    public @NotNull final ValidationResult<String> validate(@NotNull final BasicCommand<CommandSourceStack> command, @NotNull final Class<?> target, @NotNull final CommandSourceStack source) {
         final CommandSender sender = source.getSender();
 
         final LocaleMeta meta = new LocaleMeta(sender);

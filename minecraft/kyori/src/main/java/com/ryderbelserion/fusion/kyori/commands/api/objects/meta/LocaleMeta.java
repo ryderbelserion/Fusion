@@ -14,7 +14,7 @@ public class LocaleMeta {
 
     private final String namespace = this.fusion.getNamespace();
 
-    private FusionKey locale = FusionKey.key(this.namespace, "en_us");
+    private FusionKey locale = FusionKey.key(this.namespace, "default");
 
     public LocaleMeta(@NotNull final Audience audience) {
         audience.get(Identity.LOCALE).ifPresent(this::setLocale);
