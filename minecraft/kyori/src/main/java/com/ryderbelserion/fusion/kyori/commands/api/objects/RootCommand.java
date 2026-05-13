@@ -37,10 +37,8 @@ public abstract class RootCommand<S, M> extends BasicCommand<S> {
             leaf.build().getBuilder().ifPresent(builder::then);
         }
 
-        final Class<?>[] values = this.klass.getDeclaredClasses();
-
-        for (final Class<?> origin : values) {
-            final BranchCommand<S> branch = new BranchCommand<>(origin);
+        for (final Class<?> klass : this.klass.getDeclaredClasses()) {
+            final BranchCommand<S> branch = new BranchCommand<>(klass);
 
             branch.build().getBuilder().ifPresent(builder::then);
         }

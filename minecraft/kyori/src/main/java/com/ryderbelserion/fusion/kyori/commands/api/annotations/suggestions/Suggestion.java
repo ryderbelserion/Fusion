@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.PARAMETER})
 public @interface Suggestion {
 
-    String name();
-
     Class<?> type();
+
+    String name();
 
 }

@@ -36,6 +36,11 @@ public class PaperCommandManager extends CommandManager<CommandSourceStack, Pape
     }
 
     @Override
+    public void purge() {
+        this.commands.clear();
+    }
+
+    @Override
     public void init() {
         this.senderExtension = new PaperSenderExtension();
     }

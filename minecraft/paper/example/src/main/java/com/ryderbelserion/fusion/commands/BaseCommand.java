@@ -52,7 +52,7 @@ public class BaseCommand extends AbstractCommand<CommandSourceStack> {
 
     @Branch(value = "test")
     @Permission(permission = "fusion.test")
-    public static class TestCommand {
+    public class TestCommand {
 
         @Flower
         public void flower(Player player) {

@@ -7,10 +7,10 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Tree { // root command
+public @interface Tree {
+
+    String value() default "";
 
     String desc() default "";
-
-    String value();
 
 }

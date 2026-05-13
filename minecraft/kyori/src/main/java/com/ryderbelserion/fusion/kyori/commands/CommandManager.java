@@ -1,7 +1,5 @@
 package com.ryderbelserion.fusion.kyori.commands;
 
-import com.ryderbelserion.fusion.core.api.FusionProvider;
-import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.api.AbstractCommand;
 import com.ryderbelserion.fusion.kyori.commands.api.TreeProcessor;
 import com.ryderbelserion.fusion.kyori.commands.api.senders.objects.SenderExtension;
@@ -10,8 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class CommandManager<S, E extends SenderExtension<S>> {
-
-    protected final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
     protected final Map<String, AbstractCommand> commands = new HashMap<>();
 
@@ -34,6 +30,8 @@ public abstract class CommandManager<S, E extends SenderExtension<S>> {
     public abstract void post(@NotNull final String key);
 
     public abstract E getSenderExtension();
+
+    public abstract void purge();
 
     public abstract void init();
 }

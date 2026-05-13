@@ -56,7 +56,7 @@ public class LeafCommand<S> extends BasicCommand<S> {
 
             arg.suggests((_, builder) -> builder.suggest(new Random().nextInt(10)).buildFuture());
 
-            argumentMeta.then(arg);
+            this.argumentMeta.then(arg);
         }
 
         final Optional<RequiredArgumentBuilder<S, ?>> argument = argumentMeta.getArgument();
