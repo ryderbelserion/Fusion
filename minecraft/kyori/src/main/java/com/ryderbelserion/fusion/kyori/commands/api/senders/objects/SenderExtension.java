@@ -12,6 +12,8 @@ public interface SenderExtension<S> extends SenderMapper<S> {
 
     void sendMessage(@NotNull final S sender, @NotNull final String message);
 
+    @NotNull Class<? extends S> getSenderType(@NotNull final Class<?> klass);
+
     @NotNull Set<Class<?>> getSenders();
 
     interface Default<S> extends SenderExtension<S> {

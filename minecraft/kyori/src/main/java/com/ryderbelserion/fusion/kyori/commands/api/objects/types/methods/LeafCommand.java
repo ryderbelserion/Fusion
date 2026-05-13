@@ -61,7 +61,7 @@ public class LeafCommand<S> extends BasicCommand<S> {
 
         final Optional<RequiredArgumentBuilder<S, ?>> argument = argumentMeta.getArgument();
 
-        argument.ifPresentOrElse(context -> this.builder.then(context).executes(this::invoke), () -> this.builder.executes(this::invoke));
+        argument.ifPresentOrElse(context -> this.builder.then(context).executes(this::execute), () -> this.builder.executes(this::execute));
 
         return this;
     }

@@ -59,6 +59,15 @@ public class PaperSenderExtension implements SenderExtension.Default<CommandSour
     }
 
     @Override
+    public @NotNull final Class<? extends CommandSourceStack> getSenderType(@NotNull final Class<?> klass) {
+        if (!this.getSenders().contains(klass)) {
+            throw new IllegalStateException("%s is not a valid sender.".formatted(klass.getSimpleName()));
+        }
+
+        return (Class<? extends CommandSourceStack>) klass;
+    }
+
+    @Override
     public void sendMessage(@NotNull final CommandSourceStack source, @NotNull final String message) {
         final CommandSender sender = source.getSender();
 

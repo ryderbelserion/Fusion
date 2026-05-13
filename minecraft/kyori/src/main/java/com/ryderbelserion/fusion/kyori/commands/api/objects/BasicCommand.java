@@ -17,7 +17,6 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public abstract class BasicCommand<S> {
 
@@ -49,15 +48,8 @@ public abstract class BasicCommand<S> {
 
     public abstract @NotNull String getDescription();
 
-    protected int invoke(
-            @NotNull final CommandContext<S> context
-    ) {
-        if (this.method == null) return Command.SINGLE_SUCCESS;
-
-        if (!this.method.trySetAccessible()) return Command.SINGLE_SUCCESS;
-
+    protected int execute(@NotNull final CommandContext<S> context) {
         final Class<? extends S> sender = getSenderType();
-
         final S source = context.getSource();
 
         final ValidationResult<String> result = this.extension.validate(sender, context.getSource());
@@ -74,22 +66,28 @@ public abstract class BasicCommand<S> {
             final Parameter index = this.parameters[0];
 
             arguments.add(this.extension.map(index.getType(), source));
+
+            for (final Parameter parameter : this.parameters) {
+                if (!parameter.isAnnotationPresent(Suggestion.class)) continue;
+
+                final Suggestion suggestion = parameter.getAnnotation(Suggestion.class);
+
+                final String name = suggestion.name();
+
+                final Object arg = context.getArgument(name, parameter.getType());
+
+                arguments.add(arg);
+            }
         }
 
-        for (final Parameter parameter : this.parameters) {
-            if (!parameter.isAnnotationPresent(Suggestion.class)) continue;
+        return invoke(arguments);
+    }
 
-            final Suggestion suggestion = parameter.getAnnotation(Suggestion.class);
-
-            final String name = suggestion.name();
-
-            final Object arg = context.getArgument(name, parameter.getType());
-
-            arguments.add(arg);
-        }
+    protected int invoke(@NotNull final List<Object> arguments) {
+        if (this.method == null || !this.method.trySetAccessible()) return Command.SINGLE_SUCCESS;
 
         try {
-            this.method.invoke(this.object, arguments.toArray());
+            this.method.invoke(this, arguments.toArray());
         } catch (IllegalAccessException | InvocationTargetException exception) {
             exception.printStackTrace();
         }
@@ -98,20 +96,10 @@ public abstract class BasicCommand<S> {
     }
 
     public @NotNull Class<? extends S> getSenderType() {
-        final Parameter[] parameters = getParameters();
-
-        if (parameters.length == 0) {
-            throw new IllegalStateException("No sender parameter found.");
+        if (this.parameters == null || parameters.length == 0) {
+            throw new IllegalStateException("No sender parameter has been found.");
         }
 
-        final Class<?> type = parameters[0].getType();
-
-        final Set<Class<?>> senders = this.commandManager.getSenderExtension().getSenders();
-
-        if (!senders.contains(type)) {
-            throw new IllegalStateException("%s is not a valid sender.".formatted(type.getSimpleName()));
-        }
-
-        return (Class<? extends S>) type;
+        return this.extension.getSenderType(this.parameters[0].getType());
     }
 }
