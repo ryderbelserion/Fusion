@@ -18,6 +18,7 @@ import java.util.Random;
 public class LeafCommand<S> extends BasicCommand<S> {
 
     private final PermissionMeta<S> permissionMeta;
+    private final ArgumentMeta<S> argumentMeta;
     private final Leaf leaf;
 
     public LeafCommand(@NotNull final Method method, @NotNull final Object object) {
@@ -27,6 +28,8 @@ public class LeafCommand<S> extends BasicCommand<S> {
 
         this.permissionMeta = new PermissionMeta<>(this.method.isAnnotationPresent(Permission.class) ? this.method.getAnnotation(Permission.class) : null);
         this.permissionMeta.init();
+
+        this.argumentMeta = new ArgumentMeta<>();
 
         this.builder = LiteralArgumentBuilder.literal(this.leaf.value());
     }
@@ -38,8 +41,6 @@ public class LeafCommand<S> extends BasicCommand<S> {
 
     @Override
     public @NotNull final LeafCommand<S> build() {
-        final ArgumentMeta argumentMeta = new ArgumentMeta();
-
         this.builder.requires(this.permissionMeta::hasPermission);
 
         for (final Parameter parameter : this.parameters) {

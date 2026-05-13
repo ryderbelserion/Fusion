@@ -28,11 +28,17 @@ public class BaseCommand extends AbstractCommand<CommandSourceStack> {
 
     @Leaf(value = "take", desc = "The take command")
     @Permission(permission = "fusion.take")
-    public void take(Player player, @Suggestion(name = "amount", type = int.class) int amount, @Suggestion(name = "value", type = int.class) int value) {
+    public void take(Player player, @Suggestion(name = "amount", type = int.class) int amount, @Suggestion(name = "value", type = int.class) int value, @Suggestion(name = "bank", type = int.class) int bank) {
         if (amount > 0) {
             player.sendRichMessage("<red>The amount is greater than 0!");
+        }
 
-            return;
+        if (value > 0) {
+            player.sendRichMessage("<red>The value is greater than 0!");
+        }
+
+        if (bank > 0) {
+            player.sendRichMessage("<red>The bank balance is greater than 0!");
         }
 
         player.sendRichMessage("<red>This is the take command.");
