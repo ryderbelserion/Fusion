@@ -28,7 +28,6 @@ public abstract class BasicCommand<S> {
     protected final SenderExtension<S> extension = this.commandManager.getSenderExtension();
 
     protected final Parameter[] parameters;
-    protected final Class<?> klass;
     protected final Method method;
     protected final Object object;
 
@@ -36,8 +35,6 @@ public abstract class BasicCommand<S> {
         this.parameters = method != null ? method.getParameters() : new Parameter[0];
         this.method = method;
         this.object = object;
-
-        this.klass = this.object.getClass();
     }
 
     protected LiteralArgumentBuilder<S> builder;

@@ -13,7 +13,6 @@ import java.util.Optional;
 public class BranchCommand<S> extends RootCommand<S, Method> {
 
     private final PermissionMeta<S> permissionMeta;
-    private final Class<?> parent;
 
     private final boolean isBranchPresent;
     private final Branch branch;
@@ -21,12 +20,10 @@ public class BranchCommand<S> extends RootCommand<S, Method> {
     public BranchCommand(@NotNull final Object object) {
         super(null, object);
 
-        this.parent = this.object.getClass();
+        this.isBranchPresent = this.klass.isAnnotationPresent(Branch.class);
+        this.branch = this.isBranchPresent ? this.klass.getAnnotation(Branch.class) : null;
 
-        this.isBranchPresent = this.parent.isAnnotationPresent(Branch.class);
-        this.branch = this.isBranchPresent ? this.parent.getAnnotation(Branch.class) : null;
-
-        this.permissionMeta = new PermissionMeta<>(this.parent.isAnnotationPresent(Permission.class) ? this.parent.getAnnotation(Permission.class) : null);
+        this.permissionMeta = new PermissionMeta<>(this.klass.isAnnotationPresent(Permission.class) ? this.klass.getAnnotation(Permission.class) : null);
         this.permissionMeta.init();
     }
 

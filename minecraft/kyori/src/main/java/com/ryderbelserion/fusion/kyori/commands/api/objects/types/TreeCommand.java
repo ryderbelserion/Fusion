@@ -12,19 +12,16 @@ public class TreeCommand<S> extends RootCommand<S, Method> {
 
     private final PermissionMeta<S> permissionMeta;
     private final boolean isTreePresent;
-    private final Class<?> parent;
 
     private final Tree tree;
 
     public TreeCommand(@NotNull final Object object) {
         super(null, object);
 
-        this.parent = this.object.getClass();
+        this.isTreePresent = this.klass.isAnnotationPresent(Tree.class);
+        this.tree = this.isTreePresent ? this.klass.getAnnotation(Tree.class) : null;
 
-        this.isTreePresent = this.parent.isAnnotationPresent(Tree.class);
-        this.tree = this.isTreePresent ? this.parent.getAnnotation(Tree.class) : null;
-
-        this.permissionMeta = new PermissionMeta<>(this.parent.isAnnotationPresent(Permission.class) ? this.parent.getAnnotation(Permission.class) : null);
+        this.permissionMeta = new PermissionMeta<>(this.klass.isAnnotationPresent(Permission.class) ? this.klass.getAnnotation(Permission.class) : null);
         this.permissionMeta.init();
     }
 

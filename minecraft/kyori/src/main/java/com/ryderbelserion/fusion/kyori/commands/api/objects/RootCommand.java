@@ -5,8 +5,8 @@ import com.ryderbelserion.fusion.kyori.commands.api.annotations.Flower;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.subs.Leaf;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.meta.types.PermissionMeta;
 import com.ryderbelserion.fusion.kyori.commands.api.objects.types.BranchCommand;
-import com.ryderbelserion.fusion.kyori.commands.api.objects.types.FlowerCommand;
-import com.ryderbelserion.fusion.kyori.commands.api.objects.types.LeafCommand;
+import com.ryderbelserion.fusion.kyori.commands.api.objects.types.methods.FlowerCommand;
+import com.ryderbelserion.fusion.kyori.commands.api.objects.types.methods.LeafCommand;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Method;
@@ -18,8 +18,12 @@ import java.util.function.Predicate;
 
 public abstract class RootCommand<S, M> extends BasicCommand<S> {
 
+    protected final Class<?> klass;
+
     public RootCommand(@Nullable final Method method, @NotNull final Object object) {
         super(method, object);
+
+        this.klass = object.getClass();
     }
 
     protected @NotNull final LiteralArgumentBuilder<S> getBrigadier(@NotNull final String value, @NotNull final PermissionMeta<S> permissionMeta) {

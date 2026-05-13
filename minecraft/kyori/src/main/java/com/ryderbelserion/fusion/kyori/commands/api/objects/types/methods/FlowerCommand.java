@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.kyori.commands.api.objects.types;
+package com.ryderbelserion.fusion.kyori.commands.api.objects.types.methods;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.kyori.commands.api.annotations.Flower;
