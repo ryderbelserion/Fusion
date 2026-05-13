@@ -8,7 +8,6 @@ import com.ryderbelserion.fusion.kyori.commands.api.senders.MetaKeys;
 import com.ryderbelserion.fusion.kyori.commands.api.senders.objects.SenderExtension;
 import com.ryderbelserion.fusion.kyori.commands.api.senders.results.ValidationResult;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import net.kyori.adventure.audience.Audience;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -57,11 +56,6 @@ public class PaperSenderExtension implements SenderExtension.Default<CommandSour
     @Override
     public boolean hasPermission(@NotNull final CommandSourceStack source, @NotNull final String permission) {
         return this.fusion.hasPermission(source.getSender(), permission);
-    }
-
-    @Override
-    public @NotNull final Audience getAudience(@NotNull final CommandSourceStack source) {
-        return source.getSender();
     }
 
     @Override
