@@ -5,7 +5,7 @@ import ch.jalu.configme.SettingsManagerBuilder;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.Level;
-import com.ryderbelserion.fusion.core.api.registry.ModRegistry;
+import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
 import com.ryderbelserion.fusion.core.config.FusionConfig;
 import com.ryderbelserion.fusion.files.FileManager;
 import org.jetbrains.annotations.NotNull;

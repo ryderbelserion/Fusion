@@ -21,6 +21,16 @@ dependencies {
     compileOnly(libs.bundles.shared)
 }
 
+tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
+    javaLauncher = javaToolchains.launcherFor {
+        vendor = JvmVendorSpec.JETBRAINS
+
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+
+    jvmArgs("-XX:+AllowEnhancedClassRedefinition")
+}
+
 tasks {
     runPaper.folia.registerTask()
 

@@ -1,24 +1,24 @@
-package com.ryderbelserion.fusion.core.api.interfaces;
+package com.ryderbelserion.fusion.core.api.registry.mods.interfaces;
 
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
-public abstract class IMod {
+public abstract class AbstractMod {
 
     private final FusionKey key;
 
-    public IMod(@NotNull final FusionKey key) {
+    public AbstractMod(@NotNull final FusionKey key) {
         this.key = key;
     }
 
     public abstract boolean isEnabled();
 
-    public IMod enable() {
+    public AbstractMod enable() {
         return this;
     }
 
-    public IMod disable() {
+    public AbstractMod disable() {
         return this;
     }
 
