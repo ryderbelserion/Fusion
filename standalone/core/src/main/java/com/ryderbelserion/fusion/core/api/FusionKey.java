@@ -18,18 +18,6 @@ public class FusionKey extends IFusionKey {
         return new FusionKey(namespace, value);
     }
 
-    public static FusionKey key(@NonNull final String value) {
-        if (!value.contains(":")) return key(getFusionNamespace(), value);
-
-        final String[] split = value.split(":");
-
-        return new FusionKey(split[0], split[1]);
-    }
-
-    public static String getFusionNamespace() {
-        return "fusion";
-    }
-
     @Override
     public @NonNull String getNamespace() {
         return this.namespace;

@@ -128,6 +128,11 @@ public class FusionPaper extends FusionKyori<Audience> {
     }
 
     @Override
+    public @NonNull final String getNamespace() {
+        return this.plugin.namespace();
+    }
+
+    @Override
     public @NonNull final PaperFileManager getFileManager() {
         return this.fileManager;
     }

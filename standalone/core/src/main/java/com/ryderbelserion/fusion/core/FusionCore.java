@@ -5,6 +5,7 @@ import ch.jalu.configme.SettingsManagerBuilder;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
 import com.ryderbelserion.fusion.core.config.FusionConfig;
 import com.ryderbelserion.fusion.files.FileManager;
@@ -34,6 +35,7 @@ public abstract class FusionCore {
         this.path = path;
     }
 
+    private MessageRegistry messageRegistry;
     private ModRegistry modRegistry;
 
     public abstract void log(
@@ -50,6 +52,8 @@ public abstract class FusionCore {
     );
 
     public abstract boolean isModReady(@NonNull final FusionKey key);
+
+    public abstract @NonNull String getNamespace();
 
     public FusionCore reload() {
         if (this.config != null) {
@@ -69,6 +73,8 @@ public abstract class FusionCore {
                 exception.printStackTrace();
             }
         }
+
+        this.messageRegistry = new MessageRegistry(FusionKey.key(getNamespace(), "default"));
 
         this.modRegistry = new ModRegistry();
         this.modRegistry.init();
@@ -170,6 +176,10 @@ public abstract class FusionCore {
 
     public final int getDepth() {
         return this.config.getProperty(FusionConfig.recursion_depth);
+    }
+
+    public @NonNull final MessageRegistry getMessageRegistry() {
+        return this.messageRegistry;
     }
 
     public @NonNull final ModRegistry getModRegistry() {
