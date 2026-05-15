@@ -16,19 +16,19 @@ import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemType;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.List;
 
 public class SimpleCommand extends PaperCommand {
 
     private final Fusion fusion;
 
-    public SimpleCommand(@NotNull final Fusion fusion) {
+    public SimpleCommand(@NonNull final Fusion fusion) {
         this.fusion = fusion;
     }
 
     @Override
-    public void run(@NotNull final PaperCommandContext context) {
+    public void run(@NonNull final PaperCommandContext context) {
         final CommandSender sender = context.getSender();
 
         if (!(sender instanceof Player player)) {
@@ -68,7 +68,7 @@ public class SimpleCommand extends PaperCommand {
     }
 
     @Override
-    public @NotNull final LiteralCommandNode<CommandSourceStack> literal() {
+    public @NonNull final LiteralCommandNode<CommandSourceStack> literal() {
         return Commands.literal("fusion").requires(this::requirement)
                 .executes(context -> {
                     run(new PaperCommandContext(context));
@@ -78,7 +78,7 @@ public class SimpleCommand extends PaperCommand {
     }
 
     @Override
-    public @NotNull final List<PermissionContext> getPermissions() {
+    public @NonNull final List<PermissionContext> getPermissions() {
         return List.of(
                 new PermissionContext(
                         "fusion.use",
@@ -89,7 +89,7 @@ public class SimpleCommand extends PaperCommand {
     }
 
     @Override
-    public final boolean requirement(@NotNull final CommandSourceStack context) {
+    public final boolean requirement(@NonNull final CommandSourceStack context) {
         return context.getSender().hasPermission(getPermissions().getFirst().getPermission());
     }
 }

@@ -1,14 +1,14 @@
 package com.ryderbelserion.fusion.files;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class FileException extends IllegalStateException {
 
-    public FileException(@NotNull final String message, @NotNull final Exception exception) {
+    public FileException(@NonNull final String message, @NonNull final Exception exception) {
         super(message, exception);
     }
 
-    public FileException(@NotNull final String message) {
+    public FileException(@NonNull final String message) {
         super(message);
     }
 }

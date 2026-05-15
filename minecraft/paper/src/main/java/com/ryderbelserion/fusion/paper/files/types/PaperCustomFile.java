@@ -5,7 +5,7 @@ import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.interfaces.IConfigurate;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -17,7 +17,7 @@ public class PaperCustomFile extends ICustomFile<PaperCustomFile, YamlConfigurat
 
     private final File file;
 
-    public PaperCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<PaperCustomFile> consumer) {
+    public PaperCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<PaperCustomFile> consumer) {
         super(fileManager, path);
 
         this.file = getPath().toFile();
@@ -26,12 +26,12 @@ public class PaperCustomFile extends ICustomFile<PaperCustomFile, YamlConfigurat
     }
 
     @Override
-    public @NotNull YamlConfiguration loadConfig() {
+    public @NonNull YamlConfiguration loadConfig() {
         return YamlConfiguration.loadConfiguration(this.file);
     }
 
     @Override
-    public @NotNull final FileType getFileType() {
+    public @NonNull final FileType getFileType() {
         return FileType.PAPER_YAML;
     }
 
@@ -53,7 +53,7 @@ public class PaperCustomFile extends ICustomFile<PaperCustomFile, YamlConfigurat
      * @return {@inheritDoc}
      */
     @Override
-    public @NotNull List<String> getStringList(@NotNull final List<String> defaultValue, @NotNull final Object... path) {
+    public @NonNull List<String> getStringList(@NonNull final List<String> defaultValue, @NonNull final Object... path) {
         final YamlConfiguration configuration = getConfiguration();
 
         final List<String> list = configuration.getStringList(Arrays.toString(path));
@@ -69,7 +69,7 @@ public class PaperCustomFile extends ICustomFile<PaperCustomFile, YamlConfigurat
      * @return {@inheritDoc}
      */
     @Override
-    public boolean getBooleanValueWithDefault(final boolean defaultValue, @NotNull final Object... path) {
+    public boolean getBooleanValueWithDefault(final boolean defaultValue, @NonNull final Object... path) {
         return getConfiguration().getBoolean(Arrays.toString(path), defaultValue);
     }
 
@@ -81,7 +81,7 @@ public class PaperCustomFile extends ICustomFile<PaperCustomFile, YamlConfigurat
      * @return {@inheritDoc}
      */
     @Override
-    public double getDoubleValueWithDefault(final double defaultValue, @NotNull final Object... path) {
+    public double getDoubleValueWithDefault(final double defaultValue, @NonNull final Object... path) {
         return getConfiguration().getDouble(Arrays.toString(path), defaultValue);
     }
 
@@ -93,7 +93,7 @@ public class PaperCustomFile extends ICustomFile<PaperCustomFile, YamlConfigurat
      * @return {@inheritDoc}
      */
     @Override
-    public long getLongValueWithDefault(final long defaultValue, @NotNull final Object... path) {
+    public long getLongValueWithDefault(final long defaultValue, @NonNull final Object... path) {
         return getConfiguration().getLong(Arrays.toString(path), defaultValue);
     }
 
@@ -105,7 +105,7 @@ public class PaperCustomFile extends ICustomFile<PaperCustomFile, YamlConfigurat
      * @return {@inheritDoc}
      */
     @Override
-    public int getIntValueWithDefault(final int defaultValue, @NotNull final Object... path) {
+    public int getIntValueWithDefault(final int defaultValue, @NonNull final Object... path) {
         return getConfiguration().getInt(Arrays.toString(path), defaultValue);
     }
 }

@@ -4,13 +4,13 @@ import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
 public class FusionConfig implements SettingsHolder {
 
     @Override
-    public void registerComments(@NotNull CommentsConfiguration conf) {
+    public void registerComments(@NonNull CommentsConfiguration conf) {
         conf.setComment("settings", "Configure the library bundled with the plugin.");
     }
 

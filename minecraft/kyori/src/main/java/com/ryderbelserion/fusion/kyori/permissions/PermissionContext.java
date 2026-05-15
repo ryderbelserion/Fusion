@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.kyori.permissions;
 
 import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,33 +14,33 @@ public class PermissionContext {
     private final String description;
     private final String permission;
 
-    public PermissionContext(@NotNull final String permission, @NotNull final String description, @NotNull final PermissionType type) {
+    public PermissionContext(@NonNull final String permission, @NonNull final String description, @NonNull final PermissionType type) {
         this.permission = permission;
         this.description = description;
         this.type = type;
     }
 
-    public PermissionContext(@NotNull final String permission, @NotNull final String description) {
+    public PermissionContext(@NonNull final String permission, @NonNull final String description) {
         this(permission, description, PermissionType.OP);
     }
 
-    public void addPermission(@NotNull final String permission, final boolean isChild) {
+    public void addPermission(@NonNull final String permission, final boolean isChild) {
         this.children.put(permission, isChild);
     }
 
-    public @NotNull final Map<String, Boolean> getChildren() {
+    public @NonNull final Map<String, Boolean> getChildren() {
         return Collections.unmodifiableMap(this.children);
     }
 
-    public @NotNull final PermissionType getType() {
+    public @NonNull final PermissionType getType() {
         return this.type;
     }
 
-    public @NotNull final String getDescription() {
+    public @NonNull final String getDescription() {
         return this.description;
     }
 
-    public @NotNull final String getPermission() {
+    public @NonNull final String getPermission() {
         return this.permission;
     }
 }

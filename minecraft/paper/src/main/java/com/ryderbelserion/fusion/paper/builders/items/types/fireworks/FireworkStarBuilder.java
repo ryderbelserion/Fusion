@@ -5,79 +5,79 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.List;
 
 public class FireworkStarBuilder extends BaseItemBuilder<FireworkStarBuilder> {
 
     private final FireworkEffect.Builder builder;
 
-    public FireworkStarBuilder(@NotNull final ItemStack itemStack) {
+    public FireworkStarBuilder(@NonNull final ItemStack itemStack) {
         super(itemStack);
 
         this.builder = FireworkEffect.builder();
     }
 
-    public @NotNull FireworkStarBuilder flicker(final boolean flicker) {
+    public @NonNull FireworkStarBuilder flicker(final boolean flicker) {
         this.builder.flicker(flicker);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder trail(final boolean trail) {
+    public @NonNull FireworkStarBuilder trail(final boolean trail) {
         this.builder.trail(trail);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder withColor(@NotNull final Color color) {
+    public @NonNull FireworkStarBuilder withColor(@NonNull final Color color) {
         this.builder.withColor(color);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder withColor(@NotNull final Color... colors) {
+    public @NonNull FireworkStarBuilder withColor(@NonNull final Color... colors) {
         this.builder.withColor(colors);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder withColor(@NotNull final List<Color> colors) {
+    public @NonNull FireworkStarBuilder withColor(@NonNull final List<Color> colors) {
         this.builder.withColor(colors);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder withFade(@NotNull final Color color) {
+    public @NonNull FireworkStarBuilder withFade(@NonNull final Color color) {
         this.builder.withFade(color);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder withFade(@NotNull final Color... colors) {
+    public @NonNull FireworkStarBuilder withFade(@NonNull final Color... colors) {
         this.builder.withFade(colors);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder withFade(@NotNull final List<Color> colors) {
+    public @NonNull FireworkStarBuilder withFade(@NonNull final List<Color> colors) {
         this.builder.withFade(colors);
 
         return this;
     }
 
-    public @NotNull FireworkStarBuilder with(@NotNull final FireworkEffect.Type type) {
+    public @NonNull FireworkStarBuilder with(@NonNull final FireworkEffect.Type type) {
         this.builder.with(type);
 
         return this;
     }
 
-    public @NotNull FireworkEffect.Builder getBuilder() {
+    public @NonNull FireworkEffect.Builder getBuilder() {
         return this.builder;
     }
 
     @Override
-    public @NotNull FireworkStarBuilder build() {
+    public @NonNull FireworkStarBuilder build() {
         this.itemStack.setData(DataComponentTypes.FIREWORK_EXPLOSION, this.builder.build());
 
         return this;

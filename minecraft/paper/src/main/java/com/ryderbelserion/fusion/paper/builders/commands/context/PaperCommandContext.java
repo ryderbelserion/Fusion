@@ -5,19 +5,19 @@ import com.ryderbelserion.fusion.mojang.context.AbstractCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class PaperCommandContext extends AbstractCommandContext<CommandSourceStack> {
 
-    public PaperCommandContext(@NotNull final CommandContext<CommandSourceStack> context) {
+    public PaperCommandContext(@NonNull final CommandContext<CommandSourceStack> context) {
         super(context);
     }
 
-    public @NotNull final CommandSender getSender() {
+    public @NonNull final CommandSender getSender() {
         return getSource().getSender();
     }
 
-    public @NotNull final Player getPlayer() {
+    public @NonNull final Player getPlayer() {
         return (Player) getSender();
     }
 

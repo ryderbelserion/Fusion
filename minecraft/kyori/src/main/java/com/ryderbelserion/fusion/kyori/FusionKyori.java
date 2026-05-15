@@ -6,7 +6,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.Nullable;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -15,23 +15,23 @@ import java.util.Map;
 
 public abstract class FusionKyori<S> extends FusionCore {
 
-    public FusionKyori(@NotNull final Path path) {
+    public FusionKyori(@NonNull final Path path) {
         super(path);
     }
 
-    public @NotNull final String parse(@Nullable final S sender, @NotNull final String message, @NotNull final Map<String, String> placeholders) {
+    public @NonNull final String parse(@Nullable final S sender, @NonNull final String message, @NonNull final Map<String, String> placeholders) {
         return replacePlaceholders(papi(sender, message), placeholders);
     }
 
-    public @NotNull final String parse(@Nullable final S sender, @NotNull final String message) {
+    public @NonNull final String parse(@Nullable final S sender, @NonNull final String message) {
         return parse(sender, message, Map.of());
     }
 
-    public abstract String papi(@Nullable final S sender, @NotNull final String message);
+    public abstract String papi(@Nullable final S sender, @NonNull final String message);
 
-    public @NotNull final Component asComponent(@NotNull final String message,
-                                                @NotNull final Map<String, String> placeholders,
-                                                @NotNull final List<TagResolver> tags
+    public @NonNull final Component asComponent(@NonNull final String message,
+                                                @NonNull final Map<String, String> placeholders,
+                                                @NonNull final List<TagResolver> tags
     ) {
         final List<TagResolver> resolvers = new ArrayList<>(tags);
 
@@ -45,38 +45,38 @@ public abstract class FusionKyori<S> extends FusionCore {
                 .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
-    public @NotNull final Component asComponent(@Nullable final S sender,
-                                          @NotNull final String message,
-                                          @NotNull final Map<String, String> placeholders,
-                                          @NotNull final List<TagResolver> tags
+    public @NonNull final Component asComponent(@Nullable final S sender,
+                                          @NonNull final String message,
+                                          @NonNull final Map<String, String> placeholders,
+                                          @NonNull final List<TagResolver> tags
     ) {
         return asComponent(papi(sender, message), placeholders, tags);
     }
 
-    public @NotNull final Component asComponent(@NotNull final S audience,
-                           @NotNull final String message,
-                           @NotNull final Map<String, String> placeholders
+    public @NonNull final Component asComponent(@NonNull final S audience,
+                           @NonNull final String message,
+                           @NonNull final Map<String, String> placeholders
     ) {
         return asComponent(audience, message, placeholders, List.of());
     }
 
-    public @NotNull final Component asComponent(@NotNull final S audience,
-                           @NotNull final String message
+    public @NonNull final Component asComponent(@NonNull final S audience,
+                           @NonNull final String message
     ) {
         return asComponent(audience, message, Map.of());
     }
 
-    public @NotNull final Component asComponent(@NotNull final String message,
-                           @NotNull final Map<String, String> placeholders
+    public @NonNull final Component asComponent(@NonNull final String message,
+                           @NonNull final Map<String, String> placeholders
     ) {
         return asComponent(message, placeholders, List.of());
     }
 
-    public @NotNull final Component asComponent(@NotNull final String message) {
+    public @NonNull final Component asComponent(@NonNull final String message) {
         return asComponent(message, Map.of(), List.of());
     }
 
-    public void registerPermission(@NotNull final PermissionContext permission) {
+    public void registerPermission(@NonNull final PermissionContext permission) {
 
     }
 }

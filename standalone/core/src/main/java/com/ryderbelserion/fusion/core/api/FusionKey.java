@@ -1,24 +1,24 @@
 package com.ryderbelserion.fusion.core.api;
 
 import com.ryderbelserion.fusion.core.api.interfaces.IFusionKey;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class FusionKey extends IFusionKey {
 
     private final String namespace;
     private final String value;
 
-    public FusionKey(@NotNull final String namespace, @NotNull final String value) {
+    public FusionKey(@NonNull final String namespace, @NonNull final String value) {
         this.namespace = namespace;
 
         this.value = value;
     }
 
-    public static FusionKey key(@NotNull final String namespace, @NotNull final String value) {
+    public static FusionKey key(@NonNull final String namespace, @NonNull final String value) {
         return new FusionKey(namespace, value);
     }
 
-    public static FusionKey key(@NotNull final String value) {
+    public static FusionKey key(@NonNull final String value) {
         if (!value.contains(":")) return key(getFusionNamespace(), value);
 
         final String[] split = value.split(":");
@@ -31,17 +31,17 @@ public class FusionKey extends IFusionKey {
     }
 
     @Override
-    public @NotNull String getNamespace() {
+    public @NonNull String getNamespace() {
         return this.namespace;
     }
 
     @Override
-    public @NotNull String getValue() {
+    public @NonNull String getValue() {
         return this.value;
     }
 
     @Override
-    public @NotNull String asString() {
+    public @NonNull String asString() {
         return this.namespace + ":" + this.value;
     }
 }

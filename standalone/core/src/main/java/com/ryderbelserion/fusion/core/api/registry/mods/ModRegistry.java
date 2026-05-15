@@ -6,7 +6,7 @@ import com.ryderbelserion.fusion.core.api.constants.ModSupport;
 import com.ryderbelserion.fusion.core.api.registry.mods.interfaces.AbstractMod;
 import com.ryderbelserion.fusion.core.api.registry.mods.interfaces.AbstractRegistry;
 import com.ryderbelserion.fusion.core.api.registry.mods.objects.Mod;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,24 +20,24 @@ public class ModRegistry implements AbstractRegistry {
     }
 
     @Override
-    public void addMod(@NotNull final FusionKey key, @NotNull final AbstractMod mod) {
+    public void addMod(@NonNull final FusionKey key, @NonNull final AbstractMod mod) {
         this.mods.putIfAbsent(key, mod.enable());
     }
 
     @Override
-    public void removeMod(@NotNull final FusionKey key) {
+    public void removeMod(@NonNull final FusionKey key) {
         if (!this.mods.containsKey(key) || ModSupport.dependencies.contains(key)) return;
 
         this.mods.remove(key).disable();
     }
 
     @Override
-    public @NotNull final Map<FusionKey, AbstractMod> getMods() {
+    public @NonNull final Map<FusionKey, AbstractMod> getMods() {
         return Collections.unmodifiableMap(this.mods);
     }
 
     @Override
-    public @NotNull AbstractMod getMod(@NotNull final FusionKey key) {
+    public @NonNull AbstractMod getMod(@NonNull final FusionKey key) {
         if (!this.mods.containsKey(key)) {
             throw new FusionException("Could not find mod for key " + key);
         }

@@ -6,7 +6,7 @@ import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
@@ -14,7 +14,7 @@ public final class JaluCustomFile extends ICustomFile<JaluCustomFile, SettingsMa
 
     private final Consumer<SettingsManagerBuilder> builder;
 
-    public JaluCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder) {
+    public JaluCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<YamlFileResourceOptions.Builder> options, @NonNull final Consumer<SettingsManagerBuilder> builder) {
         super(fileManager, path);
 
         this.options = YamlFileResourceOptions.builder();
@@ -25,7 +25,7 @@ public final class JaluCustomFile extends ICustomFile<JaluCustomFile, SettingsMa
     }
 
     @Override
-    public @NotNull SettingsManager loadConfig() {
+    public @NonNull SettingsManager loadConfig() {
         if (this.configuration == null) {
             final SettingsManagerBuilder builder = SettingsManagerBuilder.withYamlFile(getPath(), this.options.build());
 
@@ -47,7 +47,7 @@ public final class JaluCustomFile extends ICustomFile<JaluCustomFile, SettingsMa
     }
 
     @Override
-    public @NotNull FileType getFileType() {
+    public @NonNull FileType getFileType() {
         return FileType.JALU;
     }
 }

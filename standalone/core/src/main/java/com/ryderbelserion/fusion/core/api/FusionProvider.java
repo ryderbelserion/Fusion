@@ -3,7 +3,7 @@ package com.ryderbelserion.fusion.core.api;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.Nullable;
 
 public class FusionProvider {
@@ -11,7 +11,7 @@ public class FusionProvider {
     private static @Nullable FusionCore instance;
 
     @ApiStatus.Internal
-    public static void register(@NotNull final FusionCore instance) {
+    public static void register(@NonNull final FusionCore instance) {
         FusionProvider.instance = instance;
     }
 
@@ -24,7 +24,7 @@ public class FusionProvider {
         FusionProvider.instance = null;
     }
 
-    public static @NotNull FusionCore getInstance() {
+    public static @NonNull FusionCore getInstance() {
         if (instance == null) {
             throw new FusionException("Fusion API is not yet initialized.");
         }

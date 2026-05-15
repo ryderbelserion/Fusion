@@ -10,7 +10,7 @@ import com.ryderbelserion.fusion.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,12 +34,12 @@ public class FileManager extends IFileManager<FileManager> {
     private final Path path;
     private int depth = 1;
 
-    public FileManager(@NotNull final Path path) {
+    public FileManager(@NonNull final Path path) {
         this.path = path;
     }
 
     @Override
-    public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
+    public @NonNull FileManager addFolder(@NonNull final Path folder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
         extractFolder(folder.getFileName().toString(), folder.getParent());
 
         for (final Path path : getFilesByPath(folder, fileType.getExtension(), getDepth())) {
@@ -50,7 +50,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager addFile(@NotNull final Path path, @NotNull final FileType fileType, @NotNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
+    public @NonNull FileManager addFile(@NonNull final Path path, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
         if (this.files.containsKey(path)) {
             final ICustomFile<?, ?, ?, ?> customFile = this.files.get(path);
 
@@ -79,7 +79,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager addFolder(@NotNull final Path folder, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder) {
+    public @NonNull FileManager addFolder(@NonNull final Path folder, @NonNull final Consumer<YamlFileResourceOptions.Builder> options, @NonNull final Consumer<SettingsManagerBuilder> builder) {
         for (final Path path : getFilesByPath(folder, ".yml", getDepth())) {
             addFile(path, options, builder);
         }
@@ -88,7 +88,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager addFile(@NotNull final Path path, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder) {
+    public @NonNull FileManager addFile(@NonNull final Path path, @NonNull final Consumer<YamlFileResourceOptions.Builder> options, @NonNull final Consumer<SettingsManagerBuilder> builder) {
         if (this.files.containsKey(path)) {
             this.files.get(path).load();
 
@@ -103,7 +103,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager removeFile(@NotNull final Path path) {
+    public @NonNull FileManager removeFile(@NonNull final Path path) {
         final Optional<ICustomFile<?, ?, ?, ?>> variable = getFile(path);
 
         if (variable.isEmpty()) {
@@ -120,7 +120,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager purge() {
+    public @NonNull FileManager purge() {
         final Map<Path, ICustomFile<?, ?, ?, ?>> files = new HashMap<>(this.files);
 
         for (final Map.Entry<Path, ICustomFile<?, ?, ?, ?>> entry : files.entrySet()) {
@@ -131,34 +131,34 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager addFile(@NotNull final Path path, @NotNull final ICustomFile<?, ?, ?, ?> customFile) {
+    public @NonNull FileManager addFile(@NonNull final Path path, @NonNull final ICustomFile<?, ?, ?, ?> customFile) {
         this.files.putIfAbsent(path, customFile);
 
         return this;
     }
 
     @Override
-    public @NotNull JaluCustomFile buildJaluFile(@NotNull final Path path, @NotNull final Consumer<YamlFileResourceOptions.Builder> options, @NotNull final Consumer<SettingsManagerBuilder> builder) {
+    public @NonNull JaluCustomFile buildJaluFile(@NonNull final Path path, @NonNull final Consumer<YamlFileResourceOptions.Builder> options, @NonNull final Consumer<SettingsManagerBuilder> builder) {
         return new JaluCustomFile(this, path, options, builder).load();
     }
 
     @Override
-    public @NotNull YamlCustomFile buildYamlFile(@NotNull final Path path, @NotNull final Consumer<YamlCustomFile> consumer) {
+    public @NonNull YamlCustomFile buildYamlFile(@NonNull final Path path, @NonNull final Consumer<YamlCustomFile> consumer) {
         return new YamlCustomFile(this, path, consumer).load();
     }
 
     @Override
-    public @NotNull JsonCustomFile buildJsonFile(@NotNull final Path path, @NotNull final Consumer<JsonCustomFile> consumer) {
+    public @NonNull JsonCustomFile buildJsonFile(@NonNull final Path path, @NonNull final Consumer<JsonCustomFile> consumer) {
         return new JsonCustomFile(this, path, consumer).load();
     }
 
     @Override
-    public @NotNull LogCustomFile buildLogFile(@NotNull final Path path, @NotNull final Consumer<LogCustomFile> consumer) {
+    public @NonNull LogCustomFile buildLogFile(@NonNull final Path path, @NonNull final Consumer<LogCustomFile> consumer) {
         return new LogCustomFile(this, path, consumer).load();
     }
 
     @Override
-    public @NotNull FileManager reloadFile(@NotNull final Path path) {
+    public @NonNull FileManager reloadFile(@NonNull final Path path) {
         final Optional<ICustomFile<?, ?, ?, ?>> customFile = getFile(path);
 
         if (customFile.isEmpty()) return this;
@@ -169,7 +169,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager saveFile(@NotNull final Path path) {
+    public @NonNull FileManager saveFile(@NonNull final Path path) {
         final Optional<ICustomFile<?, ?, ?, ?>> customFile = getFile(path);
 
         if (customFile.isEmpty()) return this;
@@ -180,12 +180,12 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull Optional<ICustomFile<?, ?, ?, ?>> getFile(@NotNull final Path path) {
+    public @NonNull Optional<ICustomFile<?, ?, ?, ?>> getFile(@NonNull final Path path) {
         return Optional.ofNullable(this.files.get(path));
     }
 
     @Override
-    public @NotNull FileManager extract(@NotNull final String input, @NotNull final String output, @NotNull final Predicate<? super JarEntry> predicate) {
+    public @NonNull FileManager extract(@NonNull final String input, @NonNull final String output, @NonNull final Predicate<? super JarEntry> predicate) {
         try (final JarFile jarFile = new JarFile(Path.of(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
             final Set<JarEntry> map = jarFile.stream()
                     .filter(entry -> !entry.getName().endsWith(".class")) // filter .class files
@@ -216,7 +216,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager extractFile(@NotNull final String fileName, @NotNull final Path output) {
+    public @NonNull FileManager extractFile(@NonNull final String fileName, @NonNull final Path output) {
         if (Files.exists(output)) {
             return this;
         }
@@ -257,7 +257,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager extractFolder(@NotNull final String folder, @NotNull final Path output) {
+    public @NonNull FileManager extractFolder(@NonNull final String folder, @NonNull final Path output) {
         final Path path = output.resolve(folder);
 
         if (Files.exists(path)) { // do not extract if path exists.
@@ -307,7 +307,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager compressFolder(@NotNull final Path path, @NotNull final String content) {
+    public @NonNull FileManager compressFolder(@NonNull final Path path, @NonNull final String content) {
         if (!Files.exists(path)) return this;
         if (!Files.isDirectory(path)) return this;
 
@@ -335,7 +335,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager compressFile(@NotNull final Path path, @Nullable final Path folder, @NotNull final String content) {
+    public @NonNull FileManager compressFile(@NonNull final Path path, @Nullable final Path folder, @NonNull final String content) {
         if (!Files.exists(path)) return this;
 
         long size;
@@ -368,7 +368,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull FileManager writeFile(@NotNull final Path path, @NotNull final String content) {
+    public @NonNull FileManager writeFile(@NonNull final Path path, @NonNull final String content) {
         try {
             Files.writeString(path, content, StandardOpenOption.APPEND);
         } catch (final IOException exception) {
@@ -389,12 +389,12 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public final boolean hasFile(@NotNull final Path path) {
+    public final boolean hasFile(@NonNull final Path path) {
         return this.files.containsKey(path);
     }
 
     @Override
-    public @NotNull final FileManager refresh(final boolean save) { // save or reload all existing files
+    public @NonNull final FileManager refresh(final boolean save) { // save or reload all existing files
         if (this.files.isEmpty()) return this;
 
         final List<Path> keys = new ArrayList<>();
@@ -425,7 +425,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull final List<String> getFileByNames(@NotNull final String folder, @NotNull final Path path, @NotNull final String extension, final int depth, final boolean removeExtension) {
+    public @NonNull final List<String> getFileByNames(@NonNull final String folder, @NonNull final Path path, @NonNull final String extension, final int depth, final boolean removeExtension) {
         final List<Path> files = getFilesByPath(folder.isEmpty() ? path : path.resolve(folder), List.of(extension), depth);
 
         final List<String> names = new ArrayList<>();
@@ -442,7 +442,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull final List<Path> getFilesByPath(@NotNull final Path path, @NotNull final List<String> extensions, final int depth) {
+    public @NonNull final List<Path> getFilesByPath(@NonNull final Path path, @NonNull final List<String> extensions, final int depth) {
         final List<Path> files = new ArrayList<>();
 
         if (Files.notExists(path) || !Files.isDirectory(path)) return new ArrayList<>();
@@ -450,7 +450,7 @@ public class FileManager extends IFileManager<FileManager> {
         try {
             Files.walkFileTree(path, new HashSet<>(), Math.max(depth, 1), new SimpleFileVisitor<>() {
                 @Override
-                public @NotNull FileVisitResult visitFile(@NotNull final Path path, @NotNull final BasicFileAttributes attributes) {
+                public @NonNull FileVisitResult visitFile(@NonNull final Path path, @NonNull final BasicFileAttributes attributes) {
                     final String fileName = path.getFileName().toString();
 
                     extensions.forEach(extension -> {
@@ -468,7 +468,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NotNull final Map<Path, ICustomFile<?, ?, ?, ?>> getFiles() {
+    public @NonNull final Map<Path, ICustomFile<?, ?, ?, ?>> getFiles() {
         return Collections.unmodifiableMap(this.files);
     }
 }

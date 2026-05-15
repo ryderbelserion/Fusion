@@ -11,7 +11,7 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.List;
 
 public class Fusion extends JavaPlugin implements Listener {
@@ -41,7 +41,7 @@ public class Fusion extends JavaPlugin implements Listener {
         });
     }
 
-    public @NotNull final FusionPaper getFusion() {
+    public @NonNull final FusionPaper getFusion() {
         return this.fusion;
     }
 }

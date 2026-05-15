@@ -4,7 +4,7 @@ import com.ryderbelserion.fusion.files.FileException;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,18 +29,18 @@ public abstract class ICustomFile<I, C, L, O> {
     protected FileType fileType;
     protected Path path;
 
-    public ICustomFile(@NotNull final FileManager fileManager, @NotNull final Path path) {
+    public ICustomFile(@NonNull final FileManager fileManager, @NonNull final Path path) {
         this.fileManager = fileManager;
         this.path = path;
     }
 
-    public abstract @NotNull C loadConfig() throws IOException;
+    public abstract @NonNull C loadConfig() throws IOException;
 
-    public @NotNull C getConfiguration() {
+    public @NonNull C getConfiguration() {
         return this.configuration;
     }
 
-    public @NotNull I load() {
+    public @NonNull I load() {
         if (isDirectory()) return (I) this;
 
         final Path path = getPath();
@@ -73,7 +73,7 @@ public abstract class ICustomFile<I, C, L, O> {
         return (I) this;
     }
 
-    public @NotNull I save(@NotNull final String content) {
+    public @NonNull I save(@NonNull final String content) {
         if (isDirectory()) return (I) this;
 
         if (this.configuration == null) return (I) this;
@@ -89,31 +89,31 @@ public abstract class ICustomFile<I, C, L, O> {
         return (I) this;
     }
 
-    public @NotNull I save() {
+    public @NonNull I save() {
         return save("");
     }
 
-    public void saveConfig(@NotNull final String content) throws IOException {
+    public void saveConfig(@NonNull final String content) throws IOException {
         saveConfig();
     }
 
-    public void setOptions(@NotNull final Consumer<O> options) {
+    public void setOptions(@NonNull final Consumer<O> options) {
         options.accept(this.options);
     }
 
-    public void removeAction(@NotNull final FileAction action) {
+    public void removeAction(@NonNull final FileAction action) {
         this.actions.remove(action);
     }
 
-    public boolean hasAction(@NotNull final FileAction action) {
+    public boolean hasAction(@NonNull final FileAction action) {
         return this.actions.contains(action);
     }
 
-    public void addAction(@NotNull final FileAction action) {
+    public void addAction(@NonNull final FileAction action) {
         this.actions.add(action);
     }
 
-    public void setLoader(@NotNull final L loader) {
+    public void setLoader(@NonNull final L loader) {
         this.loader = loader;
     }
 
@@ -121,15 +121,15 @@ public abstract class ICustomFile<I, C, L, O> {
 
     }
 
-    public @NotNull String getPrettyName() {
+    public @NonNull String getPrettyName() {
         return getFileName().replace(getFileType().getExtension(), "");
     }
 
-    public @NotNull FileType getFileType() {
+    public @NonNull FileType getFileType() {
         return this.fileType;
     }
 
-    public @NotNull String getFileName() {
+    public @NonNull String getFileName() {
         return this.path.getFileName().toString();
     }
 
@@ -137,11 +137,11 @@ public abstract class ICustomFile<I, C, L, O> {
         return Files.isDirectory(getPath());
     }
 
-    public @NotNull Path getPath() {
+    public @NonNull Path getPath() {
         return this.path;
     }
 
-    public @NotNull O getOptions() {
+    public @NonNull O getOptions() {
         return this.options;
     }
 

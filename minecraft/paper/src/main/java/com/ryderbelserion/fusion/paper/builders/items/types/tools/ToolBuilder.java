@@ -6,7 +6,7 @@ import io.papermc.paper.datacomponent.item.Equippable;
 import io.papermc.paper.datacomponent.item.Weapon;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.function.Consumer;
 
 public class ToolBuilder extends BaseItemBuilder<ToolBuilder> {
@@ -14,11 +14,11 @@ public class ToolBuilder extends BaseItemBuilder<ToolBuilder> {
     private Equippable.Builder equippable = null;
     private Weapon.Builder weapon = null;
 
-    public ToolBuilder(@NotNull final ItemStack itemStack) {
+    public ToolBuilder(@NonNull final ItemStack itemStack) {
         super(itemStack);
     }
 
-    public void addEquipmentComponent(@NotNull final String equipmentSlot, @NotNull final Consumer<Equippable.Builder> consumer) {
+    public void addEquipmentComponent(@NonNull final String equipmentSlot, @NonNull final Consumer<Equippable.Builder> consumer) {
         if (!isArmor()) return;
 
         final EquipmentSlot slot = EquipmentSlot.valueOf(equipmentSlot);
@@ -28,7 +28,7 @@ public class ToolBuilder extends BaseItemBuilder<ToolBuilder> {
         consumer.accept(this.equippable);
     }
 
-    public void addWeaponComponent(@NotNull final Consumer<Weapon.Builder> consumer) {
+    public void addWeaponComponent(@NonNull final Consumer<Weapon.Builder> consumer) {
         if (!isTool()) return;
 
         this.weapon = Weapon.weapon();

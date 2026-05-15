@@ -5,7 +5,7 @@ import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.interfaces.IConfigurate;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 
 public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedConfigurationNode, YamlConfigurationLoader, ConfigurationOptions> implements IConfigurate {
 
-    public YamlCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<YamlCustomFile> consumer) {
+    public YamlCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<YamlCustomFile> consumer) {
         super(fileManager, path);
 
         this.options = ConfigurationOptions.defaults();
@@ -28,7 +28,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
     }
 
     @Override
-    public @NotNull CommentedConfigurationNode loadConfig() throws IOException {
+    public @NonNull CommentedConfigurationNode loadConfig() throws IOException {
         return this.loader.load();
     }
 
@@ -38,7 +38,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
     }
 
     @Override
-    public @NotNull FileType getFileType() {
+    public @NonNull FileType getFileType() {
         return FileType.YAML;
     }
 
@@ -55,7 +55,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
      * @return {@inheritDoc}
      */
     @Override
-    public @NotNull String getStringValueWithDefault(@NotNull final String defaultValue, @NotNull final Object... path) {
+    public @NonNull String getStringValueWithDefault(@NonNull final String defaultValue, @NonNull final Object... path) {
         return getConfiguration().node(path).getString(defaultValue);
     }
 
@@ -67,7 +67,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
      * @return {@inheritDoc}
      */
     @Override
-    public boolean getBooleanValueWithDefault(final boolean defaultValue, @NotNull final Object... path) {
+    public boolean getBooleanValueWithDefault(final boolean defaultValue, @NonNull final Object... path) {
         return getConfiguration().node(path).getBoolean(defaultValue);
     }
 
@@ -79,7 +79,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
      * @return {@inheritDoc}
      */
     @Override
-    public double getDoubleValueWithDefault(final double defaultValue, @NotNull final Object... path) {
+    public double getDoubleValueWithDefault(final double defaultValue, @NonNull final Object... path) {
         return getConfiguration().node(path).getDouble(defaultValue);
     }
 
@@ -91,7 +91,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
      * @return {@inheritDoc}
      */
     @Override
-    public long getLongValueWithDefault(final long defaultValue, @NotNull final Object... path) {
+    public long getLongValueWithDefault(final long defaultValue, @NonNull final Object... path) {
         return getConfiguration().node(path).getLong(defaultValue);
     }
 
@@ -103,7 +103,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
      * @return {@inheritDoc}
      */
     @Override
-    public int getIntValueWithDefault(final int defaultValue, @NotNull final Object... path) {
+    public int getIntValueWithDefault(final int defaultValue, @NonNull final Object... path) {
         return getConfiguration().node(path).getInt(defaultValue);
     }
 
@@ -114,7 +114,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
      * @return {@inheritDoc}
      */
     @Override
-    public @NotNull List<String> getStringList(@NotNull final List<String> defaultValue, @NotNull final Object... path) {
+    public @NonNull List<String> getStringList(@NonNull final List<String> defaultValue, @NonNull final Object... path) {
         final CommentedConfigurationNode node = getConfiguration().node(path);
 
         try {

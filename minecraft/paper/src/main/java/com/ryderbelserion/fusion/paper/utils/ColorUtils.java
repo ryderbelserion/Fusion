@@ -2,12 +2,12 @@ package com.ryderbelserion.fusion.paper.utils;
 
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ColorUtils {
 
-    public static @NotNull DyeColor getDyeColor(@NotNull final String value) {
+    public static @NonNull DyeColor getDyeColor(@NonNull final String value) {
         if (value.isEmpty()) return DyeColor.WHITE;
 
         return switch (value.toLowerCase()) {
@@ -30,7 +30,7 @@ public class ColorUtils {
         };
     }
 
-    public static @NotNull Color getColor(@NotNull final String value) {
+    public static @NonNull Color getColor(@NonNull final String value) {
         if (value.isEmpty()) return Color.WHITE;
 
         return switch (value.toLowerCase()) {
@@ -54,7 +54,7 @@ public class ColorUtils {
         };
     }
 
-    public static @Nullable Color getRGB(@NotNull final String color) {
+    public static @Nullable Color getRGB(@NonNull final String color) {
         if (color.isEmpty()) return null;
 
         final String[] rgb = color.split(",");

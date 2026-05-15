@@ -41,7 +41,7 @@ import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
@@ -151,31 +151,31 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     protected ItemStack itemStack;
     protected ItemType itemType;
 
-    private DataComponentType.Valued<@NotNull Component> type = DataComponentTypes.CUSTOM_NAME;
+    private DataComponentType.Valued<@NonNull Component> type = DataComponentTypes.CUSTOM_NAME;
     private Map<String, String> placeholders = new HashMap<>();
     private List<String> displayLore = new ArrayList<>();
     private String displayName = "";
 
-    public BaseItemBuilder(@NotNull final ItemType itemType, final int amount, @NotNull final Consumer<BaseItemBuilder> consumer) {
+    public BaseItemBuilder(@NonNull final ItemType itemType, final int amount, @NonNull final Consumer<BaseItemBuilder> consumer) {
         this(itemType.createItemStack(Math.min(amount, 1))); // create ItemStack, and populate item type.
 
         consumer.accept(this); // apply anything else to the class.
     }
 
-    public BaseItemBuilder(@NotNull final ItemType itemType, @NotNull final Consumer<BaseItemBuilder> consumer) {
+    public BaseItemBuilder(@NonNull final ItemType itemType, @NonNull final Consumer<BaseItemBuilder> consumer) {
         this(itemType, 1, consumer);
     }
 
-    public BaseItemBuilder(@NotNull final ItemType itemType) {
+    public BaseItemBuilder(@NonNull final ItemType itemType) {
         this(itemType, 1, item -> {});
     }
 
-    public BaseItemBuilder(@NotNull final ItemStack itemStack) {
+    public BaseItemBuilder(@NonNull final ItemStack itemStack) {
         this.itemStack = itemStack;
         this.itemType = this.itemStack.getType().asItemType();
     }
 
-    public BaseItemBuilder(@NotNull final String itemStack) {
+    public BaseItemBuilder(@NonNull final String itemStack) {
         withCustomItem(itemStack);
     }
 
@@ -183,23 +183,23 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull final GuiItem asGuiItem(@NotNull final Audience audience, @NotNull final GuiAction<@NotNull InventoryClickEvent> action) {
+    public @NonNull final GuiItem asGuiItem(@NonNull final Audience audience, @NonNull final GuiAction<@NonNull InventoryClickEvent> action) {
         return new GuiItem(asItemStack(audience), action);
     }
 
-    public @NotNull final GuiItem asGuiItem(@NotNull final GuiAction<@NotNull InventoryClickEvent> action) {
+    public @NonNull final GuiItem asGuiItem(@NonNull final GuiAction<@NonNull InventoryClickEvent> action) {
         return new GuiItem(asItemStack(), action);
     }
 
-    public @NotNull final GuiItem asGuiItem(@NotNull final Audience audience) {
+    public @NonNull final GuiItem asGuiItem(@NonNull final Audience audience) {
         return asGuiItem(audience, action -> {});
     }
 
-    public @NotNull final GuiItem asGuiItem() {
+    public @NonNull final GuiItem asGuiItem() {
         return asGuiItem(Audience.empty());
     }
 
-    public @NotNull ItemStack asItemStack(@Nullable final Audience audience) {
+    public @NonNull ItemStack asItemStack(@Nullable final Audience audience) {
         final Audience safeAudience = audience == null ? Audience.empty() : audience;
 
         if (!this.displayName.isEmpty()) {
@@ -221,17 +221,17 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.itemStack;
     }
 
-    public @NotNull ItemStack asItemStack() {
+    public @NonNull ItemStack asItemStack() {
         return asItemStack(Audience.empty());
     }
 
-    public @NotNull B withConsumer(@NotNull final Consumer<B> consumer) {
+    public @NonNull B withConsumer(@NonNull final Consumer<B> consumer) {
         consumer.accept((B) this);
 
         return (B) this;
     }
 
-    public @NotNull B displayName(@NotNull final Component displayName, @NotNull final ItemState itemState) {
+    public @NonNull B displayName(@NonNull final Component displayName, @NonNull final ItemState itemState) {
         this.type = switch (itemState) {
             case ITEM_NAME -> DataComponentTypes.ITEM_NAME;
             case CUSTOM_NAME -> DataComponentTypes.CUSTOM_NAME;
@@ -242,7 +242,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B withDisplayName(@NotNull final String displayName, @NotNull final ItemState itemState) {
+    public @NonNull B withDisplayName(@NonNull final String displayName, @NonNull final ItemState itemState) {
         this.displayName = displayName;
 
         this.type = switch (itemState) {
@@ -253,23 +253,23 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B withDisplayName(@NotNull final String displayName) {
+    public @NonNull B withDisplayName(@NonNull final String displayName) {
         return withDisplayName(displayName, ItemState.CUSTOM_NAME);
     }
 
-    public @NotNull B displayLore(@NotNull final List<Component> displayLore) {
+    public @NonNull B displayLore(@NonNull final List<Component> displayLore) {
         this.itemStack.setData(DataComponentTypes.LORE, ItemLore.lore().lines(displayLore).build());
 
         return (B) this;
     }
 
-    public @NotNull B withDisplayLore(@NotNull final List<String> displayLore) {
+    public @NonNull B withDisplayLore(@NonNull final List<String> displayLore) {
         this.displayLore = displayLore;
 
         return (B) this;
     }
 
-    public @NotNull B addDisplayLore(@NotNull final String displayLore) {
+    public @NonNull B addDisplayLore(@NonNull final String displayLore) {
         if (displayLore.isEmpty()) return (B) this;
 
         this.displayLore.add(displayLore);
@@ -277,7 +277,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B withCustomItem(@NotNull final String itemStack) {
+    public @NonNull B withCustomItem(@NonNull final String itemStack) {
         final String plugin = this.fusion.getItemsPlugin();
 
         switch (plugin.toLowerCase()) {
@@ -339,7 +339,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B withBase64(@NotNull final String itemStack) {
+    public @NonNull B withBase64(@NonNull final String itemStack) {
         if (itemStack.isEmpty()) return (B) this;
 
         try {
@@ -356,7 +356,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B withType(@NotNull final ItemType itemType, final int amount) {
+    public @NonNull B withType(@NonNull final ItemType itemType, final int amount) {
         final ItemStack itemStack = itemType.createItemStack(Math.max(amount, 1));
 
         this.itemStack = this.itemStack == null ? itemStack : this.itemStack.withType(itemStack.getType());
@@ -367,11 +367,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B withType(@NotNull final ItemType itemType) {
+    public @NonNull B withType(@NonNull final ItemType itemType) {
         return withType(itemType, 1);
     }
 
-    public @NotNull B addFoodComponent(@NotNull final Consumer<FoodProperties.Builder> consumer) {
+    public @NonNull B addFoodComponent(@NonNull final Consumer<FoodProperties.Builder> consumer) {
         if (!this.itemStack.hasData(DataComponentTypes.CONSUMABLE)) return (B) this;
 
         final FoodProperties.Builder foodProperties = FoodProperties.food();
@@ -383,13 +383,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setAmount(final int amount) {
+    public @NonNull B setAmount(final int amount) {
         this.itemStack.setAmount(Math.max(amount, 1));
 
         return (B) this;
     }
 
-    public @NotNull B addEnchantments(@NotNull final Map<String, Integer> enchantments) {
+    public @NonNull B addEnchantments(@NonNull final Map<String, Integer> enchantments) {
         for (final Map.Entry<String, Integer> entry : enchantments.entrySet()) {
             addEnchantment(entry.getKey(), entry.getValue());
         }
@@ -397,7 +397,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B addEnchantment(@NotNull final String enchant, final int level) {
+    public @NonNull B addEnchantment(@NonNull final String enchant, final int level) {
         if (enchant.isEmpty()) return (B) this;
 
         final Enchantment enchantment = ItemUtils.getEnchantment(enchant);
@@ -427,7 +427,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B removeEnchantment(@NotNull final String enchant) {
+    public @NonNull B removeEnchantment(@NonNull final String enchant) {
         if (enchant.isEmpty()) return (B) this;
 
         final Enchantment enchantment = ItemUtils.getEnchantment(enchant);
@@ -439,7 +439,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull String getPlainName() {
+    public @NonNull String getPlainName() {
         Component component = Component.empty();
 
         if (this.itemStack.hasData(DataComponentTypes.ITEM_NAME)) {
@@ -455,7 +455,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return PlainTextComponentSerializer.plainText().serializeOr(component, "");
     }
 
-    public @NotNull List<String> getPlainLore() {
+    public @NonNull List<String> getPlainLore() {
         final List<String> plainLore = new ArrayList<>();
 
         if (this.itemStack.hasData(DataComponentTypes.LORE)) {
@@ -467,13 +467,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return plainLore;
     }
 
-    public @NotNull B addEnchantGlint() {
+    public @NonNull B addEnchantGlint() {
         this.itemStack.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true);
 
         return (B) this;
     }
 
-    public @NotNull B removeEnchantGlint() {
+    public @NonNull B removeEnchantGlint() {
         if (!this.itemStack.hasData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE)) return (B) this;
 
         this.itemStack.unsetData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE);
@@ -481,13 +481,13 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B hideToolTip() {
+    public @NonNull B hideToolTip() {
         this.itemStack.setData(DataComponentTypes.TOOLTIP_DISPLAY, builder().hideTooltip(true).build());
 
         return (B) this;
     }
 
-    public @NotNull B showToolTip() {
+    public @NonNull B showToolTip() {
         if (!this.itemStack.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) return (B) this;
 
         this.itemStack.setData(DataComponentTypes.TOOLTIP_DISPLAY, builder().hideTooltip(false).build());
@@ -495,7 +495,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B hideComponents(@NotNull final List<String> components) {
+    public @NonNull B hideComponents(@NonNull final List<String> components) {
         for (final String component : components) {
             hideComponent(component);
         }
@@ -504,7 +504,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     // i.e. minecraft:banner_patterns without minecraft
-    public @NotNull B hideComponent(@NotNull final String component) {
+    public @NonNull B hideComponent(@NonNull final String component) {
         if (component.isEmpty()) return (B) this;
 
         final Optional<DataComponentType> type = ItemUtils.getDataComponentType(component);
@@ -526,7 +526,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setUnbreakable(final boolean isUnbreakable) {
+    public @NonNull B setUnbreakable(final boolean isUnbreakable) {
         if (isUnbreakable && !this.itemStack.hasData(DataComponentTypes.UNBREAKABLE)) {
             this.itemStack.setData(DataComponentTypes.UNBREAKABLE);
 
@@ -538,7 +538,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setRepairCost(final int repairCost) {
+    public @NonNull B setRepairCost(final int repairCost) {
         if (repairCost == -1) return (B) this;
 
         this.itemStack.setData(DataComponentTypes.REPAIR_COST, repairCost);
@@ -546,7 +546,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setTrim(@NotNull final String pattern, @NotNull final String material) {
+    public @NonNull B setTrim(@NonNull final String pattern, @NonNull final String material) {
         if (pattern.isEmpty() || material.isEmpty()) return (B) this;
 
         final TrimMaterial trimMaterial = ItemUtils.getTrimMaterial(material);
@@ -564,7 +564,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setColor(@NotNull final String value) {
+    public @NonNull B setColor(@NonNull final String value) {
         if (value.isEmpty()) return (B) this;
 
         if (isMap()) {
@@ -586,7 +586,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B setItemDamage(final int damage) {
+    public @NonNull B setItemDamage(final int damage) {
         if (damage == -1) return (B) this;
 
         this.itemStack.setData(DataComponentTypes.DAMAGE, Math.min(damage, this.itemType.getMaxDurability()));
@@ -594,7 +594,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B withSkull(@NotNull final String skull) {
+    public @NonNull B withSkull(@NonNull final String skull) {
         if (skull.isEmpty()) return (B) this;
 
         final Optional<HeadDatabaseAPI> key = this.fusion.getHeadApi();
@@ -618,79 +618,79 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NotNull B addPlaceholder(@NotNull final String placeholder, @NotNull final String value) {
+    public @NonNull B addPlaceholder(@NonNull final String placeholder, @NonNull final String value) {
         this.placeholders.put(placeholder, value);
 
         return (B) this;
     }
 
-    public @NotNull B setPlaceholders(@NotNull final Map<String, String> placeholders) {
+    public @NonNull B setPlaceholders(@NonNull final Map<String, String> placeholders) {
         this.placeholders = placeholders;
 
         return (B) this;
     }
 
-    public @NotNull B removePlaceholder(@NotNull final String placeholder) {
+    public @NonNull B removePlaceholder(@NonNull final String placeholder) {
         this.placeholders.remove(placeholder);
 
         return (B) this;
     }
 
-    public boolean hasPlaceholder(@NotNull final String placeholder) {
+    public boolean hasPlaceholder(@NonNull final String placeholder) {
         return this.placeholders.containsKey(placeholder);
     }
 
-    public @NotNull final B setPersistentDouble(@NotNull final NamespacedKey key, final double value) {
+    public @NonNull final B setPersistentDouble(@NonNull final NamespacedKey key, final double value) {
         this.itemStack.editPersistentDataContainer(container -> container.set(key, PersistentDataType.DOUBLE, value));
 
         return (B) this;
     }
 
-    public @NotNull final B setPersistentInteger(@NotNull final NamespacedKey key, final int value) {
+    public @NonNull final B setPersistentInteger(@NonNull final NamespacedKey key, final int value) {
         this.itemStack.editPersistentDataContainer(container -> container.set(key, PersistentDataType.INTEGER, value));
 
         return (B) this;
     }
 
-    public @NotNull final B setPersistentBoolean(@NotNull final NamespacedKey key, final boolean value) {
+    public @NonNull final B setPersistentBoolean(@NonNull final NamespacedKey key, final boolean value) {
         this.itemStack.editPersistentDataContainer(container -> container.set(key, PersistentDataType.BOOLEAN, value));
 
         return (B) this;
     }
 
-    public @NotNull final B setPersistentString(@NotNull final NamespacedKey key, @NotNull final String value) {
+    public @NonNull final B setPersistentString(@NonNull final NamespacedKey key, @NonNull final String value) {
         this.itemStack.editPersistentDataContainer(container -> container.set(key, PersistentDataType.STRING, value));
 
         return (B) this;
     }
 
-    public @NotNull final B setPersistentList(@NotNull final NamespacedKey key, @NotNull final List<String> values) {
+    public @NonNull final B setPersistentList(@NonNull final NamespacedKey key, @NonNull final List<String> values) {
         this.itemStack.editPersistentDataContainer(container -> container.set(key, PersistentDataType.LIST.listTypeFrom(PersistentDataType.STRING), values));
 
         return (B) this;
     }
 
-    public final boolean getBoolean(@NotNull final NamespacedKey key) {
+    public final boolean getBoolean(@NonNull final NamespacedKey key) {
         return getContainer().getOrDefault(key, PersistentDataType.BOOLEAN, false);
     }
 
-    public final double getDouble(@NotNull final NamespacedKey key) {
+    public final double getDouble(@NonNull final NamespacedKey key) {
         return getContainer().getOrDefault(key, PersistentDataType.DOUBLE, 0.0);
     }
 
-    public final int getInteger(@NotNull final NamespacedKey key) {
+    public final int getInteger(@NonNull final NamespacedKey key) {
         return getContainer().getOrDefault(key, PersistentDataType.INTEGER, 0);
     }
 
-    public @NotNull final List<String> getList(@NotNull final NamespacedKey key) {
+    public @NonNull final List<String> getList(@NonNull final NamespacedKey key) {
         return getContainer().getOrDefault(key, PersistentDataType.LIST.strings(), Collections.emptyList());
     }
 
-    public @NotNull final String getString(@NotNull final NamespacedKey key) {
+    public @NonNull final String getString(@NonNull final NamespacedKey key) {
         return getContainer().getOrDefault(key, PersistentDataType.STRING, "");
     }
 
-    public @NotNull final B removePersistentKey(@Nullable final NamespacedKey key) {
+    public @NonNull final B removePersistentKey(@Nullable final NamespacedKey key) {
         if (key == null) return (B) this;
 
         this.itemStack.editPersistentDataContainer(container -> {
@@ -700,65 +700,65 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public final boolean hasKey(@NotNull final NamespacedKey key) {
+    public final boolean hasKey(@NonNull final NamespacedKey key) {
         return getContainer().has(key);
     }
 
-    public @NotNull final PersistentDataContainerView getContainer() {
+    public @NonNull final PersistentDataContainerView getContainer() {
         return this.itemStack.getPersistentDataContainer();
     }
 
-    public @NotNull final FireworkBuilder asFireworkBuilder() {
+    public @NonNull final FireworkBuilder asFireworkBuilder() {
         if (!isFirework()) throw new FusionException("This item type is not a firework rocket.");
 
         return new FireworkBuilder(this.itemStack);
     }
 
-    public @NotNull final FireworkStarBuilder asFireworkStarBuilder() {
+    public @NonNull final FireworkStarBuilder asFireworkStarBuilder() {
         if (!isFireworkStar()) throw new FusionException("This item type is not a firework star.");
 
         return new FireworkStarBuilder(this.itemStack);
     }
 
-    public @NotNull final PatternBuilder asPatternBuilder() {
+    public @NonNull final PatternBuilder asPatternBuilder() {
         if (isShield() || isBanner()) return new PatternBuilder(this.itemStack);
 
         throw new FusionException("This item type is not a shield/banner.");
     }
 
-    public @NotNull final SkullBuilder asSkullBuilder() {
+    public @NonNull final SkullBuilder asSkullBuilder() {
         if (!isPlayerHead()) throw new FusionException("This item type is not a skull.");
 
         return new SkullBuilder(this.itemStack);
     }
 
-    public @NotNull final PotionBuilder asPotionBuilder() {
+    public @NonNull final PotionBuilder asPotionBuilder() {
         if (isPotion() || isTippedArrow()) return new PotionBuilder(this.itemStack);
 
         throw new FusionException("This item type is not a potion / tipped arrow.");
     }
 
-    public @NotNull final CustomBuilder asCustomBuilder() {
+    public @NonNull final CustomBuilder asCustomBuilder() {
         return new CustomBuilder(this.itemStack);
     }
 
-    public @NotNull final ToolBuilder asToolBuilder() {
+    public @NonNull final ToolBuilder asToolBuilder() {
         return new ToolBuilder(this.itemStack);
     }
 
-    public void setItemToInventory(@NotNull final Audience audience, @NotNull final Inventory inventory, final int slot) {
+    public void setItemToInventory(@NonNull final Audience audience, @NonNull final Inventory inventory, final int slot) {
         inventory.setItem(slot, asItemStack(audience));
     }
 
-    public void addItemToInventory(@NotNull final Audience audience, @NotNull final Inventory inventory) {
+    public void addItemToInventory(@NonNull final Audience audience, @NonNull final Inventory inventory) {
         inventory.addItem(asItemStack(audience));
     }
 
-    public void setItemToInventory(@NotNull final Inventory inventory, final int slot) {
+    public void setItemToInventory(@NonNull final Inventory inventory, final int slot) {
         setItemToInventory(Audience.empty(), inventory, slot);
     }
 
-    public void addItemToInventory(@NotNull final Inventory inventory) {
+    public void addItemToInventory(@NonNull final Inventory inventory) {
         addItemToInventory(Audience.empty(), inventory);
     }
 
@@ -822,15 +822,15 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return asString().equalsIgnoreCase(ItemType.FILLED_MAP.key().asString());
     }
 
-    public @NotNull final String getTranslationKey() {
+    public @NonNull final String getTranslationKey() {
         return this.itemType.translationKey();
     }
 
-    public @NotNull final ItemType getType() {
+    public @NonNull final ItemType getType() {
         return this.itemType;
     }
 
-    public @NotNull final Key getKey() {
+    public @NonNull final Key getKey() {
         return this.itemType.key();
     }
 
@@ -846,7 +846,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return getKey().value();
     }
 
-    private @NotNull TooltipDisplay.Builder builder() {
+    private @NonNull TooltipDisplay.Builder builder() {
         final TooltipDisplay.Builder builder = TooltipDisplay.tooltipDisplay();
 
         if (this.itemStack.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {
@@ -861,7 +861,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return builder;
     }
 
-    private void getItemsAdder(@NotNull final String itemStack) {
+    private void getItemsAdder(@NonNull final String itemStack) {
         if (!CustomStack.isInRegistry(itemStack)) {
             this.fusion.log(Level.WARNING, "The id %s does not exist as an ItemsAdder item! Attempting falling back to vanilla item!", itemStack);
 
@@ -878,7 +878,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         this.itemType = this.itemStack.getType().asItemType();
     }
 
-    private void getOraxen(@NotNull final String itemStack) {
+    private void getOraxen(@NonNull final String itemStack) {
         if (!OraxenItems.exists(itemStack)) {
             this.fusion.log(Level.WARNING, "The id %s does not exist as an Oraxen item!  Attempting falling back to vanilla item!", itemStack);
 
@@ -895,7 +895,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         this.itemType = this.itemStack.getType().asItemType();
     }
 
-    private void getNexo(@NotNull final String itemStack) {
+    private void getNexo(@NonNull final String itemStack) {
         if (!NexoItems.exists(itemStack)) {
             this.fusion.log(Level.WARNING, "The id %s does not exist as a Nexo item! Attempting falling back to vanilla item!", itemStack);
 
@@ -912,7 +912,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         this.itemType = this.itemStack.getType().asItemType();
     }
 
-    private void setItem(@NotNull final String itemStack) {
+    private void setItem(@NonNull final String itemStack) {
         final ItemType itemType = ItemUtils.getItemType(itemStack);
 
         if (itemType == null) {

@@ -15,7 +15,7 @@ import org.bukkit.Registry;
 import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.profile.PlayerTextures;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Map;
@@ -25,13 +25,13 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
 
     private final ResolvableProfile.Builder builder;
 
-    public SkullBuilder(@NotNull final ItemStack itemStack) {
+    public SkullBuilder(@NonNull final ItemStack itemStack) {
         super(itemStack);
 
         this.builder = ResolvableProfile.resolvableProfile();
     }
 
-    public @NotNull SkullBuilder withAudience(@NotNull final Audience audience) {
+    public @NonNull SkullBuilder withAudience(@NonNull final Audience audience) {
         final UUID uuid = audience.getOrDefault(Identity.UUID, null);
 
         if (uuid == null) return this;
@@ -41,7 +41,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         return this;
     }
 
-    public @NotNull SkullBuilder withUrl(@NotNull final String url) {
+    public @NonNull SkullBuilder withUrl(@NonNull final String url) {
         if (url.isEmpty()) return this;
 
         final String newUrl = url.startsWith("https://textures.minecraft.net/texture/") ? url : "https://textures.minecraft.net/texture/" + url;
@@ -66,7 +66,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
     }
 
     @Override
-    public @NotNull SkullBuilder withBase64(@NotNull final String base64) {
+    public @NonNull SkullBuilder withBase64(@NonNull final String base64) {
         if (base64.isEmpty()) return this;
 
         this.builder.addProperty(new ProfileProperty("textures", base64));
@@ -74,7 +74,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         return this;
     }
 
-    public @NotNull SkullBuilder withName(@NotNull final String playerName) {
+    public @NonNull SkullBuilder withName(@NonNull final String playerName) {
         if (playerName.isEmpty()) return this;
 
         if (playerName.length() > 16) return withUrl(playerName);
@@ -84,7 +84,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         return this;
     }
 
-    public @NotNull SkullBuilder withNoteBlockSound(@NotNull final String sound) {
+    public @NonNull SkullBuilder withNoteBlockSound(@NonNull final String sound) {
         if (sound.isEmpty()) return this;
 
         final Sound value = ItemUtils.getSound(sound);
@@ -105,7 +105,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
     }
 
     @Override
-    public @NotNull SkullBuilder build() {
+    public @NonNull SkullBuilder build() {
         this.itemStack.setData(DataComponentTypes.PROFILE, this.builder.build());
 
         return this;

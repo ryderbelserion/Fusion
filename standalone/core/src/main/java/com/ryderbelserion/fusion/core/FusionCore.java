@@ -8,7 +8,7 @@ import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
 import com.ryderbelserion.fusion.core.config.FusionConfig;
 import com.ryderbelserion.fusion.files.FileManager;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -19,10 +19,11 @@ import java.util.Map;
 public abstract class FusionCore {
 
     protected final SettingsManager config;
+
     private final FileManager fileManager;
     private final Path path;
 
-    public FusionCore(@NotNull final Path path) {
+    public FusionCore(@NonNull final Path path) {
         this.config = SettingsManagerBuilder
                 .withYamlFile(path.resolve("fusion.yml"))
                 .configurationData(FusionConfig.class)
@@ -36,19 +37,19 @@ public abstract class FusionCore {
     private ModRegistry modRegistry;
 
     public abstract void log(
-            @NotNull final Level level,
-            @NotNull final String message,
-            @NotNull final Exception exception,
-            @NotNull final Object... args
+            @NonNull final Level level,
+            @NonNull final String message,
+            @NonNull final Exception exception,
+            @NonNull final Object... args
     );
 
     public abstract void log(
-            @NotNull final Level level,
-            @NotNull final String message,
-            @NotNull final Object... args
+            @NonNull final Level level,
+            @NonNull final String message,
+            @NonNull final Object... args
     );
 
-    public abstract boolean isModReady(@NotNull final FusionKey key);
+    public abstract boolean isModReady(@NonNull final FusionKey key);
 
     public FusionCore reload() {
         if (this.config != null) {
@@ -75,10 +76,10 @@ public abstract class FusionCore {
         return this;
     }
 
-    public @NotNull final List<String> getFilesByName(
-            @NotNull final String folder,
-            @NotNull final Path path,
-            @NotNull final String extension,
+    public @NonNull final List<String> getFilesByName(
+            @NonNull final String folder,
+            @NonNull final Path path,
+            @NonNull final String extension,
             final int depth,
             final boolean removeExtension
     ) {
@@ -86,31 +87,31 @@ public abstract class FusionCore {
         return this.fileManager.getFileByNames(folder, path, extension, depth, removeExtension);
     }
 
-    public @NotNull final List<String> getFilesByName(
-            @NotNull final String folder,
-            @NotNull final Path path,
-            @NotNull final String extension,
+    public @NonNull final List<String> getFilesByName(
+            @NonNull final String folder,
+            @NonNull final Path path,
+            @NonNull final String extension,
             final boolean removeExtension
     ) {
 
         return this.fileManager.getFileByNames(folder, path, extension, removeExtension);
     }
 
-    public @NotNull final List<Path> getFilesByPath(
-            @NotNull final Path path,
-            @NotNull final List<String> extensions
+    public @NonNull final List<Path> getFilesByPath(
+            @NonNull final Path path,
+            @NonNull final List<String> extensions
     ) {
         return this.fileManager.getFilesByPath(path, extensions, getDepth());
     }
 
-    public @NotNull final List<Path> getFilesByPath(
-            @NotNull final Path path,
-            @NotNull final String extension
+    public @NonNull final List<Path> getFilesByPath(
+            @NonNull final Path path,
+            @NonNull final String extension
     ) {
         return this.fileManager.getFilesByPath(path, extension, getDepth());
     }
 
-    public String replacePlaceholders(@NotNull final String message, @NotNull final Map<String, String> placeholders) {
+    public String replacePlaceholders(@NonNull final String message, @NonNull final Map<String, String> placeholders) {
         String safeMessage = message;
 
         if (!placeholders.isEmpty()) {
@@ -129,7 +130,7 @@ public abstract class FusionCore {
         return safeMessage;
     }
 
-    public void deleteDirectory(@NotNull final Path path) throws IOException {
+    public void deleteDirectory(@NonNull final Path path) throws IOException {
         if (!Files.exists(path) || !Files.isDirectory(path)) return;
 
         try (final DirectoryStream<Path> contents = Files.newDirectoryStream(path)) {
@@ -147,19 +148,19 @@ public abstract class FusionCore {
         Files.deleteIfExists(path);
     }
 
-    public @NotNull FileManager getFileManager() {
+    public @NonNull FileManager getFileManager() {
         return this.fileManager;
     }
 
-    public @NotNull final String getNumberFormat() {
+    public @NonNull final String getNumberFormat() {
         return this.config.getProperty(FusionConfig.number_format);
     }
 
-    public @NotNull final String getItemsPlugin() {
+    public @NonNull final String getItemsPlugin() {
         return this.config.getProperty(FusionConfig.custom_items_plugin);
     }
 
-    public @NotNull final String getRounding() {
+    public @NonNull final String getRounding() {
         return this.config.getProperty(FusionConfig.rounding_format);
     }
 
@@ -171,11 +172,11 @@ public abstract class FusionCore {
         return this.config.getProperty(FusionConfig.recursion_depth);
     }
 
-    public @NotNull final ModRegistry getModRegistry() {
+    public @NonNull final ModRegistry getModRegistry() {
         return this.modRegistry;
     }
 
-    public @NotNull final Path getDataPath() {
+    public @NonNull final Path getDataPath() {
         return this.path;
     }
 }

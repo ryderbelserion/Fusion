@@ -21,7 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.*;
 
 public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
@@ -74,11 +74,11 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
     protected String title;
 
     public GuiBuilder(
-            @NotNull final JavaPlugin plugin,
-            @NotNull final Audience player,
-            @NotNull final String title,
-            @NotNull final InventoryType type,
-            @NotNull final Map<String, String> placeholders
+            @NonNull final JavaPlugin plugin,
+            @NonNull final Audience player,
+            @NonNull final String title,
+            @NonNull final InventoryType type,
+            @NonNull final Map<String, String> placeholders
     ) {
         this.plugin = plugin;
 
@@ -91,20 +91,20 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
     }
 
     public GuiBuilder(
-            @NotNull final JavaPlugin plugin,
-            @NotNull final String title,
-            @NotNull final InventoryType type,
-            @NotNull final Map<String, String> placeholders
+            @NonNull final JavaPlugin plugin,
+            @NonNull final String title,
+            @NonNull final InventoryType type,
+            @NonNull final Map<String, String> placeholders
     ) {
         this(plugin, Audience.empty(), title, type, placeholders);
     }
 
     public GuiBuilder(
-            @NotNull final JavaPlugin plugin,
-            @NotNull final Audience player,
-            @NotNull final String title,
+            @NonNull final JavaPlugin plugin,
+            @NonNull final Audience player,
+            @NonNull final String title,
             final int rows,
-            @NotNull final Map<String, String> placeholders
+            @NonNull final Map<String, String> placeholders
     ) {
         this.plugin = plugin;
 
@@ -116,10 +116,10 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
     }
 
     public GuiBuilder(
-            @NotNull final JavaPlugin plugin,
-            @NotNull final String title,
+            @NonNull final JavaPlugin plugin,
+            @NonNull final String title,
             final int rows,
-            @NotNull final Map<String, String> placeholders
+            @NonNull final Map<String, String> placeholders
     ) {
         this(plugin, Audience.empty(), title, rows, placeholders);
     }
@@ -131,9 +131,9 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
     protected GuiAction<InventoryCloseEvent> closeAction;
     protected GuiAction<InventoryOpenEvent> openAction;
 
-    public abstract B interact(@NotNull final InventoryClickEvent event);
+    public abstract B interact(@NonNull final InventoryClickEvent event);
 
-    public B open(@NotNull final Player player) {
+    public B open(@NonNull final Player player) {
         if (player.isSleeping()) return (B) this;
 
         player.openInventory(this.inventory);
@@ -164,7 +164,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
         return (B) this;
     }
 
-    public B close(@NotNull final Player player, @NotNull final InventoryCloseEvent.Reason reason, final boolean isDelayed) {
+    public B close(@NonNull final Player player, @NonNull final InventoryCloseEvent.Reason reason, final boolean isDelayed) {
         if (isDelayed) {
             new FoliaScheduler(this.plugin, Scheduler.global_scheduler) {
                 @Override
@@ -181,62 +181,62 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
         return (B) this;
     }
 
-    public B close(@NotNull final Player player, final boolean isDelayed) {
+    public B close(@NonNull final Player player, final boolean isDelayed) {
         return close(player, InventoryCloseEvent.Reason.PLUGIN, isDelayed);
     }
 
-    public B close(@NotNull final Player player) {
+    public B close(@NonNull final Player player) {
         return close(player, true);
     }
 
-    public void update(@NotNull final Player player) {
+    public void update(@NonNull final Player player) {
         this.inventory.clear();
 
         populate();
     }
 
     @Override
-    public @NotNull final Inventory getInventory() {
+    public @NonNull final Inventory getInventory() {
         return this.inventory;
     }
 
-    public @NotNull final GuiFiller getFiller() {
+    public @NonNull final GuiFiller getFiller() {
         return this.filler;
     }
 
-    public @NotNull final String getTitle() {
+    public @NonNull final String getTitle() {
         return this.title;
     }
 
-    public B setTitle(@NotNull final Player player, @NotNull final String title, @NotNull final Map<String, String> placeholders) {
+    public B setTitle(@NonNull final Player player, @NonNull final String title, @NonNull final Map<String, String> placeholders) {
         this.title = GuiUtils.updateTitle(player, this.inventory, title, placeholders);
 
         return (B) this;
     }
 
-    public B setTitle(@NotNull final Player player, @NotNull final String title) {
+    public B setTitle(@NonNull final Player player, @NonNull final String title) {
         setTitle(player, title, Map.of());
 
         return (B) this;
     }
 
-    public B addSlotAction(final int row, final int column, @NotNull final GuiItem guiItem) {
+    public B addSlotAction(final int row, final int column, @NonNull final GuiItem guiItem) {
         return addSlotAction(getSlotFromColumn(row, column), guiItem.getItemStack(), guiItem.getAction());
     }
 
-    public B addSlotAction(final int slot, @NotNull final GuiItem guiItem) {
+    public B addSlotAction(final int slot, @NonNull final GuiItem guiItem) {
         return addSlotAction(slot, guiItem.getItemStack(), guiItem.getAction());
     }
 
-    public B addSlotAction(@NotNull final GuiItem guiItem) {
+    public B addSlotAction(@NonNull final GuiItem guiItem) {
         return addSlotAction(guiItem.getSlot(), guiItem);
     }
 
-    public B addSlotAction(final int row, final int column, @NotNull final ItemStack itemStack, @NotNull final GuiAction<InventoryClickEvent> action) {
+    public B addSlotAction(final int row, final int column, @NonNull final ItemStack itemStack, @NonNull final GuiAction<InventoryClickEvent> action) {
         return addSlotAction(getSlotFromColumn(row, column), itemStack, action);
     }
 
-    public B addSlotAction(final int slot, @NotNull final ItemStack itemStack, @NotNull final GuiAction<InventoryClickEvent> action) {
+    public B addSlotAction(final int slot, @NonNull final ItemStack itemStack, @NonNull final GuiAction<InventoryClickEvent> action) {
         this.items.put(slot, new GuiItem(itemStack, action));
 
         this.inventory.setItem(slot, itemStack);
@@ -244,55 +244,55 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
         return (B) this;
     }
 
-    public B addSlotAction(final int slot, @NotNull final GuiAction<InventoryClickEvent> action) {
+    public B addSlotAction(final int slot, @NonNull final GuiAction<InventoryClickEvent> action) {
         return addSlotAction(slot, ItemType.AIR.createItemStack(), action);
     }
 
-    public B addSlotAction(@NotNull final GuiAction<InventoryClickEvent> action) {
+    public B addSlotAction(@NonNull final GuiAction<InventoryClickEvent> action) {
         return addSlotAction(this.inventory.firstEmpty(), action);
     }
 
-    public B addSlotAction(final int slot, @NotNull final ItemStack itemStack) {
+    public B addSlotAction(final int slot, @NonNull final ItemStack itemStack) {
         return addSlotAction(slot, itemStack, action -> {});
     }
 
-    public B setDefaultAction(@NotNull final GuiAction<InventoryClickEvent> defaultAction) {
+    public B setDefaultAction(@NonNull final GuiAction<InventoryClickEvent> defaultAction) {
         this.defaultAction = defaultAction;
 
         return (B) this;
     }
 
-    public B setBottomAction(@NotNull final GuiAction<InventoryClickEvent> bottomAction) {
+    public B setBottomAction(@NonNull final GuiAction<InventoryClickEvent> bottomAction) {
         this.bottomAction = bottomAction;
 
         return (B) this;
     }
 
-    public B setCloseAction(@NotNull final GuiAction<InventoryCloseEvent> closeAction) {
+    public B setCloseAction(@NonNull final GuiAction<InventoryCloseEvent> closeAction) {
         this.closeAction = closeAction;
         
         return (B) this;
     }
 
-    public B setOpenAction(@NotNull final GuiAction<InventoryOpenEvent> openAction) {
+    public B setOpenAction(@NonNull final GuiAction<InventoryOpenEvent> openAction) {
         this.openAction = openAction;
 
         return (B) this;
     }
 
-    public B setTopAction(@NotNull final GuiAction<InventoryClickEvent> topAction) {
+    public B setTopAction(@NonNull final GuiAction<InventoryClickEvent> topAction) {
         this.topAction = topAction;
 
         return (B) this;
     }
 
-    public B removeState(@NotNull final GuiState state) {
+    public B removeState(@NonNull final GuiState state) {
         this.states.remove(state);
 
         return (B) this;
     }
 
-    public B addState(@NotNull final GuiState state) {
+    public B addState(@NonNull final GuiState state) {
         this.states.add(state);
 
         return (B) this;
@@ -304,7 +304,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
 
     // Internal methods
     @ApiStatus.Internal
-    protected boolean isTakeItemEvent(@NotNull final InventoryClickEvent event) {
+    protected boolean isTakeItemEvent(@NonNull final InventoryClickEvent event) {
         final Inventory inventory = event.getInventory();
         final Inventory clickedInventory = event.getClickedInventory();
         final InventoryAction action = event.getAction();
@@ -317,7 +317,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
     }
 
     @ApiStatus.Internal
-    protected boolean isPlaceItemEvent(@NotNull final InventoryClickEvent event) {
+    protected boolean isPlaceItemEvent(@NonNull final InventoryClickEvent event) {
         final Inventory inventory = event.getInventory();
         final Inventory clickedInventory = event.getClickedInventory();
         final InventoryAction action = event.getAction();
@@ -332,7 +332,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
     }
 
     @ApiStatus.Internal
-    protected boolean isSwapItemEvent(@NotNull final InventoryClickEvent event) {
+    protected boolean isSwapItemEvent(@NonNull final InventoryClickEvent event) {
         final Inventory inventory = event.getInventory();
         final Inventory clickedInventory = event.getClickedInventory();
         final InventoryAction action = event.getAction();
@@ -341,7 +341,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
     }
 
     @ApiStatus.Internal
-    protected boolean isDropItemEvent(@NotNull final InventoryClickEvent event) {
+    protected boolean isDropItemEvent(@NonNull final InventoryClickEvent event) {
         final Inventory inventory = event.getInventory();
         final Inventory clickedInventory = event.getClickedInventory();
         final InventoryAction action = event.getAction();
@@ -350,7 +350,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
     }
 
     @ApiStatus.Internal
-    protected boolean isOtherEvent(@NotNull final InventoryClickEvent event) {
+    protected boolean isOtherEvent(@NonNull final InventoryClickEvent event) {
         final Inventory inventory = event.getInventory();
         final Inventory clickedInventory = event.getClickedInventory();
         final InventoryAction action = event.getAction();
@@ -359,46 +359,46 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
     }
 
     @ApiStatus.Internal
-    protected boolean isPlaceAction(@NotNull final InventoryAction action) {
+    protected boolean isPlaceAction(@NonNull final InventoryAction action) {
         return item_place_actions.contains(action);
     }
 
     @ApiStatus.Internal
-    protected boolean isOtherAction(@NotNull final InventoryAction action) {
+    protected boolean isOtherAction(@NonNull final InventoryAction action) {
         return action == InventoryAction.CLONE_STACK || action == InventoryAction.UNKNOWN;
     }
 
     @ApiStatus.Internal
-    protected boolean isTakeAction(@NotNull final InventoryAction action) {
+    protected boolean isTakeAction(@NonNull final InventoryAction action) {
         return item_take_actions.contains(action);
     }
 
     @ApiStatus.Internal
-    protected boolean isSwapAction(@NotNull final InventoryAction action) {
+    protected boolean isSwapAction(@NonNull final InventoryAction action) {
         return item_swap_actions.contains(action);
     }
 
     @ApiStatus.Internal
-    protected boolean isDropAction(@NotNull final InventoryAction action) {
+    protected boolean isDropAction(@NonNull final InventoryAction action) {
         return item_drop_actions.contains(action);
     }
 
     @ApiStatus.Internal
-    public void close(@NotNull final InventoryCloseEvent event) {
+    public void close(@NonNull final InventoryCloseEvent event) {
         if (this.closeAction != null) {
             this.closeAction.execute(event);
         }
     }
 
     @ApiStatus.Internal
-    public void open(@NotNull final InventoryOpenEvent event) {
+    public void open(@NonNull final InventoryOpenEvent event) {
         if (this.openAction != null) {
             this.openAction.execute(event);
         }
     }
 
     @ApiStatus.Internal
-    public void drag(@NotNull final InventoryDragEvent event) {
+    public void drag(@NonNull final InventoryDragEvent event) {
         if (this.states.contains(GuiState.block_all_interactions)) {
             event.setResult(Event.Result.DENY);
 

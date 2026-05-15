@@ -1,14 +1,14 @@
 package com.ryderbelserion.fusion.core.api.exceptions;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class FusionException extends IllegalStateException {
 
-    public FusionException(@NotNull final String message, @NotNull final Exception exception) {
+    public FusionException(@NonNull final String message, @NonNull final Exception exception) {
         super(message, exception);
     }
 
-    public FusionException(@NotNull final String message) {
+    public FusionException(@NonNull final String message) {
         super(message);
     }
 }

@@ -7,7 +7,7 @@ import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.TimeUnit;
@@ -22,14 +22,14 @@ public abstract class FoliaScheduler implements Runnable {
 
     private ScheduledTask task;
 
-    public FoliaScheduler(@NotNull final JavaPlugin plugin, @NotNull final Scheduler type, @NotNull final TimeUnit timeUnit) {
+    public FoliaScheduler(@NonNull final JavaPlugin plugin, @NonNull final Scheduler type, @NonNull final TimeUnit timeUnit) {
         this.plugin = plugin;
         this.server = this.plugin.getServer();
         this.timeUnit = timeUnit;
         this.type = type;
     }
 
-    public FoliaScheduler(@NotNull final JavaPlugin plugin, @NotNull final Scheduler type) {
+    public FoliaScheduler(@NonNull final JavaPlugin plugin, @NonNull final Scheduler type) {
         this(plugin, type, TimeUnit.SECONDS);
     }
 
@@ -37,7 +37,7 @@ public abstract class FoliaScheduler implements Runnable {
     private int x;
     private int z;
 
-    public FoliaScheduler(@NotNull final JavaPlugin plugin, @NotNull final World world, final int x, final int z) {
+    public FoliaScheduler(@NonNull final JavaPlugin plugin, @NonNull final World world, final int x, final int z) {
         this(plugin, Scheduler.region_scheduler, TimeUnit.SECONDS);
 
         this.world = world;
@@ -45,14 +45,14 @@ public abstract class FoliaScheduler implements Runnable {
         this.z = z;
     }
 
-    public FoliaScheduler(@NotNull final JavaPlugin plugin, @NotNull final Location location) {
+    public FoliaScheduler(@NonNull final JavaPlugin plugin, @NonNull final Location location) {
         this(plugin, location.getWorld(), location.getBlockX() >> 4, location.getBlockZ() >> 4);
     }
 
     private Runnable retired;
     private Entity entity;
 
-    public FoliaScheduler(@NotNull final JavaPlugin plugin, @Nullable final Runnable retired, @NotNull final Entity entity) {
+    public FoliaScheduler(@NonNull final JavaPlugin plugin, @Nullable final Runnable retired, @NonNull final Entity entity) {
         this(plugin, Scheduler.entity_scheduler);
 
         this.retired = retired;

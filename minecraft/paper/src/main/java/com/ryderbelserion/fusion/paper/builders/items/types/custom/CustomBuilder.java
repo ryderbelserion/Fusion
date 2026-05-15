@@ -6,7 +6,7 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.CustomModelData;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Optional;
 
 public class CustomBuilder extends BaseItemBuilder<CustomBuilder> {
@@ -15,7 +15,7 @@ public class CustomBuilder extends BaseItemBuilder<CustomBuilder> {
 
     private NamespacedKey itemModel;
 
-    public CustomBuilder(@NotNull final ItemStack itemStack) {
+    public CustomBuilder(@NonNull final ItemStack itemStack) {
         super(itemStack);
 
         if (this.itemStack.hasData(DataComponentTypes.CUSTOM_MODEL_DATA)) {
@@ -25,7 +25,7 @@ public class CustomBuilder extends BaseItemBuilder<CustomBuilder> {
         }
     }
 
-    public @NotNull CustomBuilder setCustomModelData(final int customModelData) {
+    public @NonNull CustomBuilder setCustomModelData(final int customModelData) {
         if (customModelData == -1) return this;
 
         this.builder.addFloat(customModelData);
@@ -33,7 +33,7 @@ public class CustomBuilder extends BaseItemBuilder<CustomBuilder> {
         return this;
     }
 
-    public @NotNull CustomBuilder setCustomModelData(@NotNull final String customModelData) {
+    public @NonNull CustomBuilder setCustomModelData(@NonNull final String customModelData) {
         if (customModelData.isEmpty()) return this;
 
         final Optional<Number> integer = StringUtils.tryParseInt(customModelData);
@@ -45,7 +45,7 @@ public class CustomBuilder extends BaseItemBuilder<CustomBuilder> {
         return this;
     }
 
-    public @NotNull CustomBuilder setItemModel(@NotNull final String namespace, @NotNull final String itemModel) {
+    public @NonNull CustomBuilder setItemModel(@NonNull final String namespace, @NonNull final String itemModel) {
         if (namespace.isEmpty() || itemModel.isEmpty()) return this;
 
         this.itemModel = new NamespacedKey(namespace, itemModel);
@@ -53,7 +53,7 @@ public class CustomBuilder extends BaseItemBuilder<CustomBuilder> {
         return this;
     }
 
-    public @NotNull CustomBuilder setItemModel(@NotNull final String itemModel) {
+    public @NonNull CustomBuilder setItemModel(@NonNull final String itemModel) {
         if (itemModel.isEmpty()) return this;
 
         this.itemModel = NamespacedKey.minecraft(itemModel);

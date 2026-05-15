@@ -20,7 +20,7 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,7 +35,7 @@ public class FusionPaper extends FusionKyori<Audience> {
     private JavaPlugin plugin;
     private Server server;
 
-    public FusionPaper(@NotNull final JavaPlugin plugin) {
+    public FusionPaper(@NonNull final JavaPlugin plugin) {
         super(plugin.getDataPath());
 
         this.fileManager = new PaperFileManager(this.getDataPath());
@@ -46,7 +46,7 @@ public class FusionPaper extends FusionKyori<Audience> {
         this.pluginManager = this.server.getPluginManager();
     }
 
-    public FusionPaper(@NotNull final BootstrapContext context) {
+    public FusionPaper(@NonNull final BootstrapContext context) {
         super(context.getDataDirectory());
 
         this.fileManager = new PaperFileManager(this.getDataPath());
@@ -70,7 +70,7 @@ public class FusionPaper extends FusionKyori<Audience> {
         return this;
     }
 
-    public FusionPaper setPlugin(@NotNull final JavaPlugin plugin) {
+    public FusionPaper setPlugin(@NonNull final JavaPlugin plugin) {
         this.server = plugin.getServer();
         this.pluginManager = this.server.getPluginManager();
 
@@ -80,12 +80,12 @@ public class FusionPaper extends FusionKyori<Audience> {
     }
 
     @Override
-    public String papi(@Nullable final Audience sender, @NotNull final String message) {
+    public String papi(@Nullable final Audience sender, @NonNull final String message) {
         return isPluginEnabled("PlaceholderAPI") && sender instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
     }
 
     @Override
-    public void registerPermission(@NotNull final PermissionContext context) {
+    public void registerPermission(@NonNull final PermissionContext context) {
         final Permission permission = new Permission(context.getPermission(), context.getDescription(), switch (context.getType()) {
             case TRUE -> PermissionDefault.TRUE;
             case FALSE -> PermissionDefault.FALSE;
@@ -97,7 +97,7 @@ public class FusionPaper extends FusionKyori<Audience> {
     }
 
     @Override
-    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception, @NotNull final Object... args) {
+    public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Exception exception, @NonNull final Object... args) {
         if (!this.isVerbose()) return;
 
         final Component component = asComponent(message.formatted(args));
@@ -110,7 +110,7 @@ public class FusionPaper extends FusionKyori<Audience> {
     }
 
     @Override
-    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Object... args) {
+    public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Object... args) {
         if (!this.isVerbose()) return;
 
         final Component component = asComponent(message.formatted(args));
@@ -123,32 +123,32 @@ public class FusionPaper extends FusionKyori<Audience> {
     }
 
     @Override
-    public final boolean isModReady(@NotNull final FusionKey key) {
+    public final boolean isModReady(@NonNull final FusionKey key) {
         return this.pluginManager.isPluginEnabled(key.getValue());
     }
 
     @Override
-    public @NotNull final PaperFileManager getFileManager() {
+    public @NonNull final PaperFileManager getFileManager() {
         return this.fileManager;
     }
 
-    public @NotNull final Optional<HeadDatabaseAPI> getHeadApi() {
+    public @NonNull final Optional<HeadDatabaseAPI> getHeadApi() {
         return Optional.ofNullable(this.api);
     }
 
-    public @NotNull final GuiManager getGuiManager() {
+    public @NonNull final GuiManager getGuiManager() {
         return this.guiManager;
     }
 
-    public @NotNull final Server getServer() {
+    public @NonNull final Server getServer() {
         return this.server;
     }
 
-    public @NotNull final PlayerProfile createProfile(@NotNull final UUID uuid, @Nullable final String name) {
+    public @NonNull final PlayerProfile createProfile(@NonNull final UUID uuid, @Nullable final String name) {
         return this.server.createProfile(uuid, name);
     }
 
-    public final boolean isPluginEnabled(@NotNull final String plugin) {
+    public final boolean isPluginEnabled(@NonNull final String plugin) {
         return this.pluginManager.isPluginEnabled(plugin);
     }
 }

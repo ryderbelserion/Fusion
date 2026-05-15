@@ -9,7 +9,7 @@ import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.mojang.context.AbstractCommandContext;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.mojang.serializers.MessageComponentSerializer;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -18,9 +18,9 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
 
     private final FusionKyori fusion = (FusionKyori) FusionProvider.getInstance();
 
-    public @NotNull CompletableFuture<Suggestions> suggestDoubleArgument(
-            @NotNull final SuggestionsBuilder builder,
-            @NotNull final String tooltip,
+    public @NonNull CompletableFuture<Suggestions> suggestDoubleArgument(
+            @NonNull final SuggestionsBuilder builder,
+            @NonNull final String tooltip,
             final int minimum,
             final int maximum
     ) {
@@ -43,9 +43,9 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
         return suggestArgument(builder);
     }
 
-    public @NotNull CompletableFuture<Suggestions> suggestIntegerArgument(
-            @NotNull final SuggestionsBuilder builder,
-            @NotNull final String tooltip,
+    public @NonNull CompletableFuture<Suggestions> suggestIntegerArgument(
+            @NonNull final SuggestionsBuilder builder,
+            @NonNull final String tooltip,
             final int minimum,
             final int maximum
     ) {
@@ -70,9 +70,9 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
         return suggestArgument(builder);
     }
 
-    public @NotNull CompletableFuture<Suggestions> suggestStringArgument(
-            @NotNull final SuggestionsBuilder builder,
-            @NotNull final String tooltip,
+    public @NonNull CompletableFuture<Suggestions> suggestStringArgument(
+            @NonNull final SuggestionsBuilder builder,
+            @NonNull final String tooltip,
             final int minimum
     ) {
         final Message message = tooltip.isBlank() ? null : MessageComponentSerializer.message().serialize(this.fusion.asComponent(tooltip));
@@ -94,31 +94,31 @@ public abstract class AbstractCommand<C, S, I extends AbstractCommandContext<S>>
         return suggestArgument(builder);
     }
 
-    public @NotNull CompletableFuture<Suggestions> suggestArgument(
-            @NotNull final SuggestionsBuilder builder
+    public @NonNull CompletableFuture<Suggestions> suggestArgument(
+            @NonNull final SuggestionsBuilder builder
     ) {
         return builder.buildFuture();
     }
 
-    public abstract @NotNull List<PermissionContext> getPermissions();
+    public abstract @NonNull List<PermissionContext> getPermissions();
 
-    public @NotNull C registerPermissions() {
+    public @NonNull C registerPermissions() {
         getPermissions().forEach(this.fusion::registerPermission);
 
         return (C) this;
     }
 
-    public abstract boolean requirement(@NotNull final S context);
+    public abstract boolean requirement(@NonNull final S context);
 
-    public abstract @NotNull LiteralCommandNode<S> literal();
+    public abstract @NonNull LiteralCommandNode<S> literal();
 
-    public abstract void run(@NotNull final I context);
+    public abstract void run(@NonNull final I context);
 
-    public @NotNull List<String> getAliases() {
+    public @NonNull List<String> getAliases() {
         return List.of();
     }
 
-    public @NotNull String getDescription() {
+    public @NonNull String getDescription() {
         return "";
     }
 }

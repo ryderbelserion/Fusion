@@ -5,7 +5,7 @@ import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.interfaces.IConfigurate;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.gson.GsonConfigurationLoader;
@@ -17,7 +17,7 @@ import java.util.function.Consumer;
 
 public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurationNode, GsonConfigurationLoader, ConfigurationOptions> implements IConfigurate {
 
-    public JsonCustomFile(@NotNull final FileManager fileManager, @NotNull final Path path, @NotNull final Consumer<JsonCustomFile> consumer) {
+    public JsonCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<JsonCustomFile> consumer) {
         super(fileManager, path);
 
         this.options = ConfigurationOptions.defaults();
@@ -28,7 +28,7 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
     }
 
     @Override
-    public @NotNull BasicConfigurationNode loadConfig() throws IOException {
+    public @NonNull BasicConfigurationNode loadConfig() throws IOException {
         return this.loader.load();
     }
 
@@ -38,7 +38,7 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
     }
 
     @Override
-    public @NotNull FileType getFileType() {
+    public @NonNull FileType getFileType() {
         return FileType.JSON;
     }
 
@@ -54,7 +54,7 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
      * @return {@inheritDoc}
      */
     @Override
-    public @NotNull List<String> getStringList(@NotNull final List<String> defaultValue, @NotNull final Object... path) {
+    public @NonNull List<String> getStringList(@NonNull final List<String> defaultValue, @NonNull final Object... path) {
         final BasicConfigurationNode node = getConfiguration().node(path);
 
         try {
@@ -76,7 +76,7 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
      * @return {@inheritDoc}
      */
     @Override
-    public @NotNull String getStringValueWithDefault(@NotNull final String defaultValue, @NotNull final Object... path) {
+    public @NonNull String getStringValueWithDefault(@NonNull final String defaultValue, @NonNull final Object... path) {
         return getConfiguration().node(path).getString(defaultValue);
     }
 
@@ -88,7 +88,7 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
      * @return {@inheritDoc}
      */
     @Override
-    public boolean getBooleanValueWithDefault(final boolean defaultValue, @NotNull final Object... path) {
+    public boolean getBooleanValueWithDefault(final boolean defaultValue, @NonNull final Object... path) {
         return getConfiguration().node(path).getBoolean(defaultValue);
     }
 
@@ -100,7 +100,7 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
      * @return {@inheritDoc}
      */
     @Override
-    public double getDoubleValueWithDefault(final double defaultValue, @NotNull final Object... path) {
+    public double getDoubleValueWithDefault(final double defaultValue, @NonNull final Object... path) {
         return getConfiguration().node(path).getDouble(defaultValue);
     }
 
@@ -112,7 +112,7 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
      * @return {@inheritDoc}
      */
     @Override
-    public long getLongValueWithDefault(final long defaultValue, @NotNull final Object... path) {
+    public long getLongValueWithDefault(final long defaultValue, @NonNull final Object... path) {
         return getConfiguration().node(path).getLong(defaultValue);
     }
 
@@ -124,7 +124,7 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
      * @return {@inheritDoc}
      */
     @Override
-    public int getIntValueWithDefault(final int defaultValue, @NotNull final Object... path) {
+    public int getIntValueWithDefault(final int defaultValue, @NonNull final Object... path) {
         return getConfiguration().node(path).getInt(defaultValue);
     }
 }

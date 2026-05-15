@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.builders.gui.enums;
 
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public enum GuiBorder {
 
@@ -16,7 +16,7 @@ public enum GuiBorder {
 
     private final String type;
 
-    GuiBorder(@NotNull final String type) {
+    GuiBorder(@NonNull final String type) {
         this.type = type;
     }
 
@@ -24,7 +24,7 @@ public enum GuiBorder {
         return this.type;
     }
 
-    public static GuiBorder getFromName(@NotNull final String name) {
+    public static GuiBorder getFromName(@NonNull final String name) {
         GuiBorder origin = GuiBorder.REMAINING_SLOTS;
 
         for (final GuiBorder type : GuiBorder.values()) {

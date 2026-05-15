@@ -9,22 +9,22 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import java.util.Map;
 
 public class SimpleGui extends GuiBuilder<SimpleGui> {
 
     public SimpleGui(
-            @NotNull final JavaPlugin plugin,
-            @NotNull final Audience player,
-            @NotNull final String title,
+            @NonNull final JavaPlugin plugin,
+            @NonNull final Audience player,
+            @NonNull final String title,
             final int rows,
-            @NotNull final Map<String, String> placeholders
+            @NonNull final Map<String, String> placeholders
     ) {
         super(plugin, player, title, rows, placeholders);
     }
 
-    public SimpleGui interact(@NotNull final InventoryClickEvent event) {
+    public SimpleGui interact(@NonNull final InventoryClickEvent event) {
         final int slot = event.getSlot();
 
         if (this.states.contains(GuiState.block_all_interactions)) {
@@ -67,37 +67,37 @@ public class SimpleGui extends GuiBuilder<SimpleGui> {
         return this;
     }
 
-    public static @NotNull SimpleGui gui(
-            @NotNull final JavaPlugin plugin,
-            @NotNull final Audience player,
-            @NotNull final String title,
+    public static @NonNull SimpleGui gui(
+            @NonNull final JavaPlugin plugin,
+            @NonNull final Audience player,
+            @NonNull final String title,
             final int rows,
-            @NotNull final Map<String, String> placeholders
+            @NonNull final Map<String, String> placeholders
     ) {
         return new SimpleGui(plugin, player, title, rows, placeholders);
     }
 
-    public static @NotNull SimpleGui gui(
-            @NotNull final JavaPlugin plugin,
-            @NotNull final String title,
+    public static @NonNull SimpleGui gui(
+            @NonNull final JavaPlugin plugin,
+            @NonNull final String title,
             final int rows,
-            @NotNull final Map<String, String> placeholders
+            @NonNull final Map<String, String> placeholders
     ) {
         return gui(plugin, Audience.empty(), title, rows, placeholders);
     }
 
-    public static @NotNull SimpleGui gui(
-            @NotNull final JavaPlugin plugin,
-            @NotNull final Audience player,
-            @NotNull final String title,
+    public static @NonNull SimpleGui gui(
+            @NonNull final JavaPlugin plugin,
+            @NonNull final Audience player,
+            @NonNull final String title,
             final int rows
     ) {
         return gui(plugin, player, title, rows, Map.of());
     }
 
-    public static @NotNull SimpleGui gui(
-            @NotNull final JavaPlugin plugin,
-            @NotNull final String title,
+    public static @NonNull SimpleGui gui(
+            @NonNull final JavaPlugin plugin,
+            @NonNull final String title,
             final int rows
     ) {
         return gui(plugin, Audience.empty(), title, rows);

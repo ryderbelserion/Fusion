@@ -6,7 +6,7 @@ import io.papermc.paper.datacomponent.item.Fireworks;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
@@ -14,19 +14,19 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
 
     private final Fireworks.Builder builder;
 
-    public FireworkBuilder(@NotNull final ItemStack itemStack) {
+    public FireworkBuilder(@NonNull final ItemStack itemStack) {
         super(itemStack);
 
         this.builder = Fireworks.fireworks();
     }
 
-    public @NotNull FireworkBuilder addEffect(@NotNull final FireworkEffect effect) {
+    public @NonNull FireworkBuilder addEffect(@NonNull final FireworkEffect effect) {
         this.builder.addEffect(effect);
 
         return this;
     }
 
-    public @NotNull FireworkBuilder addEffect(final boolean flicker, final boolean trail, @NotNull final FireworkEffect.Type type, @Nullable final List<Color> colors, @Nullable final List<Color> fadeColors) {
+    public @NonNull FireworkBuilder addEffect(final boolean flicker, final boolean trail, @NonNull final FireworkEffect.Type type, @Nullable final List<Color> colors, @Nullable final List<Color> fadeColors) {
         final FireworkStarBuilder builder = new FireworkStarBuilder(this.itemStack);
 
         builder.flicker(flicker);
@@ -40,7 +40,7 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
         return addEffect(builder.getBuilder().build());
     }
 
-    public @NotNull FireworkBuilder withDuration(final int duration) {
+    public @NonNull FireworkBuilder withDuration(final int duration) {
         if (duration == -1) return this;
 
         this.builder.flightDuration(duration);
@@ -49,7 +49,7 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
     }
 
     @Override
-    public @NotNull FireworkBuilder build() {
+    public @NonNull FireworkBuilder build() {
         this.itemStack.setData(DataComponentTypes.FIREWORKS, this.builder.build());
 
         return this;

@@ -5,7 +5,7 @@ import com.ryderbelserion.fusion.paper.FusionPaper;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -17,7 +17,7 @@ public class PlayerBuilder {
 
     private final String name;
 
-    public PlayerBuilder(@NotNull final String name) {
+    public PlayerBuilder(@NonNull final String name) {
         this.name = name;
     }
 

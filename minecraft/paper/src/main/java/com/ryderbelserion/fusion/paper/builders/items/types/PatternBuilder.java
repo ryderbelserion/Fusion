@@ -8,25 +8,25 @@ import io.papermc.paper.datacomponent.item.BannerPatternLayers;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class PatternBuilder extends BaseItemBuilder<PatternBuilder> {
 
     private final BannerPatternLayers.Builder builder;
 
-    public PatternBuilder(@NotNull final ItemStack itemStack) {
+    public PatternBuilder(@NonNull final ItemStack itemStack) {
         super(itemStack);
 
         this.builder = BannerPatternLayers.bannerPatternLayers();
     }
 
-    public @NotNull PatternBuilder addPattern(@NotNull final Pattern pattern) {
+    public @NonNull PatternBuilder addPattern(@NonNull final Pattern pattern) {
         this.builder.add(pattern);
 
         return this;
     }
 
-    public @NotNull PatternBuilder addPattern(@NotNull final String pattern, @NotNull final String dye) {
+    public @NonNull PatternBuilder addPattern(@NonNull final String pattern, @NonNull final String dye) {
         if (pattern.isBlank() || dye.isBlank()) return this;
 
         final PatternType type = ItemUtils.getPatternType(pattern.toLowerCase());
@@ -37,7 +37,7 @@ public class PatternBuilder extends BaseItemBuilder<PatternBuilder> {
     }
 
     @Override
-    public @NotNull PatternBuilder build() {
+    public @NonNull PatternBuilder build() {
         this.itemStack.setData(DataComponentTypes.BANNER_PATTERNS, this.builder.build());
 
         return this;

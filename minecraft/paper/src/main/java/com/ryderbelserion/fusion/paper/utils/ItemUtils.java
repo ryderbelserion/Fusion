@@ -27,7 +27,7 @@ import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.Base64;
 import java.util.Optional;
@@ -36,11 +36,11 @@ public class ItemUtils {
 
     private static final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
 
-    public static @NotNull RegistryAccess getRegistryAccess() {
+    public static @NonNull RegistryAccess getRegistryAccess() {
         return RegistryAccess.registryAccess();
     }
 
-    public static @Nullable ItemStack getItemStack(@NotNull final String context) {
+    public static @Nullable ItemStack getItemStack(@NonNull final String context) {
         ItemInput parser = null;
 
         try {
@@ -64,7 +64,7 @@ public class ItemUtils {
         return CraftItemStack.asCraftMirror(itemStack);
     }
 
-    public static @NotNull Optional<DataComponentType> getDataComponentType(@NotNull final String value) {
+    public static @NonNull Optional<DataComponentType> getDataComponentType(@NonNull final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank while fetching a data component.", value);
 
@@ -76,7 +76,7 @@ public class ItemUtils {
         return Optional.ofNullable(type);
     }
 
-    public static @Nullable ItemType getItemType(@NotNull final String value) {
+    public static @Nullable ItemType getItemType(@NonNull final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching item types.", value);
 
@@ -104,7 +104,7 @@ public class ItemUtils {
         return itemType;
     }
 
-    public static @Nullable Sound getSound(@NotNull final String value) {
+    public static @Nullable Sound getSound(@NonNull final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the sound.", value);
 
@@ -132,7 +132,7 @@ public class ItemUtils {
         return sound;
     }
 
-    public static @Nullable Enchantment getEnchantment(@NotNull final String value) {
+    public static @Nullable Enchantment getEnchantment(@NonNull final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the enchantment.", value);
 
@@ -160,7 +160,7 @@ public class ItemUtils {
         return enchantment;
     }
 
-    public static @Nullable TrimPattern getTrimPattern(@NotNull final String value) {
+    public static @Nullable TrimPattern getTrimPattern(@NonNull final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the trim pattern.", value);
 
@@ -188,7 +188,7 @@ public class ItemUtils {
         return trimPattern;
     }
 
-    public static @Nullable TrimMaterial getTrimMaterial(@NotNull final String value) {
+    public static @Nullable TrimMaterial getTrimMaterial(@NonNull final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the trim material.", value);
 
@@ -216,7 +216,7 @@ public class ItemUtils {
         return trimMaterial;
     }
 
-    public static @Nullable PotionType getPotionType(@NotNull final String value) {
+    public static @Nullable PotionType getPotionType(@NonNull final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the potion.", value);
 
@@ -244,7 +244,7 @@ public class ItemUtils {
         return potionType;
     }
 
-    public static @Nullable PotionEffectType getPotionEffect(@NotNull final String value) {
+    public static @Nullable PotionEffectType getPotionEffect(@NonNull final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the potion effect.", value);
 
@@ -272,7 +272,7 @@ public class ItemUtils {
         return potionEffectType;
     }
 
-    public static @Nullable Particle getParticleType(@NotNull final String value) {
+    public static @Nullable Particle getParticleType(@NonNull final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the particle.", value);
 
@@ -300,7 +300,7 @@ public class ItemUtils {
         return particle;
     }
 
-    public static @Nullable PatternType getPatternType(@NotNull final String value) {
+    public static @Nullable PatternType getPatternType(@NonNull final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching banner pattern types!", value);
 
@@ -328,7 +328,7 @@ public class ItemUtils {
         return patternType;
     }
 
-    public static @Nullable EntityType getEntity(@NotNull final String value) {
+    public static @Nullable EntityType getEntity(@NonNull final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the entity.", value);
 
@@ -356,7 +356,7 @@ public class ItemUtils {
         return entityType;
     }
 
-    public static @Nullable Attribute getAttribute(@NotNull final String value) {
+    public static @Nullable Attribute getAttribute(@NonNull final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the attribute.", value);
 
@@ -384,23 +384,23 @@ public class ItemUtils {
         return attribute;
     }
 
-    private static @NotNull NamespacedKey getKey(@NotNull final String value) {
+    private static @NonNull NamespacedKey getKey(@NonNull final String value) {
         return NamespacedKey.minecraft(value);
     }
 
-    public static byte[] toBytes(@NotNull final ItemStack itemStack) {
+    public static byte[] toBytes(@NonNull final ItemStack itemStack) {
         return itemStack.serializeAsBytes();
     }
 
-    public static @NotNull ItemStack fromBytes(final byte @NotNull [] bytes) {
+    public static @NonNull ItemStack fromBytes(final byte @NonNull [] bytes) {
         return ItemStack.deserializeBytes(bytes);
     }
 
-    public static @NotNull String toBase64(@NotNull final ItemStack itemStack) {
+    public static @NonNull String toBase64(@NonNull final ItemStack itemStack) {
         return Base64.getEncoder().encodeToString(itemStack.serializeAsBytes());
     }
 
-    public static @NotNull ItemStack fromBase64(@NotNull final String base64) {
+    public static @NonNull ItemStack fromBase64(@NonNull final String base64) {
         return ItemStack.deserializeBytes(Base64.getDecoder().decode(base64));
     }
 }
