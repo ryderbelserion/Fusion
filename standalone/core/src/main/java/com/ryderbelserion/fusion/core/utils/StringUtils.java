@@ -119,7 +119,7 @@ public class StringUtils {
         return NumberFormat.getNumberInstance(Locale.US).format(number);
     }
 
-    public static @NonNull String formatNumber(final double number, @NonNull final NumberFormat.Style style) {
+    public static @NonNull String formatNumber(final double number, final NumberFormat.@NonNull Style style) {
         return NumberFormat.getCompactNumberInstance(Locale.US, style).format(number);
     }
 

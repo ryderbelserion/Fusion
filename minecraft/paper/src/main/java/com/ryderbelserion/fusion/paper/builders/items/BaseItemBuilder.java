@@ -846,7 +846,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return getKey().value();
     }
 
-    private @NonNull TooltipDisplay.Builder builder() {
+    private TooltipDisplay.@NonNull Builder builder() {
         final TooltipDisplay.Builder builder = TooltipDisplay.tooltipDisplay();
 
         if (this.itemStack.hasData(DataComponentTypes.TOOLTIP_DISPLAY)) {

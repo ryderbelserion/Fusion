@@ -26,7 +26,7 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
         return this;
     }
 
-    public @NonNull FireworkBuilder addEffect(final boolean flicker, final boolean trail, @NonNull final FireworkEffect.Type type, @Nullable final List<Color> colors, @Nullable final List<Color> fadeColors) {
+    public @NonNull FireworkBuilder addEffect(final boolean flicker, final boolean trail, final FireworkEffect.@NonNull Type type, @Nullable final List<Color> colors, @Nullable final List<Color> fadeColors) {
         final FireworkStarBuilder builder = new FireworkStarBuilder(this.itemStack);
 
         builder.flicker(flicker);

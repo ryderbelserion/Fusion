@@ -66,13 +66,13 @@ public class FireworkStarBuilder extends BaseItemBuilder<FireworkStarBuilder> {
         return this;
     }
 
-    public @NonNull FireworkStarBuilder with(@NonNull final FireworkEffect.Type type) {
+    public @NonNull FireworkStarBuilder with(final FireworkEffect.@NonNull Type type) {
         this.builder.with(type);
 
         return this;
     }
 
-    public @NonNull FireworkEffect.Builder getBuilder() {
+    public FireworkEffect.@NonNull Builder getBuilder() {
         return this.builder;
     }
 

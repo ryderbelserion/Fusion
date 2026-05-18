@@ -164,7 +164,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
         return (B) this;
     }
 
-    public B close(@NonNull final Player player, @NonNull final InventoryCloseEvent.Reason reason, final boolean isDelayed) {
+    public B close(@NonNull final Player player, final InventoryCloseEvent.@NonNull Reason reason, final boolean isDelayed) {
         if (isDelayed) {
             new FoliaScheduler(this.plugin, Scheduler.global_scheduler) {
                 @Override
@@ -246,6 +246,10 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
 
     public B addSlotAction(final int slot, @NonNull final GuiAction<InventoryClickEvent> action) {
         return addSlotAction(slot, ItemType.AIR.createItemStack(), action);
+    }
+
+    public B addSlotAction(@NonNull final ItemStack itemStack, @NonNull final GuiAction<InventoryClickEvent> action) {
+        return addSlotAction(this.inventory.firstEmpty(), itemStack, action);
     }
 
     public B addSlotAction(@NonNull final GuiAction<InventoryClickEvent> action) {
