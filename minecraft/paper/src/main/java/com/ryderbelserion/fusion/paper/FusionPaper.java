@@ -61,7 +61,7 @@ public class FusionPaper extends FusionKyori<Audience> {
 
         this.guiManager = new GuiManager();
 
-        if (this.pluginManager.isPluginEnabled("HeadDatabaseAPI") && this.api == null) {
+        if (this.pluginManager.isPluginEnabled("HeadDatabase") && this.api == null) {
             this.api = new  HeadDatabaseAPI();
         }
 

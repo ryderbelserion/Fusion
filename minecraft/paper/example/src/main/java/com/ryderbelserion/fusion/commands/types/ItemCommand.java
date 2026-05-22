@@ -15,6 +15,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemType;
 import org.jspecify.annotations.NonNull;
 import java.util.List;
 
@@ -40,7 +41,11 @@ public class ItemCommand extends PaperCommand {
 
         //CustomStack.getNamespacedIdsInRegistry().forEach(key -> fusion.log(Level.WARNING, "Key: %s", key));
 
-        final ItemBuilder builder = ItemBuilder.from("iageneric:red_coupon");
+        //final ItemBuilder builder = ItemBuilder.from("iageneric:red_coupon");
+
+        final ItemBuilder builder = ItemBuilder.from(ItemType.PLAYER_HEAD);
+
+        builder.withSkull("65585");
 
         player.getInventory().addItem(builder.asItemStack(player));
     }
