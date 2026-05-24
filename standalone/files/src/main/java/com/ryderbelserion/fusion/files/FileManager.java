@@ -39,8 +39,8 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NonNull FileManager addFolder(@NonNull final Path folder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
-        extractFolder(folder.getFileName().toString(), folder.getParent());
+    public @NonNull FileManager addFolder(@NonNull final Path folder, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
+        extractFolder(folder.getFileName().toString(), jarFolder, folder.getParent());
 
         for (final Path path : getFilesByPath(folder, fileType.getExtension(), getDepth())) {
             addFile(path, fileType, consumer);
@@ -50,7 +50,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NonNull FileManager addFile(@NonNull final Path path, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
+    public @NonNull FileManager addFile(@NonNull final Path path, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
         if (this.files.containsKey(path)) {
             final ICustomFile<?, ?, ?, ?> customFile = this.files.get(path);
 
@@ -66,8 +66,8 @@ public class FileManager extends IFileManager<FileManager> {
         ICustomFile<?, ?, ?, ?> customFile = null;
 
         switch (fileType) {
-            case YAML -> customFile = buildYamlFile(path, consumer::accept);
-            case JSON -> customFile = buildJsonFile(path, consumer::accept);
+            case YAML -> customFile = buildYamlFile(path, jarFolder, consumer::accept);
+            case JSON -> customFile = buildJsonFile(path, jarFolder, consumer::accept);
             case LOG -> customFile = buildLogFile(path, consumer::accept);
         }
 
@@ -143,13 +143,13 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NonNull YamlCustomFile buildYamlFile(@NonNull final Path path, @NonNull final Consumer<YamlCustomFile> consumer) {
-        return new YamlCustomFile(this, path, consumer).load();
+    public @NonNull YamlCustomFile buildYamlFile(@NonNull final Path path, @NonNull final String jarFolder, @NonNull final Consumer<YamlCustomFile> consumer) {
+        return new YamlCustomFile(this, jarFolder, path, consumer).load();
     }
 
     @Override
-    public @NonNull JsonCustomFile buildJsonFile(@NonNull final Path path, @NonNull final Consumer<JsonCustomFile> consumer) {
-        return new JsonCustomFile(this, path, consumer).load();
+    public @NonNull JsonCustomFile buildJsonFile(@NonNull final Path path, @NonNull final String jarFolder, @NonNull final Consumer<JsonCustomFile> consumer) {
+        return new JsonCustomFile(this, jarFolder, path, consumer).load();
     }
 
     @Override
@@ -280,7 +280,7 @@ public class FileManager extends IFileManager<FileManager> {
                     .collect(Collectors.toSet());
 
             entries.forEach(entry -> {
-                final String entryName = jarFolder.isBlank() ? entry.getName() : entry.getName().replace("%s%s".formatted(jarFolder, "/"), "");
+                final String entryName = parseJarFolder(entry.getName(), jarFolder);
 
                 final Path target = output.resolve(entryName);
                 final Path parent = output.getParent();

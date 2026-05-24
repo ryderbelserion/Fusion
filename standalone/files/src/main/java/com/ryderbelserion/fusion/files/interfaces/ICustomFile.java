@@ -27,11 +27,24 @@ public abstract class ICustomFile<I, C, L, O> {
 
     protected FileManager fileManager;
     protected FileType fileType;
+    protected String jarFolder;
     protected Path path;
 
-    public ICustomFile(@NonNull final FileManager fileManager, @NonNull final Path path) {
+    public ICustomFile(
+            @NonNull final FileManager fileManager,
+            @NonNull final String jarFolder,
+            @NonNull final Path path
+    ) {
         this.fileManager = fileManager;
+        this.jarFolder = jarFolder;
         this.path = path;
+    }
+
+    public ICustomFile(
+            @NonNull final FileManager fileManager,
+            @NonNull final Path path
+    ) {
+        this(fileManager, "", path);
     }
 
     public abstract @NonNull C loadConfig() throws IOException;
@@ -50,11 +63,11 @@ public abstract class ICustomFile<I, C, L, O> {
 
         if (!hasAction(FileAction.ALREADY_EXTRACTED)) {
             if (hasAction(FileAction.EXTRACT_FILE)) {
-                this.fileManager.extractFile(name);
+                this.fileManager.extractFile(this.fileManager.parseJarFolder(name, this.jarFolder));
             }
 
             if (hasAction(FileAction.EXTRACT_FOLDER)) {
-                this.fileManager.extractFolder(name, parent);
+                this.fileManager.extractFolder(name, this.jarFolder, parent);
             }
         }
 

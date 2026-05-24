@@ -26,13 +26,29 @@ public abstract class IFileManager<I> {
 
     public abstract @NonNull I addFile(@NonNull final Path path, @NonNull final Consumer<YamlFileResourceOptions.Builder> options, @NonNull final Consumer<SettingsManagerBuilder> builder);
 
-    public abstract @NonNull I addFolder(@NonNull final Path folder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
+    public abstract @NonNull I addFolder(@NonNull final Path folder, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
+
+    public @NonNull I addFolder(@NonNull final Path folder, @NonNull final String jarFolder, @NonNull final FileType fileType) {
+        return addFolder(folder, jarFolder, fileType, consumer -> consumer.addAction(FileAction.EXTRACT_FOLDER));
+    }
+
+    public abstract @NonNull I addFile(@NonNull final Path path, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
+
+    public @NonNull I addFile(@NonNull final Path path, @NonNull final String jarFolder, @NonNull final FileType fileType) {
+        return addFile(path, jarFolder, fileType, consumer -> consumer.addAction(FileAction.EXTRACT_FILE));
+    }
+
+    public @NonNull I addFolder(@NonNull final Path folder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
+        return addFolder(folder, "", fileType, consumer);
+    }
 
     public @NonNull I addFolder(@NonNull final Path folder, @NonNull final FileType fileType) {
         return addFolder(folder, fileType, consumer -> consumer.addAction(FileAction.EXTRACT_FOLDER));
     }
 
-    public abstract @NonNull I addFile(@NonNull final Path path, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
+    public @NonNull I addFile(@NonNull final Path path, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
+        return addFile(path, "", fileType, consumer);
+    }
 
     public @NonNull I addFile(@NonNull final Path path, @NonNull final FileType fileType) {
         return addFile(path, fileType, consumer -> consumer.addAction(FileAction.EXTRACT_FILE));
@@ -58,9 +74,17 @@ public abstract class IFileManager<I> {
 
     public abstract @NonNull JaluCustomFile buildJaluFile(@NonNull final Path path, @NonNull final Consumer<YamlFileResourceOptions.Builder> options, @NonNull final Consumer<SettingsManagerBuilder> builder);
 
-    public abstract @NonNull YamlCustomFile buildYamlFile(@NonNull final Path path, @NonNull final Consumer<YamlCustomFile> consumer);
+    public abstract @NonNull YamlCustomFile buildYamlFile(@NonNull final Path path, @NonNull final String jarFolder, @NonNull final Consumer<YamlCustomFile> consumer);
 
-    public abstract @NonNull JsonCustomFile buildJsonFile(@NonNull final Path path, @NonNull final Consumer<JsonCustomFile> consumer);
+    public abstract @NonNull JsonCustomFile buildJsonFile(@NonNull final Path path, @NonNull final String jarFolder, @NonNull final Consumer<JsonCustomFile> consumer);
+
+    public @NonNull YamlCustomFile buildYamlFile(@NonNull final Path path, @NonNull final Consumer<YamlCustomFile> consumer) {
+        return buildYamlFile(path, "", consumer);
+    }
+
+    public @NonNull JsonCustomFile buildJsonFile(@NonNull final Path path, @NonNull final Consumer<JsonCustomFile> consumer) {
+        return buildJsonFile(path, "", consumer);
+    }
 
     public abstract @NonNull LogCustomFile buildLogFile(@NonNull final Path path, @NonNull final Consumer<LogCustomFile> consumer);
 
@@ -92,6 +116,10 @@ public abstract class IFileManager<I> {
 
     public @NonNull final I extractFolder(@NonNull final String folder, @NonNull final Path output) {
         return extractFolder(folder, "", output);
+    }
+
+    public @NonNull final String parseJarFolder(@NonNull final String name, @NonNull final String jarFolder) {
+        return jarFolder.isBlank() ? name : name.replace("%s%s".formatted(jarFolder, "/"), "");
     }
 
     public abstract @NonNull I compressFolder(@NonNull final Path path, @NonNull final String content);

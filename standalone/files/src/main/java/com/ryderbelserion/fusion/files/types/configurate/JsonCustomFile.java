@@ -17,14 +17,18 @@ import java.util.function.Consumer;
 
 public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurationNode, GsonConfigurationLoader, ConfigurationOptions> implements IConfigurate {
 
-    public JsonCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<JsonCustomFile> consumer) {
-        super(fileManager, path);
+    public JsonCustomFile(@NonNull final FileManager fileManager, @NonNull final String jarFolder, @NonNull final Path path, @NonNull final Consumer<JsonCustomFile> consumer) {
+        super(fileManager, jarFolder, path);
 
         this.options = ConfigurationOptions.defaults();
 
         consumer.accept(this);
 
         this.loader = GsonConfigurationLoader.builder().path(getPath()).defaultOptions(getOptions()).build();
+    }
+
+    public JsonCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<JsonCustomFile> consumer) {
+        this(fileManager, "", path, consumer);
     }
 
     @Override

@@ -17,14 +17,18 @@ import java.util.function.Consumer;
 
 public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedConfigurationNode, YamlConfigurationLoader, ConfigurationOptions> implements IConfigurate {
 
-    public YamlCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<YamlCustomFile> consumer) {
-        super(fileManager, path);
+    public YamlCustomFile(@NonNull final FileManager fileManager, @NonNull final String jarFolder, @NonNull final Path path, @NonNull final Consumer<YamlCustomFile> consumer) {
+        super(fileManager, jarFolder, path);
 
         this.options = ConfigurationOptions.defaults();
 
         consumer.accept(this);
 
         this.loader = YamlConfigurationLoader.builder().path(getPath()).defaultOptions(getOptions()).build();
+    }
+
+    public YamlCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<YamlCustomFile> consumer) {
+        this(fileManager, "", path, consumer);
     }
 
     @Override
