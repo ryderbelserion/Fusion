@@ -1,4 +1,6 @@
 plugins {
+    `config-publish`
+
     `velocity-plugin`
 }
 
