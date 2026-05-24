@@ -88,7 +88,11 @@ public abstract class IFileManager<I> {
         return extract(output, output, entry -> entry.getName().equalsIgnoreCase(output));
     }
 
-    public abstract @NonNull I extractFolder(@NonNull final String folder, @NonNull final Path output);
+    public abstract @NonNull I extractFolder(@NonNull final String folder, @NonNull final String jarFolder, @NonNull final Path output);
+
+    public @NonNull final I extractFolder(@NonNull final String folder, @NonNull final Path output) {
+        return extractFolder(folder, "", output);
+    }
 
     public abstract @NonNull I compressFolder(@NonNull final Path path, @NonNull final String content);
 

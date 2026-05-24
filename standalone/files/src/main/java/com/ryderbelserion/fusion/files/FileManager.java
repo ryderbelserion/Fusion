@@ -257,7 +257,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NonNull FileManager extractFolder(@NonNull final String folder, @NonNull final Path output) {
+    public @NonNull FileManager extractFolder(@NonNull final String folder, @NonNull final String jarFolder, @NonNull final Path output) {
         final Path path = output.resolve(folder);
 
         if (Files.exists(path)) { // do not extract if path exists.
@@ -276,12 +276,14 @@ public class FileManager extends IFileManager<FileManager> {
             final Set<JarEntry> entries = jar.stream().filter(entry -> !entry.getName().endsWith(".class"))
                     .filter(entry -> !entry.getName().startsWith("META-INF"))
                     .filter(entry -> !entry.isDirectory())
-                    .filter(entry -> entry.getName().startsWith(folder))
+                    .filter(entry -> entry.getName().startsWith(jarFolder.isBlank() ? folder : jarFolder))
                     .collect(Collectors.toSet());
 
             entries.forEach(entry -> {
-                final Path target = output.resolve(entry.getName());
-                final Path parent = target.getParent();
+                final String entryName = jarFolder.isBlank() ? entry.getName() : entry.getName().replace("%s%s".formatted(jarFolder, "/"), "");
+
+                final Path target = output.resolve(entryName);
+                final Path parent = output.getParent();
 
                 if (!Files.exists(parent)) {
                     try {

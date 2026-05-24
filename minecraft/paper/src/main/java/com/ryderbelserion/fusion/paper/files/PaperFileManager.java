@@ -43,7 +43,7 @@ public class PaperFileManager extends FileManager {
     }
 
     public @NonNull final PaperFileManager addPaperFolder(@NonNull final Path folder, @NonNull final Consumer<PaperCustomFile> consumer) {
-        extractFolder(folder.getFileName().toString(), folder.getParent());
+        extractFolder(folder.getFileName().toString(), "", folder.getParent());
 
         for (final Path path : getFilesByPath(folder, ".yml", getDepth())) {
             addPaperFile(path, consumer);

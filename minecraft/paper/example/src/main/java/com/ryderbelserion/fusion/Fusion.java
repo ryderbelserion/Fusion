@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NonNull;
+import java.nio.file.Path;
 import java.util.List;
 
 public class Fusion extends JavaPlugin implements Listener {
@@ -25,7 +26,13 @@ public class Fusion extends JavaPlugin implements Listener {
 
         final FileManager fileManager = this.fusion.getFileManager();
 
-        fileManager.extractFolder("crates", getDataPath());
+        final Path path = getDataPath();
+
+        fileManager.extractFolder("crates", path);
+
+        fileManager.extractFile("velocity/config.yml", path.resolve("configx2.yml"));
+
+        fileManager.extractFolder("locale", "velocity", path);
 
         final LifecycleEventManager<Plugin> eventManager = getLifecycleManager();
 
