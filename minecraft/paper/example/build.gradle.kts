@@ -1,6 +1,7 @@
 plugins {
     `config-publish`
-    `config-paper`
+
+    `paper-plugin`
 }
 
 project.group = "${rootProject.name}.paper"

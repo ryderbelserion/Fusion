@@ -1,6 +1,7 @@
 plugins {
     `config-publish`
-    `config-java`
+
+    `shadow-plugin`
 }
 
 project.group = "${rootProject.name}.mojang"
