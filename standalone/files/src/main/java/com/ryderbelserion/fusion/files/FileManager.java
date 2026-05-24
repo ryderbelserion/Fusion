@@ -190,6 +190,7 @@ public class FileManager extends IFileManager<FileManager> {
             final Set<JarEntry> map = jarFile.stream()
                     .filter(entry -> !entry.getName().endsWith(".class")) // filter .class files
                     .filter(entry -> !entry.getName().startsWith("META-INF")) // filter meta inf
+                    .filter(entry -> entry.getName().equalsIgnoreCase("velocity-plugin.json"))
                     .filter(predicate) // custom predicate
                     .collect(Collectors.toSet());
 
@@ -235,6 +236,7 @@ public class FileManager extends IFileManager<FileManager> {
             final Set<JarEntry> entries = jarFile.stream().filter(entry -> !entry.getName().endsWith(".class"))
                     .filter(entry -> !entry.getName().startsWith("META-INF"))
                     .filter(entry -> !entry.isDirectory())
+                    .filter(entry -> entry.getName().equalsIgnoreCase("velocity-plugin.json"))
                     .filter(entry -> entry.getName().equalsIgnoreCase(fileName))
                     .collect(Collectors.toSet());
 
@@ -276,6 +278,7 @@ public class FileManager extends IFileManager<FileManager> {
             final Set<JarEntry> entries = jar.stream().filter(entry -> !entry.getName().endsWith(".class"))
                     .filter(entry -> !entry.getName().startsWith("META-INF"))
                     .filter(entry -> !entry.isDirectory())
+                    .filter(entry -> entry.getName().equalsIgnoreCase("velocity-plugin.json"))
                     .filter(entry -> entry.getName().startsWith(jarFolder.isBlank() ? folder : jarFolder))
                     .collect(Collectors.toSet());
 
