@@ -86,6 +86,10 @@ public class FusionPaper extends FusionKyori<Audience> {
 
     @Override
     public void registerPermission(@NonNull final PermissionContext context) {
+        if (this.pluginManager.getPermission(context.getPermission()) != null) {
+            return;
+        }
+
         final Permission permission = new Permission(context.getPermission(), context.getDescription(), switch (context.getType()) {
             case TRUE -> PermissionDefault.TRUE;
             case FALSE -> PermissionDefault.FALSE;
