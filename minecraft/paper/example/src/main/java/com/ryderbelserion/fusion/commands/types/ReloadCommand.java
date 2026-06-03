@@ -1,6 +1,10 @@
 package com.ryderbelserion.fusion.commands.types;
 
 import com.mojang.brigadier.Command;
+import com.mojang.brigadier.arguments.DoubleArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.Fusion;
 import com.ryderbelserion.fusion.core.api.FusionKey;
@@ -21,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static io.papermc.paper.command.brigadier.Commands.argument;
+
 public class ReloadCommand extends PaperCommand {
 
     private final Fusion fusion;
@@ -32,8 +38,6 @@ public class ReloadCommand extends PaperCommand {
     @Override
     public void run(@NonNull final PaperCommandContext context) {
         final CommandSender sender = context.getSender();
-
-        Key.key("", "");
 
         final FusionPaper paper = this.fusion.getFusion();
 
@@ -59,16 +63,25 @@ public class ReloadCommand extends PaperCommand {
         }
 
         sender.sendRichMessage(msg.get().getValue());
+
+        sender.sendRichMessage("<yellow>%s Amount</yellow>".formatted(context.getIntegerArgument("amount").orElse(30)));
     }
 
     @Override
     public @NonNull final LiteralCommandNode<CommandSourceStack> literal() {
-        return Commands.literal("reload").requires(this::requirement)
-                .executes(context -> {
-                    run(new PaperCommandContext(context));
+        final LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("reload").requires(this::requirement);
 
-                    return Command.SINGLE_SUCCESS;
-                }).build();
+        final RequiredArgumentBuilder<CommandSourceStack, Integer> arg1 = argument("amount", IntegerArgumentType.integer(1, 64)).executes(context -> {
+            run(new PaperCommandContext(context));
+
+            return Command.SINGLE_SUCCESS;
+        });
+
+        return root.then(arg1).executes(context -> {
+            run(new PaperCommandContext(context));
+
+            return Command.SINGLE_SUCCESS;
+        }).build();
     }
 
     @Override
