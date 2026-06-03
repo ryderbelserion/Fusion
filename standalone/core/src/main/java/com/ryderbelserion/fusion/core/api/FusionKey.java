@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.core.api;
 
 import com.ryderbelserion.fusion.core.api.interfaces.IFusionKey;
 import org.jspecify.annotations.NonNull;
+import java.util.Objects;
 
 public class FusionKey extends IFusionKey {
 
@@ -31,5 +32,19 @@ public class FusionKey extends IFusionKey {
     @Override
     public @NonNull String asString() {
         return this.namespace + ":" + this.value;
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (this == other) return true;
+
+        if (!(other instanceof FusionKey fusionKey)) return false;
+
+        return Objects.equals(this.namespace, fusionKey.getNamespace()) && Objects.equals(this.value, fusionKey.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.namespace, this.value);
     }
 }

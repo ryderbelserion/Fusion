@@ -3,7 +3,11 @@ package com.ryderbelserion.fusion;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.commands.SimpleCommand;
 import com.ryderbelserion.fusion.commands.types.ItemCommand;
+import com.ryderbelserion.fusion.commands.types.ReloadCommand;
+import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
+import com.ryderbelserion.fusion.core.api.registry.message.adapter.YamlMessageAdapter;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
@@ -50,6 +54,10 @@ public class Fusion extends JavaPlugin implements Listener {
             final CommentedConfigurationNode node = customFile.getConfiguration();
 
             this.fusion.log(Level.WARNING, "Node: %s", node.node("messages", "reload-plugin").getString("{prefix}<yellow>Das Plugin wurde neu geladen."));
+
+            final MessageRegistry registry = this.fusion.getMessageRegistry();
+
+            registry.addKey(FusionKey.key(this.fusion.getNamespace(), "reload_plugin"), new YamlMessageAdapter(node, "{prefix}<yellow>Das Plugin wurde neu geladen.", "messages", "reload-plugin"));
         });
 
         final LifecycleEventManager<Plugin> eventManager = getLifecycleManager();
@@ -59,7 +67,8 @@ public class Fusion extends JavaPlugin implements Listener {
             LiteralArgumentBuilder<CommandSourceStack> root = new SimpleCommand(this).registerPermissions().literal().createBuilder();
 
             List.of(
-                    new ItemCommand(this)
+                    new ItemCommand(this),
+                    new ReloadCommand(this)
             ).forEach(type -> root.then(type.literal()));
 
             event.registrar().register(root.build(), "The base command for Fusion!");

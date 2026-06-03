@@ -6,7 +6,6 @@ import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import java.nio.file.Path;
@@ -14,15 +13,17 @@ import java.nio.file.Path;
 public class FusionVelocity extends FusionKyori<Audience> {
 
     private final ComponentLogger logger;
+    private final String namespace;
 
-    public FusionVelocity(@NotNull final ComponentLogger logger, @NotNull final Path path) {
+    public FusionVelocity(@NonNull final String namespace, @NonNull final ComponentLogger logger, @NonNull final Path path) {
         super(path);
 
         this.logger = logger;
+        this.namespace = namespace;
     }
 
     @Override
-    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Exception exception, @NotNull final Object... objects) {
+    public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Exception exception, @NonNull final Object... objects) {
         if (!this.isVerbose()) return;
 
         final Component component = asComponent(message.formatted(objects));
@@ -35,7 +36,7 @@ public class FusionVelocity extends FusionKyori<Audience> {
     }
 
     @Override
-    public void log(@NotNull final Level level, @NotNull final String message, @NotNull final Object... objects) {
+    public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Object... objects) {
         if (!this.isVerbose()) return;
 
         final Component component = asComponent(message.formatted(objects));
@@ -48,17 +49,17 @@ public class FusionVelocity extends FusionKyori<Audience> {
     }
 
     @Override
-    public final boolean isModReady(@NotNull final FusionKey key) {
+    public final boolean isModReady(@NonNull final FusionKey key) {
         return false;
     }
 
     @Override
     public @NonNull final String getNamespace() {
-        return "chatterbox";
+        return this.namespace.toLowerCase();
     }
 
     @Override
-    public @NotNull final String papi(@Nullable final Audience sender, @NotNull final String message) {
+    public @NonNull final String papi(@Nullable final Audience sender, @NonNull final String message) {
         return message;
     }
 }

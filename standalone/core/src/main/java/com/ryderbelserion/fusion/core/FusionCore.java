@@ -74,7 +74,7 @@ public abstract class FusionCore {
             }
         }
 
-        this.messageRegistry = new MessageRegistry(FusionKey.key(getNamespace(), "default"));
+        this.messageRegistry = new MessageRegistry(this, FusionKey.key(getNamespace(), "default"));
 
         this.modRegistry = new ModRegistry();
         this.modRegistry.init();
