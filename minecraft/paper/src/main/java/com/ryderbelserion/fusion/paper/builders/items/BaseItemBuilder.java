@@ -1,7 +1,5 @@
 package com.ryderbelserion.fusion.paper.builders.items;
 
-import com.nexomc.nexo.api.NexoItems;
-import com.nexomc.nexo.items.ItemBuilder;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
@@ -14,16 +12,20 @@ import com.ryderbelserion.fusion.paper.builders.items.types.SkullBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.custom.CustomBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.fireworks.FireworkBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.fireworks.FireworkStarBuilder;
+import com.ryderbelserion.fusion.paper.builders.items.types.plugins.ICustomItem;
+import com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.cosmetics.HMCCustomItem;
+import com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.custom.ItemsAdderCustomItem;
+import com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.custom.NexoCustomItem;
+import com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.custom.OraxenCustomItem;
+import com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.VanillaItemStack;
 import com.ryderbelserion.fusion.paper.builders.items.types.tools.ToolBuilder;
 import com.ryderbelserion.fusion.paper.enums.ItemState;
 import com.ryderbelserion.fusion.paper.utils.ColorUtils;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
-import dev.lone.itemsadder.api.CustomStack;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.*;
 import io.papermc.paper.persistence.PersistentDataContainerView;
-import io.th0rgal.oraxen.api.OraxenItems;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
@@ -221,6 +223,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return this.itemStack;
     }
 
+    public @NonNull ItemStack getItemStack() {
+        return this.itemStack;
+    }
+
     public @NonNull ItemStack asItemStack() {
         return asItemStack(Audience.empty());
     }
@@ -277,64 +283,44 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         return (B) this;
     }
 
-    public @NonNull B withCustomItem(@NonNull final String itemStack) {
+    public @NonNull B withCustomItem(@NonNull final String item) {
         final String plugin = this.fusion.getItemsPlugin();
 
-        switch (plugin.toLowerCase()) {
-            case "nexo" -> {
-                if (this.fusion.isPluginEnabled("Nexo")) {
-                    getNexo(itemStack);
-
-                    return (B) this;
-                }
-
-                setItem(itemStack);
-            }
-
-            case "oraxen" -> {
-                if (this.fusion.isPluginEnabled("Oraxen")) {
-                    getOraxen(itemStack);
-
-                    return (B) this;
-                }
-
-                setItem(itemStack);
-            }
-
-            case "itemsadder" -> {
-                if (this.fusion.isPluginEnabled("ItemsAdder")) {
-                    getItemsAdder(itemStack);
-
-                    return (B) this;
-                }
-
-                setItem(itemStack);
-            }
-
-            case "none" -> setItem(itemStack);
-
+        final ICustomItem customItem = switch (plugin.toLowerCase()) {
+            case "itemsadder" -> new ItemsAdderCustomItem(this, item, false).init();
+            case "oraxen" -> new OraxenCustomItem(this, item, false).init();
+            case "nexo" -> new NexoCustomItem(this, item, false).init();
+            case "hmcwraps" -> new HMCCustomItem(this, item, false).init();
             default -> {
-                if (this.fusion.isPluginEnabled("Nexo")) {
-                    getNexo(itemStack);
-
-                    return (B) this;
-                }
-
                 if (this.fusion.isPluginEnabled("ItemsAdder")) {
-                    getItemsAdder(itemStack);
-
-                    return (B) this;
+                    yield new ItemsAdderCustomItem(this, item, true).init();
                 }
 
                 if (this.fusion.isPluginEnabled("Oraxen")) {
-                    getOraxen(itemStack);
-
-                    return (B) this;
+                    yield new OraxenCustomItem(this, item, true).init();
                 }
 
-                setItem(itemStack);
+                if (this.fusion.isPluginEnabled("Nexo")) {
+                    yield new NexoCustomItem(this, item, true).init();
+                }
+
+                if (this.fusion.isPluginEnabled("HMCWraps")) {
+                    yield new HMCCustomItem(this, item, true).init();
+                }
+
+                yield new VanillaItemStack(this, item).init();
             }
+        };
+
+        final Optional<ItemStack> origin = customItem.getItemStack();
+
+        if (origin.isEmpty()) {
+            this.fusion.log(Level.WARNING, "The ItemStack could not be built for %s for some reason", item);
+
+            return (B) this;
         }
+
+        withItemStack(origin.get());
 
         return (B) this;
     }
@@ -351,6 +337,15 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             this.itemType = stone;
         }
 
+        this.itemType = this.itemStack.getType().asItemType();
+
+        return (B) this;
+    }
+
+    public @NonNull B withItemStack(@NonNull final ItemStack itemStack) {
+        if (itemStack.isEmpty()) return (B) this;
+
+        this.itemStack = itemStack;
         this.itemType = this.itemStack.getType().asItemType();
 
         return (B) this;
@@ -859,68 +854,5 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         }
 
         return builder;
-    }
-
-    private void getItemsAdder(@NonNull final String itemStack) {
-        if (!CustomStack.isInRegistry(itemStack)) {
-            this.fusion.log(Level.WARNING, "The id %s does not exist as an ItemsAdder item! Attempting falling back to vanilla item!", itemStack);
-
-            setItem(itemStack);
-
-            return;
-        }
-
-        final CustomStack builder = CustomStack.getInstance(itemStack);
-
-        if (builder == null) throw new FusionException("The id " + itemStack + " is not a valid ItemsAdder item!");
-
-        this.itemStack = builder.getItemStack();
-        this.itemType = this.itemStack.getType().asItemType();
-    }
-
-    private void getOraxen(@NonNull final String itemStack) {
-        if (!OraxenItems.exists(itemStack)) {
-            this.fusion.log(Level.WARNING, "The id %s does not exist as an Oraxen item!  Attempting falling back to vanilla item!", itemStack);
-
-            setItem(itemStack);
-
-            return;
-        }
-
-        final io.th0rgal.oraxen.items.ItemBuilder builder = OraxenItems.getItemById(itemStack);
-
-        if (builder == null) throw new FusionException("The id " + itemStack + " is not a valid Oraxen item!");
-
-        this.itemStack = builder.build();
-        this.itemType = this.itemStack.getType().asItemType();
-    }
-
-    private void getNexo(@NonNull final String itemStack) {
-        if (!NexoItems.exists(itemStack)) {
-            this.fusion.log(Level.WARNING, "The id %s does not exist as a Nexo item! Attempting falling back to vanilla item!", itemStack);
-
-            setItem(itemStack);
-
-            return;
-        }
-
-        final ItemBuilder builder = NexoItems.itemFromId(itemStack);
-
-        if (builder == null) throw new FusionException("The id " + itemStack + " is not a valid Nexo item!");
-
-        this.itemStack = builder.build();
-        this.itemType = this.itemStack.getType().asItemType();
-    }
-
-    private void setItem(@NonNull final String itemStack) {
-        final ItemType itemType = ItemUtils.getItemType(itemStack);
-
-        if (itemType == null) {
-            withBase64(itemStack);
-
-            return;
-        }
-
-        withType(itemType);
     }
 }

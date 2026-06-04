@@ -79,6 +79,10 @@ public class FusionPaper extends FusionKyori<Audience> {
         return this;
     }
 
+    public JavaPlugin getPlugin() {
+        return this.plugin;
+    }
+
     @Override
     public String papi(@Nullable final Audience sender, @NonNull final String message) {
         return isPluginEnabled("PlaceholderAPI") && sender instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
