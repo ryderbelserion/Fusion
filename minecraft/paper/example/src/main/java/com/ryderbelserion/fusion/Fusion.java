@@ -4,6 +4,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.commands.SimpleCommand;
 import com.ryderbelserion.fusion.commands.types.ItemCommand;
 import com.ryderbelserion.fusion.commands.types.ReloadCommand;
+import com.ryderbelserion.fusion.commands.types.SkullCommand;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
@@ -68,7 +69,8 @@ public class Fusion extends JavaPlugin implements Listener {
 
             List.of(
                     new ItemCommand(this),
-                    new ReloadCommand(this)
+                    new ReloadCommand(this),
+                    new SkullCommand(this)
             ).forEach(type -> root.then(type.literal()));
 
             event.registrar().register(root.build(), "The base command for Fusion!");

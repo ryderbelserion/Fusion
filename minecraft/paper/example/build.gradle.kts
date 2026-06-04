@@ -9,6 +9,8 @@ project.group = "${rootProject.name}.paper"
 repositories {
     maven("https://repo.extendedclip.com/releases/")
 
+    maven("https://repo.hibiscusmc.com/releases/")
+
     maven("https://repo.nexomc.com/releases/")
 
     maven("https://repo.oraxen.com/releases/")
