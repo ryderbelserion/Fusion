@@ -23,6 +23,8 @@ itemsadder = "4.0.10" # https://github.com/ItemsAdder
 oraxen = "1.211.0" # https://github.com/oraxen
 nexo = "1.21.0" # https://github.com/Nexo-MC
 
+hmcwraps = "1.8.2" # https://docs.hibiscusmc.com/hmcwraps/api/
+
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin
 shadow = "9.4.1" # https://github.com/GradleUp/shadow
 
@@ -65,6 +67,9 @@ oraxen = { module = "io.th0rgal:oraxen", version.ref = "oraxen" }
 # https://github.com/Nexo-MC
 nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }
 
+# https://docs.hibiscusmc.com/hmcwraps/api/
+hmcwraps = { module = "de.skyslycer.hmcwraps:api", version.ref = "hmcwraps" }
+
 # https://github.com/KyoriPowered/adventure
 kyori-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "adventure" }
 kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref = "adventure" }
@@ -89,7 +94,9 @@ shared = [
     "placeholderapi",
     "itemsadder",
     "oraxen",
-    "nexo"
+    "nexo",
+
+    "hmcwraps"
 ]
 
 build = [
