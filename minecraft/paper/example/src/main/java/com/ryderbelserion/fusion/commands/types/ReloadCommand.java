@@ -62,7 +62,7 @@ public class ReloadCommand extends PaperCommand {
             return;
         }
 
-        sender.sendRichMessage(msg.get().getValue());
+        sender.sendRichMessage(msg.get().getValue(sender));
 
         sender.sendRichMessage("<yellow>%s Amount</yellow>".formatted(context.getIntegerArgument("amount").orElse(30)));
     }

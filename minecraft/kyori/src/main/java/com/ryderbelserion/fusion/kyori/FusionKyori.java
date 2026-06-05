@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class FusionKyori<S> extends FusionCore {
+public abstract class FusionKyori<S> extends FusionCore<S> {
 
     public FusionKyori(@NonNull final Path path) {
         super(path);
@@ -26,8 +26,6 @@ public abstract class FusionKyori<S> extends FusionCore {
     public @NonNull final String parse(@Nullable final S sender, @NonNull final String message) {
         return parse(sender, message, Map.of());
     }
-
-    public abstract String papi(@Nullable final S sender, @NonNull final String message);
 
     public @NonNull final Component asComponent(@NonNull final String message,
                                                 @NonNull final Map<String, String> placeholders,

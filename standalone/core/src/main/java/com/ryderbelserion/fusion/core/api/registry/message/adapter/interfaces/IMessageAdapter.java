@@ -19,5 +19,7 @@ public abstract class IMessageAdapter<N extends ScopedConfigurationNode<N>> {
         this.path = path;
     }
 
+    public abstract @NonNull String getValue(@NonNull final Object object);
+
     public abstract @NonNull String getValue();
 }

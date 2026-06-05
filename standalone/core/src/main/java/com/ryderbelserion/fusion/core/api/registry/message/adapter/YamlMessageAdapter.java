@@ -22,6 +22,11 @@ public class YamlMessageAdapter extends IMessageAdapter<CommentedConfigurationNo
     }
 
     @Override
+    public @NonNull String getValue(@NonNull final Object object) {
+        return this.fusion.papi(object, this.value);
+    }
+
+    @Override
     public @NonNull final String getValue() {
         return this.value;
     }

@@ -9,6 +9,7 @@ import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
 import com.ryderbelserion.fusion.core.config.FusionConfig;
 import com.ryderbelserion.fusion.files.FileManager;
+import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -17,7 +18,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
-public abstract class FusionCore {
+public abstract class FusionCore<S> {
 
     protected final SettingsManager config;
 
@@ -50,6 +51,8 @@ public abstract class FusionCore {
             @NonNull final String message,
             @NonNull final Object... args
     );
+
+    public abstract String papi(@Nullable final S sender, @NonNull final String message);
 
     public abstract boolean isModReady(@NonNull final FusionKey key);
 
