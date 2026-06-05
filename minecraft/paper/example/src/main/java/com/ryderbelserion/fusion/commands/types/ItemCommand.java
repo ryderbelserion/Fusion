@@ -41,7 +41,7 @@ public class ItemCommand extends PaperCommand {
 
         //CustomStack.getNamespacedIdsInRegistry().forEach(key -> fusion.log(Level.WARNING, "Key: %s", key));
 
-        final ItemBuilder builder = ItemBuilder.from("iaalchemy:alchemy_candles");
+        final ItemBuilder builder = ItemBuilder.from("itemsadder@iaalchemy:alchemy_candles");
 
         //final ItemBuilder builder = ItemBuilder.from(ItemType.PLAYER_HEAD);
 

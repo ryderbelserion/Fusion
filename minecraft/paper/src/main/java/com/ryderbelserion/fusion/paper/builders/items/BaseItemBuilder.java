@@ -292,6 +292,22 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             case "nexo" -> new NexoCustomItem(this, item, false).init();
             case "hmcwraps" -> new HMCCustomItem(this, item, false).init();
             default -> {
+                if (item.contains("@")) {
+                    final String[] split = item.split("@");
+                    final String namespace = split[0];
+                    final String id = split[1];
+
+                    this.fusion.log(Level.WARNING, "Namespace: %s, %s", namespace, id);
+
+                    yield switch (namespace) {
+                        case "itemsadder" -> new ItemsAdderCustomItem(this, id, false).init();
+                        case "oraxen" -> new OraxenCustomItem(this, id, false).init();
+                        case "nexo" -> new NexoCustomItem(this, id, false).init();
+                        case "hmcwraps" -> new HMCCustomItem(this, id, false).init();
+                        default -> new VanillaItemStack(this, item).init();
+                    };
+                }
+
                 if (this.fusion.isPluginEnabled("ItemsAdder")) {
                     yield new ItemsAdderCustomItem(this, item, true).init();
                 }
