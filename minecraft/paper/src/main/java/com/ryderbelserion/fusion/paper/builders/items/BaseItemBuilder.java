@@ -297,8 +297,6 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                     final String namespace = split[0];
                     final String id = split[1];
 
-                    this.fusion.log(Level.WARNING, "Namespace: %s, %s", namespace, id);
-
                     yield switch (namespace) {
                         case "itemsadder" -> new ItemsAdderCustomItem(this, id, false).init();
                         case "oraxen" -> new OraxenCustomItem(this, id, false).init();
