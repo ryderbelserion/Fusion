@@ -41,7 +41,7 @@ public class Fusion extends JavaPlugin implements Listener {
 
         fileManager.extractFolder("icons", "velocity", FileType.PNG, path);
 
-        //fileManager.extractFile("velocity/config.yml", path.resolve("configx2.yml"));
+        fileManager.extractFile("velocity/config.yml", path.resolve("configx2.yml"));
 
         fileManager.addFile(path.resolve("config.yml"), "velocity", FileType.YAML);
 

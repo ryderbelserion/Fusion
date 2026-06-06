@@ -287,7 +287,8 @@ public class FileManager extends IFileManager<FileManager> {
                 final String entryName = parseJarFolder(entry.getName(), jarFolder);
 
                 final Path target = output.resolve(entryName);
-                final Path parent = output.getParent();
+
+                final Path parent = target.getParent();
 
                 if (!Files.exists(parent)) {
                     try {
