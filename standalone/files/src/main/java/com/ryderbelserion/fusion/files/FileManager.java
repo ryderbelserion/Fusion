@@ -224,7 +224,7 @@ public class FileManager extends IFileManager<FileManager> {
 
         final Path parent = output.getParent();
 
-        if (!Files.exists(parent) && Files.isDirectory(parent)) {
+        if (Files.notExists(parent)) {
             try {
                 Files.createDirectory(parent);
             } catch (final IOException exception) {
@@ -290,7 +290,7 @@ public class FileManager extends IFileManager<FileManager> {
 
                 final Path parent = target.getParent();
 
-                if (!Files.exists(parent)) {
+                if (Files.notExists(parent)) {
                     try {
                         Files.createDirectories(parent);
                     } catch (final IOException exception) {

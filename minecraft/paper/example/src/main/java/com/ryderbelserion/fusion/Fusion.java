@@ -63,6 +63,10 @@ public class Fusion extends JavaPlugin implements Listener {
             registry.addKey(FusionKey.key(this.fusion.getNamespace(), "reload_plugin"), new YamlMessageAdapter(node, "{prefix}<yellow>Das Plugin wurde neu geladen. %player_ping%", "messages", "reload-plugin"));
         });
 
+        List.of(
+                "test.yml"
+        ).forEach(file -> fileManager.extractFile(file, path.resolve("examples").resolve(file)));
+
         final LifecycleEventManager<Plugin> eventManager = getLifecycleManager();
 
         // Register commands.
