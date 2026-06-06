@@ -30,7 +30,11 @@ public enum FileType {
     /**
      * Files with the extension .log
      */
-    LOG(".log");
+    LOG(".log"),
+    /**
+     * Files with the extension .png
+     */
+    PNG(".png");
 
     private final String extension;
 

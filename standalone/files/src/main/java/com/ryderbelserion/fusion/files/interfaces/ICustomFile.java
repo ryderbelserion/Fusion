@@ -67,7 +67,7 @@ public abstract class ICustomFile<I, C, L, O> {
             }
 
             if (hasAction(FileAction.EXTRACT_FOLDER)) {
-                this.fileManager.extractFolder(name, this.jarFolder, parent);
+                this.fileManager.extractFolder(name, this.jarFolder, this.fileType, parent);
             }
         }
 

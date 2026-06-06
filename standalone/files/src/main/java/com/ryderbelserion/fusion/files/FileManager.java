@@ -40,7 +40,7 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NonNull FileManager addFolder(@NonNull final Path folder, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
-        extractFolder(folder.getFileName().toString(), jarFolder, folder.getParent());
+        extractFolder(folder.getFileName().toString(), jarFolder, fileType, folder.getParent());
 
         for (final Path path : getFilesByPath(folder, fileType.getExtension(), getDepth())) {
             addFile(path, fileType, consumer);
@@ -259,7 +259,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NonNull FileManager extractFolder(@NonNull final String folder, @NonNull final String jarFolder, @NonNull final Path output) {
+    public @NonNull FileManager extractFolder(@NonNull final String folder, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Path output) {
         final Path path = output.resolve(folder);
 
         if (Files.exists(path)) { // do not extract if path exists.
@@ -280,6 +280,7 @@ public class FileManager extends IFileManager<FileManager> {
                     .filter(entry -> !entry.isDirectory())
                     .filter(entry -> !entry.getName().equalsIgnoreCase("velocity-plugin.json"))
                     .filter(entry -> entry.getName().startsWith(jarFolder.isBlank() ? folder : jarFolder))
+                    .filter(entry -> entry.getName().endsWith(fileType.getExtension()))
                     .collect(Collectors.toSet());
 
             entries.forEach(entry -> {

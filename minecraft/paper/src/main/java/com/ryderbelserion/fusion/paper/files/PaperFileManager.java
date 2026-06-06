@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.paper.files;
 
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
+import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.jspecify.annotations.NonNull;
 import java.nio.file.Path;
@@ -43,9 +44,11 @@ public class PaperFileManager extends FileManager {
     }
 
     public @NonNull final PaperFileManager addPaperFolder(@NonNull final Path folder, @NonNull final Consumer<PaperCustomFile> consumer) {
-        extractFolder(folder.getFileName().toString(), "", folder.getParent());
+        final FileType fileType = FileType.PAPER_YAML;
 
-        for (final Path path : getFilesByPath(folder, ".yml", getDepth())) {
+        extractFolder(folder.getFileName().toString(), fileType, folder.getParent());
+
+        for (final Path path : getFilesByPath(folder, fileType.getExtension(), getDepth())) {
             addPaperFile(path, consumer);
         }
 

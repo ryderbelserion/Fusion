@@ -112,10 +112,10 @@ public abstract class IFileManager<I> {
         return extract(output, output, entry -> entry.getName().equalsIgnoreCase(output));
     }
 
-    public abstract @NonNull I extractFolder(@NonNull final String folder, @NonNull final String jarFolder, @NonNull final Path output);
+    public abstract @NonNull I extractFolder(@NonNull final String folder, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Path output);
 
-    public @NonNull final I extractFolder(@NonNull final String folder, @NonNull final Path output) {
-        return extractFolder(folder, "", output);
+    public @NonNull final I extractFolder(@NonNull final String folder, @NonNull final FileType fileType, @NonNull final Path output) {
+        return extractFolder(folder, "", fileType, output);
     }
 
     public @NonNull final String parseJarFolder(@NonNull final String name, @NonNull final String jarFolder) {

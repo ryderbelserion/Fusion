@@ -37,7 +37,9 @@ public class Fusion extends JavaPlugin implements Listener {
 
         final Path path = getDataPath();
 
-        fileManager.extractFolder("crates", path);
+        fileManager.extractFolder("crates", FileType.YAML, path);
+
+        fileManager.extractFolder("icons", "velocity", FileType.PNG, path);
 
         //fileManager.extractFile("velocity/config.yml", path.resolve("configx2.yml"));
 
