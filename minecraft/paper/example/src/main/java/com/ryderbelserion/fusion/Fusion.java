@@ -2,9 +2,9 @@ package com.ryderbelserion.fusion;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.ryderbelserion.fusion.commands.SimpleCommand;
-import com.ryderbelserion.fusion.commands.types.ItemCommand;
+import com.ryderbelserion.fusion.commands.types.items.ItemCommand;
 import com.ryderbelserion.fusion.commands.types.ReloadCommand;
-import com.ryderbelserion.fusion.commands.types.SkullCommand;
+import com.ryderbelserion.fusion.commands.types.items.SkullCommand;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;

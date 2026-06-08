@@ -1,21 +1,17 @@
-package com.ryderbelserion.fusion.commands.types;
+package com.ryderbelserion.fusion.commands.types.items;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.Fusion;
-import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
-import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.commands.PaperCommand;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
 import com.ryderbelserion.fusion.paper.builders.items.ItemBuilder;
-import dev.lone.itemsadder.api.CustomStack;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemType;
 import org.jspecify.annotations.NonNull;
 import java.util.List;
 

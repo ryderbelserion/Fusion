@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.commands.types;
+package com.ryderbelserion.fusion.commands.types.items;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
