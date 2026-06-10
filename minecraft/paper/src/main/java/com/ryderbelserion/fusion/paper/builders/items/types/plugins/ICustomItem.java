@@ -34,4 +34,5 @@ public abstract class ICustomItem {
 
     public abstract @NonNull ICustomItem init();
 
+    public abstract String getImpl();
 }

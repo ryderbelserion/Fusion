@@ -1,18 +1,17 @@
 package com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.custom;
 
 import com.ryderbelserion.fusion.core.api.enums.Level;
-import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.builders.items.BaseItemBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.plugins.ICustomItem;
 import com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.VanillaItemStack;
-import dev.lone.itemsadder.api.CustomStack;
+import net.momirealms.craftengine.bukkit.api.CraftEngineItems;
 import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NonNull;
 import java.util.Optional;
 
-public class ItemsAdderCustomItem extends ICustomItem {
+public class CraftEngineCustomItem extends ICustomItem {
 
-    public ItemsAdderCustomItem(@NonNull final BaseItemBuilder builder, @NonNull final String item, final boolean isEnabled) {
+    public CraftEngineCustomItem(@NonNull final BaseItemBuilder builder, @NonNull final String item, final boolean isEnabled) {
         super(builder, item, isEnabled);
     }
 
@@ -24,7 +23,7 @@ public class ItemsAdderCustomItem extends ICustomItem {
     }
 
     @Override
-    public @NonNull final ItemsAdderCustomItem init() {
+    public @NonNull final CraftEngineCustomItem init() {
         final String impl = getImpl();
 
         if (!this.isEnabled && !this.fusion.isPluginEnabled(impl)) {
@@ -33,27 +32,17 @@ public class ItemsAdderCustomItem extends ICustomItem {
             return this;
         }
 
-        if (!CustomStack.isInRegistry(this.item)) {
+        Optional.ofNullable(CraftEngineItems.byId(this.item)).ifPresentOrElse(item -> this.itemStack = item.buildBukkitItem(), () -> {
             this.fusion.log(Level.WARNING, "The id %s does not exist as a %s item! Attempting falling back to vanilla item!", this.item, impl);
 
             new VanillaItemStack(this.builder, this.item).init();
-
-            return this;
-        }
-
-        final CustomStack builder = CustomStack.getInstance(this.item);
-
-        if (builder == null) {
-            throw new FusionException("The id " + this.item + " is not a valid %s item!".formatted(impl));
-        }
-
-        this.itemStack = builder.getItemStack();
+        });
 
         return this;
     }
 
     @Override
     public @NonNull final String getImpl() {
-        return "ItemsAdder";
+        return "CraftEngine";
     }
 }

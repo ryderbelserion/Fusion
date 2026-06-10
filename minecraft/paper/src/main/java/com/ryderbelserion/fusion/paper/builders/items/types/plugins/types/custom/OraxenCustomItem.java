@@ -26,14 +26,16 @@ public class OraxenCustomItem extends ICustomItem {
 
     @Override
     public @NonNull final OraxenCustomItem init() {
-        if (!this.isEnabled && !this.fusion.isPluginEnabled("Oraxen")) {
+        final String impl = getImpl();
+
+        if (!this.isEnabled && !this.fusion.isPluginEnabled(impl)) {
             new VanillaItemStack(this.builder, this.item).init();
 
             return this;
         }
 
         if (!OraxenItems.exists(this.item)) {
-            this.fusion.log(Level.WARNING, "The id %s does not exist as a Oraxen item! Attempting falling back to vanilla item!", this.item);
+            this.fusion.log(Level.WARNING, "The id %s does not exist as a %s item! Attempting falling back to vanilla item!", this.item, impl);
 
             new VanillaItemStack(this.builder, this.item).init();
 
@@ -43,11 +45,16 @@ public class OraxenCustomItem extends ICustomItem {
         final ItemBuilder builder = OraxenItems.getItemById(this.item);
 
         if (builder == null) {
-            throw new FusionException("The id " + this.item + " is not a valid Oraxen item!");
+            throw new FusionException("The id " + this.item + " is not a valid %s item!".formatted(impl));
         }
 
         this.itemStack = builder.build();
 
         return this;
+    }
+
+    @Override
+    public @NonNull final String getImpl() {
+        return "Oraxen";
     }
 }

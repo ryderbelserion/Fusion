@@ -14,6 +14,7 @@ import com.ryderbelserion.fusion.paper.builders.items.types.fireworks.FireworkBu
 import com.ryderbelserion.fusion.paper.builders.items.types.fireworks.FireworkStarBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.plugins.ICustomItem;
 import com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.cosmetics.HMCCustomItem;
+import com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.custom.CraftEngineCustomItem;
 import com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.custom.ItemsAdderCustomItem;
 import com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.custom.NexoCustomItem;
 import com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.custom.OraxenCustomItem;
@@ -284,9 +285,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public @NonNull B withCustomItem(@NonNull final String item) {
-        final String plugin = this.fusion.getItemsPlugin();
+        final String plugin = this.fusion.getItemsPlugin().toLowerCase();
 
-        final ICustomItem customItem = switch (plugin.toLowerCase()) {
+        final ICustomItem customItem = switch (plugin) {
+            case "craftengine" -> new CraftEngineCustomItem(this, item, false).init();
             case "itemsadder" -> new ItemsAdderCustomItem(this, item, false).init();
             case "oraxen" -> new OraxenCustomItem(this, item, false).init();
             case "nexo" -> new NexoCustomItem(this, item, false).init();
@@ -298,12 +300,17 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                     final String id = split[1];
 
                     yield switch (namespace) {
+                        case "craftengine" -> new CraftEngineCustomItem(this, id, false).init();
                         case "itemsadder" -> new ItemsAdderCustomItem(this, id, false).init();
                         case "oraxen" -> new OraxenCustomItem(this, id, false).init();
                         case "nexo" -> new NexoCustomItem(this, id, false).init();
                         case "hmcwraps" -> new HMCCustomItem(this, id, false).init();
                         default -> new VanillaItemStack(this, item).init();
                     };
+                }
+
+                if (this.fusion.isPluginEnabled("CraftEngine")) {
+                    yield new CraftEngineCustomItem(this, item, false).init();
                 }
 
                 if (this.fusion.isPluginEnabled("ItemsAdder")) {
@@ -328,8 +335,10 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         final Optional<ItemStack> origin = customItem.getItemStack();
 
+        final String implementation = customItem.getImpl();
+
         if (origin.isEmpty()) {
-            this.fusion.log(Level.WARNING, "The ItemStack could not be built for %s for some reason", item);
+            this.fusion.log(Level.WARNING, "%s item could not be used to create an ItemStack using implementation %s. It was likely an invalid material.", item, implementation);
 
             return (B) this;
         }

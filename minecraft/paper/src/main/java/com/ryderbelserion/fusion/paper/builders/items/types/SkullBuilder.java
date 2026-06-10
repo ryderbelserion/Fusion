@@ -18,7 +18,6 @@ import org.bukkit.profile.PlayerTextures;
 import org.jspecify.annotations.NonNull;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.util.Map;
 import java.util.UUID;
 
 public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {

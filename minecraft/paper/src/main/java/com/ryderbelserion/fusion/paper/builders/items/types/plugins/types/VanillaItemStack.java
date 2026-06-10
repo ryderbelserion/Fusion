@@ -33,4 +33,9 @@ public class VanillaItemStack extends ICustomItem {
 
         return this;
     }
+
+    @Override
+    public @NonNull final String getImpl() {
+        return "Vanilla";
+    }
 }

@@ -28,13 +28,15 @@ public class HMCCustomItem extends ICustomItem {
 
     @Override
     public @NonNull final HMCCustomItem init() {
-        if (!this.isEnabled && !this.fusion.isPluginEnabled("HMCWraps")) {
+        final String impl = getImpl();
+
+        if (!this.isEnabled && !this.fusion.isPluginEnabled(impl)) {
             new VanillaItemStack(this.builder, this.item).init();
 
             return this;
         }
 
-        final HMCWraps plugin = (HMCWraps) this.pluginManager.getPlugin("HMCWraps");
+        final HMCWraps plugin = (HMCWraps) this.pluginManager.getPlugin(impl);
 
         if (plugin == null) {
             new VanillaItemStack(this.builder, this.item).init();
@@ -47,7 +49,7 @@ public class HMCCustomItem extends ICustomItem {
         final Map<String, Wrap> wraps = loader.getWraps();
 
         if (!wraps.containsKey(this.item)) {
-            this.fusion.log(Level.WARNING, "The id %s does not exist as a HMCWraps item! Attempting falling back to vanilla item!", this.item);
+            this.fusion.log(Level.WARNING, "The id %s does not exist as a %s item! Attempting falling back to vanilla item!", this.item, impl);
 
             new VanillaItemStack(this.builder, this.item).init();
 
@@ -59,7 +61,7 @@ public class HMCCustomItem extends ICustomItem {
         final PhysicalWrap physical = wrap.getPhysical();
 
         if (physical == null) {
-            this.fusion.log(Level.ERROR, "There is no physical wrap associated with %s", this.item);
+            this.fusion.log(Level.ERROR, "There is no physical wrap associated with %s using %s", this.item, impl);
 
             return this;
         }
@@ -67,5 +69,10 @@ public class HMCCustomItem extends ICustomItem {
         this.itemStack = physical.toItem(plugin, null);
 
         return this;
+    }
+
+    @Override
+    public @NonNull final String getImpl() {
+        return "HMCWraps";
     }
 }
