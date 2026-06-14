@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NonNull;
-import org.jetbrains.annotations.Nullable;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -21,17 +21,17 @@ public class PlayerBuilder {
         this.name = name;
     }
 
-    public @Nullable OfflinePlayer getOfflinePlayer() {
-        if (this.name.isEmpty()) return null;
+    public @NonNull Optional<OfflinePlayer> getOfflinePlayer() {
+        if (this.name.isEmpty()) return Optional.empty();
 
-        CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> this.server.getOfflinePlayer(this.name)).thenApply(OfflinePlayer::getUniqueId);
+        final CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> this.server.getOfflinePlayer(this.name)).thenApply(OfflinePlayer::getUniqueId);
 
-        return this.server.getOfflinePlayer(future.join());
+        return Optional.of(CompletableFuture.supplyAsync((() -> this.server.getOfflinePlayer(future.join()))).join());
     }
 
-    public @Nullable Player getPlayer() {
-        if (this.name.isEmpty()) return null;
+    public @NonNull Optional<Player> getPlayer() {
+        if (this.name.isEmpty()) return Optional.empty();
 
-        return this.server.getPlayerExact(this.name);
+        return Optional.ofNullable(this.server.getPlayerExact(this.name));
     }
 }
