@@ -14,11 +14,11 @@ public abstract class AbstractMod {
 
     public abstract boolean isEnabled();
 
-    public AbstractMod enable() {
+    public AbstractMod init() {
         return this;
     }
 
-    public AbstractMod disable() {
+    public AbstractMod stop() {
         return this;
     }
 

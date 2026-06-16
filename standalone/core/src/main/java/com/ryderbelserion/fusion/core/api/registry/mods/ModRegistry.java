@@ -21,14 +21,14 @@ public class ModRegistry implements AbstractRegistry {
 
     @Override
     public void addMod(@NonNull final FusionKey key, @NonNull final AbstractMod mod) {
-        this.mods.putIfAbsent(key, mod.enable());
+        this.mods.putIfAbsent(key, mod.init());
     }
 
     @Override
     public void removeMod(@NonNull final FusionKey key) {
         if (!this.mods.containsKey(key) || ModSupport.dependencies.contains(key)) return;
 
-        this.mods.remove(key).disable();
+        this.mods.remove(key).stop();
     }
 
     @Override
