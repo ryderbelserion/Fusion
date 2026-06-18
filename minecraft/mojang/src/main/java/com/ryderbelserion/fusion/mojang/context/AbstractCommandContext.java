@@ -50,6 +50,14 @@ public abstract class AbstractCommandContext<S> {
         return Optional.ofNullable(this.context.getArgument(key, String.class));
     }
 
+    public final Optional<Long> getLongArgument(@NonNull final String key) {
+        if (!hasArgument(key)) {
+            return Optional.empty();
+        }
+
+        return Optional.ofNullable(this.context.getArgument(key, Long.class));
+    }
+
     public final Optional<Double> getDoubleArgument(@NonNull final String key) {
         if (!hasArgument(key)) {
             return Optional.empty();
