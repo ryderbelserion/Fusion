@@ -61,6 +61,8 @@ public abstract class FusionCore<S> {
     public FusionCore reload() {
         if (this.config != null) {
             this.config.reload();
+
+            this.fileManager.setDepth(this.config.getProperty(FusionConfig.recursion_depth));
         }
 
         return this;
@@ -75,6 +77,10 @@ public abstract class FusionCore<S> {
             } catch (final IOException exception) {
                 exception.printStackTrace();
             }
+        }
+
+        if (this.config != null) {
+            this.fileManager.setDepth(this.config.getProperty(FusionConfig.recursion_depth));
         }
 
         this.messageRegistry = new MessageRegistry(this, FusionKey.key(getNamespace(), "default"));
