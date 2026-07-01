@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+@Deprecated
 public class PaperFileManager extends FileManager {
 
     public PaperFileManager(@NonNull final Path path) {

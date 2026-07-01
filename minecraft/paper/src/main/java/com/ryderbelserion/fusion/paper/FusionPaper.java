@@ -1,8 +1,10 @@
 package com.ryderbelserion.fusion.paper;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
+import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.core.config.FusionConfig;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.paper.builders.gui.GuiManager;
@@ -59,6 +61,10 @@ public class FusionPaper extends FusionKyori<Audience> {
     public final FusionPaper init() {
         super.init();
 
+        if (this.config != null) {
+            this.fileManager.setDepth(this.config.getProperty(FusionConfig.recursion_depth));
+        }
+
         this.guiManager = new GuiManager();
 
         if (this.pluginManager.isPluginEnabled("HeadDatabase") && this.api == null) {
@@ -66,6 +72,17 @@ public class FusionPaper extends FusionKyori<Audience> {
         }
 
         this.pluginManager.registerEvents(new GuiListener(), this.plugin);
+
+        return this;
+    }
+
+    @Override
+    public FusionCore reload() {
+        super.reload();
+
+        if (this.config != null) {
+            this.fileManager.setDepth(this.config.getProperty(FusionConfig.recursion_depth));
+        }
 
         return this;
     }

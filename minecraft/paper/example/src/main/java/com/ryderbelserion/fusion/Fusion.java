@@ -35,6 +35,8 @@ public class Fusion extends JavaPlugin implements Listener {
 
         final FileManager fileManager = this.fusion.getFileManager();
 
+        this.fusion.log(Level.WARNING, "Depth: %s", fileManager.getDepth());
+
         final Path path = getDataPath();
 
         fileManager.extractFolder("crates", FileType.YAML, path);
@@ -46,6 +48,14 @@ public class Fusion extends JavaPlugin implements Listener {
         fileManager.addFile(path.resolve("config.yml"), "velocity", FileType.YAML);
 
         fileManager.addFolder(path.resolve("locale"), "velocity", FileType.YAML);
+
+        fileManager.addFolder(path.resolve("crates"), "crates", FileType.YAML);
+
+        fileManager.getFilesByPath(path.resolve("crates"), ".yml").forEach(target -> {
+            fileManager.getYamlFile(target).ifPresent(customFile -> {
+                this.fusion.log(Level.WARNING, "<red>Custom File: %s", customFile.getPrettyName());
+            });
+        });
 
         fileManager.getYamlFile(path.resolve("config.yml")).ifPresent(customFile -> {
             final CommentedConfigurationNode node = customFile.getConfiguration();

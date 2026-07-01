@@ -140,6 +140,14 @@ public abstract class IFileManager<I> {
         return getFilesByPath(path, List.of(extension), depth);
     }
 
+    public @NonNull List<Path> getFilesByPath(@NonNull final Path path, @NonNull final List<String> extension) {
+        return getFilesByPath(path, extension, getDepth());
+    }
+
+    public @NonNull List<Path> getFilesByPath(@NonNull final Path path, @NonNull final String extension) {
+        return getFilesByPath(path, List.of(extension), getDepth());
+    }
+
     public int getDirectorySize(@NonNull final Path path, @NonNull final String extension) {
         return getFilesByPath(path, extension, getDepth()).size();
     }
