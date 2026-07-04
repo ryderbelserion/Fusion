@@ -197,7 +197,7 @@ public class FileManager extends IFileManager<FileManager> {
             for (final JarEntry entry : map) {
                 final String entryName = entry.getName();
 
-                final Path location = this.path.resolve(output);
+                final Path location = this.path.resolve(input);
 
                 if (Files.exists(location)) {
                     continue;
