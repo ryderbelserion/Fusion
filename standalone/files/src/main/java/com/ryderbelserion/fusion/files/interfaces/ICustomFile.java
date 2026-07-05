@@ -6,6 +6,9 @@ import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.ConfigurationOptions;
+import org.spongepowered.configurate.loader.HeaderMode;
+import org.spongepowered.configurate.yaml.NodeStyle;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,7 +51,28 @@ public abstract class ICustomFile<I, C, L> {
         this(fileManager, "", path);
     }
 
+    protected HeaderMode headerMode = HeaderMode.PRESERVE;
+    protected NodeStyle nodeStyle = NodeStyle.BLOCK;
+    protected boolean isLenient = true;
+    protected int indent = 4;
+
     public abstract @NonNull C loadConfig() throws IOException;
+
+    public void withIndent(final int indent) {
+        this.indent = indent;
+    }
+
+    public void withLenient(final boolean isLenient) {
+        this.isLenient = isLenient;
+    }
+
+    public void withNodeStyle(final NodeStyle nodeStyle) {
+        this.nodeStyle = nodeStyle;
+    }
+
+    public void withHeaderMode(final HeaderMode headerMode) {
+        this.headerMode = headerMode;
+    }
 
     public @NonNull C getConfiguration() {
         return this.configuration;

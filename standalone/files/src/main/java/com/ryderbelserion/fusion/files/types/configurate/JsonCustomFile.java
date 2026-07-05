@@ -22,7 +22,11 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
 
         consumer.accept(this);
 
-        this.loader = GsonConfigurationLoader.builder().path(getPath()).defaultOptions(getOptions()).build();
+        this.loader = GsonConfigurationLoader.builder()
+                .indent(this.indent)
+                .lenient(this.isLenient)
+                .headerMode(this.headerMode)
+                .path(getPath()).defaultOptions(getOptions()).build();
     }
 
     public JsonCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<JsonCustomFile> consumer) {

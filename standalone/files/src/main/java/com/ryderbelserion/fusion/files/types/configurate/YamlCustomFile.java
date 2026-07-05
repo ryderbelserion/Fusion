@@ -21,7 +21,10 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
 
         consumer.accept(this);
 
-        this.loader = YamlConfigurationLoader.builder().path(getPath()).defaultOptions(getOptions()).build();
+        this.loader = YamlConfigurationLoader.builder()
+                .indent(this.indent)
+                .nodeStyle(this.nodeStyle)
+                .headerMode(this.headerMode).path(getPath()).defaultOptions(getOptions()).build();
     }
 
     public YamlCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<YamlCustomFile> consumer) {
