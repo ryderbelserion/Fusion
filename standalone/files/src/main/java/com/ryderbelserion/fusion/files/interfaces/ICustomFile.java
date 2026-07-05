@@ -5,6 +5,7 @@ import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import org.jspecify.annotations.NonNull;
+import org.spongepowered.configurate.ConfigurationOptions;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,11 +18,11 @@ import java.util.function.Consumer;
 // C i.e. the SettingsManager, or CommentedConfigurationNode/BasicConfigurationNode.
 // L i.e. the SettingsManagerBuilder, or YamlConfigurationLoader.
 // O i.e. options that configure the functionality of L.
-public abstract class ICustomFile<I, C, L, O> {
+public abstract class ICustomFile<I, C, L> {
 
     protected final List<FileAction> actions = new ArrayList<>();
 
-    protected O options = null;
+    protected ConfigurationOptions options = null;
     protected C configuration;
     protected L loader;
 
@@ -110,7 +111,7 @@ public abstract class ICustomFile<I, C, L, O> {
         saveConfig();
     }
 
-    public void setOptions(@NonNull final Consumer<O> options) {
+    public void setOptions(@NonNull final Consumer<ConfigurationOptions> options) {
         options.accept(this.options);
     }
 
@@ -154,7 +155,7 @@ public abstract class ICustomFile<I, C, L, O> {
         return this.path;
     }
 
-    public @NonNull O getOptions() {
+    public @NonNull ConfigurationOptions getOptions() {
         return this.options;
     }
 

@@ -7,7 +7,6 @@ import com.ryderbelserion.fusion.files.interfaces.IConfigurate;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
-import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.gson.GsonConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
 import java.io.IOException;
@@ -15,16 +14,20 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
 
-public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurationNode, GsonConfigurationLoader, ConfigurationOptions> implements IConfigurate {
+public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurationNode, GsonConfigurationLoader> implements IConfigurate {
 
     public JsonCustomFile(@NonNull final FileManager fileManager, @NonNull final String jarFolder, @NonNull final Path path, @NonNull final Consumer<JsonCustomFile> consumer) {
         super(fileManager, jarFolder, path);
 
-        this.options = ConfigurationOptions.defaults();
-
         consumer.accept(this);
 
-        this.loader = GsonConfigurationLoader.builder().path(getPath()).defaultOptions(getOptions()).build();
+        final GsonConfigurationLoader.Builder loader = GsonConfigurationLoader.builder().path(getPath());
+
+        this.loader = loader.defaultOptions(this.loader == null ? loader.defaultOptions() : getOptions()).build();
+
+        setOptions(options -> {
+            options.header("");
+        });
     }
 
     public JsonCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<JsonCustomFile> consumer) {

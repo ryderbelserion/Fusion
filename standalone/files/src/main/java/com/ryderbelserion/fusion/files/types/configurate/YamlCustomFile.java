@@ -7,7 +7,6 @@ import com.ryderbelserion.fusion.files.interfaces.IConfigurate;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
-import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.IOException;
@@ -15,16 +14,16 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
 
-public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedConfigurationNode, YamlConfigurationLoader, ConfigurationOptions> implements IConfigurate {
+public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedConfigurationNode, YamlConfigurationLoader> implements IConfigurate {
 
     public YamlCustomFile(@NonNull final FileManager fileManager, @NonNull final String jarFolder, @NonNull final Path path, @NonNull final Consumer<YamlCustomFile> consumer) {
         super(fileManager, jarFolder, path);
 
-        this.options = ConfigurationOptions.defaults();
-
         consumer.accept(this);
 
-        this.loader = YamlConfigurationLoader.builder().path(getPath()).defaultOptions(getOptions()).build();
+        final YamlConfigurationLoader.Builder loader = YamlConfigurationLoader.builder().path(getPath());
+
+        this.loader = loader.defaultOptions(this.loader == null ? loader.defaultOptions() : getOptions()).build();
     }
 
     public YamlCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<YamlCustomFile> consumer) {

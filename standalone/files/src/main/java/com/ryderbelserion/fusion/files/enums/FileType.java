@@ -20,10 +20,6 @@ public enum FileType {
      */
     JSON(".json"),
     /**
-     * Files that end with .yml, but are made by ConfigMe
-     */
-    JALU(".yml"),
-    /**
      * Files that end with .nbt, used for structure files
      */
     NBT(".nbt"),

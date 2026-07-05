@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class PaperCustomFile extends ICustomFile<PaperCustomFile, YamlConfiguration, Object, Object> implements IConfigurate {
+public class PaperCustomFile extends ICustomFile<PaperCustomFile, YamlConfiguration, Object> implements IConfigurate {
 
     private final File file;
 

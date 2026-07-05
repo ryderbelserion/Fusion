@@ -1,10 +1,7 @@
 package com.ryderbelserion.fusion.files.interfaces;
 
-import ch.jalu.configme.SettingsManagerBuilder;
-import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
@@ -22,23 +19,19 @@ import java.util.jar.JarEntry;
 
 public abstract class IFileManager<I> {
 
-    public abstract @NonNull I addFolder(@NonNull final Path folder, @NonNull final Consumer<YamlFileResourceOptions.Builder> options, @NonNull final Consumer<SettingsManagerBuilder> builder);
-
-    public abstract @NonNull I addFile(@NonNull final Path path, @NonNull final Consumer<YamlFileResourceOptions.Builder> options, @NonNull final Consumer<SettingsManagerBuilder> builder);
-
-    public abstract @NonNull I addFolder(@NonNull final Path folder, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
+    public abstract @NonNull I addFolder(@NonNull final Path folder, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?>> consumer);
 
     public @NonNull I addFolder(@NonNull final Path folder, @NonNull final String jarFolder, @NonNull final FileType fileType) {
         return addFolder(folder, jarFolder, fileType, consumer -> consumer.addAction(FileAction.EXTRACT_FOLDER));
     }
 
-    public abstract @NonNull I addFile(@NonNull final Path path, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer);
+    public abstract @NonNull I addFile(@NonNull final Path path, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?>> consumer);
 
     public @NonNull I addFile(@NonNull final Path path, @NonNull final String jarFolder, @NonNull final FileType fileType) {
         return addFile(path, jarFolder, fileType, consumer -> consumer.addAction(FileAction.EXTRACT_FILE));
     }
 
-    public @NonNull I addFolder(@NonNull final Path folder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
+    public @NonNull I addFolder(@NonNull final Path folder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?>> consumer) {
         return addFolder(folder, "", fileType, consumer);
     }
 
@@ -46,7 +39,7 @@ public abstract class IFileManager<I> {
         return addFolder(folder, fileType, consumer -> consumer.addAction(FileAction.EXTRACT_FOLDER));
     }
 
-    public @NonNull I addFile(@NonNull final Path path, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
+    public @NonNull I addFile(@NonNull final Path path, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?>> consumer) {
         return addFile(path, "", fileType, consumer);
     }
 
@@ -54,7 +47,7 @@ public abstract class IFileManager<I> {
         return addFile(path, fileType, consumer -> consumer.addAction(FileAction.EXTRACT_FILE));
     }
 
-    public abstract @NonNull I addFile(@NonNull final Path path, @NonNull final ICustomFile<?, ?, ?, ?> customFile);
+    public abstract @NonNull I addFile(@NonNull final Path path, @NonNull final ICustomFile<?, ?, ?> customFile);
 
     public abstract @NonNull I removeFile(@NonNull final Path path);
 
@@ -68,11 +61,9 @@ public abstract class IFileManager<I> {
 
     public abstract boolean hasFile(@NonNull final Path path);
 
-    public abstract @NonNull Optional<ICustomFile<?, ?, ?, ?>> getFile(@NonNull final Path path);
+    public abstract @NonNull Optional<ICustomFile<?, ?, ?>> getFile(@NonNull final Path path);
 
-    public abstract @NonNull Map<Path, ICustomFile<?, ?, ?, ?>> getFiles();
-
-    public abstract @NonNull JaluCustomFile buildJaluFile(@NonNull final Path path, @NonNull final Consumer<YamlFileResourceOptions.Builder> options, @NonNull final Consumer<SettingsManagerBuilder> builder);
+    public abstract @NonNull Map<Path, ICustomFile<?, ?, ?>> getFiles();
 
     public abstract @NonNull YamlCustomFile buildYamlFile(@NonNull final Path path, @NonNull final String jarFolder, @NonNull final Consumer<YamlCustomFile> consumer);
 
@@ -94,10 +85,6 @@ public abstract class IFileManager<I> {
 
     public @NonNull Optional<JsonCustomFile> getJsonFile(@NonNull final Path path) {
         return getFile(path).map(JsonCustomFile.class::cast);
-    }
-
-    public @NonNull Optional<JaluCustomFile> getJaluFile(@NonNull final Path path) {
-        return getFile(path).map(JaluCustomFile.class::cast);
     }
 
     public @NonNull Optional<LogCustomFile> getLogFile(@NonNull final Path path) {

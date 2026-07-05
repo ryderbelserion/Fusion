@@ -1,12 +1,9 @@
 package com.ryderbelserion.fusion.files;
 
-import ch.jalu.configme.SettingsManagerBuilder;
-import ch.jalu.configme.resource.YamlFileResourceOptions;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.files.interfaces.IFileManager;
-import com.ryderbelserion.fusion.files.types.JaluCustomFile;
 import com.ryderbelserion.fusion.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
@@ -29,7 +26,7 @@ import java.util.zip.ZipOutputStream;
 
 public class FileManager extends IFileManager<FileManager> {
 
-    protected final Map<Path, ICustomFile<?, ?, ?, ?>> files = new HashMap<>();
+    protected final Map<Path, ICustomFile<?, ?, ?>> files = new HashMap<>();
 
     private final Path path;
     private int depth = 1;
@@ -39,7 +36,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NonNull FileManager addFolder(@NonNull final Path folder, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
+    public @NonNull FileManager addFolder(@NonNull final Path folder, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?>> consumer) {
         extractFolder(folder.getFileName().toString(), jarFolder, fileType, folder.getParent());
 
         for (final Path path : getFilesByPath(folder, fileType.getExtension(), getDepth())) {
@@ -50,9 +47,9 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NonNull FileManager addFile(@NonNull final Path path, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?, ?>> consumer) {
+    public @NonNull FileManager addFile(@NonNull final Path path, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Consumer<ICustomFile<?, ?, ?>> consumer) {
         if (this.files.containsKey(path)) {
-            final ICustomFile<?, ?, ?, ?> customFile = this.files.get(path);
+            final ICustomFile<?, ?, ?> customFile = this.files.get(path);
 
             consumer.accept(customFile);
 
@@ -63,7 +60,7 @@ public class FileManager extends IFileManager<FileManager> {
             return this;
         }
 
-        ICustomFile<?, ?, ?, ?> customFile = null;
+        ICustomFile<?, ?, ?> customFile = null;
 
         switch (fileType) {
             case YAML -> customFile = buildYamlFile(path, jarFolder, consumer::accept);
@@ -79,32 +76,8 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NonNull FileManager addFolder(@NonNull final Path folder, @NonNull final Consumer<YamlFileResourceOptions.Builder> options, @NonNull final Consumer<SettingsManagerBuilder> builder) {
-        for (final Path path : getFilesByPath(folder, ".yml", getDepth())) {
-            addFile(path, options, builder);
-        }
-
-        return this;
-    }
-
-    @Override
-    public @NonNull FileManager addFile(@NonNull final Path path, @NonNull final Consumer<YamlFileResourceOptions.Builder> options, @NonNull final Consumer<SettingsManagerBuilder> builder) {
-        if (this.files.containsKey(path)) {
-            this.files.get(path).load();
-
-            return this;
-        }
-
-        final ICustomFile<?, ?, ?, ?> customFile = buildJaluFile(path, options, builder);
-
-        this.files.putIfAbsent(path, customFile);
-
-        return this;
-    }
-
-    @Override
     public @NonNull FileManager removeFile(@NonNull final Path path) {
-        final Optional<ICustomFile<?, ?, ?, ?>> variable = getFile(path);
+        final Optional<ICustomFile<?, ?, ?>> variable = getFile(path);
 
         if (variable.isEmpty()) {
             return this;
@@ -121,9 +94,9 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NonNull FileManager purge() {
-        final Map<Path, ICustomFile<?, ?, ?, ?>> files = new HashMap<>(this.files);
+        final Map<Path, ICustomFile<?, ?, ?>> files = new HashMap<>(this.files);
 
-        for (final Map.Entry<Path, ICustomFile<?, ?, ?, ?>> entry : files.entrySet()) {
+        for (final Map.Entry<Path, ICustomFile<?, ?, ?>> entry : files.entrySet()) {
             removeFile(entry.getKey());
         }
 
@@ -131,15 +104,10 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NonNull FileManager addFile(@NonNull final Path path, @NonNull final ICustomFile<?, ?, ?, ?> customFile) {
+    public @NonNull FileManager addFile(@NonNull final Path path, @NonNull final ICustomFile<?, ?, ?> customFile) {
         this.files.putIfAbsent(path, customFile);
 
         return this;
-    }
-
-    @Override
-    public @NonNull JaluCustomFile buildJaluFile(@NonNull final Path path, @NonNull final Consumer<YamlFileResourceOptions.Builder> options, @NonNull final Consumer<SettingsManagerBuilder> builder) {
-        return new JaluCustomFile(this, path, options, builder).load();
     }
 
     @Override
@@ -159,7 +127,7 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NonNull FileManager reloadFile(@NonNull final Path path) {
-        final Optional<ICustomFile<?, ?, ?, ?>> customFile = getFile(path);
+        final Optional<ICustomFile<?, ?, ?>> customFile = getFile(path);
 
         if (customFile.isEmpty()) return this;
 
@@ -170,7 +138,7 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public @NonNull FileManager saveFile(@NonNull final Path path) {
-        final Optional<ICustomFile<?, ?, ?, ?>> customFile = getFile(path);
+        final Optional<ICustomFile<?, ?, ?>> customFile = getFile(path);
 
         if (customFile.isEmpty()) return this;
 
@@ -180,7 +148,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NonNull Optional<ICustomFile<?, ?, ?, ?>> getFile(@NonNull final Path path) {
+    public @NonNull Optional<ICustomFile<?, ?, ?>> getFile(@NonNull final Path path) {
         return Optional.ofNullable(this.files.get(path));
     }
 
@@ -406,8 +374,8 @@ public class FileManager extends IFileManager<FileManager> {
 
         final List<Path> keys = new ArrayList<>();
 
-        for (final Map.Entry<Path, ICustomFile<?, ?, ?, ?>> file : this.files.entrySet()) {
-            final ICustomFile<?, ?, ?, ?> value = file.getValue();
+        for (final Map.Entry<Path, ICustomFile<?, ?, ?>> file : this.files.entrySet()) {
+            final ICustomFile<?, ?, ?> value = file.getValue();
 
             if (value == null) continue;
 
@@ -475,7 +443,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NonNull final Map<Path, ICustomFile<?, ?, ?, ?>> getFiles() {
+    public @NonNull final Map<Path, ICustomFile<?, ?, ?>> getFiles() {
         return Collections.unmodifiableMap(this.files);
     }
 }
