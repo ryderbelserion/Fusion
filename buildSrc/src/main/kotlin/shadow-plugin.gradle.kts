@@ -9,7 +9,7 @@ tasks {
 
         exclude("META-INF/**")
 
-        listOf(
+        /*listOf(
             "io.leangen.geantyref",
             "org.spongepowered",
             "com.google.gson",
@@ -18,6 +18,6 @@ tasks {
             "ch.jalu"
         ).forEach {
             relocate(it, "libs.$it")
-        }
+        }*/
     }
 }
