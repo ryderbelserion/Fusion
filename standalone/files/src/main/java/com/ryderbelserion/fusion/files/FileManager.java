@@ -8,7 +8,7 @@ import com.ryderbelserion.fusion.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import org.jspecify.annotations.NonNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;

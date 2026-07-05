@@ -4,11 +4,10 @@ import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.files.FileException;
 import org.jspecify.annotations.NonNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
-
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;

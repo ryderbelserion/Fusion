@@ -6,7 +6,7 @@ import com.ryderbelserion.fusion.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import org.jspecify.annotations.NonNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

@@ -2,15 +2,13 @@ package com.ryderbelserion.fusion.core.api;
 
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.NonNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class FusionProvider {
 
     private static @Nullable FusionCore instance;
 
-    @ApiStatus.Internal
     public static void register(@NonNull final FusionCore instance) {
         FusionProvider.instance = instance;
     }
@@ -19,7 +17,6 @@ public class FusionProvider {
         return instance != null;
     }
 
-    @ApiStatus.Internal
     public static void unregister() {
         FusionProvider.instance = null;
     }
