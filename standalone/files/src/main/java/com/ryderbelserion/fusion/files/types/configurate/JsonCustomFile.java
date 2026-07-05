@@ -24,10 +24,6 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
         final GsonConfigurationLoader.Builder loader = GsonConfigurationLoader.builder().path(getPath());
 
         this.loader = loader.defaultOptions(this.loader == null ? loader.defaultOptions() : getOptions()).build();
-
-        setOptions(options -> {
-            options.header("");
-        });
     }
 
     public JsonCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<JsonCustomFile> consumer) {

@@ -111,8 +111,12 @@ public abstract class ICustomFile<I, C, L> {
         saveConfig();
     }
 
-    public void setOptions(@NonNull final Consumer<ConfigurationOptions> options) {
+    public void acceptOptions(@NonNull final Consumer<ConfigurationOptions> options) {
         options.accept(this.options);
+    }
+
+    public void setOptions(@NonNull final ConfigurationOptions options) {
+        this.options = options;
     }
 
     public void removeAction(@NonNull final FileAction action) {
