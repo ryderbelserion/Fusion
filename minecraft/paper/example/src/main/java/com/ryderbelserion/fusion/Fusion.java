@@ -20,7 +20,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
-
 import java.nio.file.Path;
 import java.util.List;
 
@@ -35,27 +34,20 @@ public class Fusion extends JavaPlugin implements Listener {
 
         final FileManager fileManager = this.fusion.getFileManager();
 
-        this.fusion.log(Level.WARNING, "Depth: %s", fileManager.getDepth());
-
         final Path path = getDataPath();
 
-        fileManager.extractFolder("crates", FileType.YAML, path);
-
-        fileManager.extractFolder("icons", "velocity", FileType.PNG, path);
-
-        fileManager.extractFile("velocity/config.yml", path.resolve("configx2.yml"));
-
-        fileManager.addFile(path.resolve("config.yml"), "velocity", FileType.YAML);
-
-        fileManager.addFolder(path.resolve("locale"), "velocity", FileType.YAML);
-
-        fileManager.addFolder(path.resolve("crates"), "crates", FileType.YAML);
-
-        fileManager.getFilesByPath(path.resolve("crates"), ".yml").forEach(target -> {
-            fileManager.getYamlFile(target).ifPresent(customFile -> {
-                this.fusion.log(Level.WARNING, "<red>Custom File: %s", customFile.getPrettyName());
-            });
-        });
+        fileManager.addFolder(path.resolve("locale"), "velocity", FileType.YAML)
+                .addFolder(path.resolve("crates"), FileType.YAML)
+                .addFolder(path.resolve("discord"), FileType.YAML)
+                .extractFolder("icons", "velocity", FileType.PNG, path)
+                .extractFile("velocity/config.yml", path.resolve("config.yml"))
+                .addFile(path.resolve("config.yml"), "velocity", FileType.YAML)
+                //.addFile(path.resolve("test.yml"), FileType.YAML)
+                .getFilesByPath(path.resolve("crates"), ".yml").forEach(target -> {
+                    fileManager.getYamlFile(target).ifPresent(customFile -> {
+                        this.fusion.log(Level.WARNING, "<red>Custom File: %s", customFile.getPrettyName());
+                    });
+                });
 
         fileManager.getYamlFile(path.resolve("config.yml")).ifPresent(customFile -> {
             final CommentedConfigurationNode node = customFile.getConfiguration();
@@ -75,7 +67,7 @@ public class Fusion extends JavaPlugin implements Listener {
 
         List.of(
                 "test.yml"
-        ).forEach(file -> fileManager.extractFile(file, path.resolve("examples").resolve(file)));
+        ).forEach(input -> fileManager.extractFile(input, path.resolve("examples").resolve("test.yml")));
 
         final LifecycleEventManager<Plugin> eventManager = getLifecycleManager();
 

@@ -91,12 +91,12 @@ public abstract class IFileManager<I> {
         return getFile(path).map(LogCustomFile.class::cast);
     }
 
-    public abstract @NonNull I extract(@NonNull final String input, @NonNull final String output, @NonNull final Predicate<? super JarEntry> predicate);
+    public abstract @NonNull I extractFile(@NonNull final String input, @NonNull final Predicate<? super JarEntry> predicate);
 
-    public abstract @NonNull I extractFile(@NonNull final String fileName, @NonNull final Path output);
+    public abstract @NonNull I extractFile(@NonNull final String input, @NonNull final Path output);
 
-    public @NonNull final I extractFile(@NonNull final String output) {
-        return extract(output, output, entry -> entry.getName().equalsIgnoreCase(output));
+    public @NonNull final I extractFile(@NonNull final String input) {
+        return extractFile(input, entry -> entry.getName().equalsIgnoreCase(input));
     }
 
     public abstract @NonNull I extractFolder(@NonNull final String folder, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Path output);
@@ -105,7 +105,7 @@ public abstract class IFileManager<I> {
         return extractFolder(folder, "", fileType, output);
     }
 
-    public @NonNull final String parseJarFolder(@NonNull final String name, @NonNull final String jarFolder) {
+    public @NonNull final String parseFolder(@NonNull final String name, @NonNull final String jarFolder) {
         return jarFolder.isBlank() ? name : name.replace("%s%s".formatted(jarFolder, "/"), "");
     }
 

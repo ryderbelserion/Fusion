@@ -7,7 +7,6 @@ import com.ryderbelserion.fusion.files.interfaces.IConfigurate;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
-import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.gson.GsonConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
 import java.io.IOException;

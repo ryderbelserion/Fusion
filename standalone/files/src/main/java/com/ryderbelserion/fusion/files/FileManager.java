@@ -153,39 +153,9 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public @NonNull FileManager extract(@NonNull final String input, @NonNull final String output, @NonNull final Predicate<? super JarEntry> predicate) {
-        try (final JarFile jarFile = new JarFile(Path.of(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
-            final Set<JarEntry> map = jarFile.stream()
-                    .filter(entry -> !entry.getName().endsWith(".class")) // filter .class files
-                    .filter(entry -> !entry.getName().startsWith("META-INF")) // filter meta inf
-                    .filter(entry -> !entry.getName().equalsIgnoreCase("velocity-plugin.json"))
-                    .filter(predicate) // custom predicate
-                    .collect(Collectors.toSet());
+    public @NonNull FileManager extractFile(@NonNull final String input, @NonNull final Predicate<? super JarEntry> predicate) {
+        final Path output = this.path.resolve(input);
 
-            for (final JarEntry entry : map) {
-                final String entryName = entry.getName();
-
-                final Path location = this.path.resolve(output);
-
-                if (Files.exists(location)) {
-                    continue;
-                }
-
-                try (final InputStream stream = jarFile.getInputStream(entry)) {
-                    Files.copy(stream, location);
-                } catch (final IOException exception) {
-                    throw new FileException("Failed to copy %s to %s".formatted(entryName, location), exception);
-                }
-            }
-        } catch (final IOException | URISyntaxException exception) {
-            exception.printStackTrace();
-        }
-
-        return this;
-    }
-
-    @Override
-    public @NonNull FileManager extractFile(@NonNull final String fileName, @NonNull final Path output) {
         if (Files.exists(output)) {
             return this;
         }
@@ -201,26 +171,85 @@ public class FileManager extends IFileManager<FileManager> {
         }
 
         try (final JarFile jarFile = new JarFile(Path.of(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
-            final Set<JarEntry> entries = jarFile.stream().filter(entry -> !entry.getName().endsWith(".class"))
-                    .filter(entry -> !entry.getName().startsWith("META-INF"))
-                    .filter(entry -> !entry.isDirectory())
-                    .filter(entry -> !entry.getName().equalsIgnoreCase("velocity-plugin.json"))
-                    .filter(entry -> entry.getName().equalsIgnoreCase(fileName))
-                    .collect(Collectors.toSet());
+            JarEntry target = null;
 
-            for (final JarEntry entry : entries) {
-                if (Files.exists(output)) {
-                    continue;
-                }
+            for (final JarEntry entry : Collections.list(jarFile.entries())) {
+                final String entryName = entry.getName();
 
-                try (final InputStream stream = jarFile.getInputStream(entry)) {
-                    Files.copy(stream, output);
-                } catch (final IOException exception) {
-                    throw new FileException("Failed to copy %s to %s".formatted(entry.getName(), output), exception);
-                }
+                if (entryName.endsWith(".class") || entryName.endsWith("META-INF") || entryName.equalsIgnoreCase("velocity-plugin.json")) continue;
+                if (!predicate.test(entry)) continue;
+
+                target = entry;
+
+                break;
+            }
+
+            if (target == null) {
+                return this;
+            }
+
+            if (Files.exists(output)) {
+                return this;
+            }
+
+            try (final InputStream stream = jarFile.getInputStream(target)) {
+                Files.copy(stream, output);
+            } catch (final IOException exception) {
+                throw new FileException("Failed to copy %s to %s".formatted(input, output), exception);
             }
         } catch (final IOException | URISyntaxException exception) {
-            throw new FileException("Failed to extract file %s".formatted(fileName), exception);
+            exception.printStackTrace();
+        }
+
+        return this;
+    }
+
+    @Override
+    public @NonNull FileManager extractFile(@NonNull final String input, @NonNull final Path output) {
+        if (Files.exists(output)) {
+            return this;
+        }
+
+        final Path parent = output.getParent();
+
+        if (Files.notExists(parent)) {
+            try {
+                Files.createDirectory(parent);
+            } catch (final IOException exception) {
+                throw new FileException("Failed to create %s".formatted(parent));
+            }
+        }
+
+        try (final JarFile jarFile = new JarFile(Path.of(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
+            JarEntry target = null;
+
+            for (final JarEntry entry : Collections.list(jarFile.entries())) {
+                final String entryName = entry.getName();
+
+                if (entryName.endsWith(".class") || entryName.startsWith("META-INF") || entryName.equalsIgnoreCase("velocity-plugin.json") || entry.isDirectory()) continue;
+
+                if (!entryName.equalsIgnoreCase(input)) continue;
+
+                target = entry;
+
+                break;
+            }
+
+            if (target == null) {
+                return this;
+            }
+
+            if (Files.exists(output)) {
+                return this;
+            }
+
+            try (final InputStream stream = jarFile.getInputStream(target)) {
+                Files.copy(stream, output);
+            } catch (final IOException exception) {
+                throw new FileException("Failed to copy %s to %s".formatted(input, output), exception);
+            }
+        } catch (final IOException | URISyntaxException exception) {
+            exception.printStackTrace();
         }
 
         return this;
@@ -252,9 +281,7 @@ public class FileManager extends IFileManager<FileManager> {
                     .collect(Collectors.toSet());
 
             entries.forEach(entry -> {
-                final String entryName = parseJarFolder(entry.getName(), jarFolder);
-
-                final Path target = output.resolve(entryName);
+                final Path target = output.resolve(parseFolder(entry.getName(), jarFolder));
 
                 final Path parent = target.getParent();
 

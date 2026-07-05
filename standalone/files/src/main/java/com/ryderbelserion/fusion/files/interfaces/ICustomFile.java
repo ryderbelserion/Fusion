@@ -84,15 +84,15 @@ public abstract class ICustomFile<I, C, L> {
         final Path path = getPath();
         final Path parent = path.getParent();
 
-        final String name = path.getFileName().toString();
+        final String input = path.getFileName().toString();
 
         if (!hasAction(FileAction.ALREADY_EXTRACTED)) {
             if (hasAction(FileAction.EXTRACT_FILE)) {
-                this.fileManager.extractFile(this.fileManager.parseJarFolder(name, this.jarFolder));
+                this.fileManager.extractFile(input);
             }
 
             if (hasAction(FileAction.EXTRACT_FOLDER)) {
-                this.fileManager.extractFolder(name, this.jarFolder, this.fileType, parent);
+                this.fileManager.extractFolder(input, this.jarFolder, this.fileType, parent);
             }
         }
 
