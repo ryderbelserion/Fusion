@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public abstract class IFileManager<I> {
 
@@ -90,6 +91,8 @@ public abstract class IFileManager<I> {
     public @NonNull Optional<LogCustomFile> getLogFile(@NonNull final Path path) {
         return getFile(path).map(LogCustomFile.class::cast);
     }
+
+    public abstract @NonNull Optional<JarEntry> getEntry(@NonNull final JarFile jarFile, @NonNull final Predicate<? super JarEntry> predicate);
 
     public abstract @NonNull I extractFile(@NonNull final String input, @NonNull final Predicate<? super JarEntry> predicate);
 

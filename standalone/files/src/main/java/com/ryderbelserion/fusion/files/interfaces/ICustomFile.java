@@ -8,14 +8,13 @@ import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.loader.HeaderMode;
 import org.spongepowered.configurate.yaml.NodeStyle;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 // I i.e. YamlCustomFile.
 // C i.e. the SettingsManager, or CommentedConfigurationNode/BasicConfigurationNode.
@@ -135,12 +134,8 @@ public abstract class ICustomFile<I, C, L> {
         saveConfig();
     }
 
-    public void acceptOptions(@NonNull final Consumer<ConfigurationOptions> options) {
-        options.accept(this.options);
-    }
-
-    public void setOptions(@NonNull final ConfigurationOptions options) {
-        this.options = options;
+    public void setOptions(@NonNull final UnaryOperator<ConfigurationOptions> options) {
+        options.apply(this.options);
     }
 
     public void removeAction(@NonNull final FileAction action) {
@@ -163,6 +158,10 @@ public abstract class ICustomFile<I, C, L> {
 
     }
 
+    public @NonNull ConfigurationOptions getOptions() {
+        return this.options;
+    }
+
     public @NonNull String getPrettyName() {
         return getFileName().replace(getFileType().getExtension(), "");
     }
@@ -181,10 +180,6 @@ public abstract class ICustomFile<I, C, L> {
 
     public @NonNull Path getPath() {
         return this.path;
-    }
-
-    public @NonNull ConfigurationOptions getOptions() {
-        return this.options;
     }
 
     public boolean isLoaded() {

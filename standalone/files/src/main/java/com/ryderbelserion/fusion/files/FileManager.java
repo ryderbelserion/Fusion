@@ -171,37 +171,42 @@ public class FileManager extends IFileManager<FileManager> {
         }
 
         try (final JarFile jarFile = new JarFile(Path.of(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
-            JarEntry target = null;
+            getEntry(jarFile, predicate).ifPresentOrElse(entry -> {
+                if (Files.exists(output)) {
+                    return;
+                }
 
-            for (final JarEntry entry : Collections.list(jarFile.entries())) {
-                final String entryName = entry.getName();
-
-                if (entryName.endsWith(".class") || entryName.endsWith("META-INF") || entryName.equalsIgnoreCase("velocity-plugin.json")) continue;
-                if (!predicate.test(entry)) continue;
-
-                target = entry;
-
-                break;
-            }
-
-            if (target == null) {
-                return this;
-            }
-
-            if (Files.exists(output)) {
-                return this;
-            }
-
-            try (final InputStream stream = jarFile.getInputStream(target)) {
-                Files.copy(stream, output);
-            } catch (final IOException exception) {
-                throw new FileException("Failed to copy %s to %s".formatted(input, output), exception);
-            }
+                try (final InputStream stream = jarFile.getInputStream(entry)) {
+                    Files.copy(stream, output);
+                } catch (final IOException exception) {
+                    throw new FileException("Failed to copy %s to %s".formatted(input, output), exception);
+                }
+            }, () -> {
+                throw new FileException("Failed to find %s in the jar!".formatted(input));
+            });
         } catch (final IOException | URISyntaxException exception) {
             exception.printStackTrace();
         }
 
         return this;
+    }
+
+    @Override
+    public @NonNull Optional<JarEntry> getEntry(@NonNull final JarFile jarFile, @NonNull final Predicate<? super JarEntry> predicate) {
+        JarEntry target = null;
+
+        for (final JarEntry entry : Collections.list(jarFile.entries())) {
+            final String entryName = entry.getName();
+
+            if (entryName.endsWith(".class") || entryName.startsWith("META-INF") || entryName.equalsIgnoreCase("velocity-plugin.json")) continue;
+            if (!predicate.test(entry)) continue;
+
+            target = entry;
+
+            break;
+        }
+
+        return Optional.ofNullable(target);
     }
 
     @Override

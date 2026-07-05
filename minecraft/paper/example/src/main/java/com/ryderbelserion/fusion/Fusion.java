@@ -42,7 +42,7 @@ public class Fusion extends JavaPlugin implements Listener {
                 .extractFolder("icons", "velocity", FileType.PNG, path)
                 .extractFile("velocity/config.yml", path.resolve("config.yml"))
                 .addFile(path.resolve("config.yml"), "velocity", FileType.YAML)
-                //.addFile(path.resolve("test.yml"), FileType.YAML)
+                .addFile(path.resolve("test.yml"), FileType.YAML)
                 .getFilesByPath(path.resolve("crates"), ".yml").forEach(target -> {
                     fileManager.getYamlFile(target).ifPresent(customFile -> {
                         this.fusion.log(Level.WARNING, "<red>Custom File: %s", customFile.getPrettyName());
