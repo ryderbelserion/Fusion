@@ -22,7 +22,7 @@ public abstract class ICustomFile<I, C, L> {
 
     protected final List<FileAction> actions = new ArrayList<>();
 
-    protected ConfigurationOptions options = null;
+    protected ConfigurationOptions options = ConfigurationOptions.defaults();
     protected C configuration;
     protected L loader;
 

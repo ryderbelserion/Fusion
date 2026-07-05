@@ -7,6 +7,7 @@ import com.ryderbelserion.fusion.files.interfaces.IConfigurate;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.BasicConfigurationNode;
+import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.gson.GsonConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
 import java.io.IOException;
@@ -21,9 +22,7 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
 
         consumer.accept(this);
 
-        final GsonConfigurationLoader.Builder loader = GsonConfigurationLoader.builder().path(getPath());
-
-        this.loader = loader.defaultOptions(this.loader == null ? loader.defaultOptions() : getOptions()).build();
+        this.loader = GsonConfigurationLoader.builder().path(getPath()).defaultOptions(getOptions()).build();
     }
 
     public JsonCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<JsonCustomFile> consumer) {
