@@ -1,5 +1,5 @@
 [versions]
-configurate = "4.2.0" # https://github.com/SpongePowered/Configurate
+configurate = "4.2.0-GeyserMC-SNAPSHOT" # https://github.com/SpongePowered/Configurate
 jalu = "1.4.3" # https://github.com/AuthMe/ConfigMe
 
 ## Paper

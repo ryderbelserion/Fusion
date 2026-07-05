@@ -52,8 +52,9 @@ public abstract class ICustomFile<I, C, L> {
 
     protected HeaderMode headerMode = HeaderMode.PRESERVE;
     protected NodeStyle nodeStyle = NodeStyle.BLOCK;
+    protected boolean hasComments = true;
     protected boolean isLenient = true;
-    protected int indent = 4;
+    protected int indent = 2;
 
     public abstract @NonNull C loadConfig() throws IOException;
 
@@ -63,6 +64,10 @@ public abstract class ICustomFile<I, C, L> {
 
     public void withLenient(final boolean isLenient) {
         this.isLenient = isLenient;
+    }
+
+    public void withComments(final boolean hasComments) {
+        this.hasComments = hasComments;
     }
 
     public void withNodeStyle(final NodeStyle nodeStyle) {

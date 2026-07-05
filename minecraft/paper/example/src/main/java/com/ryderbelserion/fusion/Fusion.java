@@ -69,6 +69,8 @@ public class Fusion extends JavaPlugin implements Listener {
                 "test.yml"
         ).forEach(input -> fileManager.extractFile(input, path.resolve("examples").resolve("test.yml")));
 
+        fileManager.saveFile(path.resolve("test.yml"));
+
         final LifecycleEventManager<Plugin> eventManager = getLifecycleManager();
 
         // Register commands.

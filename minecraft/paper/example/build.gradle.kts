@@ -47,4 +47,17 @@ tasks {
 
         minecraftVersion(libs.versions.minecraft.get())
     }
+
+    shadowJar {
+        listOf(
+            "io.leangen.geantyref",
+            "org.spongepowered",
+            "com.google.gson",
+            "org.jspecify",
+            "org.yaml",
+            "ch.jalu"
+        ).forEach {
+            relocate(it, "libs.$it")
+        }
+    }
 }
