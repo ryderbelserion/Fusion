@@ -61,10 +61,6 @@ public class FusionPaper extends FusionKyori<Audience> {
     public final FusionPaper init() {
         super.init();
 
-        if (this.config != null) {
-            this.fileManager.setDepth(this.config.getProperty(FusionConfig.recursion_depth));
-        }
-
         this.guiManager = new GuiManager();
 
         if (this.pluginManager.isPluginEnabled("HeadDatabase") && this.api == null) {
@@ -79,10 +75,6 @@ public class FusionPaper extends FusionKyori<Audience> {
     @Override
     public FusionCore reload() {
         super.reload();
-
-        if (this.config != null) {
-            this.fileManager.setDepth(this.config.getProperty(FusionConfig.recursion_depth));
-        }
 
         return this;
     }
@@ -155,11 +147,6 @@ public class FusionPaper extends FusionKyori<Audience> {
     @Override
     public @NonNull final String getNamespace() {
         return this.plugin.namespace();
-    }
-
-    @Override
-    public @NonNull final PaperFileManager getFileManager() {
-        return this.fileManager;
     }
 
     public @NonNull final Optional<HeadDatabaseAPI> getHeadApi() {

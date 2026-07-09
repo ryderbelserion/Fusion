@@ -59,11 +59,7 @@ public abstract class FusionCore<S> {
     public abstract @NonNull String getNamespace();
 
     public FusionCore reload() {
-        if (this.config != null) {
-            this.config.reload();
-
-            this.fileManager.setDepth(this.config.getProperty(FusionConfig.recursion_depth));
-        }
+        this.fileManager.reloadFile(this.configPath).setDepth(getDepth());
 
         return this;
     }
@@ -79,9 +75,10 @@ public abstract class FusionCore<S> {
             }
         }
 
-        if (this.config != null) {
-            this.fileManager.setDepth(this.config.getProperty(FusionConfig.recursion_depth));
-        }
+        this.fileManager.addFile(this.configPath, FileType.YAML, action -> {
+            action.addAction(FileAction.EXTRACT_FILE);
+            action.addAction(FileAction.KEEP_FILE);
+        }).setDepth(getDepth());
 
         this.messageRegistry = new MessageRegistry(this, FusionKey.key(getNamespace(), "default"));
 
@@ -163,28 +160,38 @@ public abstract class FusionCore<S> {
         Files.deleteIfExists(path);
     }
 
-    public @NonNull FileManager getFileManager() {
+    public @NonNull final CommentedConfigurationNode getFusionConfig() {
+        final Optional<YamlCustomFile> customFile = this.fileManager.getYamlFile(this.configPath);
+
+        if (customFile.isEmpty()) {
+            throw new FusionException("Could not find custom file for " + this.configPath);
+        }
+
+        return customFile.get().getConfiguration();
+    }
+
+    public @NonNull F getFileManager() {
         return this.fileManager;
     }
 
     public @NonNull final String getNumberFormat() {
-        return this.config.getProperty(FusionConfig.number_format);
+        return getFusionConfig().node("settings", "number_format").getString("#,###.##");
     }
 
     public @NonNull final String getItemsPlugin() {
-        return this.config.getProperty(FusionConfig.custom_items_plugin);
+        return getFusionConfig().node("settings", "custom-items-plugin").getString("None");
     }
 
     public @NonNull final String getRounding() {
-        return this.config.getProperty(FusionConfig.rounding_format);
+        return getFusionConfig().node("settings", "rounding").getString("half_even");
     }
 
     public final boolean isVerbose() {
-        return this.config.getProperty(FusionConfig.is_verbose);
+        return getFusionConfig().node("settings", "is_verbose").getBoolean(false);
     }
 
     public final int getDepth() {
-        return this.config.getProperty(FusionConfig.recursion_depth);
+        return getFusionConfig().node("settings", "recursion_depth").getInt(1);
     }
 
     public @NonNull final MessageRegistry getMessageRegistry() {

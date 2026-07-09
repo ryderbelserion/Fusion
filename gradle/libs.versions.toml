@@ -1,6 +1,5 @@
 [versions]
 configurate = "4.2.0-GeyserMC-SNAPSHOT" # https://github.com/SpongePowered/Configurate
-jalu = "1.4.3" # https://github.com/AuthMe/ConfigMe
 
 ## Paper
 paperweight = "2.0.0-beta.21" # https://github.com/PaperMC/paperweight
@@ -87,9 +86,6 @@ kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 
 # https://docs.papermc.io/velocity/dev/creating-your-first-plugin/
 velocity = { module = "com.velocitypowered:velocity-api", version.ref = "velocity" }
-
-# https://github.com/AuthMe/ConfigMe
-jalu = { module = "ch.jalu:configme", version.ref = "jalu" }
 [bundles]
 adventure = [
     "kyori-legacy",
