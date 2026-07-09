@@ -1,38 +1,35 @@
 package com.ryderbelserion.fusion.core;
 
-import ch.jalu.configme.SettingsManager;
-import ch.jalu.configme.SettingsManagerBuilder;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
-import com.ryderbelserion.fusion.core.config.FusionConfig;
 import com.ryderbelserion.fusion.files.FileManager;
+import com.ryderbelserion.fusion.files.enums.FileAction;
+import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-public abstract class FusionCore<S> {
+public abstract class FusionCore<S, F extends FileManager> {
 
-    protected final SettingsManager config;
-
-    private final FileManager fileManager;
+    protected final F fileManager;
+    private final Path configPath;
     private final Path path;
 
-    public FusionCore(@NonNull final Path path) {
-        this.config = SettingsManagerBuilder
-                .withYamlFile(path.resolve("fusion.yml"))
-                .configurationData(FusionConfig.class)
-                .useDefaultMigrationService()
-                .create();
-
-        this.fileManager = new FileManager(path);
+    public FusionCore(@NonNull final F fileManager, @NonNull final Path path) {
+        this.configPath = path.resolve("fusion.yml");
+        this.fileManager = fileManager;
         this.path = path;
     }
 

@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.kyori;
 
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -13,10 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class FusionKyori<S> extends FusionCore<S> {
+public abstract class FusionKyori<S, F extends FileManager> extends FusionCore<S, F> {
 
-    public FusionKyori(@NonNull final Path path) {
-        super(path);
+    public FusionKyori(@NonNull final F fileManager, @NonNull final Path path) {
+        super(fileManager, path);
     }
 
     public @NonNull final String parse(@Nullable final S sender, @NonNull final String message, @NonNull final Map<String, String> placeholders) {

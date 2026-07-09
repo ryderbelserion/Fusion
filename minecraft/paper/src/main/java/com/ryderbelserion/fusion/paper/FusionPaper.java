@@ -4,7 +4,6 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
-import com.ryderbelserion.fusion.core.config.FusionConfig;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.paper.builders.gui.GuiManager;
@@ -27,9 +26,8 @@ import org.jspecify.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class FusionPaper extends FusionKyori<Audience> {
+public class FusionPaper extends FusionKyori<Audience, PaperFileManager> {
 
-    private final PaperFileManager fileManager;
     private final ComponentLogger logger;
 
     private PluginManager pluginManager;
@@ -38,9 +36,8 @@ public class FusionPaper extends FusionKyori<Audience> {
     private Server server;
 
     public FusionPaper(@NonNull final JavaPlugin plugin) {
-        super(plugin.getDataPath());
+        super(new PaperFileManager(plugin.getDataPath()), plugin.getDataPath());
 
-        this.fileManager = new PaperFileManager(this.getDataPath());
         this.logger = plugin.getComponentLogger();
         this.server = plugin.getServer();
         this.plugin = plugin;
@@ -49,9 +46,8 @@ public class FusionPaper extends FusionKyori<Audience> {
     }
 
     public FusionPaper(@NonNull final BootstrapContext context) {
-        super(context.getDataDirectory());
+        super(new PaperFileManager(context.getDataDirectory()), context.getDataDirectory());
 
-        this.fileManager = new PaperFileManager(this.getDataPath());
         this.logger = context.getLogger();
     }
 

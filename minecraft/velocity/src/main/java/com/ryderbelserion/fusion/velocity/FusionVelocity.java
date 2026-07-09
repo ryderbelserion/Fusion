@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.velocity;
 
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -10,13 +11,13 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import java.nio.file.Path;
 
-public class FusionVelocity extends FusionKyori<Audience> {
+public class FusionVelocity extends FusionKyori<Audience, FileManager> {
 
     private final ComponentLogger logger;
     private final String namespace;
 
     public FusionVelocity(@NonNull final String namespace, @NonNull final ComponentLogger logger, @NonNull final Path path) {
-        super(path);
+        super(new FileManager(path), path);
 
         this.logger = logger;
         this.namespace = namespace;

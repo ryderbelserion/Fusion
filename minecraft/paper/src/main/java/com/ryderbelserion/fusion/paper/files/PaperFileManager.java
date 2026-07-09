@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-@Deprecated
 public class PaperFileManager extends FileManager {
 
     public PaperFileManager(@NonNull final Path path) {
@@ -40,14 +39,10 @@ public class PaperFileManager extends FileManager {
         return this;
     }
 
-    public @NonNull final PaperFileManager addPaperFile(@NonNull final Path path) {
-        return addPaperFile(path, consumer -> consumer.addAction(FileAction.EXTRACT_FILE));
-    }
-
-    public @NonNull final PaperFileManager addPaperFolder(@NonNull final Path folder, @NonNull final Consumer<PaperCustomFile> consumer) {
+    public @NonNull final PaperFileManager addPaperFolder(@NonNull final Path folder, @NonNull final String jarFolder, @NonNull final Consumer<PaperCustomFile> consumer) {
         final FileType fileType = FileType.PAPER_YAML;
 
-        extractFolder(folder.getFileName().toString(), fileType, folder.getParent());
+        extractFolder(folder.getFileName().toString(), jarFolder, fileType, folder.getParent());
 
         for (final Path path : getFilesByPath(folder, fileType.getExtension(), getDepth())) {
             addPaperFile(path, consumer);
@@ -56,8 +51,20 @@ public class PaperFileManager extends FileManager {
         return this;
     }
 
+    public @NonNull final PaperFileManager addPaperFolder(@NonNull final Path folder, @NonNull final String jarFolder) {
+        return addPaperFolder(folder, jarFolder, _ -> {});
+    }
+
+    public @NonNull final PaperFileManager addPaperFolder(@NonNull final Path folder, @NonNull final Consumer<PaperCustomFile> consumer) {
+        return addPaperFolder(folder, "", consumer);
+    }
+
     public @NonNull final PaperFileManager addPaperFolder(@NonNull final Path folder) {
         return addPaperFolder(folder, consumer -> consumer.addAction(FileAction.EXTRACT_FOLDER));
+    }
+
+    public @NonNull final PaperFileManager addPaperFile(@NonNull final Path path) {
+        return addPaperFile(path, consumer -> consumer.addAction(FileAction.EXTRACT_FILE));
     }
 
     public @NonNull final PaperCustomFile buildPaperFile(@NonNull final Path path, @NonNull final Consumer<PaperCustomFile> consumer) {
