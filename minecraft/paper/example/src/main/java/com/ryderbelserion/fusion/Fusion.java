@@ -9,6 +9,7 @@ import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.message.adapter.YamlMessageAdapter;
+import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.files.PaperFileManager;
@@ -38,6 +39,7 @@ public class Fusion extends JavaPlugin implements Listener {
         final Path path = getDataPath();
 
         fileManager.addPaperFolder(path.resolve("crates"))
+                .addPaperFile(path.resolve("guis").resolve("test.yml"), consumer -> consumer.addAction(FileAction.EXTRACT_FROM_FOLDER))
                 .addFolder(path.resolve("locale"), "velocity", FileType.YAML)
                 .addFolder(path.resolve("discord"), FileType.YAML)
                 .extractFolder("icons", "velocity", FileType.PNG, path)

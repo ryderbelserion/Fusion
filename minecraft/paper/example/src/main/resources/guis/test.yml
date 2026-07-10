@@ -1,0 +1,9 @@
+test: false
+feck: "you"
+bull: "shit"
+please: "update1213"
+test-options:
+  # Is the comment preserved?
+  option: true
+  # Preserve the comment!
+  option_2: false

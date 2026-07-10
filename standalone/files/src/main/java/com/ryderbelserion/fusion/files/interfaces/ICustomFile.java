@@ -91,6 +91,10 @@ public abstract class ICustomFile<I, C, L> {
         final String input = path.getFileName().toString();
 
         if (!hasAction(FileAction.ALREADY_EXTRACTED)) {
+            if (hasAction(FileAction.EXTRACT_FROM_FOLDER)) {
+                this.fileManager.extractFile("%s/%s".formatted(parent.getFileName().toString(), input), path);
+            }
+
             if (hasAction(FileAction.EXTRACT_FILE)) {
                 this.fileManager.extractFile(input);
             }

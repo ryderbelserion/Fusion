@@ -6,6 +6,8 @@ public enum FileAction {
     ALREADY_EXTRACTED,
     // Extract a folder.
     EXTRACT_FOLDER,
+    // Extract a file from a folder in the gui to a specific directory.
+    EXTRACT_FROM_FOLDER,
     // Extract a file.
     EXTRACT_FILE,
 

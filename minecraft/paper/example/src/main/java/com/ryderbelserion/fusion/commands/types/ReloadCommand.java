@@ -11,11 +11,13 @@ import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.message.adapter.interfaces.IMessageAdapter;
+import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.commands.PaperCommand;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
+import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import net.kyori.adventure.key.Key;
@@ -41,6 +43,8 @@ public class ReloadCommand extends PaperCommand {
 
         final FusionPaper paper = this.fusion.getFusion();
 
+        paper.reload();
+
         final MessageRegistry registry = paper.getMessageRegistry();
 
         final Map<FusionKey, IMessageAdapter> messages = registry.getMessages().get(registry.getDefaultKey());
@@ -65,6 +69,12 @@ public class ReloadCommand extends PaperCommand {
         sender.sendRichMessage(msg.get().getValue(sender));
 
         sender.sendRichMessage("<yellow>%s Amount</yellow>".formatted(context.getIntegerArgument("amount").orElse(30)));
+
+        final PaperFileManager fileManager = paper.getFileManager();
+
+        fileManager.refresh(false);
+
+        fileManager.addPaperFile(this.fusion.getDataPath().resolve("guis").resolve("test.yml"));
     }
 
     @Override
