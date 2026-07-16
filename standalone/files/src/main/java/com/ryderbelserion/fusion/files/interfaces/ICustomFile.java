@@ -157,6 +157,12 @@ public abstract class ICustomFile<I, C, L> {
         return this.actions.contains(action);
     }
 
+    public ICustomFile<I, C, L> addActions(@NonNull final List<FileAction> actions) {
+        this.actions.addAll(actions);
+
+        return this;
+    }
+
     public ICustomFile<I, C, L> addAction(@NonNull final FileAction action) {
         this.actions.add(action);
 
