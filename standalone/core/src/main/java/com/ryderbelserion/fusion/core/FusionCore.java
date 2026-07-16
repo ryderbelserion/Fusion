@@ -72,10 +72,7 @@ public abstract class FusionCore<S, F extends FileManager> {
             }
         }
 
-        this.fileManager.addFile(this.configPath, FileType.YAML, action -> {
-            action.addAction(FileAction.EXTRACT_FILE);
-            action.addAction(FileAction.KEEP_FILE);
-        }).setDepth(getDepth());
+        this.fileManager.addFile(this.configPath, FileType.YAML, action -> action.addAction(FileAction.EXTRACT_FILE).addAction(FileAction.KEEP_FILE)).setDepth(getDepth());
 
         this.messageRegistry = new MessageRegistry(this, FusionKey.key(getNamespace(), "default"));
 

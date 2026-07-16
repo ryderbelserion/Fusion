@@ -147,16 +147,20 @@ public abstract class ICustomFile<I, C, L> {
         options.apply(this.options);
     }
 
-    public void removeAction(@NonNull final FileAction action) {
+    public ICustomFile<I, C, L> removeAction(@NonNull final FileAction action) {
         this.actions.remove(action);
+
+        return this;
     }
 
     public boolean hasAction(@NonNull final FileAction action) {
         return this.actions.contains(action);
     }
 
-    public void addAction(@NonNull final FileAction action) {
+    public ICustomFile<I, C, L> addAction(@NonNull final FileAction action) {
         this.actions.add(action);
+
+        return this;
     }
 
     public void setLoader(@NonNull final L loader) {
