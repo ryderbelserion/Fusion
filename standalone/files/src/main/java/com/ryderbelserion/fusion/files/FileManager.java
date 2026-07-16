@@ -53,16 +53,6 @@ public class FileManager extends IFileManager<FileManager> {
 
             consumer.accept(customFile);
 
-            if (customFile.hasAction(FileAction.DELETE_FILE) && !customFile.hasAction(FileAction.KEEP_FILE)) {
-                try {
-                    Files.deleteIfExists(path);
-                } catch (final IOException exception) {
-                    throw new FileException("Failed to delete %s".formatted(path), exception);
-                }
-
-                return this;
-            }
-
             if (customFile.hasAction(FileAction.RELOAD_FILE)) {
                 customFile.load();
             }
