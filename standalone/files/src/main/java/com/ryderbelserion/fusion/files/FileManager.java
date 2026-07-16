@@ -53,7 +53,7 @@ public class FileManager extends IFileManager<FileManager> {
 
             consumer.accept(customFile);
 
-            if (customFile.hasAction(FileAction.DELETE_FILE)) {
+            if (customFile.hasAction(FileAction.DELETE_FILE) && !customFile.hasAction(FileAction.KEEP_FILE)) {
                 try {
                     Files.deleteIfExists(path);
                 } catch (final IOException exception) {
