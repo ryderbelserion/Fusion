@@ -1,0 +1,20 @@
+package com.ryderbelserion.fusion.core.api.config.properties.interfaces;
+
+import org.jspecify.annotations.NullMarked;
+import org.spongepowered.configurate.CommentedConfigurationNode;
+import com.ryderbelserion.fusion.core.api.config.properties.objects.interfaces.Property;
+
+@NullMarked
+public interface IPropertyData {
+
+    <T> T getProperty(final CommentedConfigurationNode configuration, final Property<T> property);
+
+    <T> void setProperty(final CommentedConfigurationNode configuration, final Property<T> property, final T value);
+
+    <T> boolean hasProperty(final CommentedConfigurationNode configuration, final Property<T> property);
+
+    void setComment(final CommentedConfigurationNode configuration, final String value, final Object... path);
+
+    void populate(final CommentedConfigurationNode configuration);
+
+}

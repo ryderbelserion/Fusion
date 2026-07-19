@@ -22,6 +22,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.serialize.SerializationException;
+
 import java.nio.file.Path;
 import java.util.List;
 
@@ -76,6 +78,21 @@ public class Fusion extends JavaPlugin implements Listener {
         List.of(
                 "test.yml"
         ).forEach(input -> fileManager.extractFile(input, path.resolve("examples").resolve("test.yml")));
+
+        fileManager.getYamlFile(path.resolve("test.yml")).ifPresent(customFile -> {
+            final CommentedConfigurationNode configuration = customFile.getConfiguration().node("Locations");
+
+            try {
+                configuration.node("1", "World").set(String.class, "world");
+                configuration.node("1", "X").set(Integer.class, 1);
+                configuration.node("1", "Y").set(Integer.class, 2);
+                configuration.node("1", "Z").set(Integer.class, 3);
+
+                customFile.save();
+            } catch (SerializationException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         fileManager.saveFile(path.resolve("test.yml"));
 
