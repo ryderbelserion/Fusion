@@ -2,6 +2,10 @@ package com.ryderbelserion.fusion.core.api.config.properties;
 
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
+import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.BooleanProperty;
+import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.IntegerProperty;
+import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.string.ListProperty;
+import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.string.StringProperty;
 import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
@@ -41,6 +45,22 @@ public final class PropertyManager {
         this.options = options;
         this.builder = builder;
         this.path = path;
+    }
+
+    public @NonNull ListProperty getProperty(@NonNull final ListProperty property) {
+        return (ListProperty) this.propertyData.getProperty(getConfiguration(), property);
+    }
+
+    public @NonNull IntegerProperty getProperty(@NonNull final IntegerProperty property) {
+        return (IntegerProperty) this.propertyData.getProperty(getConfiguration(), property);
+    }
+
+    public @NonNull BooleanProperty getProperty(@NonNull final BooleanProperty property) {
+        return (BooleanProperty) this.propertyData.getProperty(getConfiguration(), property);
+    }
+
+    public @NonNull StringProperty getProperty(@NonNull final StringProperty property) {
+        return (StringProperty) this.propertyData.getProperty(getConfiguration(), property);
     }
 
     public @NonNull <T> T getProperty(@NonNull final Property<T> property) {
