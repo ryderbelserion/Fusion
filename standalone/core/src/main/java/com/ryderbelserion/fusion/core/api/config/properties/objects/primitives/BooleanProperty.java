@@ -5,7 +5,7 @@ import com.ryderbelserion.fusion.core.api.config.properties.objects.BaseProperty
 import com.ryderbelserion.fusion.core.api.config.properties.objects.enums.PropertyType;
 
 @NullMarked
-public final class BooleanProperty extends BaseProperty {
+public final class BooleanProperty extends BaseProperty<Boolean> {
 
     public BooleanProperty(final boolean defaultValue, final String alias, final Object... path) {
         super(Boolean.class, defaultValue, PropertyType.BOOLEAN, path);

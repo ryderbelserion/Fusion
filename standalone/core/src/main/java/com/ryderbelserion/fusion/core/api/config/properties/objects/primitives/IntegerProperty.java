@@ -5,7 +5,7 @@ import com.ryderbelserion.fusion.core.api.config.properties.objects.BaseProperty
 import com.ryderbelserion.fusion.core.api.config.properties.objects.enums.PropertyType;
 
 @NullMarked
-public final class IntegerProperty extends BaseProperty {
+public final class IntegerProperty extends BaseProperty<Integer> {
 
     public IntegerProperty(final int defaultValue, final String alias, final Object... path) {
         super(Integer.class, defaultValue, alias, PropertyType.INTEGER, path);
