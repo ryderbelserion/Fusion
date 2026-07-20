@@ -82,6 +82,10 @@ public abstract class FusionCore<S, F extends FileManager> {
         return this;
     }
 
+    public FusionCore post() {
+        return this;
+    }
+
     public @NonNull final List<String> getFilesByName(
             @NonNull final String folder,
             @NonNull final Path path,

@@ -57,6 +57,11 @@ public class FusionPaper extends FusionKyori<Audience, PaperFileManager> {
     public final FusionPaper init() {
         super.init();
 
+        return this;
+    }
+
+    @Override
+    public final FusionPaper post() {
         this.guiManager = new GuiManager();
 
         if (this.pluginManager.isPluginEnabled("HeadDatabase") && this.api == null) {
@@ -69,7 +74,7 @@ public class FusionPaper extends FusionKyori<Audience, PaperFileManager> {
     }
 
     @Override
-    public FusionCore reload() {
+    public final FusionPaper reload() {
         super.reload();
 
         return this;
