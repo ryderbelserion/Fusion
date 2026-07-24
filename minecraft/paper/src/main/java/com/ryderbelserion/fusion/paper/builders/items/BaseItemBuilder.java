@@ -588,16 +588,18 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         if (isMap()) {
             final Color color = value.contains(",") ? ColorUtils.getRGB(value) : ColorUtils.getColor(value);
 
-            if (color != null) this.itemStack.setData(DataComponentTypes.MAP_COLOR, MapItemColor.mapItemColor().color(color).build());
+            if (color != null) {
+                this.itemStack.setData(DataComponentTypes.MAP_COLOR, MapItemColor.mapItemColor().color(color).build());
+            }
         } else if (isLeather()) {
             final Color color = value.contains(",") ? ColorUtils.getRGB(value) : ColorUtils.getColor(value);
 
-            if (color != null) this.itemStack.setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor().color(color).build());
+            if (color != null) {
+                this.itemStack.setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor().color(color).build());
+            }
         } else if (isShield()) {
-            final DyeColor color = ColorUtils.getDyeColor(value);
-
-            this.itemStack.setData(DataComponentTypes.BASE_COLOR, color);
-        } else if (isPotion()) {
+            this.itemStack.setData(DataComponentTypes.BASE_COLOR, ColorUtils.getDyeColor(value));
+        } else if (isPotion() || isTippedArrow()) {
             asPotionBuilder().setColor(value).build();
         }
 
