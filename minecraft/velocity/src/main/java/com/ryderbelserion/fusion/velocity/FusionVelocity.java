@@ -24,28 +24,30 @@ public class FusionVelocity extends FusionKyori<Audience, FileManager> {
     }
 
     @Override
-    public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Exception exception, @NonNull final Object... objects) {
+    public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Exception exception, @NonNull final Object... args) {
         if (!this.isVerbose()) return;
 
-        final Component component = asComponent(message.formatted(objects));
+        final Component component = asComponent(message.formatted(args));
 
         switch (level) {
             case WARNING -> this.logger.warn(component, exception);
+            case DEBUG -> this.logger.debug(component, exception);
             case ERROR -> this.logger.error(component, exception);
             case INFO -> this.logger.info(component, exception);
         }
     }
 
     @Override
-    public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Object... objects) {
+    public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Object... args) {
         if (!this.isVerbose()) return;
 
-        final Component component = asComponent(message.formatted(objects));
+        final Component component = asComponent(message.formatted(args));
 
         switch (level) {
-            case WARNING -> this.logger.warn(component, objects);
-            case ERROR -> this.logger.error(component, objects);
-            case INFO -> this.logger.info(component, objects);
+            case WARNING -> this.logger.warn(component);
+            case DEBUG -> this.logger.debug(component);
+            case ERROR -> this.logger.error(component);
+            case INFO -> this.logger.info(component);
         }
     }
 

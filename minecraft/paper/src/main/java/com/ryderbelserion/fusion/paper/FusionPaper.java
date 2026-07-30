@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.paper;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
@@ -118,12 +117,12 @@ public class FusionPaper extends FusionKyori<Audience, PaperFileManager> {
     public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Exception exception, @NonNull final Object... args) {
         if (!this.isVerbose()) return;
 
-        final Component component = asComponent(message.formatted(args));
+        final Component component = asComponent(level.equals(Level.DEBUG) ? "<yellow>[DEBUG] %s</yellow>".formatted(message.formatted(args)) : message.formatted(args));
 
         switch (level) {
             case WARNING -> this.logger.warn(component, exception);
+            case DEBUG, INFO -> this.logger.info(component, exception);
             case ERROR -> this.logger.error(component, exception);
-            case INFO -> this.logger.info(component, exception);
         }
     }
 
@@ -131,12 +130,12 @@ public class FusionPaper extends FusionKyori<Audience, PaperFileManager> {
     public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Object... args) {
         if (!this.isVerbose()) return;
 
-        final Component component = asComponent(message.formatted(args));
+        final Component component = asComponent(level.equals(Level.DEBUG) ? "<yellow>[DEBUG] %s</yellow>".formatted(message.formatted(args)) : message.formatted(args));
 
         switch (level) {
             case WARNING -> this.logger.warn(component);
+            case DEBUG, INFO -> this.logger.info(component);
             case ERROR -> this.logger.error(component);
-            case INFO -> this.logger.info(component);
         }
     }
 

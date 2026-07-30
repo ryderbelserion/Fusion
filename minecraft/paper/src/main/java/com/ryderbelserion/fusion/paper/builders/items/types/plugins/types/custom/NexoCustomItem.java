@@ -34,7 +34,7 @@ public class NexoCustomItem extends ICustomItem {
             return this;
         }
 
-        if (!NexoItems.exists(this.item)) {
+        if (!isAvailable()) {
             this.fusion.log(Level.WARNING, "The id %s does not exist as a %s item! Attempting falling back to vanilla item!", this.item, impl);
 
             new VanillaItemStack(this.builder, this.item).init();
@@ -51,6 +51,15 @@ public class NexoCustomItem extends ICustomItem {
         this.itemStack = builder.build();
 
         return this;
+    }
+
+    @Override
+    public boolean isAvailable() {
+        try {
+            return NexoItems.exists(this.item);
+        } catch (final Exception exception) {
+            return false;
+        }
     }
 
     @Override

@@ -33,7 +33,7 @@ public class ItemsAdderCustomItem extends ICustomItem {
             return this;
         }
 
-        if (!CustomStack.isInRegistry(this.item)) {
+        if (!isAvailable()) {
             this.fusion.log(Level.WARNING, "The id %s does not exist as a %s item! Attempting falling back to vanilla item!", this.item, impl);
 
             new VanillaItemStack(this.builder, this.item).init();
@@ -50,6 +50,15 @@ public class ItemsAdderCustomItem extends ICustomItem {
         this.itemStack = builder.getItemStack();
 
         return this;
+    }
+
+    @Override
+    public boolean isAvailable() {
+        try {
+            return CustomStack.isInRegistry(this.item);
+        } catch (final Exception exception) {
+            return false;
+        }
     }
 
     @Override

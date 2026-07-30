@@ -36,6 +36,8 @@ public class Fusion extends JavaPlugin implements Listener {
         this.fusion = new FusionPaper(this);
         this.fusion.init();
 
+        this.fusion.log(Level.DEBUG, "This is a debug message.");
+
         final PaperFileManager fileManager = this.fusion.getFileManager();
 
         final Path path = getDataPath();
