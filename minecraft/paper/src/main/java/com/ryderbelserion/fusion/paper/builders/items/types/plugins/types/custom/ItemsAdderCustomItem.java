@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NonNull;
 import java.util.Optional;
 
-public class ItemsAdderCustomItem extends ICustomItem {
+public final class ItemsAdderCustomItem extends ICustomItem {
 
     public ItemsAdderCustomItem(@NonNull final BaseItemBuilder builder, @NonNull final String item, final boolean isEnabled) {
         super(builder, item, isEnabled);
@@ -19,12 +19,12 @@ public class ItemsAdderCustomItem extends ICustomItem {
     private ItemStack itemStack;
 
     @Override
-    public @NonNull final Optional<ItemStack> getItemStack() {
+    public @NonNull Optional<ItemStack> getItemStack() {
         return Optional.ofNullable(this.itemStack);
     }
 
     @Override
-    public @NonNull final ItemsAdderCustomItem init() {
+    public @NonNull ItemsAdderCustomItem init() {
         final String impl = getImpl();
 
         if (!this.isEnabled && !this.fusion.isPluginEnabled(impl)) {
@@ -62,7 +62,7 @@ public class ItemsAdderCustomItem extends ICustomItem {
     }
 
     @Override
-    public @NonNull final String getImpl() {
+    public @NonNull String getImpl() {
         return "ItemsAdder";
     }
 }

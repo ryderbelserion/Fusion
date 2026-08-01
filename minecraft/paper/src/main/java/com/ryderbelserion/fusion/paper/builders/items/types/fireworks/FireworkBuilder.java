@@ -6,41 +6,41 @@ import io.papermc.paper.datacomponent.item.Fireworks;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.inventory.ItemStack;
-import org.jspecify.annotations.NonNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
-public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
+@NullMarked
+public final class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
 
     private final Fireworks.Builder builder;
 
-    public FireworkBuilder(@NonNull final ItemStack itemStack) {
+    public FireworkBuilder(final ItemStack itemStack) {
         super(itemStack);
 
         this.builder = Fireworks.fireworks();
     }
 
-    public @NonNull FireworkBuilder addEffect(@NonNull final FireworkEffect effect) {
+    public FireworkBuilder addEffect(final FireworkEffect effect) {
         this.builder.addEffect(effect);
 
         return this;
     }
 
-    public @NonNull FireworkBuilder addEffect(final boolean flicker, final boolean trail, final FireworkEffect.@NonNull Type type, @Nullable final List<Color> colors, @Nullable final List<Color> fadeColors) {
+    public FireworkBuilder addEffect(final boolean flicker, final boolean trail, final FireworkEffect.Type type, final List<Color> colors, final List<Color> fadeColors) {
         final FireworkStarBuilder builder = new FireworkStarBuilder(this.itemStack);
 
         builder.flicker(flicker);
         builder.trail(trail);
         builder.with(type);
 
-        if (colors != null) builder.withColor(colors);
+        if (!colors.isEmpty()) builder.withColor(colors);
 
-        if (fadeColors != null) builder.withFade(fadeColors);
+        if (!fadeColors.isEmpty()) builder.withFade(fadeColors);
 
         return addEffect(builder.getBuilder().build());
     }
 
-    public @NonNull FireworkBuilder withDuration(final int duration) {
+    public FireworkBuilder withDuration(final int duration) {
         if (duration == -1) return this;
 
         this.builder.flightDuration(duration);
@@ -49,7 +49,7 @@ public class FireworkBuilder extends BaseItemBuilder<FireworkBuilder> {
     }
 
     @Override
-    public @NonNull FireworkBuilder build() {
+    public FireworkBuilder build() {
         this.itemStack.setData(DataComponentTypes.FIREWORKS, this.builder.build());
 
         return this;

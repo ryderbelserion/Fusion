@@ -11,15 +11,16 @@ import org.bukkit.craftbukkit.inventory.CraftContainer;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import java.util.HashMap;
 import java.util.Map;
 
+@NullMarked
 public class GuiUtils {
 
     private static final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
 
-    public static String updateTitle(@NonNull final Player player, @NonNull final Inventory inventory, @NonNull final String origin, @NonNull final Map<String, String> placeholders) {
+    public static String updateTitle(final Player player, final Inventory inventory, final String origin, final Map<String, String> placeholders) {
         final ServerPlayer entityPlayer = (ServerPlayer) ((CraftEntity) player).getHandle();
 
         final int containerId = entityPlayer.containerMenu.containerId;
@@ -34,7 +35,7 @@ public class GuiUtils {
         return title;
     }
 
-    public static String updateTitle(@NonNull final Player player, @NonNull final Inventory inventory, @NonNull final String origin) {
+    public static String updateTitle(final Player player, final Inventory inventory, final String origin) {
         return updateTitle(player, inventory, origin, new HashMap<>());
     }
 }

@@ -33,7 +33,7 @@ public final class ConfigBuilder {
     private boolean isLenient = true;
     private int indent = 4;
 
-    private UnaryOperator<ConfigurationOptions> options;
+    private UnaryOperator<ConfigurationOptions> options = UnaryOperator.identity();
     private IPropertyData propertyData;
 
     @SafeVarargs

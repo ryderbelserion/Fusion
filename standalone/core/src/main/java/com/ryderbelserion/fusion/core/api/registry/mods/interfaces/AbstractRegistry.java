@@ -1,17 +1,18 @@
 package com.ryderbelserion.fusion.core.api.registry.mods.interfaces;
 
 import com.ryderbelserion.fusion.core.api.FusionKey;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import java.util.Map;
 
+@NullMarked
 public interface AbstractRegistry {
 
-    void addMod(@NonNull final FusionKey key, @NonNull final AbstractMod mod);
+    void addMod(final FusionKey key, final AbstractMod mod);
 
-    void removeMod(@NonNull final FusionKey key);
+    void removeMod(final FusionKey key);
 
     Map<FusionKey, AbstractMod> getMods();
 
-    @NonNull AbstractMod getMod(@NonNull final FusionKey key);
+    AbstractMod getMod(final FusionKey key);
 
 }

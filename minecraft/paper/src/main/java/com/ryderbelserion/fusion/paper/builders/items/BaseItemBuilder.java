@@ -32,7 +32,6 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -194,18 +193,16 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public @NonNull final GuiItem asGuiItem(@NonNull final Audience audience) {
-        return asGuiItem(audience, action -> {});
+        return asGuiItem(audience, _ -> {});
     }
 
     public @NonNull final GuiItem asGuiItem() {
         return asGuiItem(Audience.empty());
     }
 
-    public @NonNull ItemStack asItemStack(@Nullable final Audience audience) {
-        final Audience safeAudience = audience == null ? Audience.empty() : audience;
-
+    public @NonNull ItemStack asItemStack(@NonNull final Audience audience) {
         if (!this.displayName.isEmpty()) {
-            this.itemStack.setData(this.type, this.fusion.asComponent(safeAudience, this.displayName, this.placeholders));
+            this.itemStack.setData(this.type, this.fusion.asComponent(audience, this.displayName, this.placeholders));
         }
 
         final List<String> lore = this.displayLore;
@@ -213,7 +210,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         if (!lore.isEmpty()) {
             final List<Component> components = new ArrayList<>(lore.size());
 
-            lore.forEach(line -> components.add(this.fusion.asComponent(safeAudience, line, placeholders)));
+            lore.forEach(line -> components.add(this.fusion.asComponent(audience, line, placeholders)));
 
             this.itemStack.setData(DataComponentTypes.LORE, ItemLore.lore(components));
         }
@@ -417,9 +414,9 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public @NonNull B addEnchantment(@NonNull final String enchant, final int level) {
         if (enchant.isEmpty()) return (B) this;
 
-        final Enchantment enchantment = ItemUtils.getEnchantment(enchant);
+        final Optional<Enchantment> enchantment = ItemUtils.getEnchantment(enchant);
 
-        if (enchantment == null) return (B) this;
+        if (enchantment.isEmpty()) return (B) this;
 
         final ItemEnchantments.Builder builder = ItemEnchantments.itemEnchantments();
 
@@ -437,7 +434,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
             }
         }
 
-        builder.add(enchantment, level);
+        builder.add(enchantment.get(), level);
 
         this.itemStack.setData(isBook() ? DataComponentTypes.STORED_ENCHANTMENTS : DataComponentTypes.ENCHANTMENTS, builder.build());
 
@@ -447,11 +444,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public @NonNull B removeEnchantment(@NonNull final String enchant) {
         if (enchant.isEmpty()) return (B) this;
 
-        final Enchantment enchantment = ItemUtils.getEnchantment(enchant);
-
-        if (enchantment == null) return (B) this;
-
-        this.itemStack.removeEnchantment(enchantment);
+        ItemUtils.getEnchantment(enchant).ifPresent(enchantment -> this.itemStack.removeEnchantment(enchantment));
 
         return (B) this;
     }
@@ -566,15 +559,15 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public @NonNull B setTrim(@NonNull final String pattern, @NonNull final String material) {
         if (pattern.isEmpty() || material.isEmpty()) return (B) this;
 
-        final TrimMaterial trimMaterial = ItemUtils.getTrimMaterial(material);
+        final Optional<TrimMaterial> trimMaterial = ItemUtils.getTrimMaterial(material);
 
-        if (trimMaterial == null) return (B) this;
+        if (trimMaterial.isEmpty()) return (B) this;
 
-        final TrimPattern trimPattern = ItemUtils.getTrimPattern(pattern);
+        final Optional<TrimPattern> trimPattern = ItemUtils.getTrimPattern(pattern);
 
-        if (trimPattern == null) return (B) this;
+        if (trimPattern.isEmpty()) return (B) this;
 
-        final ItemArmorTrim.Builder builder = ItemArmorTrim.itemArmorTrim(new ArmorTrim(trimMaterial, trimPattern));
+        final ItemArmorTrim.Builder builder = ItemArmorTrim.itemArmorTrim(new ArmorTrim(trimMaterial.get(), trimPattern.get()));
 
         this.itemStack.setData(DataComponentTypes.TRIM, builder.build());
 
@@ -585,17 +578,9 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         if (value.isEmpty()) return (B) this;
 
         if (isMap()) {
-            final Color color = value.contains(",") ? ColorUtils.getRGB(value) : ColorUtils.getColor(value);
-
-            if (color != null) {
-                this.itemStack.setData(DataComponentTypes.MAP_COLOR, MapItemColor.mapItemColor().color(color).build());
-            }
+            ColorUtils.getRGB(value).ifPresent(color -> this.itemStack.setData(DataComponentTypes.MAP_COLOR, MapItemColor.mapItemColor().color(color).build()));
         } else if (isLeather()) {
-            final Color color = value.contains(",") ? ColorUtils.getRGB(value) : ColorUtils.getColor(value);
-
-            if (color != null) {
-                this.itemStack.setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor().color(color).build());
-            }
+            ColorUtils.getRGB(value).ifPresent(color -> this.itemStack.setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor().color(color).build()));
         } else if (isShield()) {
             this.itemStack.setData(DataComponentTypes.BASE_COLOR, ColorUtils.getDyeColor(value));
         } else if (isPotion() || isTippedArrow()) {

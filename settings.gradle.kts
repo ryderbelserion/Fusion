@@ -19,6 +19,7 @@ listOf(
     "minecraft/velocity" to "velocity",
     "minecraft/paper" to "paper",
 
+    "minecraft/mojang" to "mojang",
     "minecraft/kyori" to "kyori",
 
     "standalone/files" to "files",

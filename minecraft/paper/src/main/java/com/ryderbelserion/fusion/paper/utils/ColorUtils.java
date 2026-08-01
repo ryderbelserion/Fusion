@@ -2,12 +2,13 @@ package com.ryderbelserion.fusion.paper.utils;
 
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
-import org.jspecify.annotations.NonNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import java.util.Optional;
 
+@NullMarked
 public class ColorUtils {
 
-    public static @NonNull DyeColor getDyeColor(@NonNull final String value) {
+    public static DyeColor getDyeColor(final String value) {
         if (value.isEmpty()) return DyeColor.WHITE;
 
         return switch (value.toLowerCase()) {
@@ -30,7 +31,7 @@ public class ColorUtils {
         };
     }
 
-    public static @NonNull Color getColor(@NonNull final String value) {
+    public static Color getColor(final String value) {
         if (value.isEmpty()) return Color.WHITE;
 
         return switch (value.toLowerCase()) {
@@ -54,17 +55,21 @@ public class ColorUtils {
         };
     }
 
-    public static @Nullable Color getRGB(@NonNull final String color) {
-        if (color.isEmpty()) return null;
+    public static Optional<Color> getRGB(final String color) {
+        if (color.isEmpty()) return Optional.empty();
+
+        if (!color.contains(",")) {
+            return Optional.of(getColor(color));
+        }
 
         final String[] rgb = color.split(",");
 
-        if (rgb.length != 3) return null;
+        if (rgb.length != 3) return Optional.empty();
 
         final int red = Integer.parseInt(rgb[0]);
         final int green = Integer.parseInt(rgb[1]);
         final int blue = Integer.parseInt(rgb[2]);
 
-        return Color.fromRGB(red, green, blue);
+        return Optional.of(Color.fromRGB(red, green, blue));
     }
 }

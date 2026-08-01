@@ -5,8 +5,10 @@ import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.B
 import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.IntegerProperty;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.string.ListProperty;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.string.StringProperty;
+import org.jspecify.annotations.NullMarked;
 import java.util.List;
 
+@NullMarked
 public class PropertyBuilder {
 
     public static <B> BeanProperty<B> newBeanProperty(final Class<B> beanClass, final B defaultValue, final Object... path) {

@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NonNull;
 import java.util.Optional;
 
-public class NexoCustomItem extends ICustomItem {
+public final class NexoCustomItem extends ICustomItem {
 
     public NexoCustomItem(@NonNull final BaseItemBuilder builder, @NonNull final String item, final boolean isEnabled) {
         super(builder, item, isEnabled);
@@ -20,12 +20,12 @@ public class NexoCustomItem extends ICustomItem {
     private ItemStack itemStack;
 
     @Override
-    public @NonNull final Optional<ItemStack> getItemStack() {
+    public @NonNull Optional<ItemStack> getItemStack() {
         return Optional.ofNullable(this.itemStack);
     }
 
     @Override
-    public @NonNull final NexoCustomItem init() {
+    public @NonNull NexoCustomItem init() {
         final String impl = getImpl();
 
         if (!this.isEnabled && !this.fusion.isPluginEnabled(impl)) {
@@ -63,7 +63,7 @@ public class NexoCustomItem extends ICustomItem {
     }
 
     @Override
-    public @NonNull final String getImpl() {
+    public @NonNull String getImpl() {
         return "Nexo";
     }
 }

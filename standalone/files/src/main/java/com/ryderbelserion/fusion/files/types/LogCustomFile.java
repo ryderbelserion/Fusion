@@ -3,22 +3,23 @@ package com.ryderbelserion.fusion.files.types;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
+@NullMarked
 public final class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFile, Object> {
 
-    public LogCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<LogCustomFile> consumer) {
+    public LogCustomFile(final FileManager fileManager, final Path path, final Consumer<LogCustomFile> consumer) {
         super(fileManager, path);
 
         consumer.accept(this);
     }
 
     @Override
-    public @NonNull LogCustomFile loadConfig() throws IOException {
+    public LogCustomFile loadConfig() throws IOException {
         final Path path = getPath();
 
         if (Files.exists(path)) {
@@ -31,7 +32,7 @@ public final class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFil
     }
 
     @Override
-    public void saveConfig(@NonNull final String content) {
+    public void saveConfig(final String content) {
         if (content.isEmpty()) {
             saveConfig();
 
@@ -47,7 +48,7 @@ public final class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFil
     }
 
     @Override
-    public @NonNull FileType getFileType() {
+    public FileType getFileType() {
         return FileType.LOG;
     }
 }

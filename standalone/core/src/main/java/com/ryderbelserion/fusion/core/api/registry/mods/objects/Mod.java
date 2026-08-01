@@ -4,13 +4,14 @@ import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.registry.mods.interfaces.AbstractMod;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public class Mod extends AbstractMod {
 
     private final FusionCore fusion = FusionProvider.getInstance();
 
-    public Mod(@NonNull final FusionKey key) {
+    public Mod(final FusionKey key) {
         super(key);
     }
 

@@ -3,8 +3,7 @@ package com.ryderbelserion.fusion.core.utils;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.files.FileException;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -13,10 +12,10 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+@NullMarked
 public class StringUtils {
 
     private static final Pattern BRACKET_PATTERN = Pattern.compile("\\{(.*?)}");
@@ -27,26 +26,7 @@ public class StringUtils {
     private static final char LF = '\n';
     private static final char CR = '\r';
 
-    public static @NonNull String replacePlaceholders(@NonNull final String message, @NonNull final Map<String, String> placeholders) {
-        String safeMessage = message;
-
-        if (!placeholders.isEmpty()) {
-            for (final Map.Entry<String, String> key : placeholders.entrySet()) {
-                if (key == null) continue;
-
-                final String placeholder = key.getKey();
-                final String value = key.getValue();
-
-                if (placeholder != null && value != null) {
-                    safeMessage = safeMessage.replace(placeholder, value).replace(placeholder.toLowerCase(), value);
-                }
-            }
-        }
-
-        return safeMessage;
-    }
-
-    public static @NonNull List<String> getStringList(@NonNull final CommentedConfigurationNode node, @NonNull final List<String> defaultValues) {
+    public static List<String> getStringList(final CommentedConfigurationNode node, final List<String> defaultValues) {
         try {
             final List<String> list = node.getList(String.class);
 
@@ -56,15 +36,15 @@ public class StringUtils {
         }
     }
 
-    public static @NonNull List<String> getStringList(@NonNull final CommentedConfigurationNode node, @NonNull final String defaultValue) {
+    public static List<String> getStringList(final CommentedConfigurationNode node, final String defaultValue) {
         return getStringList(node, List.of(defaultValue));
     }
 
-    public static @NonNull List<String> getStringList(@NonNull final CommentedConfigurationNode node) {
+    public static List<String> getStringList(final CommentedConfigurationNode node) {
         return getStringList(node, List.of());
     }
 
-    public static @NonNull List<String> getStringList(@NonNull final BasicConfigurationNode node, @NonNull final List<String> defaultValues) {
+    public static List<String> getStringList(final BasicConfigurationNode node, final List<String> defaultValues) {
         try {
             final List<String> list = node.getList(String.class);
 
@@ -74,15 +54,15 @@ public class StringUtils {
         }
     }
 
-    public static @NonNull List<String> getStringList(@NonNull final BasicConfigurationNode node, @NonNull final String defaultValue) {
+    public static List<String> getStringList(final BasicConfigurationNode node, final String defaultValue) {
         return getStringList(node, List.of(defaultValue));
     }
 
-    public static @NonNull List<String> getStringList(@NonNull final BasicConfigurationNode node) {
+    public static List<String> getStringList(final BasicConfigurationNode node) {
         return getStringList(node, List.of());
     }
 
-    public static @NonNull Optional<Boolean> tryParseBoolean(@NonNull final String value) {
+    public static Optional<Boolean> tryParseBoolean(final String value) {
         try {
             return Optional.of(Boolean.parseBoolean(value));
         } catch (final NumberFormatException exception) {
@@ -90,7 +70,7 @@ public class StringUtils {
         }
     }
 
-    public static @NonNull Optional<Number> tryParseInt(@NonNull final String value) {
+    public static Optional<Number> tryParseInt(final String value) {
         try {
             return Optional.of(Integer.parseInt(value));
         } catch (final NumberFormatException exception) {
@@ -98,35 +78,35 @@ public class StringUtils {
         }
     }
 
-    public static @NonNull String replaceAngleBrackets(@NonNull final String input) {
+    public static String replaceAngleBrackets(final String input) {
         return ANGLE_PATTERN.matcher(input).replaceAll("");
     }
 
-    public static @NonNull String replaceAllBrackets(@NonNull final String input) {
+    public static String replaceAllBrackets(final String input) {
         return replaceAngleBrackets(replaceBrackets(input));
     }
 
-    public static @NonNull String replaceBrackets(@NonNull final String input) {
+    public static String replaceBrackets(final String input) {
         return BRACKET_PATTERN.matcher(input).replaceAll("<$1>");
     }
 
-    public static @NonNull String fromInteger(final int number) {
+    public static String fromInteger(final int number) {
         return NumberFormat.getIntegerInstance(Locale.US).format(number);
     }
 
-    public static @NonNull String fromDouble(final double number) {
+    public static String fromDouble(final double number) {
         return NumberFormat.getNumberInstance(Locale.US).format(number);
     }
 
-    public static @NonNull String formatNumber(final double number, final NumberFormat.@NonNull Style style) {
+    public static String formatNumber(final double number, final NumberFormat.Style style) {
         return NumberFormat.getCompactNumberInstance(Locale.US, style).format(number);
     }
 
-    public static @NonNull String formatNumber(final double number) {
+    public static String formatNumber(final double number) {
         return formatNumber(number, NumberFormat.Style.SHORT);
     }
 
-    public static @NonNull String format(final double number) {
+    public static String format(final double number) {
         final DecimalFormat decimalFormat = new DecimalFormat(fusion.getNumberFormat());
 
         decimalFormat.setRoundingMode(mode());
@@ -134,11 +114,11 @@ public class StringUtils {
         return decimalFormat.format(number);
     }
 
-    public static @NonNull RoundingMode mode() {
+    public static RoundingMode mode() {
         return RoundingMode.valueOf(fusion.getRounding().toUpperCase());
     }
 
-    public static @NonNull String toString(@NonNull final List<String> list) {
+    public static String toString(final List<String> list) {
         if (list.isEmpty()) return "";
 
         final StringBuilder message = new StringBuilder(list.size());
@@ -150,8 +130,8 @@ public class StringUtils {
         return chomp(message.toString());
     }
 
-    public static String chomp(@Nullable final String value) {
-        if (value == null || value.isEmpty()) {
+    public static String chomp(final String value) {
+        if (value.isEmpty()) {
             return value;
         }
 

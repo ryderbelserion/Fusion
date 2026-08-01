@@ -1,6 +1,5 @@
 package com.ryderbelserion.fusion.paper.builders.gui.types.paginated;
 
-import com.ryderbelserion.fusion.core.api.enums.Level;
 import com.ryderbelserion.fusion.paper.builders.gui.GuiBuilder;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiState;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiAction;

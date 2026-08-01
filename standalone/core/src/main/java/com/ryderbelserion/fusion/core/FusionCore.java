@@ -11,7 +11,6 @@ import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -23,9 +22,9 @@ import java.util.Optional;
 
 public abstract class FusionCore<S, F extends FileManager> {
 
+    protected final Path configPath;
     protected final F fileManager;
-    private final Path configPath;
-    private final Path path;
+    protected final Path path;
 
     public FusionCore(@NonNull final F fileManager, @NonNull final Path path) {
         this.configPath = path.resolve("fusion.yml");
@@ -49,7 +48,7 @@ public abstract class FusionCore<S, F extends FileManager> {
             @NonNull final Object... args
     );
 
-    public abstract String papi(@Nullable final S sender, @NonNull final String message);
+    public abstract String papi(@NonNull final S sender, @NonNull final String message);
 
     public abstract boolean isModReady(@NonNull final FusionKey key);
 

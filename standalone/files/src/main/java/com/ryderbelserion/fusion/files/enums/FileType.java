@@ -1,10 +1,11 @@
 package com.ryderbelserion.fusion.files.enums;
 
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 
 /**
  * Holds the FileType's used in FileUtils/FileManager.
  */
+@NullMarked
 public enum FileType {
 
     /**
@@ -39,7 +40,7 @@ public enum FileType {
      *
      * @param extension the file extension
      */
-    FileType(@NonNull final String extension) {
+    FileType(final String extension) {
         this.extension = extension;
     }
 
@@ -48,7 +49,7 @@ public enum FileType {
      *
      * @return the file type extension
      */
-    public @NonNull final String getExtension() {
+    public final String getExtension() {
         return this.extension;
     }
 }

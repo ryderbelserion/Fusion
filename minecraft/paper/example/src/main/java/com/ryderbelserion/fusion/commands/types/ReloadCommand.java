@@ -26,7 +26,6 @@ import org.jspecify.annotations.NonNull;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import static io.papermc.paper.command.brigadier.Commands.argument;
 
 public class ReloadCommand extends PaperCommand {

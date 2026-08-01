@@ -9,7 +9,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NonNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 

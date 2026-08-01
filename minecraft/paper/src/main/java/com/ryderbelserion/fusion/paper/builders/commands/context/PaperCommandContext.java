@@ -6,19 +6,20 @@ import com.ryderbelserion.fusion.mojang.context.AbstractCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 
-public class PaperCommandContext extends AbstractCommandContext<CommandSourceStack> {
+@NullMarked
+public final class PaperCommandContext extends AbstractCommandContext<CommandSourceStack> {
 
-    public PaperCommandContext(@NonNull final CommandContext<CommandSourceStack> context) {
+    public PaperCommandContext(final CommandContext<CommandSourceStack> context) {
         super(context);
     }
 
-    public @NonNull final CommandSender getSender() {
+    public CommandSender getSender() {
         return getSource().getSender();
     }
 
-    public @NonNull final Player getPlayer() {
+    public Player getPlayer() {
         if (!isPlayer()) {
             throw new FusionException("This method can only be used for Players!");
         }
@@ -26,7 +27,7 @@ public class PaperCommandContext extends AbstractCommandContext<CommandSourceSta
         return (Player) getSender();
     }
 
-    public final boolean isPlayer() {
+    public boolean isPlayer() {
         return getSender() instanceof Player;
     }
 }

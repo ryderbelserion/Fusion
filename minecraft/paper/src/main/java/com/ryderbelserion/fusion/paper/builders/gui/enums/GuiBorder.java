@@ -1,7 +1,8 @@
 package com.ryderbelserion.fusion.paper.builders.gui.enums;
 
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public enum GuiBorder {
 
     TOP("top"),
@@ -16,7 +17,7 @@ public enum GuiBorder {
 
     private final String type;
 
-    GuiBorder(@NonNull final String type) {
+    GuiBorder(final String type) {
         this.type = type;
     }
 
@@ -24,7 +25,7 @@ public enum GuiBorder {
         return this.type;
     }
 
-    public static GuiBorder getFromName(@NonNull final String name) {
+    public static GuiBorder getFromName(final String name) {
         GuiBorder origin = GuiBorder.REMAINING_SLOTS;
 
         for (final GuiBorder type : GuiBorder.values()) {

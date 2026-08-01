@@ -6,38 +6,34 @@ import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.BannerPatternLayers;
 import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 
-public class PatternBuilder extends BaseItemBuilder<PatternBuilder> {
+@NullMarked
+public final class PatternBuilder extends BaseItemBuilder<PatternBuilder> {
 
     private final BannerPatternLayers.Builder builder;
 
-    public PatternBuilder(@NonNull final ItemStack itemStack) {
+    public PatternBuilder(final ItemStack itemStack) {
         super(itemStack);
 
         this.builder = BannerPatternLayers.bannerPatternLayers();
     }
 
-    public @NonNull PatternBuilder addPattern(@NonNull final Pattern pattern) {
+    public PatternBuilder addPattern(final Pattern pattern) {
         this.builder.add(pattern);
 
         return this;
     }
 
-    public @NonNull PatternBuilder addPattern(@NonNull final String pattern, @NonNull final String dye) {
-        if (pattern.isBlank() || dye.isBlank()) return this;
+    public PatternBuilder addPattern(final String pattern, final String dye) {
+        ItemUtils.getPatternType(pattern.toLowerCase()).ifPresent(type -> addPattern(new Pattern(ColorUtils.getDyeColor(dye), type)));
 
-        final PatternType type = ItemUtils.getPatternType(pattern.toLowerCase());
-
-        if (type == null) return this;
-
-        return addPattern(new Pattern(ColorUtils.getDyeColor(dye), type));
+        return this;
     }
 
     @Override
-    public @NonNull PatternBuilder build() {
+    public PatternBuilder build() {
         this.itemStack.setData(DataComponentTypes.BANNER_PATTERNS, this.builder.build());
 
         return this;

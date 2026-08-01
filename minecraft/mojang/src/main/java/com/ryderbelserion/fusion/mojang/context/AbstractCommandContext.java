@@ -2,25 +2,26 @@ package com.ryderbelserion.fusion.mojang.context;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ParsedArgument;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@NullMarked
 public abstract class AbstractCommandContext<S> {
 
     protected final Map<String, ParsedArgument<S, ?>> arguments;
     protected final CommandContext<S> context;
 
-    public AbstractCommandContext(@NonNull final CommandContext<S> context) {
+    public AbstractCommandContext(final CommandContext<S> context) {
         this.context = context;
 
         this.arguments = new HashMap<>();
     }
 
-    public @NonNull final Map<String, ParsedArgument<S, ?>> getArguments() {
+    public final Map<String, ParsedArgument<S, ?>> getArguments() {
         Map<String, ParsedArgument<S, ?>> map = new HashMap<>();
 
         final Class<?> object = this.context.getClass();
@@ -38,55 +39,55 @@ public abstract class AbstractCommandContext<S> {
         return Collections.unmodifiableMap(map);
     }
 
-    public final boolean hasArgument(@NonNull final String key) {
+    public final boolean hasArgument(final String key) {
         return getArguments().containsKey(key);
     }
 
-    public @NonNull final Optional<String> getStringArgument(@NonNull final String key) {
+    public final Optional<String> getStringArgument(final String key) {
         if (!hasArgument(key)) {
             return Optional.empty();
         }
 
-        return Optional.ofNullable(this.context.getArgument(key, String.class));
+        return Optional.of(this.context.getArgument(key, String.class));
     }
 
-    public final Optional<Long> getLongArgument(@NonNull final String key) {
+    public final Optional<Long> getLongArgument(final String key) {
         if (!hasArgument(key)) {
             return Optional.empty();
         }
 
-        return Optional.ofNullable(this.context.getArgument(key, Long.class));
+        return Optional.of(this.context.getArgument(key, Long.class));
     }
 
-    public final Optional<Double> getDoubleArgument(@NonNull final String key) {
+    public final Optional<Double> getDoubleArgument(final String key) {
         if (!hasArgument(key)) {
             return Optional.empty();
         }
 
-        return Optional.ofNullable(this.context.getArgument(key, Double.class));
+        return Optional.of(this.context.getArgument(key, Double.class));
     }
 
-    public final Optional<Integer> getIntegerArgument(@NonNull final String key) {
+    public final Optional<Integer> getIntegerArgument(final String key) {
         if (!hasArgument(key)) {
             return Optional.empty();
         }
 
-        return Optional.ofNullable(this.context.getArgument(key, Integer.class));
+        return Optional.of(this.context.getArgument(key, Integer.class));
     }
 
-    public final Optional<Float> getFloatArgument(@NonNull final String key) {
+    public final Optional<Float> getFloatArgument(final String key) {
         if (!hasArgument(key)) {
             return Optional.empty();
         }
 
-        return Optional.ofNullable(this.context.getArgument(key, Float.class));
+        return Optional.of(this.context.getArgument(key, Float.class));
     }
 
-    public @NonNull final CommandContext<S> getContext() {
+    public final CommandContext<S> getContext() {
         return this.context;
     }
 
-    public @NonNull final S getSource() {
+    public final S getSource() {
         return this.context.getSource();
     }
 }

@@ -4,38 +4,39 @@ import com.ryderbelserion.fusion.paper.builders.gui.GuiBuilder;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiBorder;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@NullMarked
 public class GuiFiller {
 
     private final Inventory inventory;
     private final GuiBuilder builder;
     private final int size;
 
-    public GuiFiller(@NonNull final GuiBuilder builder) {
+    public GuiFiller(final GuiBuilder builder) {
         this.inventory = builder.getInventory();
         this.size = this.inventory.getSize();
         this.builder = builder;
     }
 
-    public void fillBottom(@NonNull final ItemStack... items) {
+    public void fillBottom(final ItemStack... items) {
         fill(GuiBorder.BOTTOM, items);
     }
 
-    public void fillBoth(@NonNull final ItemStack... items) {
+    public void fillBoth(final ItemStack... items) {
         fillBottom(items);
         fillTop(items);
     }
 
-    public void fillTop(@NonNull final ItemStack... items) {
+    public void fillTop(final ItemStack... items) {
         fill(GuiBorder.TOP, items);
     }
 
-    public void fill(@NonNull final GuiBorder type, @NonNull final ItemStack... items) {
+    public void fill(final GuiBorder type, final ItemStack... items) {
         final List<ItemStack> sorted = sort(Arrays.asList(items));
 
         switch (type) {
@@ -91,11 +92,11 @@ public class GuiFiller {
         }
     }
 
-    public void grid(final int rowFrom, final int colFrom, final int rowTo, final int colTo, @NonNull final ItemStack item) {
+    public void grid(final int rowFrom, final int colFrom, final int rowTo, final int colTo, final ItemStack item) {
         grids(rowFrom, colFrom, rowTo, colTo, item);
     }
 
-    public void grids(final int rowFrom, final int colFrom, final int rowTo, final int colTo, @NonNull final ItemStack... items) {
+    public void grids(final int rowFrom, final int colFrom, final int rowTo, final int colTo, final ItemStack... items) {
         final int minRow = Math.min(rowFrom, rowTo);
         final int maxRow = Math.max(rowFrom, rowTo);
         final int minCol = Math.min(colFrom, colTo);
@@ -115,7 +116,7 @@ public class GuiFiller {
         }
     }
 
-    private @NonNull List<ItemStack> sort(@NonNull final List<ItemStack> items) {
+    private List<ItemStack> sort(final List<ItemStack> items) {
         final List<ItemStack> unsorted = new ArrayList<>();
 
         Collections.nCopies(this.size, items).forEach(unsorted::addAll);

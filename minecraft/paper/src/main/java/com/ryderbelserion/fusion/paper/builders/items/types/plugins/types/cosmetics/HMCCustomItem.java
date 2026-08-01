@@ -13,7 +13,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.Map;
 import java.util.Optional;
 
-public class HMCCustomItem extends ICustomItem {
+public final class HMCCustomItem extends ICustomItem {
 
     public HMCCustomItem(@NonNull final BaseItemBuilder builder, @NonNull final String item, final boolean isEnabled) {
         super(builder, item, isEnabled);
@@ -22,12 +22,12 @@ public class HMCCustomItem extends ICustomItem {
     private ItemStack itemStack;
 
     @Override
-    public @NonNull final Optional<ItemStack> getItemStack() {
+    public @NonNull Optional<ItemStack> getItemStack() {
         return Optional.ofNullable(this.itemStack);
     }
 
     @Override
-    public @NonNull final HMCCustomItem init() {
+    public @NonNull HMCCustomItem init() {
         final String impl = getImpl();
 
         if (!this.isEnabled && !this.fusion.isPluginEnabled(impl)) {
@@ -72,7 +72,7 @@ public class HMCCustomItem extends ICustomItem {
     }
 
     @Override
-    public @NonNull final String getImpl() {
+    public @NonNull String getImpl() {
         return "HMCWraps";
     }
 }

@@ -12,25 +12,25 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
-import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.profile.PlayerTextures;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.UUID;
 
-public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
+@NullMarked
+public final class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
 
     private final ResolvableProfile.Builder builder;
 
-    public SkullBuilder(@NonNull final ItemStack itemStack) {
+    public SkullBuilder(final ItemStack itemStack) {
         super(itemStack);
 
         this.builder = ResolvableProfile.resolvableProfile();
     }
 
-    public @NonNull SkullBuilder withAudience(@NonNull final Audience audience) {
+    public SkullBuilder withAudience(final Audience audience) {
         final UUID uuid = audience.getOrDefault(Identity.UUID, null);
 
         if (uuid == null) return this;
@@ -40,7 +40,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         return this;
     }
 
-    public @NonNull SkullBuilder withUrl(@NonNull final String url) {
+    public SkullBuilder withUrl(final String url) {
         if (url.isEmpty()) return this;
 
         final String newUrl = url.startsWith("https://textures.minecraft.net/texture/") ? url : "https://textures.minecraft.net/texture/" + url;
@@ -65,7 +65,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
     }
 
     @Override
-    public @NonNull SkullBuilder withBase64(@NonNull final String base64) {
+    public SkullBuilder withBase64(final String base64) {
         if (base64.isEmpty()) return this;
 
         this.builder.addProperty(new ProfileProperty("textures", base64));
@@ -73,7 +73,7 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         return this;
     }
 
-    public @NonNull SkullBuilder withName(@NonNull final String playerName) {
+    public SkullBuilder withName(final String playerName) {
         if (playerName.isEmpty()) return this;
 
         if (playerName.length() > 16) return withUrl(playerName);
@@ -83,28 +83,24 @@ public class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         return this;
     }
 
-    public @NonNull SkullBuilder withNoteBlockSound(@NonNull final String sound) {
-        if (sound.isEmpty()) return this;
+    public SkullBuilder withNoteBlockSound(final String sound) {
+        ItemUtils.getSound(sound).ifPresent(value -> {
+            final NamespacedKey key = Registry.SOUNDS.getKey(value);
 
-        final Sound value = ItemUtils.getSound(sound);
+            if (key == null) {
+                this.fusion.log(Level.WARNING, "No valid NamespacedKey found for %s", sound);
 
-        if (value == null) return this;
+                return;
+            }
 
-        final NamespacedKey key = Registry.SOUNDS.getKey(value);
-
-        if (key == null) {
-            this.fusion.log(Level.WARNING, "No valid NamespacedKey found for %s", sound);
-
-            return this;
-        }
-
-        this.itemStack.setData(DataComponentTypes.NOTE_BLOCK_SOUND, key);
+            this.itemStack.setData(DataComponentTypes.NOTE_BLOCK_SOUND, key);
+        });
 
         return this;
     }
 
     @Override
-    public @NonNull SkullBuilder build() {
+    public SkullBuilder build() {
         this.itemStack.setData(DataComponentTypes.PROFILE, this.builder.build());
 
         return this;

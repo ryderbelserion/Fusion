@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NonNull;
 import java.util.function.Consumer;
 
-public class ToolBuilder extends BaseItemBuilder<ToolBuilder> {
+public final class ToolBuilder extends BaseItemBuilder<ToolBuilder> {
 
     private Equippable.Builder equippable = null;
     private Weapon.Builder weapon = null;

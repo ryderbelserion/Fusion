@@ -7,8 +7,7 @@ import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurationOptions;
 import com.ryderbelserion.fusion.core.api.config.ConfigBuilder;
@@ -18,6 +17,7 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 
+@NullMarked
 public final class PropertyManager {
 
     private final FusionCore fusion = FusionProvider.getInstance();
@@ -30,11 +30,11 @@ public final class PropertyManager {
     private final FileType fileType;
     private final Path path;
 
-    public PropertyManager(@NonNull final IPropertyData propertyData,
-                           @Nullable final UnaryOperator<ConfigurationOptions> options,
-                           @NonNull final ConfigBuilder builder,
-                           @NonNull final FileType fileType,
-                           @NonNull final Path path
+    public PropertyManager(final IPropertyData propertyData,
+                           final UnaryOperator<ConfigurationOptions> options,
+                           final ConfigBuilder builder,
+                           final FileType fileType,
+                           final Path path
     ) {
         this.propertyData = propertyData;
         this.fileType = fileType;
@@ -43,15 +43,15 @@ public final class PropertyManager {
         this.path = path;
     }
 
-    public @NonNull <T> T getProperty(@NonNull final Property<T> property) {
+    public <T> T getProperty(final Property<T> property) {
         return this.propertyData.getProperty(getConfiguration(), property);
     }
 
-    public <T> boolean hasProperty(@NonNull final Property<T> property) {
+    public <T> boolean hasProperty(final Property<T> property) {
         return this.propertyData.hasProperty(getConfiguration(), property);
     }
 
-    public <T> PropertyManager setProperty(@NonNull final Property<T> property, @NonNull final T value) {
+    public <T> PropertyManager setProperty(final Property<T> property, final T value) {
         this.propertyData.setProperty(getConfiguration(), property, value);
 
         return this;
@@ -92,9 +92,7 @@ public final class PropertyManager {
             consumer.withLenient(this.builder.isLenient());
             consumer.withIndent(this.builder.getIndent());
 
-            if (this.options != null) {
-                consumer.setOptions(this.options);
-            }
+            consumer.setOptions(this.options);
         });
 
         populate();
@@ -104,11 +102,11 @@ public final class PropertyManager {
         this.fileManager.saveFile(this.path);
     }
 
-    public @NonNull FileType getFileType() {
+    public FileType getFileType() {
         return this.fileType;
     }
 
-    public @NonNull Path getPath() {
+    public Path getPath() {
         return this.path;
     }
 }

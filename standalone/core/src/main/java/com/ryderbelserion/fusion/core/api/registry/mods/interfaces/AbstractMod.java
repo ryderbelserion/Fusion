@@ -1,14 +1,15 @@
 package com.ryderbelserion.fusion.core.api.registry.mods.interfaces;
 
 import com.ryderbelserion.fusion.core.api.FusionKey;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import java.util.UUID;
 
+@NullMarked
 public abstract class AbstractMod {
 
     private final FusionKey key;
 
-    public AbstractMod(@NonNull final FusionKey key) {
+    public AbstractMod(final FusionKey key) {
         this.key = key;
     }
 
@@ -22,23 +23,23 @@ public abstract class AbstractMod {
         return this;
     }
 
-    public boolean isIgnored(@NonNull final UUID uuid, @NonNull final UUID target) {
+    public boolean isIgnored(final UUID uuid, final UUID target) {
         return false;
     }
 
-    public boolean isVanished(@NonNull final UUID uuid) {
+    public boolean isVanished(final UUID uuid) {
         return false;
     }
 
-    public boolean isMuted(@NonNull final UUID uuid) {
+    public boolean isMuted(final UUID uuid) {
         return false;
     }
 
-    public boolean isAfk(@NonNull final UUID uuid) {
+    public boolean isAfk(final UUID uuid) {
         return false;
     }
 
-    public @NonNull final FusionKey getKey() {
+    public final FusionKey getKey() {
         return this.key;
     }
 }

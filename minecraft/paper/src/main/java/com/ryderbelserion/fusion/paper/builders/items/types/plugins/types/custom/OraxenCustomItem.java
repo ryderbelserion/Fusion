@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NonNull;
 import java.util.Optional;
 
-public class OraxenCustomItem extends ICustomItem {
+public final class OraxenCustomItem extends ICustomItem {
 
     public OraxenCustomItem(@NonNull final BaseItemBuilder builder, @NonNull final String item, final boolean isEnabled) {
         super(builder, item, isEnabled);
@@ -20,12 +20,12 @@ public class OraxenCustomItem extends ICustomItem {
     private ItemStack itemStack;
 
     @Override
-    public @NonNull final Optional<ItemStack> getItemStack() {
+    public @NonNull Optional<ItemStack> getItemStack() {
         return Optional.ofNullable(this.itemStack);
     }
 
     @Override
-    public @NonNull final OraxenCustomItem init() {
+    public @NonNull OraxenCustomItem init() {
         final String impl = getImpl();
 
         if (!this.isEnabled && !this.fusion.isPluginEnabled(impl)) {
@@ -63,7 +63,7 @@ public class OraxenCustomItem extends ICustomItem {
     }
 
     @Override
-    public @NonNull final String getImpl() {
+    public @NonNull String getImpl() {
         return "Oraxen";
     }
 }

@@ -27,20 +27,20 @@ import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-import org.jspecify.annotations.NonNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
 import java.util.Base64;
 import java.util.Optional;
 
+@NullMarked
 public class ItemUtils {
 
     private static final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
 
-    public static @NonNull RegistryAccess getRegistryAccess() {
+    public static RegistryAccess getRegistryAccess() {
         return RegistryAccess.registryAccess();
     }
 
-    public static @Nullable ItemStack getItemStack(@NonNull final String context) {
+    public static Optional<ItemStack> getItemStack(final String context) {
         ItemInput parser = null;
 
         try {
@@ -50,7 +50,7 @@ public class ItemUtils {
         }
 
         if (parser == null) {
-            return null;
+            return Optional.empty();
         }
 
         final Item item = parser.item().value();
@@ -61,10 +61,10 @@ public class ItemUtils {
 
         itemStack.applyComponents(component);
 
-        return CraftItemStack.asCraftMirror(itemStack);
+        return Optional.of(CraftItemStack.asCraftMirror(itemStack));
     }
 
-    public static @NonNull Optional<DataComponentType> getDataComponentType(@NonNull final String value) {
+    public static Optional<DataComponentType> getDataComponentType(final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank while fetching a data component.", value);
 
@@ -76,331 +76,331 @@ public class ItemUtils {
         return Optional.ofNullable(type);
     }
 
-    public static @Nullable ItemType getItemType(@NonNull final String value) {
+    public static Optional<ItemType> getItemType(final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching item types.", value);
 
-            return null;
+            return Optional.empty();
         }
 
         // this checks if colon is included, colon represents a namespace.
         // if the colon is not found, we default to the minecraft namespace.
-        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
+        final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
             fusion.log(Level.ERROR, "%s is not a valid item key.", value);
 
-            return null;
+            return Optional.empty();
         }
 
-        @Nullable final ItemType itemType = getRegistryAccess().getRegistry(RegistryKey.ITEM).get(getKey(value));
+        final ItemType itemType = getRegistryAccess().getRegistry(RegistryKey.ITEM).get(getKey(value));
 
         if (itemType == null) {
             fusion.log(Level.ERROR, "%s is not a valid item type.", key.asString());
 
-            return null;
+            return Optional.empty();
         }
 
-        return itemType;
+        return Optional.of(itemType);
     }
 
-    public static @Nullable Sound getSound(@NonNull final String value) {
+    public static Optional<Sound> getSound(final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the sound.", value);
 
-            return null;
+            return Optional.empty();
         }
 
         // this checks if colon is included, colon represents a namespace.
         // if the colon is not found, we default to the minecraft namespace.
-        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
+        final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
             fusion.log(Level.ERROR, "%s is not a valid sound key.", value);
 
-            return null;
+            return Optional.empty();
         }
 
-        @Nullable final Sound sound = getRegistryAccess().getRegistry(RegistryKey.SOUND_EVENT).get(getKey(value));
+        final Sound sound = getRegistryAccess().getRegistry(RegistryKey.SOUND_EVENT).get(getKey(value));
 
         if (sound == null) {
             fusion.log(Level.ERROR, "%s is not a valid sound.", key.asString());
 
-            return null;
+            return Optional.empty();
         }
 
-        return sound;
+        return Optional.of(sound);
     }
 
-    public static @Nullable Enchantment getEnchantment(@NonNull final String value) {
+    public static Optional<Enchantment> getEnchantment(final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the enchantment.", value);
 
-            return null;
+            return Optional.empty();
         }
 
         // this checks if colon is included, colon represents a namespace.
         // if the colon is not found, we default to the minecraft namespace.
-        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
+        final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
             fusion.log(Level.ERROR, "%s is not a valid enchantment key.", value);
 
-            return null;
+            return Optional.empty();
         }
 
-        @Nullable final Enchantment enchantment = getRegistryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(key);
+        final Enchantment enchantment = getRegistryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(key);
 
         if (enchantment == null) {
             fusion.log(Level.ERROR, "%s is not a valid enchantment.", key.asString());
 
-            return null;
+            return Optional.empty();
         }
 
-        return enchantment;
+        return Optional.of(enchantment);
     }
 
-    public static @Nullable TrimPattern getTrimPattern(@NonNull final String value) {
+    public static Optional<TrimPattern> getTrimPattern(final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the trim pattern.", value);
 
-            return null;
+            return Optional.empty();
         }
 
         // this checks if colon is included, colon represents a namespace.
         // if the colon is not found, we default to the minecraft namespace.
-        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
+        final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
             fusion.log(Level.ERROR, "%s is not a valid trim pattern key.", value);
 
-            return null;
+            return Optional.empty();
         }
 
-        @Nullable final TrimPattern trimPattern = getRegistryAccess().getRegistry(RegistryKey.TRIM_PATTERN).get(getKey(value));
+        final TrimPattern trimPattern = getRegistryAccess().getRegistry(RegistryKey.TRIM_PATTERN).get(getKey(value));
 
         if (trimPattern == null) {
             fusion.log(Level.ERROR, "%s is not a valid trim pattern.", key.asString());
 
-            return null;
+            return Optional.empty();
         }
 
-        return trimPattern;
+        return Optional.of(trimPattern);
     }
 
-    public static @Nullable TrimMaterial getTrimMaterial(@NonNull final String value) {
+    public static Optional<TrimMaterial> getTrimMaterial(final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the trim material.", value);
 
-            return null;
+            return Optional.empty();
         }
 
         // this checks if colon is included, colon represents a namespace.
         // if the colon is not found, we default to the minecraft namespace.
-        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
+        final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
             fusion.log(Level.ERROR, "%s is not a valid trim material key.", value);
 
-            return null;
+            return Optional.empty();
         }
 
-        @Nullable final TrimMaterial trimMaterial = getRegistryAccess().getRegistry(RegistryKey.TRIM_MATERIAL).get(getKey(value));
+        final TrimMaterial trimMaterial = getRegistryAccess().getRegistry(RegistryKey.TRIM_MATERIAL).get(getKey(value));
 
         if (trimMaterial == null) {
             fusion.log(Level.ERROR, "%s is not a valid trim material.", key.asString());
 
-            return null;
+            return Optional.empty();
         }
 
-        return trimMaterial;
+        return Optional.of(trimMaterial);
     }
 
-    public static @Nullable PotionType getPotionType(@NonNull final String value) {
+    public static Optional<PotionType> getPotionType(final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the potion.", value);
 
-            return null;
+            return Optional.empty();
         }
 
         // this checks if colon is included, colon represents a namespace.
         // if the colon is not found, we default to the minecraft namespace.
-        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
+        final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
             fusion.log(Level.ERROR, "%s is not a valid potion type key.", value);
 
-            return null;
+            return Optional.empty();
         }
 
-        @Nullable final PotionType potionType = getRegistryAccess().getRegistry(RegistryKey.POTION).get(getKey(value));
+        final PotionType potionType = getRegistryAccess().getRegistry(RegistryKey.POTION).get(getKey(value));
 
         if (potionType == null) {
             fusion.log(Level.ERROR, "%s is not a valid potion.", key.asString());
 
-            return null;
+            return Optional.empty();
         }
 
-        return potionType;
+        return Optional.of(potionType);
     }
 
-    public static @Nullable PotionEffectType getPotionEffect(@NonNull final String value) {
+    public static Optional<PotionEffectType> getPotionEffect(final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the potion effect.", value);
 
-            return null;
+            return Optional.empty();
         }
 
         // this checks if colon is included, colon represents a namespace.
         // if the colon is not found, we default to the minecraft namespace.
-        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
+        final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
             fusion.log(Level.ERROR, "%s is not a valid potion effect key.", value);
 
-            return null;
+            return Optional.empty();
         }
 
-        @Nullable final PotionEffectType potionEffectType = getRegistryAccess().getRegistry(RegistryKey.MOB_EFFECT).get(getKey(value));
+        final PotionEffectType potionEffectType = getRegistryAccess().getRegistry(RegistryKey.MOB_EFFECT).get(getKey(value));
 
         if (potionEffectType == null) {
             fusion.log(Level.ERROR, "%s is not a valid potion effect.", key.asString());
 
-            return null;
+            return Optional.empty();
         }
 
-        return potionEffectType;
+        return Optional.of(potionEffectType);
     }
 
-    public static @Nullable Particle getParticleType(@NonNull final String value) {
+    public static Optional<Particle> getParticleType(final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the particle.", value);
 
-            return null;
+            return Optional.empty();
         }
 
         // this checks if colon is included, colon represents a namespace.
         // if the colon is not found, we default to the minecraft namespace.
-        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
+        final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
             fusion.log(Level.ERROR, "%s is not a valid potion type key.", value);
 
-            return null;
+            return Optional.empty();
         }
 
-        @Nullable final Particle particle = getRegistryAccess().getRegistry(RegistryKey.PARTICLE_TYPE).get(getKey(value));
+        final Particle particle = getRegistryAccess().getRegistry(RegistryKey.PARTICLE_TYPE).get(getKey(value));
 
         if (particle == null) {
             fusion.log(Level.ERROR, "%s is not a valid particle.", key.asString());
 
-            return null;
+            return Optional.empty();
         }
 
-        return particle;
+        return Optional.of(particle);
     }
 
-    public static @Nullable PatternType getPatternType(@NonNull final String value) {
+    public static Optional<PatternType> getPatternType(final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching banner pattern types!", value);
 
-            return null;
+            return Optional.empty();
         }
 
         // this checks if colon is included, colon represents a namespace.
         // if the colon is not found, we default to the minecraft namespace.
-        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
+        final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
             fusion.log(Level.ERROR, "%s is not a valid potion type key.", value);
 
-            return null;
+            return Optional.empty();
         }
 
-        @Nullable final PatternType patternType = getRegistryAccess().getRegistry(RegistryKey.BANNER_PATTERN).get(getKey(value));
+        final PatternType patternType = getRegistryAccess().getRegistry(RegistryKey.BANNER_PATTERN).get(getKey(value));
 
         if (patternType == null) {
             fusion.log(Level.ERROR, "%s is not a valid banner pattern.", key.asString());
 
-            return null;
+            return Optional.empty();
         }
 
-        return patternType;
+        return Optional.of(patternType);
     }
 
-    public static @Nullable EntityType getEntity(@NonNull final String value) {
+    public static Optional<EntityType> getEntity(final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the entity.", value);
 
-            return null;
+            return Optional.empty();
         }
 
         // this checks if colon is included, colon represents a namespace.
         // if the colon is not found, we default to the minecraft namespace.
-        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
+        final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
             fusion.log(Level.ERROR, "%s is not a valid potion type key.", value);
 
-            return null;
+            return Optional.empty();
         }
 
-        @Nullable final EntityType entityType = getRegistryAccess().getRegistry(RegistryKey.ENTITY_TYPE).get(getKey(value));
+        final EntityType entityType = getRegistryAccess().getRegistry(RegistryKey.ENTITY_TYPE).get(getKey(value));
 
         if (entityType == null) {
             fusion.log(Level.ERROR, "%s is not a valid entity.", key.asString());
 
-            return null;
+            return Optional.empty();
         }
 
-        return entityType;
+        return Optional.of(entityType);
     }
 
-    public static @Nullable Attribute getAttribute(@NonNull final String value) {
+    public static Optional<Attribute> getAttribute(final String value) {
         if (value.isEmpty()) {
             fusion.log(Level.ERROR, "%s cannot be blank when fetching the attribute.", value);
 
-            return null;
+            return Optional.empty();
         }
 
         // this checks if colon is included, colon represents a namespace.
         // if the colon is not found, we default to the minecraft namespace.
-        @Nullable final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
+        final NamespacedKey key = value.contains(":") ? NamespacedKey.fromString(value) : getKey(value);
 
         if (key == null) {
             fusion.log(Level.ERROR, "%s is not a valid potion type key.", value);
 
-            return null;
+            return Optional.empty();
         }
 
-        @Nullable final Attribute attribute = getRegistryAccess().getRegistry(RegistryKey.ATTRIBUTE).get(getKey(value));
+        final Attribute attribute = getRegistryAccess().getRegistry(RegistryKey.ATTRIBUTE).get(getKey(value));
 
         if (attribute == null) {
             fusion.log(Level.ERROR, "%s is not a valid attribute.", key.asString());
 
-            return null;
+            return Optional.empty();
         }
 
-        return attribute;
+        return Optional.of(attribute);
     }
 
-    private static @NonNull NamespacedKey getKey(@NonNull final String value) {
+    private static NamespacedKey getKey(final String value) {
         return NamespacedKey.minecraft(value);
     }
 
-    public static byte[] toBytes(@NonNull final ItemStack itemStack) {
+    public static byte[] toBytes(final ItemStack itemStack) {
         return itemStack.serializeAsBytes();
     }
 
-    public static @NonNull ItemStack fromBytes(final byte @NonNull [] bytes) {
+    public static ItemStack fromBytes(final byte [] bytes) {
         return ItemStack.deserializeBytes(bytes);
     }
 
-    public static @NonNull String toBase64(@NonNull final ItemStack itemStack) {
+    public static String toBase64(final ItemStack itemStack) {
         return Base64.getEncoder().encodeToString(itemStack.serializeAsBytes());
     }
 
-    public static @NonNull ItemStack fromBase64(@NonNull final String base64) {
+    public static ItemStack fromBase64(final String base64) {
         return ItemStack.deserializeBytes(Base64.getDecoder().decode(base64));
     }
 }

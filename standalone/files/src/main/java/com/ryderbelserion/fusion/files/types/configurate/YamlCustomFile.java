@@ -5,7 +5,7 @@ import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.interfaces.IConfigurate;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
@@ -14,9 +14,10 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
 
+@NullMarked
 public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedConfigurationNode, YamlConfigurationLoader> implements IConfigurate {
 
-    public YamlCustomFile(@NonNull final FileManager fileManager, @NonNull final String jarFolder, @NonNull final Path path, @NonNull final Consumer<YamlCustomFile> consumer) {
+    public YamlCustomFile(final FileManager fileManager, final String jarFolder, final Path path, final Consumer<YamlCustomFile> consumer) {
         super(fileManager, jarFolder, path);
 
         consumer.accept(this);
@@ -31,12 +32,12 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
                 .build();
     }
 
-    public YamlCustomFile(@NonNull final FileManager fileManager, @NonNull final Path path, @NonNull final Consumer<YamlCustomFile> consumer) {
+    public YamlCustomFile(final FileManager fileManager, final Path path, final Consumer<YamlCustomFile> consumer) {
         this(fileManager, "", path, consumer);
     }
 
     @Override
-    public @NonNull CommentedConfigurationNode loadConfig() throws IOException {
+    public CommentedConfigurationNode loadConfig() throws IOException {
         return this.loader.load();
     }
 
@@ -46,10 +47,11 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
     }
 
     @Override
-    public @NonNull FileType getFileType() {
+    public FileType getFileType() {
         return FileType.YAML;
     }
 
+    @SuppressWarnings("ConstantValue")
     @Override
     public boolean isLoaded() {
         return this.configuration != null;
@@ -63,7 +65,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
      * @return {@inheritDoc}
      */
     @Override
-    public @NonNull String getStringValueWithDefault(@NonNull final String defaultValue, @NonNull final Object... path) {
+    public String getStringValueWithDefault(final String defaultValue, final Object... path) {
         return getConfiguration().node(path).getString(defaultValue);
     }
 
@@ -75,7 +77,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
      * @return {@inheritDoc}
      */
     @Override
-    public boolean getBooleanValueWithDefault(final boolean defaultValue, @NonNull final Object... path) {
+    public boolean getBooleanValueWithDefault(final boolean defaultValue, final Object... path) {
         return getConfiguration().node(path).getBoolean(defaultValue);
     }
 
@@ -87,7 +89,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
      * @return {@inheritDoc}
      */
     @Override
-    public double getDoubleValueWithDefault(final double defaultValue, @NonNull final Object... path) {
+    public double getDoubleValueWithDefault(final double defaultValue, final Object... path) {
         return getConfiguration().node(path).getDouble(defaultValue);
     }
 
@@ -99,7 +101,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
      * @return {@inheritDoc}
      */
     @Override
-    public long getLongValueWithDefault(final long defaultValue, @NonNull final Object... path) {
+    public long getLongValueWithDefault(final long defaultValue, final Object... path) {
         return getConfiguration().node(path).getLong(defaultValue);
     }
 
@@ -111,7 +113,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
      * @return {@inheritDoc}
      */
     @Override
-    public int getIntValueWithDefault(final int defaultValue, @NonNull final Object... path) {
+    public int getIntValueWithDefault(final int defaultValue, final Object... path) {
         return getConfiguration().node(path).getInt(defaultValue);
     }
 
@@ -122,7 +124,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
      * @return {@inheritDoc}
      */
     @Override
-    public @NonNull List<String> getStringList(@NonNull final List<String> defaultValue, @NonNull final Object... path) {
+    public List<String> getStringList(final List<String> defaultValue, final Object... path) {
         final CommentedConfigurationNode node = getConfiguration().node(path);
 
         try {

@@ -7,9 +7,10 @@ import org.bukkit.Server;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import java.util.Optional;
 
+@NullMarked
 public abstract class ICustomItem {
 
     protected final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
@@ -24,15 +25,15 @@ public abstract class ICustomItem {
     protected final boolean isEnabled;
     protected final String item;
 
-    public ICustomItem(@NonNull final BaseItemBuilder builder, @NonNull final String item, final boolean isEnabled) {
+    public ICustomItem(final BaseItemBuilder builder, final String item, final boolean isEnabled) {
         this.isEnabled = isEnabled;
         this.builder = builder;
         this.item = item;
     }
 
-    public abstract @NonNull Optional<ItemStack> getItemStack();
+    public abstract Optional<ItemStack> getItemStack();
 
-    public abstract @NonNull ICustomItem init();
+    public abstract ICustomItem init();
 
     public abstract String getImpl();
 

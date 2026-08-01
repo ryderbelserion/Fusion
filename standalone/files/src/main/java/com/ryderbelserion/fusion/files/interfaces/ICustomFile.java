@@ -23,15 +23,14 @@ import java.util.function.UnaryOperator;
 public abstract class ICustomFile<I, C, L> {
 
     protected final List<FileAction> actions = new ArrayList<>();
+    protected final FileManager fileManager;
+    protected final String jarFolder;
+    protected final Path path;
 
     protected ConfigurationOptions options = ConfigurationOptions.defaults();
+    protected FileType fileType;
     protected C configuration;
     protected L loader;
-
-    protected FileManager fileManager;
-    protected FileType fileType;
-    protected String jarFolder;
-    protected Path path;
 
     public ICustomFile(
             @NonNull final FileManager fileManager,
@@ -58,26 +57,26 @@ public abstract class ICustomFile<I, C, L> {
 
     public abstract @NonNull C loadConfig() throws IOException;
 
-    public void withIndent(final int indent) {
-        this.indent = indent;
-    }
-
-    public void withLenient(final boolean isLenient) {
-        this.isLenient = isLenient;
-    }
-
-    public void withComments(final boolean hasComments) {
-        this.hasComments = hasComments;
+    public void withHeaderMode(final HeaderMode headerMode) {
+        this.headerMode = headerMode;
     }
 
     public void withNodeStyle(final NodeStyle nodeStyle) {
         this.nodeStyle = nodeStyle;
     }
 
-    public void withHeaderMode(final HeaderMode headerMode) {
-        this.headerMode = headerMode;
+    public void withComments(final boolean hasComments) {
+        this.hasComments = hasComments;
     }
 
+    public void withLenient(final boolean isLenient) {
+        this.isLenient = isLenient;
+    }
+
+
+    public void withIndent(final int indent) {
+        this.indent = indent;
+    }
     public @NonNull C getConfiguration() {
         return this.configuration;
     }

@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jspecify.annotations.NonNull;
 import java.util.Optional;
 
-public class CustomBuilder extends BaseItemBuilder<CustomBuilder> {
+public final class CustomBuilder extends BaseItemBuilder<CustomBuilder> {
 
     private final CustomModelData.Builder builder = CustomModelData.customModelData();
 

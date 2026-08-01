@@ -4,38 +4,30 @@ import com.ryderbelserion.fusion.paper.builders.items.BaseItemBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.plugins.ICustomItem;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ItemType;
-import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullMarked;
 import java.util.Optional;
 
-public class VanillaItemStack extends ICustomItem {
+@NullMarked
+public final class VanillaItemStack extends ICustomItem {
 
-    public VanillaItemStack(@NonNull final BaseItemBuilder builder, @NonNull final String item) {
+    public VanillaItemStack(final BaseItemBuilder builder, final String item) {
         super(builder, item, true);
     }
 
     @Override
-    public @NonNull final Optional<ItemStack> getItemStack() {
+    public Optional<ItemStack> getItemStack() {
         return Optional.of(this.builder.getItemStack());
     }
 
     @Override
-    public @NonNull final VanillaItemStack init() {
-        final ItemType itemType = ItemUtils.getItemType(this.item);
-
-        if (itemType == null) {
-            this.builder.withBase64(this.item);
-
-            return this;
-        }
-
-        this.builder.withType(itemType);
-
+    public VanillaItemStack init() {
+        ItemUtils.getItemType(this.item).ifPresentOrElse(this.builder::withType, () -> this.builder.withBase64(this.item));
+        
         return this;
     }
 
     @Override
-    public @NonNull final String getImpl() {
+    public String getImpl() {
         return "Vanilla";
     }
 }
