@@ -28,7 +28,7 @@ public final class OraxenCustomItem extends ICustomItem {
     public @NonNull OraxenCustomItem init() {
         final String impl = getImpl();
 
-        if (!this.isEnabled && !this.fusion.isPluginEnabled(impl)) {
+        if (!this.isEnabled && !this.fusion.isModReady(impl)) {
             new VanillaItemStack(this.builder, this.item).init();
 
             return this;

@@ -305,23 +305,23 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
                     };
                 }
 
-                if (this.fusion.isPluginEnabled("CraftEngine")) {
+                if (this.fusion.isModReady("CraftEngine")) {
                     yield new CraftEngineCustomItem(this, item, false).init();
                 }
 
-                if (this.fusion.isPluginEnabled("ItemsAdder")) {
+                if (this.fusion.isModReady("ItemsAdder")) {
                     yield new ItemsAdderCustomItem(this, item, true).init();
                 }
 
-                if (this.fusion.isPluginEnabled("Oraxen")) {
+                if (this.fusion.isModReady("Oraxen")) {
                     yield new OraxenCustomItem(this, item, true).init();
                 }
 
-                if (this.fusion.isPluginEnabled("Nexo")) {
+                if (this.fusion.isModReady("Nexo")) {
                     yield new NexoCustomItem(this, item, true).init();
                 }
 
-                if (this.fusion.isPluginEnabled("HMCWraps")) {
+                if (this.fusion.isModReady("HMCWraps")) {
                     yield new HMCCustomItem(this, item, true).init();
                 }
 

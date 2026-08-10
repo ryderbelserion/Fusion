@@ -27,7 +27,7 @@ public final class ItemsAdderCustomItem extends ICustomItem {
     public @NonNull ItemsAdderCustomItem init() {
         final String impl = getImpl();
 
-        if (!this.isEnabled && !this.fusion.isPluginEnabled(impl)) {
+        if (!this.isEnabled && !this.fusion.isModReady(impl)) {
             new VanillaItemStack(this.builder, this.item).init();
 
             return this;

@@ -52,6 +52,8 @@ public abstract class FusionCore<S, F extends FileManager> {
 
     public abstract boolean isModReady(@NonNull final FusionKey key);
 
+    public abstract boolean isModReady(@NonNull final String key);
+
     public abstract @NonNull String getNamespace();
 
     public FusionCore reload() {

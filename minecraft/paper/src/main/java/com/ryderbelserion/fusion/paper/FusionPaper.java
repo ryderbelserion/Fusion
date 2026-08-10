@@ -63,7 +63,7 @@ public class FusionPaper extends FusionKyori<Audience, PaperFileManager> {
     public final FusionPaper post() {
         this.guiManager = new GuiManager();
 
-        if (this.pluginManager.isPluginEnabled("HeadDatabase") && this.api == null) {
+        if (isModReady("HeadDatabase") && this.api == null) {
             this.api = new  HeadDatabaseAPI();
         }
 
@@ -94,7 +94,7 @@ public class FusionPaper extends FusionKyori<Audience, PaperFileManager> {
 
     @Override
     public String papi(@Nullable final Audience sender, @NonNull final String message) {
-        return isPluginEnabled("PlaceholderAPI") && sender instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
+        return isModReady("PlaceholderAPI") && sender instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
     }
 
     @Override
@@ -141,7 +141,12 @@ public class FusionPaper extends FusionKyori<Audience, PaperFileManager> {
 
     @Override
     public final boolean isModReady(@NonNull final FusionKey key) {
-        return this.pluginManager.isPluginEnabled(key.getValue());
+        return isModReady(key.getValue());
+    }
+
+    @Override
+    public final boolean isModReady(@NonNull final String key) {
+        return this.pluginManager.isPluginEnabled(key);
     }
 
     @Override
@@ -163,9 +168,5 @@ public class FusionPaper extends FusionKyori<Audience, PaperFileManager> {
 
     public @NonNull final PlayerProfile createProfile(@NonNull final UUID uuid, @Nullable final String name) {
         return this.server.createProfile(uuid, name);
-    }
-
-    public final boolean isPluginEnabled(@NonNull final String plugin) {
-        return this.pluginManager.isPluginEnabled(plugin);
     }
 }
