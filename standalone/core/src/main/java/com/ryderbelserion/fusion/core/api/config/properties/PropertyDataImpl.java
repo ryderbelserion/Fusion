@@ -3,7 +3,7 @@ package com.ryderbelserion.fusion.core.api.config.properties;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
-import com.ryderbelserion.fusion.files.FileManager;
+import com.ryderbelserion.fusion.core.files.FileManager;
 import io.leangen.geantyref.TypeToken;
 import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;

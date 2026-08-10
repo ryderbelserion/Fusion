@@ -1,8 +1,8 @@
 package com.ryderbelserion.fusion.velocity.commands.context;
 
 import com.mojang.brigadier.context.CommandContext;
-import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.mojang.context.AbstractCommandContext;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.kyori.commands.context.AbstractCommandContext;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import org.jspecify.annotations.NullMarked;

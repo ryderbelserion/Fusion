@@ -1,8 +1,8 @@
 package com.ryderbelserion.fusion.velocity;
 
-import com.ryderbelserion.fusion.core.api.FusionKey;
+import com.ryderbelserion.fusion.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.enums.Level;
-import com.ryderbelserion.fusion.files.FileManager;
+import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -11,7 +11,7 @@ import org.jspecify.annotations.NullMarked;
 import java.nio.file.Path;
 
 @NullMarked
-public class FusionVelocity extends FusionKyori<Audience, FileManager> {
+public final class FusionVelocity extends FusionKyori<Audience, FileManager> {
 
     private final ComponentLogger logger;
     private final String namespace;
@@ -52,17 +52,22 @@ public class FusionVelocity extends FusionKyori<Audience, FileManager> {
     }
 
     @Override
-    public final boolean isModReady(final FusionKey key) {
+    public boolean isModReady(final FusionKey key) {
         return false;
     }
 
     @Override
-    public final String getNamespace() {
+    public boolean isModReady(final String key) {
+        return false;
+    }
+
+    @Override
+    public String getNamespace() {
         return this.namespace.toLowerCase();
     }
 
     @Override
-    public final String papi(final Audience sender, final String message) {
+    public String papi(final Audience sender, final String message) {
         return message;
     }
 }

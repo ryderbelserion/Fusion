@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.core.api;
 
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 

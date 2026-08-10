@@ -8,16 +8,5 @@ tasks {
         archiveClassifier.set("")
 
         exclude("META-INF/**")
-
-        /*listOf(
-            "io.leangen.geantyref",
-            "org.spongepowered",
-            "com.google.gson",
-            "org.jspecify",
-            "org.yaml",
-            "ch.jalu"
-        ).forEach {
-            relocate(it, "libs.$it")
-        }*/
     }
 }

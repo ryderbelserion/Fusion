@@ -3,7 +3,7 @@ package com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.custo
 import com.nexomc.nexo.api.NexoItems;
 import com.nexomc.nexo.items.ItemBuilder;
 import com.ryderbelserion.fusion.core.api.enums.Level;
-import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.builders.items.BaseItemBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.plugins.ICustomItem;
 import com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.VanillaItemStack;

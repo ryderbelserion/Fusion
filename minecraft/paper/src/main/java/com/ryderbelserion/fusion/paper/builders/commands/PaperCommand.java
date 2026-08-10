@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.builders.commands;
 
-import com.ryderbelserion.fusion.mojang.AbstractCommand;
+import com.ryderbelserion.fusion.kyori.commands.AbstractCommand;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 

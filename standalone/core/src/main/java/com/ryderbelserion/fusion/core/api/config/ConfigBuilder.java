@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.core.api.config;
 
-import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.loader.HeaderMode;

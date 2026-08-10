@@ -12,18 +12,16 @@ plugins {
 rootProject.name = "Fusion"
 
 listOf(
-    "minecraft/paper/example" to "example",
-
-    "minecraft/mojang" to "mojang",
+    //"minecraft/paper/example" to "example",
 
     "minecraft/velocity" to "velocity",
     "minecraft/paper" to "paper",
-
-    "minecraft/mojang" to "mojang",
     "minecraft/kyori" to "kyori",
 
-    "standalone/files" to "files",
-    "standalone/core" to "core"
+    "standalone/core" to "core",
+
+    "hytale" to "hytale",
+    "api" to "api"
 ).forEach {
     includeProject(it.first, it.second)
 }

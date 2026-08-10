@@ -1,8 +1,8 @@
 package com.ryderbelserion.fusion.paper.files;
 
-import com.ryderbelserion.fusion.files.FileManager;
-import com.ryderbelserion.fusion.files.enums.FileAction;
-import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.core.files.FileManager;
+import com.ryderbelserion.fusion.core.files.enums.FileAction;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.paper.files.types.PaperCustomFile;
 import org.jspecify.annotations.NullMarked;
 import java.nio.file.Path;

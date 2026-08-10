@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.velocity.commands;
 
 import com.ryderbelserion.fusion.core.api.FusionProvider;
-import com.ryderbelserion.fusion.mojang.AbstractCommand;
+import com.ryderbelserion.fusion.kyori.commands.AbstractCommand;
 import com.ryderbelserion.fusion.velocity.FusionVelocity;
 import com.ryderbelserion.fusion.velocity.commands.context.VelocityCommandContext;
 import com.velocitypowered.api.command.BrigadierCommand;

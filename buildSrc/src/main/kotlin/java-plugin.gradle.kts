@@ -7,14 +7,13 @@ plugins {
 project.version = rootProject.version
 
 repositories {
-    maven("https://repo.codemc.io/repository/maven-public/")
+    maven("https://repo.codemc.io/repository/maven-public")
 
-    maven("https://repo.opencollab.dev/maven-snapshots/")
+    maven("https://repo.opencollab.dev/maven-snapshots")
 
-    maven("https://repo.crazycrew.us/libraries/")
-    maven("https://repo.crazycrew.us/releases/")
+    maven("https://repo.crazycrew.us/releases")
 
-    maven("https://jitpack.io/")
+    maven("https://jitpack.io")
 
     mavenCentral()
 }

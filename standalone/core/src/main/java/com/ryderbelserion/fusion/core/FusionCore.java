@@ -1,15 +1,14 @@
 package com.ryderbelserion.fusion.core;
 
-import com.ryderbelserion.fusion.core.api.FusionKey;
+import com.ryderbelserion.fusion.api.FusionKey;
 import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.api.enums.Level;
-import com.ryderbelserion.fusion.core.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
-import com.ryderbelserion.fusion.core.api.registry.mods.ModRegistry;
-import com.ryderbelserion.fusion.files.FileManager;
-import com.ryderbelserion.fusion.files.enums.FileAction;
-import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
+import com.ryderbelserion.fusion.core.files.FileManager;
+import com.ryderbelserion.fusion.core.files.enums.FileAction;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
+import com.ryderbelserion.fusion.core.files.types.configurate.YamlCustomFile;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.io.IOException;
@@ -33,7 +32,6 @@ public abstract class FusionCore<S, F extends FileManager> {
     }
 
     private MessageRegistry messageRegistry;
-    private ModRegistry modRegistry;
 
     public abstract void log(
             @NonNull final Level level,
@@ -76,9 +74,6 @@ public abstract class FusionCore<S, F extends FileManager> {
         this.fileManager.addFile(this.configPath, FileType.YAML, action -> action.addAction(FileAction.EXTRACT_FILE).addAction(FileAction.KEEP_FILE)).setDepth(getDepth());
 
         this.messageRegistry = new MessageRegistry(this, FusionKey.key(getNamespace(), "default"));
-
-        this.modRegistry = new ModRegistry();
-        this.modRegistry.init();
 
         return this;
     }
@@ -195,10 +190,6 @@ public abstract class FusionCore<S, F extends FileManager> {
 
     public @NonNull final MessageRegistry getMessageRegistry() {
         return this.messageRegistry;
-    }
-
-    public @NonNull final ModRegistry getModRegistry() {
-        return this.modRegistry;
     }
 
     public @NonNull final Path getDataPath() {
