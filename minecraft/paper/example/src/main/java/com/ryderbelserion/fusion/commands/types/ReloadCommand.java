@@ -1,26 +1,24 @@
 package com.ryderbelserion.fusion.commands.types;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.Fusion;
-import com.ryderbelserion.fusion.core.api.FusionKey;
-import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.api.enums.Level;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.message.adapter.interfaces.IMessageAdapter;
-import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.core.files.FileManager;
+import com.ryderbelserion.fusion.core.files.enums.FileType;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.kyori.permissions.enums.PermissionType;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.commands.PaperCommand;
 import com.ryderbelserion.fusion.paper.builders.commands.context.PaperCommandContext;
-import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import net.kyori.adventure.key.Key;
 import org.bukkit.command.CommandSender;
 import org.jspecify.annotations.NonNull;
 import java.util.List;
@@ -50,17 +48,17 @@ public class ReloadCommand extends PaperCommand {
 
         final FusionKey key = FusionKey.key(paper.getNamespace(), "reload_plugin");
 
-        paper.log(Level.WARNING, "Contains: %s", messages.containsKey(key));
+        paper.log(Level.warn, "Contains: %s", messages.containsKey(key));
 
         messages.forEach(((fusionKey, adapter) -> {
-            paper.log(Level.WARNING, "Adapter: %s", fusionKey.asString());
-            paper.log(Level.WARNING, "Message: %s", adapter.getValue());
+            paper.log(Level.warn, "Adapter: %s", fusionKey.asString());
+            paper.log(Level.warn, "Message: %s", adapter.getValue());
         }));
 
         final Optional<IMessageAdapter> msg = registry.getMessage(key);
 
         if (msg.isEmpty()) {
-            paper.log(Level.WARNING, "Message is empty!");
+            paper.log(Level.warn, "Message is empty!");
 
             return;
         }
@@ -69,11 +67,9 @@ public class ReloadCommand extends PaperCommand {
 
         sender.sendRichMessage("<yellow>%s Amount</yellow>".formatted(context.getIntegerArgument("amount").orElse(30)));
 
-        final PaperFileManager fileManager = paper.getFileManager();
+        final FileManager fileManager = paper.getFileManager();
 
-        fileManager.refresh(false);
-
-        fileManager.addPaperFile(this.fusion.getDataPath().resolve("guis").resolve("test.yml"));
+        fileManager.refresh(false).addFile(this.fusion.getDataPath().resolve("guis").resolve("test.yml"), FileType.YAML);
     }
 
     @Override

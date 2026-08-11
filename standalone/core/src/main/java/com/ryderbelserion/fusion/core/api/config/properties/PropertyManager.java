@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.core.api.config.properties;
 
+import com.ryderbelserion.fusion.api.FusionProvider;
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.core.files.enums.FileAction;
@@ -20,7 +20,7 @@ import java.util.function.UnaryOperator;
 @NullMarked
 public final class PropertyManager {
 
-    private final FusionCore fusion = FusionProvider.getInstance();
+    private final FusionCore fusion = (FusionCore) FusionProvider.api();
 
     private final FileManager fileManager = this.fusion.getFileManager();
 

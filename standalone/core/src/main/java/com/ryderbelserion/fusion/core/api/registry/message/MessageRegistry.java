@@ -1,8 +1,8 @@
 package com.ryderbelserion.fusion.core.api.registry.message;
 
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.api.FusionKey;
-import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
+import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.registry.message.adapter.interfaces.IMessageAdapter;
 import org.jspecify.annotations.NullMarked;
 import java.util.Collections;
@@ -37,7 +37,7 @@ public final class MessageRegistry {
     }
 
     public void addKey(final FusionKey key, final FusionKey message, final IMessageAdapter adapter) {
-        this.fusion.log(Level.INFO, "Registering the message @ %s for %s".formatted(key.asString(), message.asString()));
+        this.fusion.log(Level.info, "Registering the message @ %s for %s".formatted(key.asString(), message.asString()));
 
         this.messages.computeIfAbsent(key, _ -> new HashMap<>()).put(message, adapter);
     }

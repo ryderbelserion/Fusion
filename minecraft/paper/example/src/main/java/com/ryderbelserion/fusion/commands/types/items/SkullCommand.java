@@ -55,8 +55,8 @@ public class SkullCommand extends PaperCommand {
     public @NonNull final List<PermissionContext> getPermissions() {
         return List.of(
                 new PermissionContext(
-                        "fusion.use",
-                        "The base command for Fusion!",
+                        "fusion.skull",
+                        "The skull command for Fusion!",
                         PermissionType.TRUE
                 )
         );

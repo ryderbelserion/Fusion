@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.core.utils;
 
+import com.ryderbelserion.fusion.api.FusionProvider;
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.files.FileException;
 import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.BasicConfigurationNode;
@@ -21,7 +21,7 @@ public class StringUtils {
     private static final Pattern BRACKET_PATTERN = Pattern.compile("\\{(.*?)}");
     private static final Pattern ANGLE_PATTERN = Pattern.compile("[<>]");
 
-    private static final FusionCore fusion = FusionProvider.getInstance();
+    private static final FusionCore fusion = (FusionCore) FusionProvider.api();
 
     private static final char LF = '\n';
     private static final char CR = '\r';

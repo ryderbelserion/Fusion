@@ -9,10 +9,6 @@ import org.jspecify.annotations.NullMarked;
 public enum FileType {
 
     /**
-     * Files that end with .yml, but are built with Bukkit Configuration
-     */
-    PAPER_YAML(".yml"),
-    /**
      * Files that end with .yml, but are built with Configurate which is by SpongePowered
      */
     YAML(".yml"),

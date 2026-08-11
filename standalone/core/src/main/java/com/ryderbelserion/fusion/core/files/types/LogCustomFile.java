@@ -20,13 +20,11 @@ public final class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFil
 
     @Override
     public LogCustomFile loadConfig() throws IOException {
-        final Path path = getPath();
-
-        if (Files.exists(path)) {
+        if (Files.exists(this.path)) {
             return this;
         }
 
-        Files.createFile(path);
+        Files.createFile(this.path);
 
         return this;
     }
@@ -39,12 +37,12 @@ public final class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFil
             return;
         }
 
-        this.fileManager.compressFile(getPath(), content);
+        this.fileManager.compressFile(this.path, content);
     }
 
     @Override
     public void saveConfig() {
-        this.fileManager.compressFile(getPath());
+        this.fileManager.compressFile(this.path);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.paper.builders.gui.types.simple;
 
+import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.paper.builders.gui.GuiBuilder;
 import com.ryderbelserion.fusion.paper.builders.gui.enums.GuiState;
 import com.ryderbelserion.fusion.paper.builders.gui.objects.GuiItem;
@@ -25,10 +26,14 @@ public class SimpleGui extends GuiBuilder<SimpleGui> {
     }
 
     public SimpleGui interact(@NonNull final InventoryClickEvent event) {
+        this.fusion.log(Level.warn, "State: <red>%s", this.states.contains(GuiState.block_all_interactions));
+
         final int slot = event.getSlot();
 
+        this.fusion.log(Level.warn, "Slot: <red>%s", slot);
+
         if (this.states.contains(GuiState.block_all_interactions)) {
-            event.setResult(Event.Result.DENY);
+            event.setCancelled(true);
         } else {
             if ((this.states.contains(GuiState.block_item_place) && isPlaceItemEvent(event)) ||
                     (this.states.contains(GuiState.block_item_take) && isTakeItemEvent(event)) ||
@@ -36,7 +41,7 @@ public class SimpleGui extends GuiBuilder<SimpleGui> {
                     (this.states.contains(GuiState.block_item_drop) && isDropItemEvent(event)) ||
                     (this.states.contains(GuiState.block_other_actions) && isOtherEvent(event))
             ) {
-                event.setResult(Event.Result.DENY);
+                event.setCancelled(true);
             }
         }
 

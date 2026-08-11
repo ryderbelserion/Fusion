@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.builders.items.types.plugins;
 
-import com.ryderbelserion.fusion.core.api.FusionProvider;
+import com.ryderbelserion.fusion.api.FusionProvider;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.items.BaseItemBuilder;
 import org.bukkit.Server;
@@ -13,7 +13,7 @@ import java.util.Optional;
 @NullMarked
 public abstract class ICustomItem {
 
-    protected final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
+    protected final FusionPaper fusion = (FusionPaper) FusionProvider.api();
 
     protected final JavaPlugin plugin = this.fusion.getPlugin();
 

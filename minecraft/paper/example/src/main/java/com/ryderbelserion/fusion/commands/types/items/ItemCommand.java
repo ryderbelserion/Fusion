@@ -12,6 +12,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemType;
 import org.jspecify.annotations.NonNull;
 import java.util.List;
 
@@ -33,15 +34,7 @@ public class ItemCommand extends PaperCommand {
             return;
         }
 
-        //final FusionPaper fusion = this.fusion.getFusion();
-
-        //CustomStack.getNamespacedIdsInRegistry().forEach(key -> fusion.log(Level.WARNING, "Key: %s", key));
-
-        final ItemBuilder builder = ItemBuilder.from("iaalchemy:astral_bow");
-
-        //final ItemBuilder builder = ItemBuilder.from(ItemType.PLAYER_HEAD);
-
-        //builder.withSkull("65585");
+        final ItemBuilder builder = ItemBuilder.from(ItemType.POTION);
 
         player.getInventory().addItem(builder.setColor("yellow").asItemStack(player));
     }
@@ -60,8 +53,8 @@ public class ItemCommand extends PaperCommand {
     public @NonNull final List<PermissionContext> getPermissions() {
         return List.of(
                 new PermissionContext(
-                        "fusion.use",
-                        "The base command for Fusion!",
+                        "fusion.item",
+                        "The item command for Fusion!",
                         PermissionType.TRUE
                 )
         );

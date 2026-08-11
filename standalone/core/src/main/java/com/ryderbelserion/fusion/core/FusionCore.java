@@ -1,8 +1,8 @@
 package com.ryderbelserion.fusion.core;
 
-import com.ryderbelserion.fusion.api.FusionKey;
-import com.ryderbelserion.fusion.core.api.FusionProvider;
-import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.api.FusionApi;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
+import com.ryderbelserion.fusion.api.FusionProvider;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.files.FileManager;
@@ -19,32 +19,76 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class FusionCore<S, F extends FileManager> {
+public abstract class FusionCore<S, C, TR> extends FusionApi {
 
+    protected final FileManager fileManager;
     protected final Path configPath;
-    protected final F fileManager;
     protected final Path path;
 
-    public FusionCore(@NonNull final F fileManager, @NonNull final Path path) {
+    public FusionCore(@NonNull final Path path) {
+        this.fileManager = new FileManager(this.path = path);
         this.configPath = path.resolve("fusion.yml");
-        this.fileManager = fileManager;
-        this.path = path;
     }
 
     private MessageRegistry messageRegistry;
 
-    public abstract void log(
-            @NonNull final Level level,
+    public abstract C asComponent(
             @NonNull final String message,
-            @NonNull final Exception exception,
-            @NonNull final Object... args
+            @NonNull final Map<String, String> placeholders,
+            @NonNull final List<TR> tags
     );
 
-    public abstract void log(
-            @NonNull final Level level,
+    public C asComponent(
+            @NonNull final S sender,
             @NonNull final String message,
-            @NonNull final Object... args
-    );
+            @NonNull final Map<String, String> placeholders,
+            @NonNull final List<TR> tags
+    ) {
+        return asComponent(papi(sender, message), placeholders, tags);
+    }
+
+    public C asComponent(
+            @NonNull final S audience,
+            @NonNull final String message,
+            @NonNull final Map<String, String> placeholders
+    ) {
+        return asComponent(audience, message, placeholders, List.of());
+    }
+
+    public @NonNull C asComponent(
+            @NonNull final S audience,
+            @NonNull final String message
+    ) {
+        return asComponent(audience, message, Map.of());
+    }
+
+    public @NonNull C asComponent(
+            @NonNull final String message,
+            @NonNull final Map<String, String> placeholders
+    ) {
+        return asComponent(message, placeholders, List.of());
+    }
+
+    public @NonNull C asComponent(
+            @NonNull final String message
+    ) {
+        return asComponent(message, Map.of(), List.of());
+    }
+
+    public String parse(
+            @NonNull final S sender,
+            @NonNull final String message,
+            @NonNull final Map<String, String> placeholders
+    ) {
+        return replacePlaceholders(papi(sender, message), placeholders);
+    }
+
+    public String parse(
+            @NonNull final S sender,
+            @NonNull final String message
+    ) {
+        return parse(sender, message, Map.of());
+    }
 
     public abstract String papi(@NonNull final S sender, @NonNull final String message);
 
@@ -164,7 +208,7 @@ public abstract class FusionCore<S, F extends FileManager> {
         return customFile.get().getConfiguration();
     }
 
-    public @NonNull F getFileManager() {
+    public @NonNull FileManager getFileManager() {
         return this.fileManager;
     }
 

@@ -1,13 +1,12 @@
 package com.ryderbelserion.fusion.paper;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import com.ryderbelserion.fusion.api.FusionKey;
-import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.api.enums.Level;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.paper.builders.gui.GuiManager;
 import com.ryderbelserion.fusion.paper.builders.gui.types.GuiListener;
-import com.ryderbelserion.fusion.paper.files.PaperFileManager;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -25,17 +24,16 @@ import org.jspecify.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-public class FusionPaper extends FusionKyori<Audience, PaperFileManager> {
-
-    private final ComponentLogger logger;
+public class FusionPaper extends FusionKyori<Audience> {
 
     private PluginManager pluginManager;
+    private ComponentLogger logger;
     private GuiManager guiManager;
     private JavaPlugin plugin;
     private Server server;
 
     public FusionPaper(@NonNull final JavaPlugin plugin) {
-        super(new PaperFileManager(plugin.getDataPath()), plugin.getDataPath());
+        super(plugin.getDataPath());
 
         this.logger = plugin.getComponentLogger();
         this.server = plugin.getServer();
@@ -45,16 +43,14 @@ public class FusionPaper extends FusionKyori<Audience, PaperFileManager> {
     }
 
     public FusionPaper(@NonNull final BootstrapContext context) {
-        super(new PaperFileManager(context.getDataDirectory()), context.getDataDirectory());
-
-        this.logger = context.getLogger();
+        super(context.getDataDirectory());
     }
 
     private HeadDatabaseAPI api;
 
     @Override
     public final FusionPaper init() {
-        super.init();
+        super.init().post();
 
         return this;
     }
@@ -93,17 +89,45 @@ public class FusionPaper extends FusionKyori<Audience, PaperFileManager> {
     }
 
     @Override
+    public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Exception exception, final Object @NonNull ... args) {
+        if (!this.isVerbose()) return;
+
+        final Component component = asComponent(message.formatted(args));
+
+        switch (level) {
+            case warn -> this.logger.warn(component, exception);
+            case error -> this.logger.error(component, exception);
+            case info -> this.logger.info(component, exception);
+        }
+    }
+
+    @Override
+    public void log(@NonNull final Level level, @NonNull final String message, final Object @NonNull ... args) {
+        if (!this.isVerbose()) return;
+
+        final Component component = asComponent(message.formatted(args));
+
+        switch (level) {
+            case warn -> this.logger.warn(component);
+            case error -> this.logger.error(component);
+            case info -> this.logger.info(component);
+        }
+    }
+
+    @Override
     public String papi(@Nullable final Audience sender, @NonNull final String message) {
         return isModReady("PlaceholderAPI") && sender instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
     }
 
     @Override
     public void registerPermission(@NonNull final PermissionContext context) {
-        if (this.pluginManager.getPermission(context.getPermission()) != null) {
+        final String node = context.getPermission();
+
+        if (this.pluginManager.getPermission(node) != null) {
             return;
         }
 
-        final Permission permission = new Permission(context.getPermission(), context.getDescription(), switch (context.getType()) {
+        final Permission permission = new Permission(node, context.getDescription(), switch (context.getType()) {
             case TRUE -> PermissionDefault.TRUE;
             case FALSE -> PermissionDefault.FALSE;
             case OP -> PermissionDefault.OP;
@@ -111,32 +135,6 @@ public class FusionPaper extends FusionKyori<Audience, PaperFileManager> {
         }, context.getChildren());
 
         this.pluginManager.addPermission(permission);
-    }
-
-    @Override
-    public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Exception exception, @NonNull final Object... args) {
-        if (!this.isVerbose()) return;
-
-        final Component component = asComponent(level.equals(Level.DEBUG) ? "<yellow>[DEBUG] %s</yellow>".formatted(message.formatted(args)) : message.formatted(args));
-
-        switch (level) {
-            case WARNING -> this.logger.warn(component, exception);
-            case DEBUG, INFO -> this.logger.info(component, exception);
-            case ERROR -> this.logger.error(component, exception);
-        }
-    }
-
-    @Override
-    public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Object... args) {
-        if (!this.isVerbose()) return;
-
-        final Component component = asComponent(level.equals(Level.DEBUG) ? "<yellow>[DEBUG] %s</yellow>".formatted(message.formatted(args)) : message.formatted(args));
-
-        switch (level) {
-            case WARNING -> this.logger.warn(component);
-            case DEBUG, INFO -> this.logger.info(component);
-            case ERROR -> this.logger.error(component);
-        }
     }
 
     @Override

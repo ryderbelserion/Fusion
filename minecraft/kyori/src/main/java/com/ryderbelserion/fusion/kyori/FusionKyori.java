@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.kyori;
 
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
 import com.ryderbelserion.fusion.kyori.registry.mods.ModRegistry;
 import net.kyori.adventure.text.Component;
@@ -14,10 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class FusionKyori<S, F extends FileManager> extends FusionCore<S, F> {
+public abstract class FusionKyori<S> extends FusionCore<S, Component, TagResolver> {
 
-    public FusionKyori(@NonNull final F fileManager, @NonNull final Path path) {
-        super(fileManager, path);
+    public FusionKyori(@NonNull final Path path) {
+        super(path);
     }
 
     private ModRegistry modRegistry;
@@ -32,21 +31,7 @@ public abstract class FusionKyori<S, F extends FileManager> extends FusionCore<S
         return this;
     }
 
-    public @NonNull final String parse(
-            @NonNull final S sender,
-            @NonNull final String message,
-            @NonNull final Map<String, String> placeholders
-    ) {
-        return replacePlaceholders(papi(sender, message), placeholders);
-    }
-
-    public @NonNull final String parse(
-            @NonNull final S sender,
-            @NonNull final String message
-    ) {
-        return parse(sender, message, Map.of());
-    }
-
+    @Override
     public @NonNull final Component asComponent(
             @NonNull final String message,
             @NonNull final Map<String, String> placeholders,
@@ -64,46 +49,7 @@ public abstract class FusionKyori<S, F extends FileManager> extends FusionCore<S
                 .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
     }
 
-    public @NonNull final Component asComponent(
-            @NonNull final S sender,
-            @NonNull final String message,
-            @NonNull final Map<String, String> placeholders,
-            @NonNull final List<TagResolver> tags
-    ) {
-        return asComponent(papi(sender, message), placeholders, tags);
-    }
-
-    public @NonNull final Component asComponent(
-            @NonNull final S audience,
-            @NonNull final String message,
-            @NonNull final Map<String, String> placeholders
-    ) {
-        return asComponent(audience, message, placeholders, List.of());
-    }
-
-    public @NonNull final Component asComponent(
-            @NonNull final S audience,
-            @NonNull final String message
-    ) {
-        return asComponent(audience, message, Map.of());
-    }
-
-    public @NonNull final Component asComponent(
-            @NonNull final String message,
-            @NonNull final Map<String, String> placeholders
-    ) {
-        return asComponent(message, placeholders, List.of());
-    }
-
-    public @NonNull final Component asComponent(
-            @NonNull final String message
-    ) {
-        return asComponent(message, Map.of(), List.of());
-    }
-
-    public void registerPermission(
-            @NonNull final PermissionContext permission
-    ) {
+    public void registerPermission(@NonNull final PermissionContext permission) {
 
     }
 

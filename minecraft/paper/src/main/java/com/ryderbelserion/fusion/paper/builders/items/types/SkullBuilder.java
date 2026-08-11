@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.paper.builders.items.types;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
-import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.builders.items.BaseItemBuilder;
 import com.ryderbelserion.fusion.paper.utils.ItemUtils;
@@ -88,7 +88,7 @@ public final class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
             final NamespacedKey key = Registry.SOUNDS.getKey(value);
 
             if (key == null) {
-                this.fusion.log(Level.WARNING, "No valid NamespacedKey found for %s", sound);
+                this.fusion.log(Level.warn, "No valid NamespacedKey found for %s", sound);
 
                 return;
             }

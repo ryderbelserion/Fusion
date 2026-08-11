@@ -5,6 +5,13 @@ plugins {
 
 project.group = "${rootProject.name}.hytale"
 
-dependencies {
+repositories {
+    maven("https://maven.hytale.com/release")
+}
 
+dependencies {
+    api(project(":fusion-core"))
+
+    api(libs.hytale.adventure)
+    compileOnly(libs.hytale)
 }

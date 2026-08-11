@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.paper.builders.items;
 
-import com.ryderbelserion.fusion.core.api.FusionProvider;
-import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.api.FusionProvider;
+import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.gui.interfaces.GuiAction;
@@ -147,7 +147,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         ItemType.LINGERING_POTION.key().asString()
     );
 
-    protected final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
+    protected final FusionPaper fusion = (FusionPaper) FusionProvider.api();
     
     protected ItemStack itemStack;
     protected ItemType itemType;
@@ -334,7 +334,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         final String implementation = customItem.getImpl();
 
         if (origin.isEmpty()) {
-            this.fusion.log(Level.WARNING, "%s item could not be used to create an ItemStack using implementation %s. It was likely an invalid material.", item, implementation);
+            this.fusion.log(Level.warn, "%s item could not be used to create an ItemStack using implementation %s. It was likely an invalid material.", item, implementation);
 
             return (B) this;
         }
@@ -471,7 +471,9 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         if (this.itemStack.hasData(DataComponentTypes.LORE)) {
             final ItemLore lore = this.itemStack.getData(DataComponentTypes.LORE);
 
-            if (lore != null) lore.lines().forEach(line -> plainLore.add(PlainTextComponentSerializer.plainText().serialize(line)));
+            if (lore != null) {
+                lore.lines().forEach(line -> plainLore.add(PlainTextComponentSerializer.plainText().serialize(line)));
+            }
         }
 
         return plainLore;

@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.kyori.registry.mods.interfaces;
 
-import com.ryderbelserion.fusion.api.FusionKey;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
 import org.jspecify.annotations.NullMarked;
 import java.util.UUID;
 

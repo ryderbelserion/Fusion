@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+import org.jspecify.annotations.NonNull;
 
 public final class PotionBuilder extends BaseItemBuilder<PotionBuilder> {
 
@@ -52,7 +53,7 @@ public final class PotionBuilder extends BaseItemBuilder<PotionBuilder> {
     }
 
     @Override
-    public PotionBuilder setColor(final String value) {
+    public @NonNull PotionBuilder setColor(final @NonNull String value) {
         ColorUtils.getRGB(value).ifPresent(this.builder::customColor);
 
         return this;

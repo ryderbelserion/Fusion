@@ -73,10 +73,10 @@ public abstract class ICustomFile<I, C, L> {
         this.isLenient = isLenient;
     }
 
-
     public void withIndent(final int indent) {
         this.indent = indent;
     }
+
     public @NonNull C getConfiguration() {
         return this.configuration;
     }

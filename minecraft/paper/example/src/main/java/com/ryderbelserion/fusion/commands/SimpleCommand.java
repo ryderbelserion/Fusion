@@ -65,6 +65,8 @@ public class SimpleCommand extends PaperCommand {
         gui.addState(GuiState.block_all_interactions);
 
         gui.open(player);
+
+        gui.setTitle(player, "<yellow>New Title");
     }
 
     @Override

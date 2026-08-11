@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.custom;
 
-import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.paper.builders.items.BaseItemBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.plugins.ICustomItem;
@@ -35,7 +35,7 @@ public final class OraxenCustomItem extends ICustomItem {
         }
 
         if (!isAvailable()) {
-            this.fusion.log(Level.WARNING, "The id %s does not exist as a %s item! Attempting falling back to vanilla item!", this.item, impl);
+            this.fusion.log(Level.warn, "The id %s does not exist as a %s item! Attempting falling back to vanilla item!", this.item, impl);
 
             new VanillaItemStack(this.builder, this.item).init();
 

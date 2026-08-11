@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.core.api.config.properties;
 
+import com.ryderbelserion.fusion.api.FusionProvider;
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.api.FusionProvider;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.core.files.FileManager;
 import io.leangen.geantyref.TypeToken;
@@ -18,7 +18,7 @@ import java.util.Map;
 @NullMarked
 public final class PropertyDataImpl implements IPropertyData {
 
-    private final FusionCore fusion = FusionProvider.getInstance();
+    private final FusionCore fusion = (FusionCore) FusionProvider.api();
 
     private final FileManager fileManager = this.fusion.getFileManager();
 

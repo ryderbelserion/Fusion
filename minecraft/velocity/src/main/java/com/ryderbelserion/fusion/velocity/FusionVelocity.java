@@ -1,8 +1,7 @@
 package com.ryderbelserion.fusion.velocity;
 
-import com.ryderbelserion.fusion.api.FusionKey;
-import com.ryderbelserion.fusion.core.api.enums.Level;
-import com.ryderbelserion.fusion.core.files.FileManager;
+import com.ryderbelserion.fusion.api.enums.Level;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
@@ -11,13 +10,13 @@ import org.jspecify.annotations.NullMarked;
 import java.nio.file.Path;
 
 @NullMarked
-public final class FusionVelocity extends FusionKyori<Audience, FileManager> {
+public final class FusionVelocity extends FusionKyori<Audience> {
 
     private final ComponentLogger logger;
     private final String namespace;
 
     public FusionVelocity(final String namespace, final ComponentLogger logger, final Path path) {
-        super(new FileManager(path), path);
+        super(path);
 
         this.logger = logger;
         this.namespace = namespace;
@@ -30,10 +29,9 @@ public final class FusionVelocity extends FusionKyori<Audience, FileManager> {
         final Component component = asComponent(message.formatted(args));
 
         switch (level) {
-            case WARNING -> this.logger.warn(component, exception);
-            case DEBUG -> this.logger.debug(component, exception);
-            case ERROR -> this.logger.error(component, exception);
-            case INFO -> this.logger.info(component, exception);
+            case warn -> this.logger.warn(component, exception);
+            case error -> this.logger.error(component, exception);
+            case info -> this.logger.info(component, exception);
         }
     }
 
@@ -44,10 +42,9 @@ public final class FusionVelocity extends FusionKyori<Audience, FileManager> {
         final Component component = asComponent(message.formatted(args));
 
         switch (level) {
-            case WARNING -> this.logger.warn(component);
-            case DEBUG -> this.logger.debug(component);
-            case ERROR -> this.logger.error(component);
-            case INFO -> this.logger.info(component);
+            case warn -> this.logger.warn(component);
+            case error -> this.logger.error(component);
+            case info -> this.logger.info(component);
         }
     }
 

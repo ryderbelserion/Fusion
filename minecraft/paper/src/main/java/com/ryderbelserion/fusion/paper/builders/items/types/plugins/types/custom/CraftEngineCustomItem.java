@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.custom;
 
-import com.ryderbelserion.fusion.core.api.enums.Level;
+import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.paper.builders.items.BaseItemBuilder;
 import com.ryderbelserion.fusion.paper.builders.items.types.plugins.ICustomItem;
 import com.ryderbelserion.fusion.paper.builders.items.types.plugins.types.VanillaItemStack;
@@ -33,7 +33,7 @@ public final class CraftEngineCustomItem extends ICustomItem {
         }
 
         Optional.ofNullable(CraftEngineItems.byId(this.item)).ifPresentOrElse(item -> this.itemStack = item.buildBukkitItem(), () -> {
-            this.fusion.log(Level.WARNING, "The id %s does not exist as a %s item! Attempting falling back to vanilla item!", this.item, impl);
+            this.fusion.log(Level.warn, "The id %s does not exist as a %s item! Attempting falling back to vanilla item!", this.item, impl);
 
             new VanillaItemStack(this.builder, this.item).init();
         });

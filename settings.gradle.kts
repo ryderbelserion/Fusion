@@ -12,7 +12,7 @@ plugins {
 rootProject.name = "Fusion"
 
 listOf(
-    //"minecraft/paper/example" to "example",
+    "minecraft/paper/example" to "example",
 
     "minecraft/velocity" to "velocity",
     "minecraft/paper" to "paper",

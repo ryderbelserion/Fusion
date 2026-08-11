@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.paper.builders.gui;
 
-import com.ryderbelserion.fusion.core.api.FusionProvider;
+import com.ryderbelserion.fusion.api.FusionProvider;
 import com.ryderbelserion.fusion.paper.FusionPaper;
 import com.ryderbelserion.fusion.paper.builders.folia.FoliaScheduler;
 import com.ryderbelserion.fusion.paper.builders.folia.Scheduler;
@@ -26,7 +26,7 @@ import java.util.*;
 
 public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
 
-    protected final FusionPaper fusion = (FusionPaper) FusionProvider.getInstance();
+    protected final FusionPaper fusion = (FusionPaper) FusionProvider.api();
 
     protected static final Set<InventoryAction> item_take_actions =
             Collections.unmodifiableSet(EnumSet.of(
@@ -209,7 +209,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
     }
 
     public B setTitle(@NonNull final Player player, @NonNull final String title, @NonNull final Map<String, String> placeholders) {
-        this.title = GuiUtils.updateTitle(player, this.inventory, title, placeholders);
+        this.title = GuiUtils.updateTitle(player, player.getOpenInventory(), title, placeholders);
 
         return (B) this;
     }
@@ -404,7 +404,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
     @ApiStatus.Internal
     public void drag(@NonNull final InventoryDragEvent event) {
         if (this.states.contains(GuiState.block_all_interactions)) {
-            event.setResult(Event.Result.DENY);
+            event.setCancelled(true);
 
             return;
         }
@@ -413,7 +413,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
             return;
         }
 
-        event.setResult(Event.Result.DENY);
+        event.setCancelled(true);
     }
 
     protected int getSlotFromColumn(final int row, final int column) {

@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.api.interfaces;
 
-public abstract class IFusionKey {
+public abstract class AbstractFusionKey {
 
     public abstract String getNamespace();
 

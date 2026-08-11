@@ -1,4 +1,8 @@
 [versions]
+## Hytale API
+hytale-adventure = "2.0.1" # https://github.com/Zoltus/TinyMessage/
+hytale = "+" # https://hytale.com
+
 ## Configurate API
 configurate = "4.2.0-GeyserMC-SNAPSHOT" # https://github.com/SpongePowered/Configurate
 
@@ -17,9 +21,6 @@ brigadier = "1.3.10" # https://minecraft.net
 
 ## Better Annotations
 jspecify = "1.0.0" # https://jspecify.dev/docs/using/
-
-## Better Logging
-tinylog = "2.7.0" # https://tinylog.org/
 
 ### Custom Item API
 craftengine = "26.6" # https://github.com/Xiao-MoMi/craft-engine
@@ -68,8 +69,9 @@ placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholder
 # https://jspecify.dev/docs/using/
 jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
 
-tinylog-impl = { module = "org.tinylog:tinylog-impl", version.ref = "tinylog" }
-tinylog-api = { module = "org.tinylog:tinylog-api", version.ref = "tinylog" }
+hytale-adventure = { module = "com.github.Zoltus:TinyMessage", version.ref = "hytale-adventure" }
+# https://hytale.com
+hytale = { module = "com.hypixel.hytale:Server", version.ref = "hytale" }
 
 # https://github.com/Xiao-MoMi/craft-engine/
 craftengine-bukkit = { module = "net.momirealms:craft-engine-bukkit", version.ref = "craftengine" }
@@ -112,11 +114,6 @@ shared = [
     "nexo",
 
     "hmcwraps"
-]
-
-tinylog = [
-    "tinylog-impl",
-    "tinylog-api"
 ]
 
 build = [

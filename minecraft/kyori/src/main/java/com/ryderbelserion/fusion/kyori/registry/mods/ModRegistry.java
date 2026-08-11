@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.kyori.registry.mods;
 
-import com.ryderbelserion.fusion.api.FusionKey;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.constants.ModSupport;
 import com.ryderbelserion.fusion.kyori.registry.mods.interfaces.AbstractMod;
