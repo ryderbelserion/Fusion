@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.core.files.interfaces;
 
-import com.ryderbelserion.fusion.core.files.enums.FileAction;
-import com.ryderbelserion.fusion.core.files.enums.FileType;
+import com.ryderbelserion.fusion.api.enums.files.enums.FileAction;
+import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
 import com.ryderbelserion.fusion.core.files.types.configurate.JsonCustomFile;
 import com.ryderbelserion.fusion.core.files.types.configurate.YamlCustomFile;
@@ -121,38 +121,14 @@ public abstract class IFileManager<I> {
 
     public abstract List<String> getFileByNames(final String folder, final Path path, final String extension, final int depth, final boolean removeExtension);
 
-    public List<String> getFileByNames(final String folder, final Path path, final String extension, final boolean removeExtension) {
-        return getFileByNames(folder, path, extension, getDepth(), removeExtension);
-    }
-
     public abstract List<Path> getFilesByPath(final Path path, final List<String> extensions, final int depth);
-
-    public List<Path> getFilesByPath(final Path path, final String extension, final int depth) {
-        return getFilesByPath(path, List.of(extension), depth);
-    }
-
-    public List<Path> getFilesByPath(final Path path, final List<String> extension) {
-        return getFilesByPath(path, extension, getDepth());
-    }
 
     public List<Path> getFilesByPath(final Path path, final String extension) {
         return getFilesByPath(path, List.of(extension), getDepth());
     }
 
     public int getDirectorySize(final Path path, final String extension) {
-        return getFilesByPath(path, extension, getDepth()).size();
-    }
-
-    public I compressFile(final Path path, final String content) {
-        return compressFile(path, null, content);
-    }
-
-    public I compressFile(final Path path, final Path folder) {
-        return compressFile(path, folder, "");
-    }
-
-    public I compressFile(final Path path) {
-        return compressFile(path, null, "");
+        return getFilesByPath(path, extension).size();
     }
 
     public abstract void setDepth(final int depth);

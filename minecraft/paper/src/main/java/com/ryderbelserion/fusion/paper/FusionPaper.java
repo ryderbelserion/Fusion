@@ -49,14 +49,7 @@ public class FusionPaper extends FusionKyori<Audience> {
     private HeadDatabaseAPI api;
 
     @Override
-    public final FusionPaper init() {
-        super.init().post();
-
-        return this;
-    }
-
-    @Override
-    public final FusionPaper post() {
+    public @NonNull final FusionPaper post() {
         this.guiManager = new GuiManager();
 
         if (isModReady("HeadDatabase") && this.api == null) {
@@ -69,7 +62,7 @@ public class FusionPaper extends FusionKyori<Audience> {
     }
 
     @Override
-    public final FusionPaper reload() {
+    public @NonNull final FusionPaper reload() {
         super.reload();
 
         return this;
@@ -89,7 +82,7 @@ public class FusionPaper extends FusionKyori<Audience> {
     }
 
     @Override
-    public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Exception exception, final Object @NonNull ... args) {
+    public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Exception exception, final Object @NonNull... args) {
         if (!this.isVerbose()) return;
 
         final Component component = asComponent(message.formatted(args));
@@ -102,7 +95,7 @@ public class FusionPaper extends FusionKyori<Audience> {
     }
 
     @Override
-    public void log(@NonNull final Level level, @NonNull final String message, final Object @NonNull ... args) {
+    public void log(@NonNull final Level level, @NonNull final String message, final Object @NonNull... args) {
         if (!this.isVerbose()) return;
 
         final Component component = asComponent(message.formatted(args));
@@ -115,7 +108,7 @@ public class FusionPaper extends FusionKyori<Audience> {
     }
 
     @Override
-    public String papi(@Nullable final Audience sender, @NonNull final String message) {
+    public @NonNull String papi(@Nullable final Audience sender, @NonNull final String message) {
         return isModReady("PlaceholderAPI") && sender instanceof Player player ? PlaceholderAPI.setPlaceholders(player, message) : message;
     }
 

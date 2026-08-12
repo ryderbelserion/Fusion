@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion.core.files.types;
 
-import com.ryderbelserion.fusion.core.files.FileManager;
-import com.ryderbelserion.fusion.core.files.enums.FileType;
+import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import org.jspecify.annotations.NullMarked;
 import java.io.IOException;
@@ -12,8 +11,8 @@ import java.util.function.Consumer;
 @NullMarked
 public final class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFile, Object> {
 
-    public LogCustomFile(final FileManager fileManager, final Path path, final Consumer<LogCustomFile> consumer) {
-        super(fileManager, path);
+    public LogCustomFile(final Path path, final Consumer<LogCustomFile> consumer) {
+        super(path);
 
         consumer.accept(this);
     }
@@ -37,12 +36,12 @@ public final class LogCustomFile extends ICustomFile<LogCustomFile, LogCustomFil
             return;
         }
 
-        this.fileManager.compressFile(this.path, content);
+        this.fusion.compressFile(this.path, content);
     }
 
     @Override
     public void saveConfig() {
-        this.fileManager.compressFile(this.path);
+        this.fusion.compressFile(this.path);
     }
 
     @Override

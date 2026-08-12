@@ -1,8 +1,7 @@
 package com.ryderbelserion.fusion.core.files.types.configurate;
 
-import com.ryderbelserion.fusion.core.files.FileException;
-import com.ryderbelserion.fusion.core.files.FileManager;
-import com.ryderbelserion.fusion.core.files.enums.FileType;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.IConfigurate;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import org.jspecify.annotations.NullMarked;
@@ -17,8 +16,8 @@ import java.util.function.Consumer;
 @NullMarked
 public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedConfigurationNode, YamlConfigurationLoader> implements IConfigurate {
 
-    public YamlCustomFile(final FileManager fileManager, final String jarFolder, final Path path, final Consumer<YamlCustomFile> consumer) {
-        super(fileManager, jarFolder, path);
+    public YamlCustomFile(final String jarFolder, final Path path, final Consumer<YamlCustomFile> consumer) {
+        super(jarFolder, path);
 
         consumer.accept(this);
 
@@ -32,8 +31,8 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
                 .build();
     }
 
-    public YamlCustomFile(final FileManager fileManager, final Path path, final Consumer<YamlCustomFile> consumer) {
-        this(fileManager, "", path, consumer);
+    public YamlCustomFile(final Path path, final Consumer<YamlCustomFile> consumer) {
+        this("", path, consumer);
     }
 
     @Override
@@ -134,7 +133,7 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
 
             return defaultValue;
         } catch (final SerializationException exception) {
-            throw new FileException("Failed to serialize %s!".formatted(node.path()), exception);
+            throw new FusionException("Failed to serialize %s!".formatted(node.path()), exception);
         }
     }
 }

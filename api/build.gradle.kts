@@ -6,5 +6,7 @@ plugins {
 project.group = "${rootProject.name}.api"
 
 dependencies {
-    compileOnly(libs.jspecify)
+    compileOnlyApi(libs.configurate.gson)
+    compileOnlyApi(libs.configurate.yaml)
+    compileOnlyApi(libs.jspecify)
 }

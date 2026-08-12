@@ -1,8 +1,8 @@
 package com.ryderbelserion.fusion.core.utils;
 
 import com.ryderbelserion.fusion.api.FusionProvider;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.FusionCore;
-import com.ryderbelserion.fusion.core.files.FileException;
 import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -32,7 +32,7 @@ public class StringUtils {
 
             return list != null ? list : defaultValues;
         } catch (SerializationException exception) {
-            throw new FileException(String.format("Failed to serialize %s!", node.path()), exception);
+            throw new FusionException(String.format("Failed to serialize %s!", node.path()), exception);
         }
     }
 
@@ -50,7 +50,7 @@ public class StringUtils {
 
             return list != null ? list : defaultValues;
         } catch (SerializationException exception) {
-            throw new FileException(String.format("Failed to serialize %s!", node.path()), exception);
+            throw new FusionException(String.format("Failed to serialize %s!", node.path()), exception);
         }
     }
 

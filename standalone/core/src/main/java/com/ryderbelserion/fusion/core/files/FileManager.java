@@ -1,7 +1,8 @@
 package com.ryderbelserion.fusion.core.files;
 
-import com.ryderbelserion.fusion.core.files.enums.FileAction;
-import com.ryderbelserion.fusion.core.files.enums.FileType;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.api.enums.files.enums.FileAction;
+import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.core.files.interfaces.IFileManager;
 import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
@@ -40,7 +41,7 @@ public class FileManager extends IFileManager<FileManager> {
     public FileManager addFolder(final Path folder, final String jarFolder, final FileType fileType, final Consumer<ICustomFile<?, ?, ?>> consumer) {
         extractFolder(folder.getFileName().toString(), jarFolder, fileType, folder.getParent());
 
-        for (final Path path : getFilesByPath(folder, fileType.getExtension(), getDepth())) {
+        for (final Path path : getFilesByPath(folder, fileType.getExtension())) {
             addFile(path, fileType, consumer);
         }
 
@@ -113,17 +114,17 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public YamlCustomFile buildYamlFile(final Path path, final String jarFolder, final Consumer<YamlCustomFile> consumer) {
-        return new YamlCustomFile(this, jarFolder, path, consumer).load();
+        return new YamlCustomFile(jarFolder, path, consumer).load();
     }
 
     @Override
     public JsonCustomFile buildJsonFile(final Path path, final String jarFolder, final Consumer<JsonCustomFile> consumer) {
-        return new JsonCustomFile(this, jarFolder, path, consumer).load();
+        return new JsonCustomFile(jarFolder, path, consumer).load();
     }
 
     @Override
     public LogCustomFile buildLogFile(final Path path, final Consumer<LogCustomFile> consumer) {
-        return new LogCustomFile(this, path, consumer).load();
+        return new LogCustomFile(path, consumer).load();
     }
 
     @Override
@@ -167,7 +168,7 @@ public class FileManager extends IFileManager<FileManager> {
             try {
                 Files.createDirectory(parent);
             } catch (final IOException exception) {
-                throw new FileException("Failed to create %s".formatted(parent));
+                throw new FusionException("Failed to create %s".formatted(parent));
             }
         }
 
@@ -180,10 +181,10 @@ public class FileManager extends IFileManager<FileManager> {
                 try (final InputStream stream = jarFile.getInputStream(entry)) {
                     Files.copy(stream, output);
                 } catch (final IOException exception) {
-                    throw new FileException("Failed to copy %s to %s".formatted(input, output), exception);
+                    throw new FusionException("Failed to copy %s to %s".formatted(input, output), exception);
                 }
             }, () -> {
-                throw new FileException("Failed to find %s in the jar!".formatted(input));
+                throw new FusionException("Failed to find %s in the jar!".formatted(input));
             });
         } catch (final IOException | URISyntaxException exception) {
             exception.printStackTrace();
@@ -222,7 +223,7 @@ public class FileManager extends IFileManager<FileManager> {
             try {
                 Files.createDirectory(parent);
             } catch (final IOException exception) {
-                throw new FileException("Failed to create %s".formatted(parent));
+                throw new FusionException("Failed to create %s".formatted(parent));
             }
         }
 
@@ -252,7 +253,7 @@ public class FileManager extends IFileManager<FileManager> {
             try (final InputStream stream = jarFile.getInputStream(target)) {
                 Files.copy(stream, output);
             } catch (final IOException exception) {
-                throw new FileException("Failed to copy %s to %s".formatted(input, output), exception);
+                throw new FusionException("Failed to copy %s to %s".formatted(input, output), exception);
             }
         } catch (final IOException | URISyntaxException exception) {
             exception.printStackTrace();
@@ -273,7 +274,7 @@ public class FileManager extends IFileManager<FileManager> {
             try {
                 Files.createDirectories(path);
             } catch (final Exception exception) {
-                throw new FileException("Failed to create %s".formatted(path), exception);
+                throw new FusionException("Failed to create %s".formatted(path), exception);
             }
         }
 
@@ -295,7 +296,7 @@ public class FileManager extends IFileManager<FileManager> {
                     try {
                         Files.createDirectories(parent);
                     } catch (final IOException exception) {
-                        throw new FileException("Failed to create %s".formatted(parent), exception);
+                        throw new FusionException("Failed to create %s".formatted(parent), exception);
                     }
                 }
 
@@ -303,12 +304,12 @@ public class FileManager extends IFileManager<FileManager> {
                     try (final InputStream stream = jar.getInputStream(entry)) {
                         Files.copy(stream, target);
                     } catch (final IOException exception) {
-                        throw new FileException("Failed to copy %s to %s".formatted(target, parent), exception);
+                        throw new FusionException("Failed to copy %s to %s".formatted(target, parent), exception);
                     }
                 }
             });
         } catch (final IOException | URISyntaxException exception) {
-            throw new FileException("Failed to extract folder %s".formatted(path), exception);
+            throw new FusionException("Failed to extract folder %s".formatted(path), exception);
         }
 
         return this;
@@ -336,7 +337,7 @@ public class FileManager extends IFileManager<FileManager> {
                 output.closeEntry();
             }
         } catch (final IOException exception) {
-            throw new FileException("Failed to compress folder %s".formatted(path), exception);
+            throw new FusionException("Failed to compress folder %s".formatted(path), exception);
         }
 
         return this;
@@ -351,7 +352,7 @@ public class FileManager extends IFileManager<FileManager> {
         try {
             size = Files.size(path);
         } catch (final Exception exception) {
-            throw new FileException("Failed to calculate file size for %s".formatted(path), exception);
+            throw new FusionException("Failed to calculate file size for %s".formatted(path), exception);
         }
 
         if (size <= 0L) return this;
@@ -369,7 +370,7 @@ public class FileManager extends IFileManager<FileManager> {
 
             output.closeEntry();
         } catch (final Exception exception) {
-            throw new FileException("Failed to compress %s".formatted(path), exception);
+            throw new FusionException("Failed to compress %s".formatted(path), exception);
         }
 
         return this;
@@ -380,7 +381,7 @@ public class FileManager extends IFileManager<FileManager> {
         try {
             Files.writeString(path, content, StandardOpenOption.APPEND);
         } catch (final IOException exception) {
-            throw new FileException("Failed to write %s to %s".formatted(content, path), exception);
+            throw new FusionException("Failed to write %s to %s".formatted(content, path), exception);
         }
 
         return this;
@@ -467,7 +468,7 @@ public class FileManager extends IFileManager<FileManager> {
                 }
             });
         } catch (final IOException exception) {
-            throw new FileException("Failed to get a list of files", exception);
+            throw new FusionException("Failed to get a list of files", exception);
         }
 
         return files;

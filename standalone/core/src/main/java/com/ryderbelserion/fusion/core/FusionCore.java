@@ -6,10 +6,12 @@ import com.ryderbelserion.fusion.api.FusionProvider;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.files.FileManager;
-import com.ryderbelserion.fusion.core.files.enums.FileAction;
-import com.ryderbelserion.fusion.core.files.enums.FileType;
+import com.ryderbelserion.fusion.api.enums.files.enums.FileAction;
+import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.types.configurate.YamlCustomFile;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.NullUnmarked;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -19,78 +21,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class FusionCore<S, C, TR> extends FusionApi {
+public abstract class FusionCore<S, C, TR> extends FusionApi<S, C, TR> {
 
-    protected final FileManager fileManager;
     protected final Path configPath;
     protected final Path path;
 
     public FusionCore(@NonNull final Path path) {
-        this.fileManager = new FileManager(this.path = path);
         this.configPath = path.resolve("fusion.yml");
+        this.path = path;
     }
 
     private MessageRegistry messageRegistry;
-
-    public abstract C asComponent(
-            @NonNull final String message,
-            @NonNull final Map<String, String> placeholders,
-            @NonNull final List<TR> tags
-    );
-
-    public C asComponent(
-            @NonNull final S sender,
-            @NonNull final String message,
-            @NonNull final Map<String, String> placeholders,
-            @NonNull final List<TR> tags
-    ) {
-        return asComponent(papi(sender, message), placeholders, tags);
-    }
-
-    public C asComponent(
-            @NonNull final S audience,
-            @NonNull final String message,
-            @NonNull final Map<String, String> placeholders
-    ) {
-        return asComponent(audience, message, placeholders, List.of());
-    }
-
-    public @NonNull C asComponent(
-            @NonNull final S audience,
-            @NonNull final String message
-    ) {
-        return asComponent(audience, message, Map.of());
-    }
-
-    public @NonNull C asComponent(
-            @NonNull final String message,
-            @NonNull final Map<String, String> placeholders
-    ) {
-        return asComponent(message, placeholders, List.of());
-    }
-
-    public @NonNull C asComponent(
-            @NonNull final String message
-    ) {
-        return asComponent(message, Map.of(), List.of());
-    }
-
-    public String parse(
-            @NonNull final S sender,
-            @NonNull final String message,
-            @NonNull final Map<String, String> placeholders
-    ) {
-        return replacePlaceholders(papi(sender, message), placeholders);
-    }
-
-    public String parse(
-            @NonNull final S sender,
-            @NonNull final String message
-    ) {
-        return parse(sender, message, Map.of());
-    }
-
-    public abstract String papi(@NonNull final S sender, @NonNull final String message);
+    private FileManager fileManager;
 
     public abstract boolean isModReady(@NonNull final FusionKey key);
 
@@ -98,13 +40,8 @@ public abstract class FusionCore<S, C, TR> extends FusionApi {
 
     public abstract @NonNull String getNamespace();
 
-    public FusionCore reload() {
-        this.fileManager.reloadFile(this.configPath).setDepth(getDepth());
-
-        return this;
-    }
-
-    public FusionCore init() {
+    @Override
+    public @NonNull FusionCore init() {
         FusionProvider.register(this);
 
         if (Files.notExists(this.path)) {
@@ -115,6 +52,7 @@ public abstract class FusionCore<S, C, TR> extends FusionApi {
             }
         }
 
+        this.fileManager = new FileManager(this.path);
         this.fileManager.addFile(this.configPath, FileType.YAML, action -> action.addAction(FileAction.EXTRACT_FILE).addAction(FileAction.KEEP_FILE)).setDepth(getDepth());
 
         this.messageRegistry = new MessageRegistry(this, FusionKey.key(getNamespace(), "default"));
@@ -122,10 +60,40 @@ public abstract class FusionCore<S, C, TR> extends FusionApi {
         return this;
     }
 
-    public FusionCore post() {
+    @Override
+    public @NonNull FusionCore reload() {
+        this.fileManager.reloadFile(this.configPath).setDepth(getDepth());
+
         return this;
     }
 
+    @Override
+    @NullUnmarked
+    public void compressFile(@NonNull final Path path, @Nullable final Path folder, @NonNull final String content) {
+        this.fileManager.compressFile(path, folder, content);
+    }
+
+    @Override
+    public void compressFolder(@NonNull final Path path, @NonNull final String content) {
+        this.fileManager.compressFolder(path, content);
+    }
+
+    @Override
+    public void extractFolder(@NonNull final String input, @NonNull final String jarFolder, @NonNull final FileType fileType, @NonNull final Path path) {
+        this.fileManager.extractFolder(input, jarFolder, fileType, path);
+    }
+
+    @Override
+    public void extractFile(@NonNull final String input, @NonNull final Path path) {
+        this.fileManager.extractFile(input, path);
+    }
+
+    @Override
+    public void extractFile(@NonNull final String input) {
+        this.fileManager.extractFile(input);
+    }
+
+    @Override
     public @NonNull final List<String> getFilesByName(
             @NonNull final String folder,
             @NonNull final Path path,
@@ -133,20 +101,10 @@ public abstract class FusionCore<S, C, TR> extends FusionApi {
             final int depth,
             final boolean removeExtension
     ) {
-
         return this.fileManager.getFileByNames(folder, path, extension, depth, removeExtension);
     }
 
-    public @NonNull final List<String> getFilesByName(
-            @NonNull final String folder,
-            @NonNull final Path path,
-            @NonNull final String extension,
-            final boolean removeExtension
-    ) {
-
-        return this.fileManager.getFileByNames(folder, path, extension, removeExtension);
-    }
-
+    @Override
     public @NonNull final List<Path> getFilesByPath(
             @NonNull final Path path,
             @NonNull final List<String> extensions
@@ -154,14 +112,8 @@ public abstract class FusionCore<S, C, TR> extends FusionApi {
         return this.fileManager.getFilesByPath(path, extensions, getDepth());
     }
 
-    public @NonNull final List<Path> getFilesByPath(
-            @NonNull final Path path,
-            @NonNull final String extension
-    ) {
-        return this.fileManager.getFilesByPath(path, extension, getDepth());
-    }
-
-    public String replacePlaceholders(@NonNull final String message, @NonNull final Map<String, String> placeholders) {
+    @Override
+    public @NonNull final String replacePlaceholders(@NonNull final String message, @NonNull final Map<String, String> placeholders) {
         String safeMessage = message;
 
         if (!placeholders.isEmpty()) {
@@ -180,6 +132,7 @@ public abstract class FusionCore<S, C, TR> extends FusionApi {
         return safeMessage;
     }
 
+    @Override
     public void deleteDirectory(@NonNull final Path path) throws IOException {
         if (!Files.exists(path) || !Files.isDirectory(path)) return;
 
@@ -198,6 +151,11 @@ public abstract class FusionCore<S, C, TR> extends FusionApi {
         Files.deleteIfExists(path);
     }
 
+    @Override
+    public @NonNull final Path getDataPath() {
+        return this.path;
+    }
+
     public @NonNull final CommentedConfigurationNode getFusionConfig() {
         final Optional<YamlCustomFile> customFile = this.fileManager.getYamlFile(this.configPath);
 
@@ -208,7 +166,7 @@ public abstract class FusionCore<S, C, TR> extends FusionApi {
         return customFile.get().getConfiguration();
     }
 
-    public @NonNull FileManager getFileManager() {
+    public @NonNull final FileManager getFileManager() {
         return this.fileManager;
     }
 
@@ -234,9 +192,5 @@ public abstract class FusionCore<S, C, TR> extends FusionApi {
 
     public @NonNull final MessageRegistry getMessageRegistry() {
         return this.messageRegistry;
-    }
-
-    public @NonNull final Path getDataPath() {
-        return this.path;
     }
 }

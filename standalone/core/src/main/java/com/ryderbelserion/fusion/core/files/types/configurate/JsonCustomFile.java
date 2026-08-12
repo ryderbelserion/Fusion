@@ -1,8 +1,7 @@
 package com.ryderbelserion.fusion.core.files.types.configurate;
 
-import com.ryderbelserion.fusion.core.files.FileException;
-import com.ryderbelserion.fusion.core.files.FileManager;
-import com.ryderbelserion.fusion.core.files.enums.FileType;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.interfaces.IConfigurate;
 import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
 import org.jspecify.annotations.NullMarked;
@@ -17,8 +16,8 @@ import java.util.function.Consumer;
 @NullMarked
 public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurationNode, GsonConfigurationLoader> implements IConfigurate {
 
-    public JsonCustomFile(final FileManager fileManager, final String jarFolder, final Path path, final Consumer<JsonCustomFile> consumer) {
-        super(fileManager, jarFolder, path);
+    public JsonCustomFile(final String jarFolder, final Path path, final Consumer<JsonCustomFile> consumer) {
+        super(jarFolder, path);
 
         consumer.accept(this);
 
@@ -30,8 +29,8 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
                 .build();
     }
 
-    public JsonCustomFile(final FileManager fileManager, final Path path, final Consumer<JsonCustomFile> consumer) {
-        this(fileManager, "", path, consumer);
+    public JsonCustomFile(final Path path, final Consumer<JsonCustomFile> consumer) {
+        this("", path, consumer);
     }
 
     @Override
@@ -53,27 +52,6 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
     @Override
     public boolean isLoaded() {
         return this.configuration != null;
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param path {@inheritDoc}
-     * @return {@inheritDoc}
-     */
-    @Override
-    public List<String> getStringList(final List<String> defaultValue, final Object... path) {
-        final BasicConfigurationNode node = getConfiguration().node(path);
-
-        try {
-            final List<String> list = node.getList(String.class);
-
-            if (list != null) return list;
-
-            return defaultValue;
-        } catch (final SerializationException exception) {
-            throw new FileException("Failed to serialize %s!".formatted(node.path()), exception);
-        }
     }
 
     /**
@@ -134,5 +112,26 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
     @Override
     public int getIntValueWithDefault(final int defaultValue, final Object... path) {
         return getConfiguration().node(path).getInt(defaultValue);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param path {@inheritDoc}
+     * @return {@inheritDoc}
+     */
+    @Override
+    public List<String> getStringList(final List<String> defaultValue, final Object... path) {
+        final BasicConfigurationNode node = getConfiguration().node(path);
+
+        try {
+            final List<String> list = node.getList(String.class);
+
+            if (list != null) return list;
+
+            return defaultValue;
+        } catch (final SerializationException exception) {
+            throw new FusionException("Failed to serialize %s!".formatted(node.path()), exception);
+        }
     }
 }

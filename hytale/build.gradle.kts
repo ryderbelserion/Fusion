@@ -12,6 +12,10 @@ repositories {
 dependencies {
     api(project(":fusion-core"))
 
+    implementation(libs.configurate.gson)
+    implementation(libs.configurate.yaml)
+    implementation(libs.jspecify)
+
     api(libs.hytale.adventure)
     compileOnly(libs.hytale)
 }

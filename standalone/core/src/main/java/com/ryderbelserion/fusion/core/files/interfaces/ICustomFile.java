@@ -1,9 +1,10 @@
 package com.ryderbelserion.fusion.core.files.interfaces;
 
-import com.ryderbelserion.fusion.core.files.FileException;
-import com.ryderbelserion.fusion.core.files.FileManager;
-import com.ryderbelserion.fusion.core.files.enums.FileAction;
-import com.ryderbelserion.fusion.core.files.enums.FileType;
+import com.ryderbelserion.fusion.api.FusionApi;
+import com.ryderbelserion.fusion.api.FusionProvider;
+import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.api.enums.files.enums.FileAction;
+import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.loader.HeaderMode;
@@ -23,7 +24,7 @@ import java.util.function.UnaryOperator;
 public abstract class ICustomFile<I, C, L> {
 
     protected final List<FileAction> actions = new ArrayList<>();
-    protected final FileManager fileManager;
+    protected final FusionApi fusion = FusionProvider.api();
     protected final String jarFolder;
     protected final Path path;
 
@@ -33,20 +34,17 @@ public abstract class ICustomFile<I, C, L> {
     protected L loader;
 
     public ICustomFile(
-            @NonNull final FileManager fileManager,
             @NonNull final String jarFolder,
             @NonNull final Path path
     ) {
-        this.fileManager = fileManager;
         this.jarFolder = jarFolder;
         this.path = path;
     }
 
     public ICustomFile(
-            @NonNull final FileManager fileManager,
             @NonNull final Path path
     ) {
-        this(fileManager, "", path);
+        this("", path);
     }
 
     protected HeaderMode headerMode = HeaderMode.PRESERVE;
@@ -91,15 +89,15 @@ public abstract class ICustomFile<I, C, L> {
 
         if (!hasAction(FileAction.ALREADY_EXTRACTED)) {
             if (hasAction(FileAction.EXTRACT_FROM_FOLDER)) {
-                this.fileManager.extractFile("%s/%s".formatted(parent.getFileName().toString(), input), path);
+                this.fusion.extractFile("%s/%s".formatted(parent.getFileName().toString(), input), path);
             }
 
             if (hasAction(FileAction.EXTRACT_FILE)) {
-                this.fileManager.extractFile(input);
+                this.fusion.extractFile(input);
             }
 
             if (hasAction(FileAction.EXTRACT_FOLDER)) {
-                this.fileManager.extractFolder(input, this.jarFolder, this.fileType, parent);
+                this.fusion.extractFolder(input, this.jarFolder, this.fileType, parent);
             }
         }
 
@@ -107,7 +105,7 @@ public abstract class ICustomFile<I, C, L> {
             try {
                 return loadConfig();
             } catch (final IOException exception) {
-                throw new FileException("Failed to load file %s".formatted(path), exception);
+                throw new FusionException("Failed to load file %s".formatted(path), exception);
             }
         }).join();
 
@@ -127,7 +125,7 @@ public abstract class ICustomFile<I, C, L> {
             try {
                 saveConfig(content);
             } catch (final IOException exception) {
-                throw new FileException("Failed to save content for %s".formatted(getPath()), exception);
+                throw new FusionException("Failed to save content for %s".formatted(getPath()), exception);
             }
         });
 
