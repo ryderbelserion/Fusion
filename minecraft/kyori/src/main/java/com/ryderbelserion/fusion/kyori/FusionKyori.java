@@ -22,6 +22,11 @@ public abstract class FusionKyori<S> extends FusionCore<S, Component, TagResolve
     private ModRegistry modRegistry;
 
     @Override
+    public @NonNull FusionCore post() {
+        return this;
+    }
+
+    @Override
     public @NonNull FusionCore init() {
         super.init();
 
