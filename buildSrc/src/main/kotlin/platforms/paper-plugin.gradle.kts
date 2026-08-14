@@ -14,5 +14,7 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle(libs.findVersion("paper").get().toString())
+    paperweight.paperDevBundle(libs.findVersion("paper").get().toString()) {
+        exclude(group = "org.spongepowered")
+    }
 }
