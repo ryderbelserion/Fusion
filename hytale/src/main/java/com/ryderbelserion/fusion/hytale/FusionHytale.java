@@ -13,7 +13,6 @@ import com.ryderbelserion.fusion.core.FusionCore;
 import fi.sulku.hytale.TinyMsg;
 import org.jspecify.annotations.NullMarked;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Map;
 
 @NullMarked

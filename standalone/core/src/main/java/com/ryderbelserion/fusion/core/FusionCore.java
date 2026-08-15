@@ -9,6 +9,7 @@ import com.ryderbelserion.fusion.core.files.FileManager;
 import com.ryderbelserion.fusion.api.enums.files.enums.FileAction;
 import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
 import com.ryderbelserion.fusion.core.files.types.configurate.YamlCustomFile;
+import com.ryderbelserion.fusion.core.mods.ModRegistry;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullUnmarked;
 import org.jspecify.annotations.Nullable;
@@ -32,6 +33,7 @@ public abstract class FusionCore<S, C, TR> extends FusionApi<S, C, TR> {
     }
 
     private MessageRegistry messageRegistry;
+    private ModRegistry modRegistry;
     private FileManager fileManager;
 
     public abstract boolean isModReady(@NonNull final FusionKey key);
@@ -39,6 +41,11 @@ public abstract class FusionCore<S, C, TR> extends FusionApi<S, C, TR> {
     public abstract boolean isModReady(@NonNull final String key);
 
     public abstract @NonNull String getNamespace();
+
+    @Override
+    public @NonNull ModRegistry getModRegistry() {
+        return this.modRegistry;
+    }
 
     @Override
     public @NonNull FusionCore init() {
@@ -56,6 +63,9 @@ public abstract class FusionCore<S, C, TR> extends FusionApi<S, C, TR> {
         this.fileManager.addFile(this.configPath, FileType.YAML, action -> action.addAction(FileAction.EXTRACT_FILE).addAction(FileAction.KEEP_FILE)).setDepth(getDepth());
 
         this.messageRegistry = new MessageRegistry(this, FusionKey.key(getNamespace(), "default"));
+
+        this.modRegistry = new ModRegistry();
+        this.modRegistry.init();
 
         return this;
     }

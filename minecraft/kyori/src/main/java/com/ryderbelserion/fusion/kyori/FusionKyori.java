@@ -2,7 +2,6 @@ package com.ryderbelserion.fusion.kyori;
 
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.kyori.permissions.PermissionContext;
-import com.ryderbelserion.fusion.kyori.registry.mods.ModRegistry;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -18,18 +17,6 @@ public abstract class FusionKyori<S> extends FusionCore<S, Component, TagResolve
 
     public FusionKyori(@NonNull final Path path) {
         super(path);
-    }
-
-    private ModRegistry modRegistry;
-
-    @Override
-    public @NonNull FusionCore init() {
-        super.init();
-
-        this.modRegistry = new ModRegistry();
-        this.modRegistry.init();
-
-        return this;
     }
 
     @Override
@@ -52,9 +39,5 @@ public abstract class FusionKyori<S> extends FusionCore<S, Component, TagResolve
 
     public void registerPermission(@NonNull final PermissionContext permission) {
 
-    }
-
-    public @NonNull final ModRegistry getModRegistry() {
-        return this.modRegistry;
     }
 }

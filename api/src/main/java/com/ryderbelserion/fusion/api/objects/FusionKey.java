@@ -1,11 +1,11 @@
 package com.ryderbelserion.fusion.api.objects;
 
-import com.ryderbelserion.fusion.api.interfaces.AbstractFusionKey;
+import com.ryderbelserion.fusion.api.interfaces.IFusionKey;
 import org.jspecify.annotations.NullMarked;
 import java.util.Objects;
 
 @NullMarked
-public class FusionKey extends AbstractFusionKey {
+public class FusionKey extends IFusionKey {
 
     private final String namespace;
     private final String value;

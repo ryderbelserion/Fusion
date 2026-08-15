@@ -1,26 +1,26 @@
-package com.ryderbelserion.fusion.kyori.registry.mods.interfaces;
+package com.ryderbelserion.fusion.api.interfaces.mods;
 
 import com.ryderbelserion.fusion.api.objects.FusionKey;
 import org.jspecify.annotations.NullMarked;
 import java.util.UUID;
 
 @NullMarked
-public abstract class AbstractMod {
+public abstract class IMod {
 
     private final FusionKey key;
 
-    public AbstractMod(final FusionKey key) {
+    public IMod(final FusionKey key) {
         this.key = key;
     }
 
     public abstract boolean isEnabled();
 
-    public AbstractMod init() {
-        return this;
+    public void init() {
+
     }
 
-    public AbstractMod stop() {
-        return this;
+    public void stop() {
+
     }
 
     public boolean isIgnored(final UUID uuid, final UUID target) {

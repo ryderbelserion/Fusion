@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.api;
 
 import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
+import com.ryderbelserion.fusion.api.interfaces.IModRegistry;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.NullUnmarked;
@@ -14,6 +15,8 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 @NullMarked
 public abstract class FusionApi<S, C, TR> {
+
+    public abstract IModRegistry getModRegistry();
 
     @NullUnmarked
     public abstract void compressFile(@NonNull final Path path, @Nullable final Path folder, @NonNull final String content);
