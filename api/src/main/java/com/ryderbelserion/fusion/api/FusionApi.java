@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 @NullMarked
 public abstract class FusionApi<S, C, TR> {
 
@@ -100,24 +101,16 @@ public abstract class FusionApi<S, C, TR> {
     public abstract C asComponent(
             final String message,
             final Map<String, String> placeholders,
-            final List<TR> tags
+            final TR... tags
     );
 
     public C asComponent(
             final S sender,
             final String message,
             final Map<String, String> placeholders,
-            final List<TR> tags
+            final TR... tags
     ) {
         return asComponent(papi(sender, message), placeholders, tags);
-    }
-
-    public C asComponent(
-            final S audience,
-            final String message,
-            final Map<String, String> placeholders
-    ) {
-        return asComponent(audience, message, placeholders, List.of());
     }
 
     public C asComponent(
@@ -128,16 +121,9 @@ public abstract class FusionApi<S, C, TR> {
     }
 
     public C asComponent(
-            final String message,
-            final Map<String, String> placeholders
-    ) {
-        return asComponent(message, placeholders, List.of());
-    }
-
-    public C asComponent(
             final String message
     ) {
-        return asComponent(message, Map.of(), List.of());
+        return asComponent(message, Map.of());
     }
 
     public String parse(

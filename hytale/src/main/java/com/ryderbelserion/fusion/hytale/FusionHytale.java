@@ -1,9 +1,14 @@
 package com.ryderbelserion.fusion.hytale;
 
+import com.hypixel.hytale.common.plugin.PluginIdentifier;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.plugin.JavaPlugin;
+import com.hypixel.hytale.server.core.plugin.PluginBase;
+import com.hypixel.hytale.server.core.plugin.PluginManager;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.ryderbelserion.fusion.api.enums.Level;
+import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.core.FusionCore;
 import fi.sulku.hytale.TinyMsg;
 import org.jspecify.annotations.NullMarked;
@@ -12,19 +17,48 @@ import java.util.List;
 import java.util.Map;
 
 @NullMarked
-public abstract class FusionHytale extends FusionCore<IMessageReceiver, Message, String> {
+public class FusionHytale extends FusionCore<IMessageReceiver, Message, String> {
 
     private final HytaleLogger logger;
+    private final JavaPlugin plugin;
 
-    public FusionHytale(final HytaleLogger logger, final Path path) {
+    public FusionHytale(final JavaPlugin plugin, final Path path) {
         super(path);
 
-        this.logger = logger;
+        this.logger = plugin.getLogger();
+        this.plugin = plugin;
     }
 
     @Override
-    public Message asComponent(final IMessageReceiver sender, final String message, final Map<String, String> placeholders, final List<String> tags) {
+    public boolean isModReady(final String key) {
+        final PluginBase plugin = PluginManager.get().getPlugin(PluginIdentifier.fromString(key));
+
+        return plugin != null && plugin.isEnabled();
+    }
+
+    @Override
+    public String getNamespace() {
+        return this.plugin.getName();
+    }
+
+    @Override
+    public boolean isModReady(final FusionKey key) {
+        return isModReady(key.getValue());
+    }
+
+    @Override
+    public Message asComponent(final IMessageReceiver sender, final String message, final Map<String, String> placeholders, final String... tags) {
         return TinyMsg.parse(papi(sender, replacePlaceholders(message, placeholders)));
+    }
+
+    @Override
+    public Message asComponent(final String message, final Map<String, String> placeholders, final String... tags) {
+        return TinyMsg.parse(replacePlaceholders(message, placeholders));
+    }
+
+    @Override
+    public String papi(final IMessageReceiver sender, final String message) {
+        return message;
     }
 
     @Override

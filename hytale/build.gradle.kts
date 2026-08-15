@@ -19,3 +19,53 @@ dependencies {
     api(libs.hytale.adventure)
     compileOnly(libs.hytale)
 }
+
+/*tasks.register<Exec>("runHytaleServer") {
+    description = "Runs the hytale server!"
+    group = "Hytale"
+
+    dependsOn("extractHytaleServer")
+    workingDir("$projectDir/run")
+
+    //commandLine("hytale-downloader")
+}
+
+tasks.register<Exec>("extractHytaleServer") {
+    description = "Extracts the hytale server and downloads it!"
+    group = "Hytale"
+
+    dependsOn("fetchHytaleServer")
+    workingDir("$projectDir/run/cache")
+
+    commandLine("tar", "-xvzf", "hytale-downloader.zip")
+}
+
+tasks.register<Exec>("fetchHytaleServer") {
+    description = "Fetch the latest hytale server!"
+    group = "Hytale"
+
+    dependsOn("createHytaleFolder")
+    workingDir("$projectDir/run")
+
+    executable("curl")
+    args("--output-dir", "cache", "-O", "https://downloader.hytale.com/hytale-downloader.zip")
+}
+
+tasks.register("createHytaleFolder") {
+    description = "Creates the hytale directory!"
+    group = "Hytale"
+
+    doFirst {
+        val path = projectDir.toPath().resolve("run")
+
+        if (!Files.exists(path)) {
+            Files.createDirectory(path)
+        }
+
+        val cache = path.resolve("cache")
+
+        if (!Files.exists(cache)) {
+            Files.createDirectory(cache)
+        }
+    }
+}*/

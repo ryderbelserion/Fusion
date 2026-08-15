@@ -61,6 +61,11 @@ public abstract class FusionCore<S, C, TR> extends FusionApi<S, C, TR> {
     }
 
     @Override
+    public @NonNull FusionCore post() {
+        return this;
+    }
+
+    @Override
     public @NonNull FusionCore reload() {
         this.fileManager.reloadFile(this.configPath).setDepth(getDepth());
 
