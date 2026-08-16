@@ -9,14 +9,16 @@ import com.hypixel.hytale.server.core.plugin.PluginManager;
 import com.hypixel.hytale.server.core.receiver.IMessageReceiver;
 import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.api.objects.FusionKey;
-import com.ryderbelserion.fusion.core.FusionCore;
-import fi.sulku.hytale.TinyMsg;
+import com.ryderbelserion.fusion.hytale.interfaces.IFusionHytale;
+import com.ryderbelserion.fusion.hytale.utils.ColorUtils;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jspecify.annotations.NullMarked;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Map;
 
 @NullMarked
-public class FusionHytale extends FusionCore<IMessageReceiver, Message, String> {
+public class FusionHytale extends FusionKyori<IMessageReceiver> implements IFusionHytale {
 
     private final HytaleLogger logger;
     private final JavaPlugin plugin;
@@ -46,13 +48,13 @@ public class FusionHytale extends FusionCore<IMessageReceiver, Message, String> 
     }
 
     @Override
-    public Message asComponent(final IMessageReceiver sender, final String message, final Map<String, String> placeholders, final String... tags) {
-        return TinyMsg.parse(papi(sender, replacePlaceholders(message, placeholders)));
+    public Message asMessage(final IMessageReceiver receiver, final String message, final Map<String, String> placeholders) {
+        return ColorUtils.toHytale(asComponent(receiver, message, placeholders));
     }
 
     @Override
-    public Message asComponent(final String message, final Map<String, String> placeholders, final String... tags) {
-        return TinyMsg.parse(replacePlaceholders(message, placeholders));
+    public Message asMessage(final IMessageReceiver receiver, final String message) {
+        return asMessage(receiver, message, new HashMap<>());
     }
 
     @Override
