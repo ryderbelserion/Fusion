@@ -15,6 +15,7 @@ import com.ryderbelserion.fusion.kyori.FusionKyori;
 import org.jspecify.annotations.NullMarked;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @NullMarked
@@ -49,7 +50,7 @@ public class FusionHytale extends FusionKyori<IMessageReceiver> implements IFusi
 
     @Override
     public Message asMessage(final IMessageReceiver receiver, final String message, final Map<String, String> placeholders) {
-        return ColorUtils.toHytale(asComponent(receiver, message, placeholders));
+        return ColorUtils.toHytale(asComponent(receiver, message, placeholders, List.of()));
     }
 
     @Override

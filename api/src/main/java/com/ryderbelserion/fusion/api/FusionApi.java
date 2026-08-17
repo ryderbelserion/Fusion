@@ -3,6 +3,7 @@ package com.ryderbelserion.fusion.api;
 import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
 import com.ryderbelserion.fusion.api.interfaces.IModRegistry;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.NullUnmarked;
@@ -104,29 +105,29 @@ public abstract class FusionApi<S, C, TR> {
     public abstract C asComponent(
             final String message,
             final Map<String, String> placeholders,
-            final TR... tags
+            final List<TagResolver> resolvers
     );
 
     public C asComponent(
             final S sender,
             final String message,
             final Map<String, String> placeholders,
-            final TR... tags
+            final List<TagResolver> resolvers
     ) {
-        return asComponent(papi(sender, message), placeholders, tags);
+        return asComponent(papi(sender, message), placeholders, resolvers);
     }
 
     public C asComponent(
             final S audience,
             final String message
     ) {
-        return asComponent(audience, message, Map.of());
+        return asComponent(audience, message, Map.of(), List.of());
     }
 
     public C asComponent(
             final String message
     ) {
-        return asComponent(message, Map.of());
+        return asComponent(message, Map.of(), List.of());
     }
 
     public String parse(

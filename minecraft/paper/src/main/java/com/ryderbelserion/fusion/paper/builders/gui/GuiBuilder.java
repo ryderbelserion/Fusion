@@ -84,7 +84,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
 
         final Server server = this.plugin.getServer();
 
-        this.inventory = server.createInventory(this, type, this.fusion.asComponent(player, this.title = title, placeholders));
+        this.inventory = server.createInventory(this, type, this.fusion.asComponent(player, this.title = title, placeholders, List.of()));
         this.filler = new GuiFiller(this);
         this.size = type.getDefaultSize();
         this.rows = this.size / 9;
@@ -110,7 +110,7 @@ public abstract class GuiBuilder<B> implements InventoryHolder, Listener {
 
         final Server server = this.plugin.getServer();
 
-        this.inventory = server.createInventory(this, this.size = rows * 9, this.fusion.asComponent(player, this.title = title, placeholders));
+        this.inventory = server.createInventory(this, this.size = rows * 9, this.fusion.asComponent(player, this.title = title, placeholders, List.of()));
         this.filler = new GuiFiller(this);
         this.rows = rows;
     }

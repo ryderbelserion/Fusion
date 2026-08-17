@@ -202,7 +202,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
     public @NonNull ItemStack asItemStack(@NonNull final Audience audience) {
         if (!this.displayName.isEmpty()) {
-            this.itemStack.setData(this.type, this.fusion.asComponent(audience, this.displayName, this.placeholders));
+            this.itemStack.setData(this.type, this.fusion.asComponent(audience, this.displayName, this.placeholders, List.of()));
         }
 
         final List<String> lore = this.displayLore;
@@ -210,7 +210,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         if (!lore.isEmpty()) {
             final List<Component> components = new ArrayList<>(lore.size());
 
-            lore.forEach(line -> components.add(this.fusion.asComponent(audience, line, placeholders)));
+            lore.forEach(line -> components.add(this.fusion.asComponent(audience, line, placeholders, List.of())));
 
             this.itemStack.setData(DataComponentTypes.LORE, ItemLore.lore(components));
         }
