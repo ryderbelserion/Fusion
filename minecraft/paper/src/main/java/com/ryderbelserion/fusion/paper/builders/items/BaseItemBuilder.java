@@ -167,6 +167,15 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
         this(itemType, 1, consumer);
     }
 
+    public BaseItemBuilder(@NonNull final BaseItemBuilder builder) {
+        this(builder.getItemStack());
+
+        this.placeholders = builder.placeholders;
+        this.displayLore = builder.displayLore;
+        this.displayName = builder.displayName;
+        this.type = builder.type;
+    }
+
     public BaseItemBuilder(@NonNull final ItemType itemType) {
         this(itemType, 1, item -> {});
     }

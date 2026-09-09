@@ -32,6 +32,10 @@ public class ItemBuilder extends BaseItemBuilder<ItemBuilder> {
         super(itemStack);
     }
 
+    public ItemBuilder(final ItemBuilder builder) {
+        super(builder);
+    }
+
     public static ItemBuilder from(final ItemType itemType, final int amount, final Consumer<BaseItemBuilder> consumer) {
         return new ItemBuilder(itemType, amount, consumer);
     }
@@ -58,5 +62,9 @@ public class ItemBuilder extends BaseItemBuilder<ItemBuilder> {
 
     public static ItemBuilder from(final ItemStack itemStack) {
         return new ItemBuilder(itemStack);
+    }
+
+    public static ItemBuilder from(final ItemBuilder builder) {
+        return new ItemBuilder(builder);
     }
 }
