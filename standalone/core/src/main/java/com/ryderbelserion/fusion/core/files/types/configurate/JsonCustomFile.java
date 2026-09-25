@@ -25,7 +25,8 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
                 .indent(this.indent)
                 .lenient(this.isLenient)
                 .headerMode(this.headerMode)
-                .path(getPath()).defaultOptions(getOptions())
+                .path(getPath())
+                .defaultOptions(getOptions())
                 .build();
     }
 

@@ -25,7 +25,6 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
                 .indent(this.indent)
                 .nodeStyle(this.nodeStyle)
                 .headerMode(this.headerMode)
-                .commentsEnabled(this.hasComments)
                 .path(getPath())
                 .defaultOptions(getOptions())
                 .build();

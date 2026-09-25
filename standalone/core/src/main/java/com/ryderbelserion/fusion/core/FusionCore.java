@@ -60,7 +60,8 @@ public abstract class FusionCore<S, C, TR> extends FusionApi<S, C, TR> {
         }
 
         this.fileManager = new FileManager(this.path);
-        this.fileManager.addFile(this.configPath, FileType.YAML, action -> action.addAction(FileAction.EXTRACT_FILE).addAction(FileAction.KEEP_FILE)).setDepth(getDepth());
+        this.fileManager.addFile(this.configPath, FileType.YAML, action ->
+                action.addAction(FileAction.EXTRACT_FILE).addAction(FileAction.KEEP_FILE)).setDepth(getDepth());
 
         this.messageRegistry = new MessageRegistry(this, FusionKey.key(getNamespace(), "default"));
 

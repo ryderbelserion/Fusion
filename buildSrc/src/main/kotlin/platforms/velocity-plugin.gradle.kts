@@ -12,7 +12,5 @@ repositories {
 
 dependencies {
     annotationProcessor(libs.findLibrary("velocity").get())
-    compileOnly(libs.findLibrary("velocity").get()) {
-        exclude(group = "org.spongepowered")
-    }
+    compileOnly(libs.findLibrary("velocity").get())
 }

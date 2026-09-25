@@ -8,7 +8,8 @@ import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.loader.HeaderMode;
-import org.spongepowered.configurate.yaml.NodeStyle;
+import org.spongepowered.configurate.yaml.enums.NodeStyle;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
