@@ -3,7 +3,7 @@ plugins {
     `shadow-plugin`
 }
 
-project.group = "${rootProject.name}.core"
+project.group = "${rootProject.group}.core"
 
 dependencies {
     api(libs.configurate.gson)
