@@ -18,6 +18,7 @@ listOf(
     "minecraft/paper" to "paper",
     "minecraft/kyori" to "kyori",
 
+    "standalone/addons" to "addons",
     "standalone/core" to "core",
 
     "hytale" to "hytale",

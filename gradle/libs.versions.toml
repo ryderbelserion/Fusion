@@ -37,6 +37,9 @@ hmcwraps = "1.8.2" # https://docs.hibiscusmc.com/hmcwraps/api/
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin/
 shadow = "9.6.1" # https://github.com/GradleUp/shadow/
 
+#### TinyLog API
+tinylog = "2.8.0"
+
 #### Publishing Link
 url = "https://repo.crazycrew.us/releases"
 [libraries]
@@ -92,6 +95,9 @@ kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref =
 kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 
+tinylog-api = { module = "org.tinylog:tinylog-api-kotlin", version.ref = "tinylog" }
+tinylog-impl = { module = "org.tinylog:tinylog-impl", version.ref = "tinylog" }
+
 # https://docs.papermc.io/velocity/dev/creating-your-first-plugin/
 velocity = { module = "com.velocitypowered:velocity-api", version.ref = "velocity" }
 [bundles]
@@ -126,4 +132,9 @@ paper = [
 
     "run-velocity",
     "run-paper"
+]
+
+tinylog = [
+    "tinylog-impl",
+    "tinylog-api"
 ]
