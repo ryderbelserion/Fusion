@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.ryderbelserion.fusion.addons.ExtensionManager;
 import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.commands.SimpleCommand;
 import com.ryderbelserion.fusion.commands.types.items.ItemCommand;
@@ -31,8 +32,12 @@ public class Fusion extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        final ExtensionManager manager = new ExtensionManager(this.getDataPath().resolve("extensions"));
+
         this.fusion = new FusionPaper(this);
         this.fusion.init();
+
+        manager.init(this.fusion.getDepth());
 
         final FileManager fileManager = this.fusion.getFileManager();
 

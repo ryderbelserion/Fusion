@@ -5,8 +5,6 @@ import com.ryderbelserion.fusion.addons.api.Extension;
 import com.ryderbelserion.fusion.addons.api.interfaces.IExtensionManager;
 import com.ryderbelserion.fusion.addons.utils.LogUtils;
 import org.jspecify.annotations.NonNull;
-import org.tinylog.Logger;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -66,6 +64,8 @@ public class ExtensionManager implements IExtensionManager {
         extension.onDisable();
 
         extension.setEnabled(false);
+
+        this.extensions.remove(extension.getName());
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ExtensionManager implements IExtensionManager {
 
     @Override
     public void purge() {
-        this.extensions.values().forEach(extension -> extension.setEnabled(false));
+        this.extensions.values().forEach(this::disableExtension);
         this.extensions.clear();
     }
 }

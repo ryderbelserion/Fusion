@@ -18,6 +18,7 @@ listOf(
     "minecraft/paper" to "paper",
     "minecraft/kyori" to "kyori",
 
+    "standalone/addons/weeb-addon" to "weeb-addon",
     "standalone/addons" to "addons",
     "standalone/core" to "core",
 

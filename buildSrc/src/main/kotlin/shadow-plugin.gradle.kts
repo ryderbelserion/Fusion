@@ -5,6 +5,8 @@ plugins {
 
 tasks {
     shadowJar {
+        mergeServiceFiles()
+
         archiveClassifier.set("")
 
         exclude("META-INF/**")

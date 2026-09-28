@@ -4,7 +4,7 @@ hytale-adventure = "2.0.1" # https://github.com/Zoltus/TinyMessage/
 hytale = "+" # https://hytale.com
 
 ## Configurate API
-configurate = "4.3.0" # https://github.com/ryderbelserion/Configurate
+configurate = "4.4.0" # https://github.com/ryderbelserion/Configurate
 
 ## Paper API
 paperweight = "2.0.0-beta.24" # https://github.com/PaperMC/paperweight
@@ -95,8 +95,8 @@ kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref =
 kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 
-tinylog-api = { module = "org.tinylog:tinylog-api-kotlin", version.ref = "tinylog" }
 tinylog-impl = { module = "org.tinylog:tinylog-impl", version.ref = "tinylog" }
+tinylog-api = { module = "org.tinylog:tinylog-api", version.ref = "tinylog" }
 
 # https://docs.papermc.io/velocity/dev/creating-your-first-plugin/
 velocity = { module = "com.velocitypowered:velocity-api", version.ref = "velocity" }
