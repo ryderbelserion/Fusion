@@ -1,13 +1,13 @@
-package com.ryderbelserion.fusion.core.files;
+package com.ryderbelserion.fusion.files;
 
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.api.enums.files.enums.FileAction;
-import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
-import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
-import com.ryderbelserion.fusion.core.files.interfaces.IFileManager;
-import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
-import com.ryderbelserion.fusion.core.files.types.configurate.JsonCustomFile;
-import com.ryderbelserion.fusion.core.files.types.configurate.YamlCustomFile;
+import com.ryderbelserion.fusion.files.enums.FileAction;
+import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.files.exceptions.FusionException;
+import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
+import com.ryderbelserion.fusion.files.interfaces.IFileManager;
+import com.ryderbelserion.fusion.files.types.LogCustomFile;
+import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
+import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import java.io.IOException;
@@ -31,6 +31,8 @@ public class FileManager extends IFileManager<FileManager> {
     private final Map<Path, ICustomFile<?, ?, ?>> files = new HashMap<>();
 
     private final Path path;
+
+    private boolean isVerbose = false;
     private int depth = 1;
 
     public FileManager(final Path path) {
@@ -65,9 +67,9 @@ public class FileManager extends IFileManager<FileManager> {
         ICustomFile<?, ?, ?> customFile = null;
 
         switch (fileType) {
-            case YAML -> customFile = buildYamlFile(path, jarFolder, consumer::accept);
-            case JSON -> customFile = buildJsonFile(path, jarFolder, consumer::accept);
-            case LOG -> customFile = buildLogFile(path, consumer::accept);
+            case FileType.YAML -> customFile = buildYamlFile(path, jarFolder, consumer::accept);
+            case FileType.JSON -> customFile = buildJsonFile(path, jarFolder, consumer::accept);
+            case FileType.LOG -> customFile = buildLogFile(path, consumer::accept);
         }
 
         if (customFile == null) return this;
@@ -114,17 +116,17 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public YamlCustomFile buildYamlFile(final Path path, final String jarFolder, final Consumer<YamlCustomFile> consumer) {
-        return new YamlCustomFile(jarFolder, path, consumer).load();
+        return new YamlCustomFile(this, jarFolder, path, consumer).load();
     }
 
     @Override
     public JsonCustomFile buildJsonFile(final Path path, final String jarFolder, final Consumer<JsonCustomFile> consumer) {
-        return new JsonCustomFile(jarFolder, path, consumer).load();
+        return new JsonCustomFile(this, jarFolder, path, consumer).load();
     }
 
     @Override
     public LogCustomFile buildLogFile(final Path path, final Consumer<LogCustomFile> consumer) {
-        return new LogCustomFile(path, consumer).load();
+        return new LogCustomFile(this, path, consumer).load();
     }
 
     @Override
@@ -388,13 +390,27 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public void setDepth(final int depth) {
+    public FileManager setDepth(final int depth) {
         this.depth = depth;
+
+        return this;
+    }
+
+    @Override
+    public FileManager setVerbose(final boolean isVerbose) {
+        this.isVerbose = isVerbose;
+
+        return this;
     }
 
     @Override
     public int getDepth() {
         return this.depth;
+    }
+
+    @Override
+    public boolean isVerbose() {
+        return this.isVerbose;
     }
 
     @Override

@@ -5,10 +5,10 @@ import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.api.FusionProvider;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
-import com.ryderbelserion.fusion.core.files.FileManager;
-import com.ryderbelserion.fusion.api.enums.files.enums.FileAction;
-import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
-import com.ryderbelserion.fusion.core.files.types.configurate.YamlCustomFile;
+import com.ryderbelserion.fusion.files.FileManager;
+import com.ryderbelserion.fusion.files.enums.FileAction;
+import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import com.ryderbelserion.fusion.core.mods.ModRegistry;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullUnmarked;
@@ -61,7 +61,7 @@ public abstract class FusionCore<S, C, TR> extends FusionApi<S, C, TR> {
 
         this.fileManager = new FileManager(this.path);
         this.fileManager.addFile(this.configPath, FileType.YAML, action ->
-                action.addAction(FileAction.EXTRACT_FILE).addAction(FileAction.KEEP_FILE)).setDepth(getDepth());
+                action.addAction(FileAction.EXTRACT_FILE).addAction(FileAction.KEEP_FILE)).setDepth(getDepth()).setVerbose(isVerbose());
 
         this.messageRegistry = new MessageRegistry(this, FusionKey.key(getNamespace(), "default"));
 
@@ -78,7 +78,7 @@ public abstract class FusionCore<S, C, TR> extends FusionApi<S, C, TR> {
 
     @Override
     public @NonNull FusionCore reload() {
-        this.fileManager.reloadFile(this.configPath).setDepth(getDepth());
+        this.fileManager.reloadFile(this.configPath).setDepth(getDepth()).setVerbose(isVerbose());
 
         return this;
     }

@@ -1,10 +1,11 @@
-package com.ryderbelserion.fusion.core.files.interfaces;
+package com.ryderbelserion.fusion.files.interfaces;
 
-import com.ryderbelserion.fusion.api.enums.files.enums.FileAction;
-import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
-import com.ryderbelserion.fusion.core.files.types.LogCustomFile;
-import com.ryderbelserion.fusion.core.files.types.configurate.JsonCustomFile;
-import com.ryderbelserion.fusion.core.files.types.configurate.YamlCustomFile;
+import com.ryderbelserion.fusion.files.FileManager;
+import com.ryderbelserion.fusion.files.enums.FileAction;
+import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.files.types.LogCustomFile;
+import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
+import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import java.nio.file.Path;
@@ -117,6 +118,18 @@ public abstract class IFileManager<I> {
 
     public abstract I compressFile(final Path path, @Nullable final Path folder, final String content);
 
+    public void compressFile(final Path path, final String content) {
+        compressFile(path, null, content);
+    }
+
+    public void compressFile(final Path path, final Path folder) {
+        compressFile(path, folder, "");
+    }
+
+    public void compressFile(final Path path) {
+        compressFile(path, null, "");
+    }
+
     public abstract I writeFile(final Path path, final String content);
 
     public abstract List<String> getFileByNames(final String folder, final Path path, final String extension, final int depth, final boolean removeExtension);
@@ -131,9 +144,13 @@ public abstract class IFileManager<I> {
         return getFilesByPath(path, extension).size();
     }
 
-    public abstract void setDepth(final int depth);
+    public abstract FileManager setDepth(final int depth);
+
+    public abstract FileManager setVerbose(final boolean verbose);
 
     public abstract int getDepth();
+
+    public abstract boolean isVerbose();
 
     protected String asString(final Path path, final String content) {
         final StringBuilder builder = new StringBuilder();

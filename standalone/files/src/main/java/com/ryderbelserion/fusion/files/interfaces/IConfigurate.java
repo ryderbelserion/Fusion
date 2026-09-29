@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.core.files.interfaces;
+package com.ryderbelserion.fusion.files.interfaces;
 
 import org.jspecify.annotations.NullMarked;
 import java.util.List;

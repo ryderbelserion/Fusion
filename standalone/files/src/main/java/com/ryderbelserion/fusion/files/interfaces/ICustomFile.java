@@ -1,15 +1,13 @@
-package com.ryderbelserion.fusion.core.files.interfaces;
+package com.ryderbelserion.fusion.files.interfaces;
 
-import com.ryderbelserion.fusion.api.FusionApi;
-import com.ryderbelserion.fusion.api.FusionProvider;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.api.enums.files.enums.FileAction;
-import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
+import com.ryderbelserion.fusion.files.FileManager;
+import com.ryderbelserion.fusion.files.enums.FileAction;
+import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.files.exceptions.FusionException;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.loader.HeaderMode;
 import org.spongepowered.configurate.yaml.enums.NodeStyle;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,7 +23,7 @@ import java.util.function.UnaryOperator;
 public abstract class ICustomFile<I, C, L> {
 
     protected final List<FileAction> actions = new ArrayList<>();
-    protected final FusionApi fusion = FusionProvider.api();
+    protected final FileManager fileManager;
     protected final String jarFolder;
     protected final Path path;
 
@@ -35,17 +33,20 @@ public abstract class ICustomFile<I, C, L> {
     protected L loader;
 
     public ICustomFile(
+            @NonNull final FileManager fileManager,
             @NonNull final String jarFolder,
             @NonNull final Path path
     ) {
+        this.fileManager = fileManager;
         this.jarFolder = jarFolder;
         this.path = path;
     }
 
     public ICustomFile(
+            @NonNull final FileManager fileManager,
             @NonNull final Path path
     ) {
-        this("", path);
+        this(fileManager, "", path);
     }
 
     protected HeaderMode headerMode = HeaderMode.PRESERVE;
@@ -90,15 +91,15 @@ public abstract class ICustomFile<I, C, L> {
 
         if (!hasAction(FileAction.ALREADY_EXTRACTED)) {
             if (hasAction(FileAction.EXTRACT_FROM_FOLDER)) {
-                this.fusion.extractFile("%s/%s".formatted(parent.getFileName().toString(), input), path);
+                this.fileManager.extractFile("%s/%s".formatted(parent.getFileName().toString(), input), path);
             }
 
             if (hasAction(FileAction.EXTRACT_FILE)) {
-                this.fusion.extractFile(input);
+                this.fileManager.extractFile(input);
             }
 
             if (hasAction(FileAction.EXTRACT_FOLDER)) {
-                this.fusion.extractFolder(input, this.jarFolder, this.fileType, parent);
+                this.fileManager.extractFolder(input, this.jarFolder, this.fileType, parent);
             }
         }
 

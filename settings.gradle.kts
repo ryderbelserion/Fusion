@@ -20,6 +20,7 @@ listOf(
 
     "standalone/addons/weeb-addon" to "weeb-addon",
     "standalone/addons" to "addons",
+    "standalone/files" to "files",
     "standalone/core" to "core",
 
     "hytale" to "hytale",

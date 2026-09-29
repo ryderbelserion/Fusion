@@ -1,8 +1,8 @@
 package com.ryderbelserion.fusion.api;
 
 import com.ryderbelserion.fusion.api.enums.Level;
-import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
 import com.ryderbelserion.fusion.api.interfaces.IModRegistry;
+import com.ryderbelserion.fusion.files.enums.FileType;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
@@ -13,7 +13,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unchecked")
 @NullMarked
 public abstract class FusionApi<S, C, TR> {
 

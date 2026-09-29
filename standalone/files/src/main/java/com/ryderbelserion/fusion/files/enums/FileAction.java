@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.api.enums.files.enums;
+package com.ryderbelserion.fusion.files.enums;
 
 public enum FileAction {
 

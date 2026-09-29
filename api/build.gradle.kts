@@ -6,9 +6,7 @@ plugins {
 project.group = "${rootProject.name}.api"
 
 dependencies {
-    compileOnlyApi(libs.configurate.gson)
-    compileOnlyApi(libs.configurate.yaml)
-    compileOnlyApi(libs.jspecify)
+    compileOnlyApi(project(":fusion-files"))
 
     compileOnly(libs.kyori.api)
     compileOnly(libs.kyori.text)

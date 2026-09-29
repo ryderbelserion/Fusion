@@ -1,9 +1,10 @@
-package com.ryderbelserion.fusion.core.files.types.configurate;
+package com.ryderbelserion.fusion.files.types.configurate;
 
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.api.enums.files.enums.FileType;
-import com.ryderbelserion.fusion.core.files.interfaces.IConfigurate;
-import com.ryderbelserion.fusion.core.files.interfaces.ICustomFile;
+import com.ryderbelserion.fusion.files.FileManager;
+import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.files.exceptions.FusionException;
+import com.ryderbelserion.fusion.files.interfaces.IConfigurate;
+import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.gson.GsonConfigurationLoader;
@@ -16,8 +17,8 @@ import java.util.function.Consumer;
 @NullMarked
 public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfigurationNode, GsonConfigurationLoader> implements IConfigurate {
 
-    public JsonCustomFile(final String jarFolder, final Path path, final Consumer<JsonCustomFile> consumer) {
-        super(jarFolder, path);
+    public JsonCustomFile(final FileManager fileManager, final String jarFolder, final Path path, final Consumer<JsonCustomFile> consumer) {
+        super(fileManager, jarFolder, path);
 
         consumer.accept(this);
 
@@ -30,8 +31,8 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
                 .build();
     }
 
-    public JsonCustomFile(final Path path, final Consumer<JsonCustomFile> consumer) {
-        this("", path, consumer);
+    public JsonCustomFile(final FileManager fileManager, final Path path, final Consumer<JsonCustomFile> consumer) {
+        this(fileManager, "", path, consumer);
     }
 
     @Override
