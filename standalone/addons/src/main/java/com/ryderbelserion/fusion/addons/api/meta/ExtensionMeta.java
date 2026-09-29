@@ -1,9 +1,7 @@
-package com.ryderbelserion.fusion.addons.api;
+package com.ryderbelserion.fusion.addons.api.meta;
 
 import com.ryderbelserion.fusion.addons.api.interfaces.IExtensionMeta;
 import org.jspecify.annotations.NonNull;
-import org.tinylog.Logger;
-import org.tinylog.TaggedLogger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileSystem;
@@ -11,17 +9,21 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
+import java.util.logging.Logger;
 
-public abstract class ExtensionMeta implements IExtensionMeta {
+public class ExtensionMeta implements IExtensionMeta {
 
-    private TaggedLogger logger;
-    private String version;
-    private String main;
-    private String name;
+    protected String version;
+    protected Logger logger;
+    protected String main;
+    protected String name;
 
-    private Path path;
+    protected Path parent;
+    protected Path path;
 
     public void init(@NonNull final Path parent, @NonNull final Path path) {
+        this.parent = parent;
+
         final Properties properties = new Properties();
 
         try (final FileSystem entry = FileSystems.newFileSystem(path, (ClassLoader) null); final InputStream stream = Files.newInputStream(entry.getPath("addon.properties"))) {
@@ -43,10 +45,19 @@ public abstract class ExtensionMeta implements IExtensionMeta {
         if (this.name.isEmpty()) {
             throw new IllegalStateException("Extension name cannot be empty for %s.".formatted(pathName));
         }
+    }
 
-        this.logger = Logger.tag(this.name);
+    public void copy(@NonNull final ExtensionMeta meta) {
+        this.parent = meta.getParentDirectory();
+        this.version = meta.getVersion();
+        this.main = meta.getMainClass();
+        this.name = meta.getName();
+    }
 
-        this.logger.warn("Loading the extension {}.", this.name);
+    public void post() {
+        this.logger = Logger.getLogger(this.name);
+
+        info("Loading the extension %s.", this.name);
 
         this.path = parent.resolve(this.name);
 
@@ -54,24 +65,29 @@ public abstract class ExtensionMeta implements IExtensionMeta {
             try {
                 Files.createDirectory(this.path);
             } catch (final IOException ignored) {
-                this.logger.warn("Failed to create directory {}", this.path);
+                warn("Failed to create directory %s.", this.path);
             }
         }
     }
 
     @Override
-    public void info(final String message) {
-        this.logger.info(message);
+    public void info(final String message, final Object... params) {
+        this.logger.info(message.formatted(params));
     }
 
     @Override
-    public void warn(final String message) {
-        this.logger.warn(message);
+    public void warn(final String message, final Object... params) {
+        this.logger.warning(message.formatted(params));
     }
 
     @Override
-    public void error(final String message) {
-        this.logger.error(message);
+    public void error(final String message, final Object... params) {
+        this.logger.severe(message.formatted(params));
+    }
+
+    @Override
+    public Path getParentDirectory() {
+        return this.parent;
     }
 
     @Override
@@ -90,7 +106,7 @@ public abstract class ExtensionMeta implements IExtensionMeta {
     }
 
     @Override
-    public TaggedLogger getLogger() {
+    public Logger getLogger() {
         return this.logger;
     }
 

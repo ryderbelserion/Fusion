@@ -1,9 +1,11 @@
 package com.ryderbelserion.fusion.addons.api.interfaces;
 
-import org.tinylog.TaggedLogger;
 import java.nio.file.Path;
+import java.util.logging.Logger;
 
 public interface IExtensionMeta {
+
+    Path getParentDirectory();
 
     Path getDataDirectory();
 
@@ -11,13 +13,13 @@ public interface IExtensionMeta {
 
     String getVersion();
 
-    void info(final String message);
+    void info(final String message, final Object... params);
 
-    void warn(final String message);
+    void warn(final String message, final Object... params);
 
-    void error(final String message);
+    void error(final String message, final Object... params);
 
-    TaggedLogger getLogger();
+    Logger getLogger();
 
     String getName();
 

@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.addons.api.interfaces;
 
-import com.ryderbelserion.fusion.addons.api.ExtensionMeta;
+import com.ryderbelserion.fusion.addons.api.meta.ExtensionMeta;
 
 public abstract class IExtension extends ExtensionMeta {
 

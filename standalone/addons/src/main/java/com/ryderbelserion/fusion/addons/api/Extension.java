@@ -1,32 +1,14 @@
 package com.ryderbelserion.fusion.addons.api;
 
 import com.ryderbelserion.fusion.addons.api.interfaces.IExtension;
-import com.ryderbelserion.fusion.addons.entrypoint.classloaders.SimpleExtensionClassLoader;
-import com.ryderbelserion.fusion.addons.exceptions.InvalidExtensionException;
-import org.jspecify.annotations.NonNull;
-import java.io.IOException;
-import java.nio.file.Path;
 
 public class Extension extends IExtension {
-
-    private SimpleExtensionClassLoader classLoader;
 
     public Extension() {}
 
     @Override
-    public void init(@NonNull final Path parent, @NonNull final Path path) {
-        super.init(parent, path);
-
-        try {
-            this.classLoader = new SimpleExtensionClassLoader(
-                    path,
-                    parent,
-                    this,
-                    getClass().getClassLoader()
-            );
-        } catch (final IOException | InvalidExtensionException exception) {
-            throw new RuntimeException(exception);
-        }
+    public void post() {
+        super.post();
 
         setEnabled(true);
     }
@@ -34,7 +16,7 @@ public class Extension extends IExtension {
     private boolean isEnabled = false;
 
     @Override
-    public void setEnabled(final boolean isEnabled) {
+    public final void setEnabled(final boolean isEnabled) {
         if (this.isEnabled != isEnabled) {
             this.isEnabled = isEnabled;
 
