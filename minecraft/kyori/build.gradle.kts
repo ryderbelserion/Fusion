@@ -1,6 +1,6 @@
 plugins {
     `config-publish`
-    `shadow-plugin`
+    `java-plugin`
 }
 
 project.group = "${rootProject.name}.kyori"

@@ -10,3 +10,10 @@ dependencies {
 
     compileOnly(libs.bundles.shared)
 }
+
+tasks {
+    shadowJar {
+        relocate("org.spongepowered:configurate-yaml", "${project.group}.internal.yaml")
+        relocate("org.spongepowered:configurate-gson", "${project.group}.internal.gson")
+    }
+}

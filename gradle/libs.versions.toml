@@ -4,11 +4,11 @@ hytale-adventure = "2.0.1" # https://github.com/Zoltus/TinyMessage/
 hytale = "+" # https://hytale.com
 
 ## Configurate API
-configurate = "4.4.0" # https://github.com/ryderbelserion/Configurate
+configurate = "4.5.0" # https://github.com/ryderbelserion/Configurate
 
 ## Paper API
 paperweight = "2.0.0-beta.24" # https://github.com/PaperMC/paperweight
-adventure = "5.0.0" # https://github.com/KyoriPowered/adventure
+adventure = "5.2.0" # https://github.com/KyoriPowered/adventure
 run-paper = "3.1.0" # https://github.com/jpenilla/run-task
 paper = "26.3.build.+" # https://github.com/PaperMC/Paper
 
@@ -47,8 +47,8 @@ fix-javadoc = { module = "com.jeff-media.fix-javadoc-plugin:com.jeff-media.fix-j
 paperweight = { module = "io.papermc.paperweight.userdev:io.papermc.paperweight.userdev.gradle.plugin", version.ref = "paperweight" }
 
 # https://github.com/ryderbelserion/Configurate
-configurate-yaml = { group = "org.spongepowered", name = "configurate-yaml", version.ref = "configurate" }
-configurate-gson = { group = "org.spongepowered", name = "configurate-gson", version.ref = "configurate" }
+configurate-yaml = { group = "org.spongepowered", name = "configurate-yaml-api", version.ref = "configurate" }
+configurate-gson = { group = "org.spongepowered", name = "configurate-gson-api", version.ref = "configurate" }
 
 # https://minecraft.net/
 brigadier = { module = "com.mojang:brigadier", version.ref = "brigadier" }

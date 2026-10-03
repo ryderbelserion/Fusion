@@ -1,6 +1,4 @@
 plugins {
-    `config-publish`
-
     `paper-plugin`
 }
 
@@ -23,17 +21,5 @@ tasks {
         defaultCharacterEncoding = Charsets.UTF_8.name()
 
         minecraftVersion(libs.versions.minecraft.get())
-    }
-
-    shadowJar {
-        listOf(
-            "io.leangen.geantyref",
-            "org.spongepowered",
-            "com.google.gson",
-            "org.jspecify",
-            "org.yaml"
-        ).forEach {
-            relocate(it, "libs.$it")
-        }
     }
 }

@@ -1,5 +1,4 @@
 plugins {
-    `config-publish`
     `shadow-plugin`
 }
 

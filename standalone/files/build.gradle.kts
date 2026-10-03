@@ -1,10 +1,9 @@
 plugins {
     `config-publish`
-    `shadow-plugin`
+    `java-plugin`
 }
 
 project.group = "${rootProject.group}.files"
-project.version = "4.48.0"
 
 dependencies {
     api(libs.configurate.gson)

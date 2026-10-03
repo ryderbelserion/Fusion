@@ -61,7 +61,7 @@ public class ItemUtils {
 
         itemStack.applyComponents(component);
 
-        return Optional.of(CraftItemStack.asCraftMirror(itemStack));
+        return Optional.of(CraftItemStack.asBukkitMirror(itemStack));
     }
 
     public static Optional<DataComponentType> getDataComponentType(final String value) {

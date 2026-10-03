@@ -5,6 +5,7 @@ import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.api.FusionProvider;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
+import com.ryderbelserion.fusion.core.mods.objects.Mod;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class FusionCore<S, C, TR> extends FusionApi<S, C, TR> {
+public abstract class FusionCore<S, C, TR> extends FusionApi<S, C, Mod, TR> {
 
     protected final Path configPath;
     protected final Path path;

@@ -2,6 +2,7 @@ package com.ryderbelserion.fusion.api;
 
 import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.api.interfaces.IModRegistry;
+import com.ryderbelserion.fusion.api.interfaces.mods.IMod;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jspecify.annotations.NonNull;
@@ -14,9 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 @NullMarked
-public abstract class FusionApi<S, C, TR> {
+public abstract class FusionApi<S, C, M extends IMod, TR> {
 
-    public abstract IModRegistry getModRegistry();
+    public abstract IModRegistry<M> getModRegistry();
 
     @NullUnmarked
     public abstract void compressFile(@NonNull final Path path, @Nullable final Path folder, @NonNull final String content);

@@ -1,6 +1,4 @@
 plugins {
-    id("com.gradleup.shadow")
-
     `java-library`
 }
 
@@ -26,12 +24,6 @@ java {
 }
 
 tasks {
-    shadowJar {
-        archiveClassifier.set("")
-
-        exclude("META-INF/**")
-    }
-
     compileJava {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(25)

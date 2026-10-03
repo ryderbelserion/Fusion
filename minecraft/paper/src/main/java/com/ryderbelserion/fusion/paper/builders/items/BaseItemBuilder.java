@@ -588,9 +588,9 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     public @NonNull B setColor(@NonNull final String value) {
         if (value.isEmpty()) return (B) this;
 
-        if (isMap()) {
+        /*if (isMap()) { //toeo() find replacement
             ColorUtils.getRGB(value).ifPresent(color -> this.itemStack.setData(DataComponentTypes.MAP_COLOR, MapItemColor.mapItemColor().color(color).build()));
-        } else if (isLeather()) {
+        } else*/ if (isLeather()) {
             ColorUtils.getRGB(value).ifPresent(color -> this.itemStack.setData(DataComponentTypes.DYED_COLOR, DyedItemColor.dyedItemColor().color(color).build()));
         } else if (isShield()) {
             this.itemStack.setData(DataComponentTypes.BASE_COLOR, ColorUtils.getDyeColor(value));
@@ -778,7 +778,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
     }
 
     public final boolean isDyeable() {
-        return isTippedArrow() || isShield() || isLeather() || isMap();
+        return isTippedArrow() || isShield() || isLeather() /*|| isMap()*/;
     }
 
     public final boolean isPlayerHead() {
