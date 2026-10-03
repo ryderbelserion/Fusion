@@ -10,13 +10,13 @@ configurate = "4.4.0" # https://github.com/ryderbelserion/Configurate
 paperweight = "2.0.0-beta.24" # https://github.com/PaperMC/paperweight
 adventure = "5.0.0" # https://github.com/KyoriPowered/adventure
 run-paper = "3.1.0" # https://github.com/jpenilla/run-task
-paper = "26.2.build.+" # https://github.com/PaperMC/Paper
+paper = "26.3.build.+" # https://github.com/PaperMC/Paper
 
 ## Velocity API
-velocity = "3.5.0-SNAPSHOT" # https://docs.papermc.io/velocity/dev/creating-your-first-plugin/
+velocity = "4.2.1-SNAPSHOT" # https://docs.papermc.io/velocity/dev/creating-your-first-plugin/
 
 ## Minecraft API
-minecraft = "26.2" # https://minecraft.net
+minecraft = "26.3" # https://minecraft.net
 brigadier = "1.3.10" # https://minecraft.net
 
 ## Better Annotations

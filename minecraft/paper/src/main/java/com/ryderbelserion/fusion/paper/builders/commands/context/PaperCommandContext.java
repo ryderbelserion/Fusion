@@ -21,7 +21,7 @@ public final class PaperCommandContext extends AbstractCommandContext<CommandSou
 
     public Player getPlayer() {
         if (!isPlayer()) {
-            throw new FusionException("This method can only be used for Players!");
+            throw new FusionException("This method can only be used for Players!"); //todo() add message registry support
         }
 
         return (Player) getSender();
