@@ -12,13 +12,13 @@ plugins {
 rootProject.name = "Fusion"
 
 listOf(
-    "minecraft/paper/example" to "example",
+    "minecraft/paper/example" to "paper-example",
 
     "minecraft/velocity" to "velocity",
     "minecraft/paper" to "paper",
     "minecraft/kyori" to "kyori",
 
-    "standalone/addons/weeb-addon" to "weeb-addon",
+    "standalone/addons/weeb-addon" to "weeb-addon-example",
     "standalone/addons" to "addons",
     "standalone/files" to "files",
     "standalone/core" to "core",
