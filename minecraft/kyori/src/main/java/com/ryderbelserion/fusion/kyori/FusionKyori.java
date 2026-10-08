@@ -8,7 +8,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.jspecify.annotations.NonNull;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +22,9 @@ public abstract class FusionKyori<S> extends FusionCore<S, Component, TagResolve
     public @NonNull final Component asComponent(
             @NonNull final String message,
             @NonNull final Map<String, String> placeholders,
-            @NonNull final List<TagResolver> tags
+            @NonNull final TagResolver @NonNull ... tags
     ) {
-        final List<TagResolver> resolvers = new ArrayList<>(tags);
+        final List<TagResolver> resolvers = Arrays.asList(tags);
 
         resolvers.add(TagResolver.standard());
 

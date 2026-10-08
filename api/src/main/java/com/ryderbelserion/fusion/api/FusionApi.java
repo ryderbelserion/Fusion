@@ -105,29 +105,29 @@ public abstract class FusionApi<S, C, M extends IMod, TR> {
     public abstract C asComponent(
             final String message,
             final Map<String, String> placeholders,
-            final List<TagResolver> resolvers
+            final TagResolver... tags
     );
 
     public C asComponent(
             final S sender,
             final String message,
             final Map<String, String> placeholders,
-            final List<TagResolver> resolvers
+            final TagResolver... tags
     ) {
-        return asComponent(papi(sender, message), placeholders, resolvers);
+        return asComponent(papi(sender, message), placeholders, tags);
     }
 
     public C asComponent(
             final S audience,
             final String message
     ) {
-        return asComponent(audience, message, Map.of(), List.of());
+        return asComponent(audience, message, Map.of());
     }
 
     public C asComponent(
             final String message
     ) {
-        return asComponent(message, Map.of(), List.of());
+        return asComponent(message, Map.of());
     }
 
     public String parse(

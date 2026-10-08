@@ -50,7 +50,7 @@ public class FusionHytale extends FusionKyori<IMessageReceiver> implements IFusi
 
     @Override
     public Message asMessage(final IMessageReceiver receiver, final String message, final Map<String, String> placeholders) {
-        return ColorUtils.toHytale(asComponent(receiver, message, placeholders, List.of()));
+        return ColorUtils.toHytale(asComponent(receiver, message, placeholders));
     }
 
     @Override
