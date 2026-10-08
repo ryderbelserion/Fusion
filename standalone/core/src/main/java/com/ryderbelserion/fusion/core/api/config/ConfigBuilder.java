@@ -1,5 +1,6 @@
 package com.ryderbelserion.fusion.core.api.config;
 
+import com.ryderbelserion.fusion.core.api.config.migration.MigrationService;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.ConfigurationOptions;
@@ -34,6 +35,7 @@ public final class ConfigBuilder {
     private int indent = 4;
 
     private UnaryOperator<ConfigurationOptions> options = UnaryOperator.identity();
+    private MigrationService migrationService;
     private IPropertyData propertyData;
 
     @SafeVarargs
@@ -41,6 +43,16 @@ public final class ConfigBuilder {
         this.propertyData = PropertyDataBuilder.createConfiguration(this.path, Arrays.asList(properties));
 
         return this;
+    }
+
+    public @NonNull ConfigBuilder withMigrationService(final MigrationService migrationService) {
+        this.migrationService = migrationService;
+
+        return this;
+    }
+
+    public @NonNull MigrationService getMigrationService() {
+        return this.migrationService;
     }
 
     public @NonNull ConfigBuilder withOptions(final UnaryOperator<ConfigurationOptions> options) {
@@ -92,6 +104,7 @@ public final class ConfigBuilder {
     public @NonNull PropertyManager create() {
         final PropertyManager propertyManager = new PropertyManager(this.propertyData,
                 this.options,
+                this.migrationService,
                 this,
                 this.fileType,
                 this.path

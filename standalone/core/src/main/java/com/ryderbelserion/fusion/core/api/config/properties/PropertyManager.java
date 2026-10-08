@@ -3,11 +3,15 @@ package com.ryderbelserion.fusion.core.api.config.properties;
 import com.ryderbelserion.fusion.api.FusionProvider;
 import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.core.api.config.migration.MigrationService;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.NullUnmarked;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurationOptions;
 import com.ryderbelserion.fusion.core.api.config.ConfigBuilder;
@@ -25,17 +29,21 @@ public final class PropertyManager {
     private final FileManager fileManager = this.fusion.getFileManager();
 
     private final UnaryOperator<ConfigurationOptions> options;
+    private @Nullable final MigrationService migrationService;
     private final IPropertyData propertyData;
     private final ConfigBuilder builder;
     private final FileType fileType;
     private final Path path;
 
-    public PropertyManager(final IPropertyData propertyData,
-                           final UnaryOperator<ConfigurationOptions> options,
-                           final ConfigBuilder builder,
-                           final FileType fileType,
-                           final Path path
+    @NullUnmarked
+    public PropertyManager(@NonNull final IPropertyData propertyData,
+                           @NonNull final UnaryOperator<ConfigurationOptions> options,
+                           @Nullable final MigrationService migrationService,
+                           @NonNull final ConfigBuilder builder,
+                           @NonNull final FileType fileType,
+                           @NonNull final Path path
     ) {
+        this.migrationService = migrationService;
         this.propertyData = propertyData;
         this.fileType = fileType;
         this.options = options;
@@ -64,7 +72,16 @@ public final class PropertyManager {
     }
 
     public PropertyManager populate() {
-        this.propertyData.populate(getConfiguration());
+        final CommentedConfigurationNode configuration = getConfiguration();
+
+        this.propertyData.populate(configuration);
+
+        if (this.migrationService != null) {
+            this.migrationService.copy(
+                    configuration,
+                    this.propertyData
+            );
+        }
 
         return this;
     }
