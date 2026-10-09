@@ -3,9 +3,9 @@ package com.ryderbelserion.fusion.addons.api.interfaces;
 import com.ryderbelserion.fusion.addons.api.Extension;
 import com.ryderbelserion.fusion.addons.exceptions.InvalidExtensionException;
 import org.jspecify.annotations.NonNull;
-
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.Optional;
 
 public interface IExtensionManager {
@@ -22,6 +22,8 @@ public interface IExtensionManager {
 
     Optional<Extension> getExtension(@NonNull final String name);
 
+    void reload();
+
     void purge();
 
     void info(final String message, final Object... params);
@@ -32,4 +34,5 @@ public interface IExtensionManager {
 
     int getLoadedExtensionCount();
 
+    @NonNull Map<String, Extension> getExtensions();
 }

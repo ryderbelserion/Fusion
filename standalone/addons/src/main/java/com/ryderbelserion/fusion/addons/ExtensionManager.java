@@ -10,6 +10,7 @@ import org.jspecify.annotations.NonNull;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -110,6 +111,11 @@ public class ExtensionManager implements IExtensionManager {
     }
 
     @Override
+    public void reload() {
+        this.extensions.forEach((_, extension) -> extension.onReload());
+    }
+
+    @Override
     public void purge() {
         this.extensions.values().forEach(this::disableExtension);
         this.extensions.clear();
@@ -133,5 +139,10 @@ public class ExtensionManager implements IExtensionManager {
     @Override
     public int getLoadedExtensionCount() {
         return this.extensions.values().stream().filter(Extension::isEnabled).toList().size();
+    }
+
+    @Override
+    public @NonNull Map<String, Extension> getExtensions() {
+        return Collections.unmodifiableMap(this.extensions);
     }
 }
