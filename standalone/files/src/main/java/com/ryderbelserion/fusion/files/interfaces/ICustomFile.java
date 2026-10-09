@@ -3,7 +3,7 @@ package com.ryderbelserion.fusion.files.interfaces;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.exceptions.FusionException;
+import com.ryderbelserion.fusion.files.exceptions.FileException;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.loader.HeaderMode;
@@ -107,7 +107,7 @@ public abstract class ICustomFile<I, C, L> {
             try {
                 return loadConfig();
             } catch (final IOException exception) {
-                throw new FusionException("Failed to load file %s".formatted(path), exception);
+                throw new FileException("Failed to load file %s".formatted(path), exception);
             }
         }).join();
 
@@ -127,7 +127,7 @@ public abstract class ICustomFile<I, C, L> {
             try {
                 saveConfig(content);
             } catch (final IOException exception) {
-                throw new FusionException("Failed to save content for %s".formatted(getPath()), exception);
+                throw new FileException("Failed to save content for %s".formatted(getPath()), exception);
             }
         });
 

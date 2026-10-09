@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.files.types.configurate;
 
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.exceptions.FusionException;
+import com.ryderbelserion.fusion.files.exceptions.FileException;
 import com.ryderbelserion.fusion.files.interfaces.IConfigurate;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import org.jspecify.annotations.NullMarked;
@@ -133,7 +133,7 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
 
             return defaultValue;
         } catch (final SerializationException exception) {
-            throw new FusionException("Failed to serialize %s!".formatted(node.path()), exception);
+            throw new FileException("Failed to serialize %s!".formatted(node.path()), exception);
         }
     }
 }
