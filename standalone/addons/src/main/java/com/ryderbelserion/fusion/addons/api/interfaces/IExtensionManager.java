@@ -30,4 +30,6 @@ public interface IExtensionManager {
 
     void error(final String message, final Object... params);
 
+    int getLoadedExtensionCount();
+
 }

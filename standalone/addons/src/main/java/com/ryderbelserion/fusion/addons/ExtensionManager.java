@@ -129,4 +129,9 @@ public class ExtensionManager implements IExtensionManager {
     public void error(final String message, final Object... params) {
         this.logger.severe(message.formatted(params));
     }
+
+    @Override
+    public int getLoadedExtensionCount() {
+        return this.extensions.values().stream().filter(Extension::isEnabled).toList().size();
+    }
 }
