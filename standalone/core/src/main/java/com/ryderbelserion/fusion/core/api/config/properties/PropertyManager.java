@@ -105,8 +105,6 @@ public final class PropertyManager {
         this.fileManager.addFile(this.path, FileType.YAML, consumer -> { // add file!
             consumer.addAction(FileAction.EXTRACT_FILE);
 
-            consumer.addAction(FileAction.UPDATE_FILE_AUTOMATICALLY);
-
             consumer.withHeaderMode(this.builder.getHeaderMode());
             consumer.withNodeStyle(this.builder.getNodeStyle());
             consumer.withLenient(this.builder.isLenient());
