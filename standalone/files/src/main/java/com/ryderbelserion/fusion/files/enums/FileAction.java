@@ -2,6 +2,8 @@ package com.ryderbelserion.fusion.files.enums;
 
 public enum FileAction {
 
+    // Updates the file automatically for missing options.
+    UPDATE_FILE_AUTOMATICALLY,
     // Extract a file to a specific path. usually done manually.
     ALREADY_EXTRACTED,
     // Extract a folder.

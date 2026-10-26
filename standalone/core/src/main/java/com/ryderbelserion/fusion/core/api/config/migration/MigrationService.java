@@ -5,6 +5,8 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 
 public interface MigrationService {
 
-    void copy(final CommentedConfigurationNode configuration, final IPropertyData property);
+    // true = required
+    // false = not required
+    boolean copy(final CommentedConfigurationNode configuration, final IPropertyData property);
 
 }

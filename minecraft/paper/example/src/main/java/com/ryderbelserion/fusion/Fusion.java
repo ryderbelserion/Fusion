@@ -7,6 +7,7 @@ import com.ryderbelserion.fusion.commands.SimpleCommand;
 import com.ryderbelserion.fusion.commands.types.items.ItemCommand;
 import com.ryderbelserion.fusion.commands.types.ReloadCommand;
 import com.ryderbelserion.fusion.commands.types.items.SkullCommand;
+import com.ryderbelserion.fusion.config.ConfigManager;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
@@ -42,6 +43,8 @@ public class Fusion extends JavaPlugin implements Listener {
         final FileManager fileManager = this.fusion.getFileManager();
 
         final Path path = getDataPath();
+
+        new ConfigManager(this.fusion, path).init();
 
         fileManager.addFolder(path.resolve("crates"), FileType.YAML)
                 .addFile(path.resolve("guis").resolve("test.yml"), FileType.YAML, consumer -> consumer.addAction(FileAction.EXTRACT_FROM_FOLDER))

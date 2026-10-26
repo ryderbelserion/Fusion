@@ -36,6 +36,15 @@ public final class JsonCustomFile extends ICustomFile<JsonCustomFile, BasicConfi
     }
 
     @Override
+    public JsonCustomFile mergeFrom(final BasicConfigurationNode configuration) {
+        this.configuration.mergeFrom(configuration);
+
+        save();
+
+        return this;
+    }
+
+    @Override
     public BasicConfigurationNode loadConfig() throws IOException {
         return this.loader.load();
     }

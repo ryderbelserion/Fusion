@@ -6,7 +6,6 @@ import com.ryderbelserion.fusion.core.api.config.properties.builders.CommentsBui
 import com.ryderbelserion.fusion.core.api.config.properties.interfaces.IPropertyData;
 import com.ryderbelserion.fusion.core.api.config.properties.interfaces.IPropertyHolder;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.interfaces.Property;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -58,7 +57,7 @@ public final class PropertyDataBuilder {
             final IPropertyHolder holder = getInstance(parent);
 
             holder.registerComments(this.commentsBuilder); // register section level comments, although we could move this to field based annotations...
-            holder.registerAliases(this.aliasBuilder);
+            holder.registerAliases(this.aliasBuilder); // register node aliases
 
             for (final Field field : fields) {
                 if (!Modifier.isStatic(field.getModifiers())) continue;
@@ -77,26 +76,6 @@ public final class PropertyDataBuilder {
                                 field,
                                 path
                         ));
-
-                        /*if (field.isAnnotationPresent(Comment.class)) {
-                            final Comment comment = field.getDeclaredAnnotation(Comment.class);
-
-                            final List<String> values = Arrays.asList(comment.value());
-
-                            if (!values.isEmpty()) {
-                                this.commentsBuilder.setComment(values, path);
-                            }
-                        }*/
-
-                        /*if (field.isAnnotationPresent(Alias.class)) {
-                            final Alias alias = field.getDeclaredAnnotation(Alias.class);
-
-                            final String value = alias.value();
-
-                            if (!value.isEmpty()) {
-                                this.aliasBuilder.addAlias(value, path);
-                            }
-                        }*/
                     }
                 } catch (final IllegalAccessException exception) {
                     exception.printStackTrace();

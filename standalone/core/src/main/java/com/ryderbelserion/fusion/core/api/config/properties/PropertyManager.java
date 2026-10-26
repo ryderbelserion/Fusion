@@ -71,16 +71,17 @@ public final class PropertyManager {
         return this;
     }
 
+    public Object[] getAlias(final String alias, final Object... path) {
+        return this.propertyData.getAlias(alias, path);
+    }
+
     public PropertyManager populate() {
         final CommentedConfigurationNode configuration = getConfiguration();
 
         this.propertyData.populate(configuration);
 
-        if (this.migrationService != null) {
-            this.migrationService.copy(
-                    configuration,
-                    this.propertyData
-            );
+        if (this.migrationService != null && this.migrationService.copy(configuration, this.propertyData)) {
+            save();
         }
 
         return this;
@@ -101,7 +102,7 @@ public final class PropertyManager {
     }
 
     public void load() {
-        this.fileManager.addFile(this.path, FileType.YAML, consumer -> {
+        this.fileManager.addFile(this.path, FileType.YAML, consumer -> { // add file!
             consumer.addAction(FileAction.EXTRACT_FILE);
 
             consumer.withHeaderMode(this.builder.getHeaderMode());
@@ -112,7 +113,7 @@ public final class PropertyManager {
             consumer.setOptions(this.options);
         });
 
-        populate();
+        populate(); // populate bean mapper
     }
 
     public void save() {

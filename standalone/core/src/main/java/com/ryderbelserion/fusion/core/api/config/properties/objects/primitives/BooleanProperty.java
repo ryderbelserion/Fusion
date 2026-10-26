@@ -8,7 +8,7 @@ import com.ryderbelserion.fusion.core.api.config.properties.objects.enums.Proper
 public final class BooleanProperty extends BaseProperty<Boolean> {
 
     public BooleanProperty(final boolean defaultValue, final String alias, final Object... path) {
-        super(Boolean.class, defaultValue, PropertyType.BOOLEAN, path);
+        super(Boolean.class, defaultValue, alias, PropertyType.BOOLEAN, path);
     }
 
     public BooleanProperty(final boolean defaultValue, final Object... path) {

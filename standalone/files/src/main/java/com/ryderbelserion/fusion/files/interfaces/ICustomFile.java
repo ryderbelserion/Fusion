@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
+import java.util.logging.Logger;
 
 // I i.e. YamlCustomFile.
 // C i.e. the SettingsManager, or CommentedConfigurationNode/BasicConfigurationNode.
@@ -25,10 +26,13 @@ public abstract class ICustomFile<I, C, L> {
     protected final List<FileAction> actions = new ArrayList<>();
     protected final FileManager fileManager;
     protected final String jarFolder;
+    protected final Logger logger;
     protected final Path path;
 
     protected ConfigurationOptions options = ConfigurationOptions.defaults();
     protected FileType fileType;
+
+    protected C defaultConfiguration;
     protected C configuration;
     protected L loader;
 
@@ -39,6 +43,7 @@ public abstract class ICustomFile<I, C, L> {
     ) {
         this.fileManager = fileManager;
         this.jarFolder = jarFolder;
+        this.logger = this.fileManager.getLogger();
         this.path = path;
     }
 
@@ -81,6 +86,10 @@ public abstract class ICustomFile<I, C, L> {
         return this.configuration;
     }
 
+    public @NonNull C getDefaultConfiguration() {
+        return this.defaultConfiguration;
+    }
+
     public @NonNull I load() {
         if (isDirectory()) return (I) this;
 
@@ -113,6 +122,10 @@ public abstract class ICustomFile<I, C, L> {
 
         if (hasAction(FileAction.RELOAD_FILE)) { // config loaded, we remove!
             removeAction(FileAction.RELOAD_FILE);
+        }
+
+        if (hasAction(FileAction.UPDATE_FILE_AUTOMATICALLY) && this.defaultConfiguration != null) { // update file with missing values if action is present.
+            mergeFrom(this.defaultConfiguration);
         }
 
         return (I) this;
@@ -149,6 +162,10 @@ public abstract class ICustomFile<I, C, L> {
     public ICustomFile<I, C, L> removeAction(@NonNull final FileAction action) {
         this.actions.remove(action);
 
+        return this;
+    }
+
+    public ICustomFile<I, C, L> mergeFrom(@NonNull final C defaultLoader) {
         return this;
     }
 

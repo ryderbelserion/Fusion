@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Logger;
 
 @NullMarked
 public abstract class IFileManager<I> {
@@ -61,6 +62,8 @@ public abstract class IFileManager<I> {
     public abstract I purge();
 
     public abstract I refresh(final boolean save);
+
+    public abstract Logger getLogger();
 
     public abstract boolean hasFile(final Path path);
 

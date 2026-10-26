@@ -200,7 +200,7 @@ public abstract class FusionCore<S, C, TR> extends FusionApi<S, C, Mod, TR> {
     }
 
     public final boolean isVerbose() {
-        return getFusionConfig().node("settings", "is_verbose").getBoolean(false);
+        return getFusionConfig().node("settings", "is_verbose").getBoolean(true);
     }
 
     public final int getDepth() {

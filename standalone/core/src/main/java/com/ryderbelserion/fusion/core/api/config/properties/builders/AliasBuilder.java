@@ -20,4 +20,8 @@ public final class AliasBuilder {
     public boolean hasAlias(final String alias) {
         return this.aliases.containsKey(alias);
     }
+
+    public Map<String, Object[]> getAliases() {
+        return this.aliases;
+    }
 }
