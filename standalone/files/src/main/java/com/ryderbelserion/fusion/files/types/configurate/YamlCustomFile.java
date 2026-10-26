@@ -36,6 +36,15 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
     }
 
     @Override
+    public YamlCustomFile mergeFrom(final CommentedConfigurationNode configuration) {
+        this.configuration.mergeFrom(configuration);
+
+        save();
+
+        return this;
+    }
+
+    @Override
     public CommentedConfigurationNode loadConfig() throws IOException {
         return this.loader.load();
     }

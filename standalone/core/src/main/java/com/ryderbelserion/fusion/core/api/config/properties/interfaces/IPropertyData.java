@@ -17,4 +17,6 @@ public interface IPropertyData {
 
     void populate(final CommentedConfigurationNode configuration);
 
+    Object[] getAlias(final String alias, final Object... fallback);
+
 }

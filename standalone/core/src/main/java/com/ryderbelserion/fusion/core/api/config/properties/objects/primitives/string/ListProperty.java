@@ -3,17 +3,21 @@ package com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.
 import org.jspecify.annotations.NullMarked;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.BaseProperty;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.enums.PropertyType;
-
 import java.util.List;
 
 @NullMarked
-public final class ListProperty extends BaseProperty {
+public final class ListProperty extends BaseProperty<List<String>> {
 
     public ListProperty(final List<String> defaultValue, final String alias, final Object... path) {
-        super(String.class, defaultValue, alias, PropertyType.STRING_LIST, path);
+        super((Class) List.class, defaultValue, alias, PropertyType.STRING_LIST, path);
     }
 
     public ListProperty(final List<String> defaultValue, final Object... path) {
         this(defaultValue, "", path);
+    }
+
+    @Override
+    public List<String> getDefaultValue() {
+        return super.getDefaultValue();
     }
 }

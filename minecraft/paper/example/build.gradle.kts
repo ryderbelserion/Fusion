@@ -22,4 +22,14 @@ tasks {
 
         minecraftVersion(libs.versions.minecraft.get())
     }
+
+    shadowJar {
+        listOf(
+            "org.spongepowered",
+            "org.jspecify",
+            "org.yaml",
+        ).forEach {
+            relocate(it, "libs.$it")
+        }
+    }
 }

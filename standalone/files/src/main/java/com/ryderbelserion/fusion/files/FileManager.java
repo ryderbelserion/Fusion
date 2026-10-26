@@ -20,6 +20,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
@@ -29,6 +30,8 @@ import java.util.zip.ZipOutputStream;
 public class FileManager extends IFileManager<FileManager> {
 
     private final Map<Path, ICustomFile<?, ?, ?>> files = new HashMap<>();
+
+    private final Logger logger = Logger.getLogger(FileManager.class.getName());
 
     private final Path path;
 
@@ -493,5 +496,10 @@ public class FileManager extends IFileManager<FileManager> {
     @Override
     public final Map<Path, ICustomFile<?, ?, ?>> getFiles() {
         return Collections.unmodifiableMap(this.files);
+    }
+
+    @Override
+    public final Logger getLogger() {
+        return this.logger;
     }
 }

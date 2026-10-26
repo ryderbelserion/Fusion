@@ -1,7 +1,9 @@
 package com.ryderbelserion.fusion.core.api.config.properties;
 
 import com.ryderbelserion.fusion.api.FusionProvider;
+import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.string.ListProperty;
 import com.ryderbelserion.fusion.core.utils.StringUtils;
 import com.ryderbelserion.fusion.files.FileManager;
 import io.leangen.geantyref.TypeToken;
@@ -12,8 +14,10 @@ import com.ryderbelserion.fusion.core.api.config.properties.builders.AliasBuilde
 import com.ryderbelserion.fusion.core.api.config.properties.interfaces.IPropertyData;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.enums.PropertyType;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.interfaces.Property;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @NullMarked
 public final class PropertyDataImpl implements IPropertyData {
@@ -42,9 +46,12 @@ public final class PropertyDataImpl implements IPropertyData {
             throw new IllegalStateException("The property %s is not present with this builder for %s! Perhaps wrong config!".formatted(path, this.propertyDataBuilder.getPath()));
         }
 
+        final PropertyHolder propertyHolder = this.properties.get(path); // get property holder
+
         final PropertyType propertyType = property.getPropertyType();
         final T propertyValue = property.getDefaultValue();
-        final Object[] propertyPath = property.getPath();
+
+        final Object[] propertyPath = getAlias(propertyHolder.getAlias(), path); // fetch alias from property holder with fallback path
 
         return switch (propertyType) {
             case BOOLEAN, INTEGER, STRING, BEAN_PROPERTY -> {
@@ -67,10 +74,15 @@ public final class PropertyDataImpl implements IPropertyData {
             return;
         }
 
+        final Object[] path = property.getPath(); // get property path
+        final PropertyHolder propertyHolder = this.properties.get(path); // get property holder
+
+        final Object[] propertyPath = getAlias(propertyHolder.getAlias(), path); // fetch alias from property holder with fallback path
+
         switch (property.getPropertyType()) {
             case STRING_LIST -> {
                 try {
-                    configuration.node(property.getPath()).setList(TypeToken.get(String.class), List.of(value.toString()));
+                    configuration.node(propertyPath).setList(TypeToken.get(String.class), List.of(value.toString()));
                 } catch (final SerializationException exception) {
                     throw new IllegalStateException(exception);
                 }
@@ -78,7 +90,7 @@ public final class PropertyDataImpl implements IPropertyData {
 
             default -> {
                 try {
-                    configuration.node(property.getPath()).set(type, value);
+                    configuration.node(propertyPath).set(type, value);
                 } catch (final SerializationException exception) {
                     throw new IllegalStateException(exception);
                 }
@@ -90,7 +102,10 @@ public final class PropertyDataImpl implements IPropertyData {
 
     @Override
     public <T> boolean hasProperty(final CommentedConfigurationNode configuration, final Property<T> property) {
-        return configuration.hasChild(property.getPath());
+        final Object[] path = property.getPath(); // get path
+        final PropertyHolder propertyHolder = this.properties.get(path); // get property holder
+
+        return configuration.hasChild(getAlias(propertyHolder.getAlias(), path)); // fetch alias from property holder with fallback path
     }
 
     @Override
@@ -108,12 +123,14 @@ public final class PropertyDataImpl implements IPropertyData {
 
             if (holder.isDisabled()) continue;
 
-            final Object[] id = property.getPath();
+            final Object[] id = getAlias(holder.getAlias(), property.getPath()); // fetch alias from property holder with fallback path
 
             final CommentedConfigurationNode node = configuration.node(id);
 
             if (holder.hasComments() && configuration.hasChild(id)) {
                 final List<String> comments = holder.getComments();
+
+                this.fusion.log(Level.error, "<red>Comments: %s", comments);
 
                 if (comments.isEmpty()) continue;
 
@@ -122,23 +139,26 @@ public final class PropertyDataImpl implements IPropertyData {
                 continue;
             }
 
-            final Object value = property.getDefaultValue();
             final Class<?> type = property.getType();
 
-            switch (property.getPropertyType()) {
-                case STRING_LIST -> {
-                    try {
-                        node.setList(TypeToken.get(String.class), List.of(value.toString()));
-                    } catch (final SerializationException exception) {
-                        throw new IllegalStateException(exception);
+            if (!configuration.hasChild(id)) {
+                switch (property.getPropertyType()) {
+                    case STRING_LIST -> {
+                        try {
+                            if (property instanceof ListProperty listProperty) {
+                                node.setList(TypeToken.get(String.class), listProperty.getDefaultValue());
+                            }
+                        } catch (final SerializationException exception) {
+                            throw new IllegalStateException(exception);
+                        }
                     }
-                }
 
-                default -> {
-                    try {
-                        node.set(type, value);
-                    } catch (final SerializationException exception) {
-                        throw new IllegalStateException(exception);
+                    default -> {
+                        try {
+                            node.set(type, property.getDefaultValue());
+                        } catch (final SerializationException exception) {
+                            throw new IllegalStateException(exception);
+                        }
                     }
                 }
             }
@@ -159,5 +179,10 @@ public final class PropertyDataImpl implements IPropertyData {
         }
 
         this.fileManager.saveFile(this.propertyDataBuilder.getPath());
+    }
+
+    @Override
+    public Object[] getAlias(final String alias, final Object... fallback) {
+        return this.aliasBuilder.hasAlias(alias) ? Stream.of(this.aliasBuilder.getAlias(alias), fallback).flatMap(Stream::of).toArray(Object[]::new) : fallback;
     }
 }
