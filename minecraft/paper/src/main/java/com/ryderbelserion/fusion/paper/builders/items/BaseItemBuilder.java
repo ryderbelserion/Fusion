@@ -226,14 +226,14 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> {
 
         build();
 
+        return new ItemStack(this.itemStack); // creates new ItemStack when we want to use it.
+    }
+
+    public @NonNull ItemStack getItemStack() { // for modifying existing item stack
         return this.itemStack;
     }
 
-    public @NonNull ItemStack getItemStack() {
-        return this.itemStack;
-    }
-
-    public @NonNull ItemStack asItemStack() {
+    public @NonNull ItemStack asItemStack() { // creates new ItemStack when we want to use it.
         return asItemStack(Audience.empty());
     }
 
