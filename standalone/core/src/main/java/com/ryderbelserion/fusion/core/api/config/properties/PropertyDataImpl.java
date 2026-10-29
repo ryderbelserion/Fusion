@@ -130,8 +130,6 @@ public final class PropertyDataImpl implements IPropertyData {
             if (holder.hasComments() && configuration.hasChild(id)) {
                 final List<String> comments = holder.getComments();
 
-                this.fusion.log(Level.error, "<red>Comments: %s", comments);
-
                 if (comments.isEmpty()) continue;
 
                 node.commentIfAbsent(StringUtils.toString(comments));

@@ -3,7 +3,7 @@ plugins {
 }
 
 rootProject.group = "com.ryderbelserion.fusion"
-rootProject.version = "4.55.1"
+rootProject.version = "4.55.2"
 
 tasks.register("publishLocally") {
     description = "Publishes the library to the local repository!"
