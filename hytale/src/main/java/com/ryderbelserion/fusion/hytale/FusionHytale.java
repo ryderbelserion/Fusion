@@ -12,10 +12,10 @@ import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.hytale.interfaces.IFusionHytale;
 import com.ryderbelserion.fusion.hytale.utils.ColorUtils;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
+import net.kyori.adventure.text.Component;
 import org.jspecify.annotations.NullMarked;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @NullMarked
@@ -64,8 +64,8 @@ public class FusionHytale extends FusionKyori<IMessageReceiver> implements IFusi
     }
 
     @Override
-    public void log(final Level level, final String message, final Exception exception, final Object... args) {
-        if (this.isVerbose()) return;
+    public void log(final boolean isVerbose, final Level level, final String message, final Exception exception, final Object... args) {
+        if (!isVerbose) return;
 
         final String format = message.formatted(args);
 
@@ -77,8 +77,8 @@ public class FusionHytale extends FusionKyori<IMessageReceiver> implements IFusi
     }
 
     @Override
-    public void log(final Level level, final String message, final Object... args) {
-        if (this.isVerbose()) return;
+    public void log(final boolean isVerbose, final Level level, final String message, final Object... args) {
+        if (!isVerbose) return;
 
         final String format = message.formatted(args);
 

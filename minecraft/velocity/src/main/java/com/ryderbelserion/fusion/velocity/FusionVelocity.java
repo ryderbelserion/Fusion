@@ -23,8 +23,8 @@ public final class FusionVelocity extends FusionKyori<Audience> {
     }
 
     @Override
-    public void log(final Level level, final String message, final Exception exception, final Object... args) {
-        if (!this.isVerbose()) return;
+    public void log(final boolean isVerbose, final Level level, final String message, final Exception exception, final Object... args) {
+        if (!isVerbose) return;
 
         final Component component = asComponent(message.formatted(args));
 
@@ -36,8 +36,8 @@ public final class FusionVelocity extends FusionKyori<Audience> {
     }
 
     @Override
-    public void log(final Level level, final String message, final Object... args) {
-        if (!this.isVerbose()) return;
+    public void log(final boolean isVerbose, final Level level, final String message, final Object... args) {
+        if (!isVerbose) return;
 
         final Component component = asComponent(message.formatted(args));
 

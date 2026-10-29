@@ -61,7 +61,7 @@ public final class HMCCustomItem extends ICustomItem {
         final PhysicalWrap physical = wrap.getPhysical();
 
         if (physical == null) {
-            this.fusion.log(Level.error, "There is no physical wrap associated with %s using %s", this.item, impl);
+            this.fusion.log(true, Level.error, "There is no physical wrap associated with %s using %s", this.item, impl);
 
             return this;
         }

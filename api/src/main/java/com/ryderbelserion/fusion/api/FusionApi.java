@@ -90,17 +90,36 @@ public abstract class FusionApi<S, C, M extends IMod, TR> {
     public abstract int getDepth();
 
     public abstract void log(
+            final boolean isVerbose,
             final Level level,
             final String message,
             final Exception exception,
             final Object... args
     );
 
+    public void log(
+            final Level level,
+            final String message,
+            final Exception exception,
+            final Object... args
+    ) {
+        log(isVerbose(), level, message, exception, args);
+    }
+
     public abstract void log(
+            final boolean isVerbose,
             final Level level,
             final String message,
             final Object... args
     );
+
+    public void log(
+            final Level level,
+            final String message,
+            final Object... args
+    ) {
+        log(isVerbose(), level, message, args);
+    }
 
     public abstract C asComponent(
             final String message,

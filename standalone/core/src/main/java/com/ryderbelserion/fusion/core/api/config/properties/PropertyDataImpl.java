@@ -58,7 +58,9 @@ public final class PropertyDataImpl implements IPropertyData {
                 try {
                     yield (T) configuration.node(propertyPath).get(property.getType(), propertyValue);
                 } catch (final SerializationException exception) {
-                    throw new IllegalStateException(exception);
+                    this.fusion.log(true, Level.error, "Failed to fetch property value for %s from %s! We are supplying the default value for now.", exception, propertyPath, this.propertyDataBuilder.getPath());
+
+                    yield propertyValue;
                 }
             }
 
@@ -84,7 +86,7 @@ public final class PropertyDataImpl implements IPropertyData {
                 try {
                     configuration.node(propertyPath).setList(TypeToken.get(String.class), List.of(value.toString()));
                 } catch (final SerializationException exception) {
-                    throw new IllegalStateException(exception);
+                    this.fusion.log(true, Level.error, "Failed to set property value for %s in %s!", exception, propertyPath, this.propertyDataBuilder.getPath());
                 }
             }
 
@@ -92,7 +94,7 @@ public final class PropertyDataImpl implements IPropertyData {
                 try {
                     configuration.node(propertyPath).set(type, value);
                 } catch (final SerializationException exception) {
-                    throw new IllegalStateException(exception);
+                    this.fusion.log(true, Level.error, "Failed to set property value for %s in %s!", exception, propertyPath, this.propertyDataBuilder.getPath());
                 }
             }
         }

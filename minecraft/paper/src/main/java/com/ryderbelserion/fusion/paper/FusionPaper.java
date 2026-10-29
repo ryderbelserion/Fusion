@@ -82,8 +82,8 @@ public class FusionPaper extends FusionKyori<Audience> {
     }
 
     @Override
-    public void log(@NonNull final Level level, @NonNull final String message, @NonNull final Exception exception, final Object @NonNull... args) {
-        if (!this.isVerbose()) return;
+    public void log(final boolean isVerbose, @NonNull final Level level, @NonNull final String message, @NonNull final Exception exception, final Object @NonNull... args) {
+        if (!isVerbose) return;
 
         final Component component = asComponent(message.formatted(args));
 
@@ -95,8 +95,8 @@ public class FusionPaper extends FusionKyori<Audience> {
     }
 
     @Override
-    public void log(@NonNull final Level level, @NonNull final String message, final Object @NonNull... args) {
-        if (!this.isVerbose()) return;
+    public void log(final boolean isVerbose, @NonNull final Level level, @NonNull final String message, final Object @NonNull... args) {
+        if (!isVerbose) return;
 
         final Component component = asComponent(message.formatted(args));
 
