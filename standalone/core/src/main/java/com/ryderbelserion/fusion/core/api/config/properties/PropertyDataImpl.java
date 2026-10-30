@@ -129,16 +129,6 @@ public final class PropertyDataImpl implements IPropertyData {
 
             final CommentedConfigurationNode node = configuration.node(id);
 
-            if (holder.hasComments() && configuration.hasChild(id)) {
-                final List<String> comments = holder.getComments();
-
-                if (comments.isEmpty()) continue;
-
-                node.commentIfAbsent(StringUtils.toString(comments));
-
-                continue;
-            }
-
             final Class<?> type = property.getType();
 
             if (!configuration.hasChild(id)) {
@@ -161,6 +151,14 @@ public final class PropertyDataImpl implements IPropertyData {
                         }
                     }
                 }
+            }
+
+            if (holder.hasComments() && configuration.hasChild(id)) { // set comments only after the value is added to the config.
+                final List<String> comments = holder.getComments();
+
+                if (comments.isEmpty()) continue;
+
+                node.commentIfAbsent(StringUtils.toString(comments));
             }
         }
 
