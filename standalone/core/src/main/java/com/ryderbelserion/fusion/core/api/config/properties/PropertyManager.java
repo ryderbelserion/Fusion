@@ -28,7 +28,7 @@ public final class PropertyManager {
 
     private final FileManager fileManager = this.fusion.getFileManager();
 
-    private final UnaryOperator<ConfigurationOptions> options;
+    private @Nullable final UnaryOperator<ConfigurationOptions> options;
     private @Nullable final MigrationService migrationService;
     private final IPropertyData propertyData;
     private final ConfigBuilder builder;
@@ -37,7 +37,7 @@ public final class PropertyManager {
 
     @NullUnmarked
     public PropertyManager(@NonNull final IPropertyData propertyData,
-                           @NonNull final UnaryOperator<ConfigurationOptions> options,
+                           @Nullable final UnaryOperator<ConfigurationOptions> options,
                            @Nullable final MigrationService migrationService,
                            @NonNull final ConfigBuilder builder,
                            @NonNull final FileType fileType,
@@ -110,7 +110,9 @@ public final class PropertyManager {
             consumer.withLenient(this.builder.isLenient());
             consumer.withIndent(this.builder.getIndent());
 
-            consumer.setOptions(this.options);
+            if (this.options != null) {
+                consumer.setOptions(this.options);
+            }
         });
 
         populate(); // populate bean mapper

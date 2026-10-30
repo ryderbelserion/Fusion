@@ -34,7 +34,7 @@ public final class ConfigBuilder {
     private boolean isLenient = true;
     private int indent = 4;
 
-    private UnaryOperator<ConfigurationOptions> options = UnaryOperator.identity();
+    private UnaryOperator<ConfigurationOptions> options = null;
     private MigrationService migrationService;
     private IPropertyData propertyData;
 
