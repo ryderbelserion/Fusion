@@ -1,6 +1,7 @@
 package com.ryderbelserion.fusion.core.api.config.properties;
 
 import com.ryderbelserion.fusion.core.api.config.properties.objects.BeanProperty;
+import com.ryderbelserion.fusion.core.api.config.properties.objects.EnumProperty;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.BooleanProperty;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.IntegerProperty;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.string.ListProperty;
@@ -10,6 +11,10 @@ import java.util.List;
 
 @NullMarked
 public class PropertyBuilder {
+
+    public static <E extends Enum<E>>EnumProperty<E> newEnumProperty(final Class<E> enumClass, final E defaultValue, final Object... path) {
+        return new EnumProperty(enumClass, defaultValue, path);
+    }
 
     public static <B> BeanProperty<B> newBeanProperty(final Class<B> beanClass, final B defaultValue, final Object... path) {
         return new BeanProperty(beanClass, defaultValue, path);

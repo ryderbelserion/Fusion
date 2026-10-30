@@ -34,5 +34,7 @@ public class ConfigManager {
         final Property<Boolean> property = ConfigKeys.test_boolean;
 
         this.fusion.log(Level.info, "<gold>Value: %s, <green>Alias Path: %s", builder.getProperty(property), Arrays.toString(builder.getAlias("test", "toggle")));
+
+        this.fusion.log(Level.info, "<red>Value Enum: %s", builder.getProperty(ConfigKeys.test_enum));
     }
 }

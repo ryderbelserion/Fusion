@@ -14,6 +14,7 @@ import com.ryderbelserion.fusion.core.api.config.properties.builders.AliasBuilde
 import com.ryderbelserion.fusion.core.api.config.properties.interfaces.IPropertyData;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.enums.PropertyType;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.interfaces.Property;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -54,17 +55,19 @@ public final class PropertyDataImpl implements IPropertyData {
         final Object[] propertyPath = getAlias(propertyHolder.getAlias(), path); // fetch alias from property holder with fallback path
 
         return switch (propertyType) {
-            case BOOLEAN, INTEGER, STRING, BEAN_PROPERTY -> {
+            case STRING_LIST -> (T) StringUtils.getStringList(configuration.node(propertyPath), List.of(propertyValue.toString()));
+
+            default -> {
                 try {
+                    this.fusion.log(true, Level.error, "<red>Property Type: %s", property.getType());
+
                     yield (T) configuration.node(propertyPath).get(property.getType(), propertyValue);
                 } catch (final SerializationException exception) {
-                    this.fusion.log(true, Level.error, "Failed to fetch property value for %s from %s! We are supplying the default value for now.", exception, propertyPath, this.propertyDataBuilder.getPath());
+                    this.fusion.log(true, Level.error, "Failed to fetch property value for %s from %s! We are supplying the default value for now.", exception, Arrays.toString(propertyPath), this.propertyDataBuilder.getPath());
 
                     yield propertyValue;
                 }
             }
-
-            case STRING_LIST -> (T) StringUtils.getStringList(configuration.node(propertyPath), List.of(propertyValue.toString()));
         };
     }
 
@@ -86,7 +89,7 @@ public final class PropertyDataImpl implements IPropertyData {
                 try {
                     configuration.node(propertyPath).setList(TypeToken.get(String.class), List.of(value.toString()));
                 } catch (final SerializationException exception) {
-                    this.fusion.log(true, Level.error, "Failed to set property value for %s in %s!", exception, propertyPath, this.propertyDataBuilder.getPath());
+                    this.fusion.log(true, Level.error, "Failed to set property value for %s in %s!", exception, Arrays.toString(propertyPath), this.propertyDataBuilder.getPath());
                 }
             }
 
@@ -149,7 +152,7 @@ public final class PropertyDataImpl implements IPropertyData {
                                 node.setList(TypeToken.get(String.class), listProperty.getDefaultValue());
                             }
                         } catch (final SerializationException exception) {
-                            throw new IllegalStateException(exception);
+                            this.fusion.log(true, Level.error, "Failed to set property value for %s in %s!", exception, id, this.propertyDataBuilder.getPath());
                         }
                     }
 
@@ -157,7 +160,7 @@ public final class PropertyDataImpl implements IPropertyData {
                         try {
                             node.set(type, property.getDefaultValue());
                         } catch (final SerializationException exception) {
-                            throw new IllegalStateException(exception);
+                            this.fusion.log(true, Level.error, "Failed to set property value for %s in %s!", exception, id, this.propertyDataBuilder.getPath());
                         }
                     }
                 }
