@@ -7,6 +7,7 @@ import com.ryderbelserion.fusion.files.interfaces.IConfigurate;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.IOException;
@@ -22,13 +23,19 @@ public final class YamlCustomFile extends ICustomFile<YamlCustomFile, CommentedC
 
         consumer.accept(this);
 
-        this.loader = YamlConfigurationLoader.builder()
+        final YamlConfigurationLoader.Builder loader = YamlConfigurationLoader.builder()
                 .indent(this.indent)
                 .nodeStyle(this.nodeStyle)
                 .headerMode(this.headerMode)
-                .path(getPath())
-                .defaultOptions(getOptions())
-                .build();
+                .path(getPath());
+
+        final ConfigurationOptions options = getOptions();
+
+        if (options != null) {
+            loader.defaultOptions(options);
+        }
+
+        this.loader = loader.build();
     }
 
     public YamlCustomFile(final FileManager fileManager, final Path path, final Consumer<YamlCustomFile> consumer) {

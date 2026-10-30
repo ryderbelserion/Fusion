@@ -14,7 +14,6 @@ import com.ryderbelserion.fusion.core.api.config.properties.builders.AliasBuilde
 import com.ryderbelserion.fusion.core.api.config.properties.interfaces.IPropertyData;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.enums.PropertyType;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.interfaces.Property;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -59,8 +58,6 @@ public final class PropertyDataImpl implements IPropertyData {
 
             default -> {
                 try {
-                    this.fusion.log(true, Level.error, "<red>Property Type: %s", property.getType());
-
                     yield (T) configuration.node(propertyPath).get(property.getType(), propertyValue);
                 } catch (final SerializationException exception) {
                     this.fusion.log(true, Level.error, "Failed to fetch property value for %s from %s! We are supplying the default value for now.", exception, Arrays.toString(propertyPath), this.propertyDataBuilder.getPath());

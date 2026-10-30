@@ -6,7 +6,8 @@ import org.jspecify.annotations.NullMarked;
 public enum TestEnum {
 
     example_one("example_one"),
-    example_two("example_two");
+    example_two("example_two"),
+    example_three("example_three");
 
     private final String name;
 

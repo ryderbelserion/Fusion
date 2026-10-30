@@ -5,6 +5,7 @@ import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.exceptions.FileException;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationOptions;
 import org.spongepowered.configurate.loader.HeaderMode;
 import org.spongepowered.configurate.yaml.enums.NodeStyle;
@@ -29,7 +30,7 @@ public abstract class ICustomFile<I, C, L> {
     protected final Logger logger;
     protected final Path path;
 
-    protected ConfigurationOptions options = ConfigurationOptions.defaults();
+    protected ConfigurationOptions options = null;
     protected FileType fileType;
 
     protected C defaultConfiguration;
@@ -156,7 +157,7 @@ public abstract class ICustomFile<I, C, L> {
     }
 
     public void setOptions(@NonNull final UnaryOperator<ConfigurationOptions> options) {
-        options.apply(this.options);
+        this.options = options.apply(ConfigurationOptions.defaults());
     }
 
     public ICustomFile<I, C, L> removeAction(@NonNull final FileAction action) {
@@ -193,7 +194,7 @@ public abstract class ICustomFile<I, C, L> {
 
     }
 
-    public @NonNull ConfigurationOptions getOptions() {
+    public @Nullable ConfigurationOptions getOptions() {
         return this.options;
     }
 
