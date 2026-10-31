@@ -104,6 +104,7 @@ public final class PropertyManager {
     public void load() {
         this.fileManager.addFile(this.path, FileType.YAML, consumer -> { // add file!
             consumer.addAction(FileAction.EXTRACT_FILE);
+            consumer.addAction(FileAction.KEEP_FILE); // keep file from being purged.
 
             consumer.withHeaderMode(this.builder.getHeaderMode());
             consumer.withNodeStyle(this.builder.getNodeStyle());
