@@ -3,7 +3,9 @@ package com.ryderbelserion.fusion.core.api.config.properties;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.BeanProperty;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.EnumProperty;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.BooleanProperty;
+import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.DoubleProperty;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.IntegerProperty;
+import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.LongProperty;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.string.ListProperty;
 import com.ryderbelserion.fusion.core.api.config.properties.objects.primitives.string.StringProperty;
 import org.jspecify.annotations.NullMarked;
@@ -22,6 +24,14 @@ public class PropertyBuilder {
 
     public static ListProperty newProperty(final List<String> defaultValue, final Object... path) {
         return new ListProperty(defaultValue, path);
+    }
+
+    public static DoubleProperty newProperty(final double defaultValue, final Object... path) {
+        return new DoubleProperty(defaultValue, path);
+    }
+
+    public static LongProperty newProperty(final long defaultValue, final Object... path) {
+        return new LongProperty(defaultValue, path);
     }
 
     public static IntegerProperty newProperty(final int defaultValue, final Object... path) {
