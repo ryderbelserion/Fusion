@@ -4,7 +4,7 @@ plugins {
 }
 
 project.group = "${rootProject.group}.addons"
-project.version = "1.3.0"
+project.version = "1.4.0"
 
 dependencies {
     api(libs.jspecify)
