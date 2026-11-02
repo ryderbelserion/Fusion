@@ -116,7 +116,7 @@ public final class PropertyManager {
     }
 
     public void load() {
-        if (Files.notExists(this.path)) {
+        if (!Files.exists(this.path)) {
             try {
                 Files.createFile(this.path);
             } catch (final IOException exception) {
