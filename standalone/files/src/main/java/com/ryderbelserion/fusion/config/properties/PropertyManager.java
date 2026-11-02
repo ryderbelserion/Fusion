@@ -15,6 +15,7 @@ import com.ryderbelserion.fusion.config.properties.interfaces.IPropertyData;
 import com.ryderbelserion.fusion.config.properties.objects.interfaces.Property;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
@@ -115,6 +116,14 @@ public final class PropertyManager {
     }
 
     public void load() {
+        if (Files.notExists(this.path)) {
+            try {
+                Files.createFile(this.path);
+            } catch (final IOException exception) {
+                throw new FileException("Failed to create file %s".formatted(this.path), exception);
+            }
+        }
+
         this.configuration = CompletableFuture.supplyAsync(() -> {
             try {
                 return this.loader.load();
