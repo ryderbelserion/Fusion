@@ -40,8 +40,6 @@ public class ExtensionManager implements IExtensionManager {
 
         final List<Path> paths = FileUtils.getFiles(this.parent, List.of(".jar"), depth);
 
-        info("Initializing extensions...");
-
         for (final Path path : paths) {
             try {
                 loadExtension(path);
@@ -49,8 +47,6 @@ public class ExtensionManager implements IExtensionManager {
                 throw new IllegalStateException("Could not load extension %s!".formatted(path), exception);
             }
         }
-
-        warn("Initialized %s extension(s)!", this.extensions.size());
     }
 
     @Override
