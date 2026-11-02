@@ -1,12 +1,11 @@
 package com.ryderbelserion.fusion.core.utils;
 
 import com.ryderbelserion.fusion.api.FusionProvider;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.FusionCore;
+import com.ryderbelserion.fusion.files.utils.FileUtils;
 import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
-import org.spongepowered.configurate.serialize.SerializationException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -23,35 +22,16 @@ public class StringUtils {
 
     private static final FusionCore fusion = (FusionCore) FusionProvider.api();
 
-    private static final char LF = '\n';
-    private static final char CR = '\r';
-
-    public static List<String> getStringList(final CommentedConfigurationNode node, final List<String> defaultValues) {
-        try {
-            final List<String> list = node.getList(String.class);
-
-            return list != null ? list : defaultValues;
-        } catch (SerializationException exception) {
-            throw new FusionException(String.format("Failed to serialize %s!", node.path()), exception);
-        }
-    }
-
     public static List<String> getStringList(final CommentedConfigurationNode node, final String defaultValue) {
-        return getStringList(node, List.of(defaultValue));
+        return FileUtils.getStringList(node, List.of(defaultValue));
     }
 
     public static List<String> getStringList(final CommentedConfigurationNode node) {
-        return getStringList(node, List.of());
+        return FileUtils.getStringList(node, List.of());
     }
 
     public static List<String> getStringList(final BasicConfigurationNode node, final List<String> defaultValues) {
-        try {
-            final List<String> list = node.getList(String.class);
-
-            return list != null ? list : defaultValues;
-        } catch (SerializationException exception) {
-            throw new FusionException(String.format("Failed to serialize %s!", node.path()), exception);
-        }
+        return FileUtils.getStringList(node, defaultValues);
     }
 
     public static List<String> getStringList(final BasicConfigurationNode node, final String defaultValue) {
@@ -59,7 +39,7 @@ public class StringUtils {
     }
 
     public static List<String> getStringList(final BasicConfigurationNode node) {
-        return getStringList(node, List.of());
+        return FileUtils.getStringList(node, List.of());
     }
 
     public static Optional<Boolean> tryParseBoolean(final String value) {
@@ -119,40 +99,10 @@ public class StringUtils {
     }
 
     public static String toString(final List<String> list) {
-        if (list.isEmpty()) return "";
-
-        final StringBuilder message = new StringBuilder(list.size());
-
-        for (final String line : list) {
-            message.append(line).append("\n");
-        }
-
-        return chomp(message.toString());
+        return FileUtils.toString(list);
     }
 
     public static String chomp(final String value) {
-        if (value.isEmpty()) {
-            return value;
-        }
-
-        if (value.length() == 1) {
-            final char character = value.charAt(0);
-
-            return character == CR || character == LF ? "" : value;
-        }
-
-        int lastIdx = value.length() - 1;
-
-        final char last = value.charAt(lastIdx);
-
-        if (last == LF) {
-            if (value.charAt(lastIdx - 1) == CR) {
-                lastIdx--;
-            }
-        } else if (last != CR) {
-            lastIdx++;
-        }
-
-        return value.substring(0, lastIdx);
+        return FileUtils.chomp(value);
     }
 }

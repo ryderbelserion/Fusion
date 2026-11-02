@@ -1,13 +1,13 @@
 package com.ryderbelserion.fusion.config.migration.enums;
 
 import com.ryderbelserion.fusion.config.keys.ConfigKeys;
-import com.ryderbelserion.fusion.core.api.config.properties.interfaces.IPropertyData;
-import com.ryderbelserion.fusion.core.api.config.properties.objects.interfaces.Property;
+import com.ryderbelserion.fusion.config.properties.interfaces.IPropertyData;
+import com.ryderbelserion.fusion.config.properties.objects.interfaces.Property;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import java.util.HashMap;
 import java.util.Map;
-import static com.ryderbelserion.fusion.core.api.config.properties.PropertyBuilder.newProperty;
+import static com.ryderbelserion.fusion.config.properties.PropertyBuilder.newProperty;
 
 public enum PropertyStorage {
 

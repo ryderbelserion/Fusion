@@ -1,0 +1,16 @@
+package com.ryderbelserion.fusion.config.properties.objects;
+
+import com.ryderbelserion.fusion.config.properties.objects.enums.PropertyType;
+import org.jspecify.annotations.NullMarked;
+
+@NullMarked
+public final class BeanProperty<T> extends BaseProperty<T> {
+
+    public BeanProperty(final Class<T> type, final T defaultValue, final String alias, final Object[] path) {
+        super(type, defaultValue, alias, PropertyType.BEAN_PROPERTY, path);
+    }
+
+    public BeanProperty(final Class<T> type, final T defaultValue, final Object[] path) {
+        this(type, defaultValue, "", path);
+    }
+}

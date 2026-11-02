@@ -1,0 +1,23 @@
+package com.ryderbelserion.fusion.config.properties.objects.primitives.string;
+
+import org.jspecify.annotations.NullMarked;
+import com.ryderbelserion.fusion.config.properties.objects.BaseProperty;
+import com.ryderbelserion.fusion.config.properties.objects.enums.PropertyType;
+import java.util.List;
+
+@NullMarked
+public final class ListProperty extends BaseProperty<List<String>> {
+
+    public ListProperty(final List<String> defaultValue, final String alias, final Object... path) {
+        super((Class) List.class, defaultValue, alias, PropertyType.STRING_LIST, path);
+    }
+
+    public ListProperty(final List<String> defaultValue, final Object... path) {
+        this(defaultValue, "", path);
+    }
+
+    @Override
+    public List<String> getDefaultValue() {
+        return super.getDefaultValue();
+    }
+}

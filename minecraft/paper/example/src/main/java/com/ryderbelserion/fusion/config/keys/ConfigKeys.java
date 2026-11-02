@@ -1,18 +1,17 @@
 package com.ryderbelserion.fusion.config.keys;
 
 import com.ryderbelserion.fusion.config.enums.TestEnum;
-import com.ryderbelserion.fusion.core.api.config.annotations.Alias;
-import com.ryderbelserion.fusion.core.api.config.annotations.Comment;
-import com.ryderbelserion.fusion.core.api.config.properties.builders.AliasBuilder;
-import com.ryderbelserion.fusion.core.api.config.properties.builders.CommentsBuilder;
-import com.ryderbelserion.fusion.core.api.config.properties.interfaces.IPropertyHolder;
-import com.ryderbelserion.fusion.core.api.config.properties.objects.EnumProperty;
-import com.ryderbelserion.fusion.core.api.config.properties.objects.interfaces.Property;
+import com.ryderbelserion.fusion.config.annotations.Alias;
+import com.ryderbelserion.fusion.config.annotations.Comment;
+import com.ryderbelserion.fusion.config.properties.builders.AliasBuilder;
+import com.ryderbelserion.fusion.config.properties.builders.CommentsBuilder;
+import com.ryderbelserion.fusion.config.properties.interfaces.IPropertyHolder;
+import com.ryderbelserion.fusion.config.properties.objects.EnumProperty;
+import com.ryderbelserion.fusion.config.properties.objects.interfaces.Property;
 import org.jspecify.annotations.NullMarked;
 
-import static com.ryderbelserion.fusion.core.api.config.properties.PropertyBuilder.newBeanProperty;
-import static com.ryderbelserion.fusion.core.api.config.properties.PropertyBuilder.newEnumProperty;
-import static com.ryderbelserion.fusion.core.api.config.properties.PropertyBuilder.newProperty;
+import static com.ryderbelserion.fusion.config.properties.PropertyBuilder.newEnumProperty;
+import static com.ryderbelserion.fusion.config.properties.PropertyBuilder.newProperty;
 
 @NullMarked
 public final class ConfigKeys implements IPropertyHolder {
