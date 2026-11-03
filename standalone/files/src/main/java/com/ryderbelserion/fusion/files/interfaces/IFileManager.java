@@ -4,8 +4,7 @@ import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.types.LogCustomFile;
-import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
-import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
+import com.ryderbelserion.fusion.files.types.YamlCustomFile;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import java.nio.file.Path;
@@ -18,7 +17,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.logging.Logger;
 
 @NullMarked
 public abstract class IFileManager<I> {
@@ -63,8 +61,6 @@ public abstract class IFileManager<I> {
 
     public abstract I refresh(final boolean save);
 
-    public abstract Logger getLogger();
-
     public abstract boolean hasFile(final Path path);
 
     public abstract Optional<ICustomFile<?, ?, ?>> getFile(final Path path);
@@ -73,24 +69,14 @@ public abstract class IFileManager<I> {
 
     public abstract YamlCustomFile buildYamlFile(final Path path, final String jarFolder, final Consumer<YamlCustomFile> consumer);
 
-    public abstract JsonCustomFile buildJsonFile(final Path path, final String jarFolder, final Consumer<JsonCustomFile> consumer);
-
     public YamlCustomFile buildYamlFile(final Path path, final Consumer<YamlCustomFile> consumer) {
         return buildYamlFile(path, "", consumer);
-    }
-
-    public JsonCustomFile buildJsonFile(final Path path, final Consumer<JsonCustomFile> consumer) {
-        return buildJsonFile(path, "", consumer);
     }
 
     public abstract LogCustomFile buildLogFile(final Path path, final Consumer<LogCustomFile> consumer);
 
     public Optional<YamlCustomFile> getYamlFile(final Path path) {
         return getFile(path).map(YamlCustomFile.class::cast);
-    }
-
-    public Optional<JsonCustomFile> getJsonFile(final Path path) {
-        return getFile(path).map(JsonCustomFile.class::cast);
     }
 
     public Optional<LogCustomFile> getLogFile(final Path path) {

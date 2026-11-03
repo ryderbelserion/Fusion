@@ -37,6 +37,8 @@ hmcwraps = "1.8.2" # https://docs.hibiscusmc.com/hmcwraps/api/
 fix-javadoc = "1.19" # https://github.com/mfnalex/gradle-fix-javadoc-plugin/
 shadow = "9.6.1" # https://github.com/GradleUp/shadow/
 
+tinylog = "2.8.1" # https://tinylog.org/getting-started/
+
 #### Publishing Link
 url = "https://repo.crazycrew.us/releases"
 [libraries]
@@ -48,7 +50,6 @@ paperweight = { module = "io.papermc.paperweight.userdev:io.papermc.paperweight.
 
 # https://github.com/ryderbelserion/Configurate
 configurate-yaml = { group = "org.spongepowered", name = "configurate-yaml-api", version.ref = "configurate" }
-configurate-gson = { group = "org.spongepowered", name = "configurate-gson-api", version.ref = "configurate" }
 
 # https://minecraft.net/
 brigadier = { module = "com.mojang:brigadier", version.ref = "brigadier" }
@@ -92,6 +93,10 @@ kyori-logger = { module = "net.kyori:adventure-text-logger-slf4j", version.ref =
 kyori-text = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventure" }
 kyori-api = { module = "net.kyori:adventure-api", version.ref = "adventure" }
 
+tinylog-log4j = { module = "org.tinylog:slf4j-tinylog", version.ref = "tinylog" }
+tinylog-impl = { module = "org.tinylog:tinylog-impl", version.ref = "tinylog" }
+tinylog-api = { module = "org.tinylog:tinylog-api", version.ref = "tinylog" }
+
 # https://docs.papermc.io/velocity/dev/creating-your-first-plugin/
 velocity = { module = "com.velocitypowered:velocity-api", version.ref = "velocity" }
 [bundles]
@@ -126,4 +131,10 @@ paper = [
 
     "run-velocity",
     "run-paper"
+]
+
+tinylog = [
+    "tinylog-log4j",
+    "tinylog-impl",
+    "tinylog-api"
 ]

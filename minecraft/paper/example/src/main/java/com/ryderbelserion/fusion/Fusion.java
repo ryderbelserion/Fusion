@@ -1,7 +1,6 @@
 package com.ryderbelserion.fusion;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.ryderbelserion.fusion.addons.ExtensionManager;
 import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.commands.SimpleCommand;
 import com.ryderbelserion.fusion.commands.types.items.ItemCommand;
@@ -33,12 +32,8 @@ public class Fusion extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        final ExtensionManager manager = new ExtensionManager(this.getDataPath().resolve("extensions"));
-
         this.fusion = new FusionPaper(this);
         this.fusion.init();
-
-        manager.init(this.fusion.getDepth());
 
         final FileManager fileManager = this.fusion.getFileManager();
 
@@ -96,9 +91,9 @@ public class Fusion extends JavaPlugin implements Listener {
 
             try {
                 configuration.node("1", "World").set(String.class, "world");
-                configuration.node("1", "X").set(Integer.class, 1);
-                configuration.node("1", "Y").set(Integer.class, 2);
-                configuration.node("1", "Z").set(Integer.class, 3);
+                configuration.node("1", "X").set(int.class, 1);
+                configuration.node("1", "Y").set(int.class, 2);
+                configuration.node("1", "Z").set(int.class, 3);
 
                 customFile.save();
             } catch (SerializationException e) {

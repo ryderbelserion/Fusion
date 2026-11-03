@@ -6,8 +6,7 @@ import com.ryderbelserion.fusion.files.exceptions.FileException;
 import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
 import com.ryderbelserion.fusion.files.interfaces.IFileManager;
 import com.ryderbelserion.fusion.files.types.LogCustomFile;
-import com.ryderbelserion.fusion.files.types.configurate.JsonCustomFile;
-import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
+import com.ryderbelserion.fusion.files.types.YamlCustomFile;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import java.io.IOException;
@@ -20,7 +19,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
@@ -30,8 +28,6 @@ import java.util.zip.ZipOutputStream;
 public class FileManager extends IFileManager<FileManager> {
 
     private final Map<Path, ICustomFile<?, ?, ?>> files = new HashMap<>();
-
-    private final Logger logger = Logger.getLogger(FileManager.class.getName());
 
     private final Path path;
 
@@ -71,7 +67,6 @@ public class FileManager extends IFileManager<FileManager> {
 
         switch (fileType) {
             case FileType.YAML -> customFile = buildYamlFile(path, jarFolder, consumer::accept);
-            case FileType.JSON -> customFile = buildJsonFile(path, jarFolder, consumer::accept);
             case FileType.LOG -> customFile = buildLogFile(path, consumer::accept);
         }
 
@@ -120,11 +115,6 @@ public class FileManager extends IFileManager<FileManager> {
     @Override
     public YamlCustomFile buildYamlFile(final Path path, final String jarFolder, final Consumer<YamlCustomFile> consumer) {
         return new YamlCustomFile(this, jarFolder, path, consumer).load();
-    }
-
-    @Override
-    public JsonCustomFile buildJsonFile(final Path path, final String jarFolder, final Consumer<JsonCustomFile> consumer) {
-        return new JsonCustomFile(this, jarFolder, path, consumer).load();
     }
 
     @Override
@@ -487,7 +477,7 @@ public class FileManager extends IFileManager<FileManager> {
                 }
             });
         } catch (final IOException exception) {
-            throw new FileException("Failed to get a list of files", exception);
+            throw new FileException("Failed to get a list of files.", exception);
         }
 
         return files;
@@ -496,10 +486,5 @@ public class FileManager extends IFileManager<FileManager> {
     @Override
     public final Map<Path, ICustomFile<?, ?, ?>> getFiles() {
         return Collections.unmodifiableMap(this.files);
-    }
-
-    @Override
-    public final Logger getLogger() {
-        return this.logger;
     }
 }

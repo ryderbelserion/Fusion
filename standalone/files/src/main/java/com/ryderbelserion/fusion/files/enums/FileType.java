@@ -13,10 +13,6 @@ public enum FileType {
      */
     YAML(".yml"),
     /**
-     * Files that end with .json, but are built with Configurate which is by SpongePowered
-     */
-    JSON(".json"),
-    /**
      * Files that end with .nbt, used for structure files
      */
     NBT(".nbt"),

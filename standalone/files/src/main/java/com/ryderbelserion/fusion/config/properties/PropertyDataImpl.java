@@ -10,10 +10,8 @@ import com.ryderbelserion.fusion.config.properties.builders.AliasBuilder;
 import com.ryderbelserion.fusion.config.properties.interfaces.IPropertyData;
 import com.ryderbelserion.fusion.config.properties.objects.enums.PropertyType;
 import com.ryderbelserion.fusion.config.properties.objects.interfaces.Property;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 @NullMarked
@@ -23,15 +21,12 @@ public final class PropertyDataImpl implements IPropertyData {
     private final Map<Object[], PropertyHolder> properties;
     private final Map<Object[], List<String>> comments;
     private final AliasBuilder aliasBuilder;
-    private final Logger logger;
 
     public PropertyDataImpl(final PropertyDataBuilder propertyDataBuilder, final AliasBuilder aliasBuilder, final Map<Object[], PropertyHolder> properties, final Map<Object[], List<String>> comments) {
         this.propertyDataBuilder = propertyDataBuilder;
         this.aliasBuilder = aliasBuilder;
         this.properties = properties;
         this.comments = comments;
-
-        this.logger = Logger.getLogger("Fusion");
     }
 
     @Override
@@ -56,7 +51,7 @@ public final class PropertyDataImpl implements IPropertyData {
                 try {
                     yield (T) configuration.node(propertyPath).get(property.getType(), propertyValue);
                 } catch (final SerializationException exception) {
-                    this.logger.severe("Failed to fetch property value for %s from %s! We are supplying the default value for now. (%s)".formatted(Arrays.toString(propertyPath), this.propertyDataBuilder.getPath(), exception.getMessage()));
+                    exception.printStackTrace();
 
                     yield propertyValue;
                 }
@@ -82,7 +77,7 @@ public final class PropertyDataImpl implements IPropertyData {
                 try {
                     configuration.node(propertyPath).setList(TypeToken.get(String.class), List.of(value.toString()));
                 } catch (final SerializationException exception) {
-                    this.logger.severe("Failed to set property value for %s in %s! (%s)".formatted(Arrays.toString(propertyPath), this.propertyDataBuilder.getPath(), exception.getMessage()));
+                    exception.printStackTrace();
                 }
             }
 
@@ -90,7 +85,7 @@ public final class PropertyDataImpl implements IPropertyData {
                 try {
                     configuration.node(propertyPath).set(type, value);
                 } catch (final SerializationException exception) {
-                    this.logger.severe("Failed to set property value for %s in %s! (%s)".formatted(Arrays.toString(propertyPath), this.propertyDataBuilder.getPath(), exception.getMessage()));
+                    exception.printStackTrace();
                 }
             }
         }
@@ -131,7 +126,7 @@ public final class PropertyDataImpl implements IPropertyData {
                                 node.setList(TypeToken.get(String.class), listProperty.getDefaultValue());
                             }
                         } catch (final SerializationException exception) {
-                            this.logger.severe("Failed to set property value for %s in %s! (%s)".formatted(Arrays.toString(id), this.propertyDataBuilder.getPath(), exception.getMessage()));
+                            exception.printStackTrace();
                         }
                     }
 
@@ -139,7 +134,7 @@ public final class PropertyDataImpl implements IPropertyData {
                         try {
                             node.set(type, property.getDefaultValue());
                         } catch (final SerializationException exception) {
-                            this.logger.severe("Failed to set property value for %s in %s! (%s)".formatted(Arrays.toString(id), this.propertyDataBuilder.getPath(), exception.getMessage()));
+                            exception.printStackTrace();
                         }
                     }
                 }

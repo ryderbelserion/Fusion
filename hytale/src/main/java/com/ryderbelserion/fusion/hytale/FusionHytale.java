@@ -12,7 +12,6 @@ import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.hytale.interfaces.IFusionHytale;
 import com.ryderbelserion.fusion.hytale.utils.ColorUtils;
 import com.ryderbelserion.fusion.kyori.FusionKyori;
-import net.kyori.adventure.text.Component;
 import org.jspecify.annotations.NullMarked;
 import java.nio.file.Path;
 import java.util.HashMap;

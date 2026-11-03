@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.UnaryOperator;
-import java.util.logging.Logger;
 
 // I i.e. YamlCustomFile.
 // C i.e. the SettingsManager, or CommentedConfigurationNode/BasicConfigurationNode.
@@ -27,7 +26,6 @@ public abstract class ICustomFile<I, C, L> {
     protected final List<FileAction> actions = new ArrayList<>();
     protected final FileManager fileManager;
     protected final String jarFolder;
-    protected final Logger logger;
     protected final Path path;
 
     protected ConfigurationOptions options = null;
@@ -44,7 +42,6 @@ public abstract class ICustomFile<I, C, L> {
     ) {
         this.fileManager = fileManager;
         this.jarFolder = jarFolder;
-        this.logger = this.fileManager.getLogger();
         this.path = path;
     }
 

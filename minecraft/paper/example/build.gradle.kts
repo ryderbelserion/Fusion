@@ -5,7 +5,6 @@ plugins {
 project.group = "${rootProject.name}.paper"
 
 dependencies {
-    api(project(":fusion-addons"))
     api(project(":fusion-paper"))
 
     compileOnly(libs.bundles.shared)
@@ -27,7 +26,8 @@ tasks {
         listOf(
             "org.spongepowered",
             "org.jspecify",
-            "org.yaml",
+            "io.leangen",
+            "org.yaml"
         ).forEach {
             relocate(it, "libs.$it")
         }

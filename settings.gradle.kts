@@ -23,7 +23,7 @@ listOf(
     "standalone/files" to "files",
     "standalone/core" to "core",
 
-    "hytale" to "hytale",
+    //"hytale" to "hytale",
     "api" to "api"
 ).forEach {
     includeProject(it.first, it.second)

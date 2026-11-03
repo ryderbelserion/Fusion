@@ -1,17 +1,17 @@
-package com.ryderbelserion.fusion.core.mods;
+package com.ryderbelserion.fusion.kyori.api.mods;
 
-import com.ryderbelserion.fusion.api.enums.constants.ModSupport;
+import com.ryderbelserion.fusion.kyori.api.constants.ModSupport;
 import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
-import com.ryderbelserion.fusion.api.interfaces.IModRegistry;
-import com.ryderbelserion.fusion.core.mods.objects.Mod;
+import com.ryderbelserion.fusion.kyori.api.mods.interfaces.AbstractModRegistry;
+import com.ryderbelserion.fusion.kyori.api.mods.objects.Mod;
 import org.jspecify.annotations.NullMarked;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 @NullMarked
-public final class ModRegistry implements IModRegistry<Mod> {
+public final class ModRegistry implements AbstractModRegistry {
 
     private final Map<FusionKey, Mod> mods = new HashMap<>();
 

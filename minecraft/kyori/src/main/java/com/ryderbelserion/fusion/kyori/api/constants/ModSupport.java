@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.api.enums.constants;
+package com.ryderbelserion.fusion.kyori.api.constants;
 
 import com.ryderbelserion.fusion.api.objects.FusionKey;
 import java.util.List;

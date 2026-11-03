@@ -1,7 +1,7 @@
 package com.ryderbelserion.fusion.addons.api.interfaces;
 
+import org.tinylog.TaggedLogger;
 import java.nio.file.Path;
-import java.util.logging.Logger;
 
 public interface IExtensionMeta {
 
@@ -19,7 +19,7 @@ public interface IExtensionMeta {
 
     void error(final String message, final Object... params);
 
-    Logger getLogger();
+    TaggedLogger getLogger();
 
     String getName();
 

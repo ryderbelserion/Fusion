@@ -1,4 +1,4 @@
-package com.ryderbelserion.fusion.files.types.configurate;
+package com.ryderbelserion.fusion.files.types;
 
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileType;

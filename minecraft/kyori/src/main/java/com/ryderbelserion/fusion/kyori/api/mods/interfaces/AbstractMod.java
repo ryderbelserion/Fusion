@@ -1,15 +1,15 @@
-package com.ryderbelserion.fusion.api.interfaces.mods;
+package com.ryderbelserion.fusion.kyori.api.mods.interfaces;
 
 import com.ryderbelserion.fusion.api.objects.FusionKey;
 import org.jspecify.annotations.NullMarked;
 import java.util.UUID;
 
 @NullMarked
-public abstract class IMod {
+public abstract class AbstractMod {
 
     private final FusionKey key;
 
-    public IMod(final FusionKey key) {
+    public AbstractMod(final FusionKey key) {
         this.key = key;
     }
 

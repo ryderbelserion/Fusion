@@ -5,12 +5,10 @@ import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.api.FusionProvider;
 import com.ryderbelserion.fusion.api.exceptions.FusionException;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
-import com.ryderbelserion.fusion.core.mods.objects.Mod;
 import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.types.configurate.YamlCustomFile;
-import com.ryderbelserion.fusion.core.mods.ModRegistry;
+import com.ryderbelserion.fusion.files.types.YamlCustomFile;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullUnmarked;
 import org.jspecify.annotations.Nullable;
@@ -23,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class FusionCore<S, C, TR> extends FusionApi<S, C, Mod, TR> {
+public abstract class FusionCore<S, C> extends FusionApi<S, C> {
 
     protected final Path configPath;
     protected final Path path;
@@ -34,19 +32,9 @@ public abstract class FusionCore<S, C, TR> extends FusionApi<S, C, Mod, TR> {
     }
 
     private MessageRegistry messageRegistry;
-    private ModRegistry modRegistry;
     private FileManager fileManager;
 
-    public abstract boolean isModReady(@NonNull final FusionKey key);
-
-    public abstract boolean isModReady(@NonNull final String key);
-
     public abstract @NonNull String getNamespace();
-
-    @Override
-    public @NonNull ModRegistry getModRegistry() {
-        return this.modRegistry;
-    }
 
     @Override
     public @NonNull FusionCore init() {
@@ -65,9 +53,6 @@ public abstract class FusionCore<S, C, TR> extends FusionApi<S, C, Mod, TR> {
                 action.addAction(FileAction.EXTRACT_FILE).addAction(FileAction.KEEP_FILE)).setDepth(getDepth()).setVerbose(isVerbose());
 
         this.messageRegistry = new MessageRegistry(this, FusionKey.key(getNamespace(), "default"));
-
-        this.modRegistry = new ModRegistry();
-        this.modRegistry.init();
 
         return this;
     }

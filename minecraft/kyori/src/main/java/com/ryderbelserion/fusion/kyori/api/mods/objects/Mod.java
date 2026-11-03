@@ -1,15 +1,15 @@
-package com.ryderbelserion.fusion.core.mods.objects;
+package com.ryderbelserion.fusion.kyori.api.mods.objects;
 
 import com.ryderbelserion.fusion.api.FusionProvider;
-import com.ryderbelserion.fusion.core.FusionCore;
 import com.ryderbelserion.fusion.api.objects.FusionKey;
-import com.ryderbelserion.fusion.api.interfaces.mods.IMod;
+import com.ryderbelserion.fusion.kyori.FusionKyori;
+import com.ryderbelserion.fusion.kyori.api.mods.interfaces.AbstractMod;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-public class Mod extends IMod {
+public class Mod extends AbstractMod {
 
-    private final FusionCore fusion = (FusionCore) FusionProvider.api();
+    private final FusionKyori fusion = (FusionKyori) FusionProvider.api();
 
     public Mod(final FusionKey key) {
         super(key);

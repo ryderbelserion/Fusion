@@ -4,8 +4,9 @@ plugins {
 }
 
 project.group = "${rootProject.group}.addons"
-project.version = "1.4.0"
+project.version = "1.5.0"
 
 dependencies {
+    api(libs.bundles.tinylog)
     api(libs.jspecify)
 }

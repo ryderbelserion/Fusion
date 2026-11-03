@@ -7,6 +7,7 @@ import com.ryderbelserion.fusion.addons.utils.FileUtils;
 import com.ryderbelserion.fusion.addons.api.Extension;
 import com.ryderbelserion.fusion.addons.api.interfaces.IExtensionManager;
 import org.jspecify.annotations.NonNull;
+import org.tinylog.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,19 +16,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 public class ExtensionManager implements IExtensionManager {
 
     private final Map<String, Extension> extensions = new ConcurrentHashMap<>();
 
-    private final Logger logger;
-
     private final Path parent; // parent path i.e. the extensions folder
 
     public ExtensionManager(@NonNull final Path parent) {
         this.parent = parent;
-        this.logger = Logger.getLogger("ExtensionManager");
     }
 
     @Override
@@ -119,17 +116,17 @@ public class ExtensionManager implements IExtensionManager {
 
     @Override
     public void info(final String message, final Object... params) {
-        this.logger.info(message.formatted(params));
+        Logger.info(message, params);
     }
 
     @Override
     public void warn(final String message, final Object... params) {
-        this.logger.warning(message.formatted(params));
+        Logger.warn(message, params);
     }
 
     @Override
     public void error(final String message, final Object... params) {
-        this.logger.severe(message.formatted(params));
+        Logger.error(message, params);
     }
 
     @Override

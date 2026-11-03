@@ -2,6 +2,8 @@ package com.ryderbelserion.fusion.addons.api.meta;
 
 import com.ryderbelserion.fusion.addons.api.interfaces.IExtensionMeta;
 import org.jspecify.annotations.NonNull;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileSystem;
@@ -9,12 +11,11 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 public class ExtensionMeta implements IExtensionMeta {
 
+    protected TaggedLogger logger;
     protected String version;
-    protected Logger logger;
     protected String main;
     protected String name;
 
@@ -45,6 +46,8 @@ public class ExtensionMeta implements IExtensionMeta {
         if (this.name.isEmpty()) {
             throw new IllegalStateException("Extension name cannot be empty for %s.".formatted(pathName));
         }
+
+        this.logger = Logger.tag(this.name.toLowerCase()); // bind tagged logger
     }
 
     public void copy(@NonNull final ExtensionMeta meta) {
@@ -55,8 +58,6 @@ public class ExtensionMeta implements IExtensionMeta {
     }
 
     public void post() {
-        this.logger = Logger.getLogger(this.name);
-
         info("Loading the extension %s.", this.name);
 
         this.path = parent.resolve(this.name);
@@ -72,17 +73,17 @@ public class ExtensionMeta implements IExtensionMeta {
 
     @Override
     public void info(final String message, final Object... params) {
-        this.logger.info(message.formatted(params));
+        this.logger.info(message, params);
     }
 
     @Override
     public void warn(final String message, final Object... params) {
-        this.logger.warning(message.formatted(params));
+        this.logger.warn(message, params);
     }
 
     @Override
     public void error(final String message, final Object... params) {
-        this.logger.severe(message.formatted(params));
+        this.logger.error(message, params);
     }
 
     @Override
@@ -96,6 +97,11 @@ public class ExtensionMeta implements IExtensionMeta {
     }
 
     @Override
+    public TaggedLogger getLogger() {
+        return this.logger;
+    }
+
+    @Override
     public String getMainClass() {
         return this.main;
     }
@@ -103,11 +109,6 @@ public class ExtensionMeta implements IExtensionMeta {
     @Override
     public String getVersion() {
         return this.version;
-    }
-
-    @Override
-    public Logger getLogger() {
-        return this.logger;
     }
 
     @Override
