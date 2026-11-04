@@ -12,6 +12,7 @@ public enum FileAction {
 
     RELOAD_FILE,
 
+    DELETE_FILE,
     KEEP_FILE
 
 }
