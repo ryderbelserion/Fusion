@@ -3,36 +3,32 @@ package com.ryderbelserion.fusion.core;
 import com.ryderbelserion.fusion.api.FusionApi;
 import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.api.FusionProvider;
-import com.ryderbelserion.fusion.api.exceptions.FusionException;
+import com.ryderbelserion.fusion.config.properties.PropertyManager;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.files.FileManager;
-import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.types.YamlCustomFile;
+import com.ryderbelserion.fusion.impl.FusionConfig;
+import com.ryderbelserion.fusion.impl.keys.RootKeys;
 import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.NullUnmarked;
-import org.jspecify.annotations.Nullable;
-import org.spongepowered.configurate.CommentedConfigurationNode;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-public abstract class FusionCore<S, C> extends FusionApi<S, C> {
+public abstract class FusionCore<S, C> extends FusionApi<S, C, FileManager> {
 
-    protected final Path configPath;
     protected final Path path;
 
     public FusionCore(@NonNull final Path path) {
-        this.configPath = path.resolve("fusion.yml");
         this.path = path;
     }
 
     private MessageRegistry messageRegistry;
     private FileManager fileManager;
+    private PropertyManager config;
+    private FusionConfig provider;
 
     public abstract @NonNull String getNamespace();
 
@@ -48,9 +44,12 @@ public abstract class FusionCore<S, C> extends FusionApi<S, C> {
             }
         }
 
+        this.provider = new FusionConfig(this.path);
+        this.provider.build();
+
+        this.config = this.provider.getConfig();
+
         this.fileManager = new FileManager(this.path);
-        this.fileManager.addFile(this.configPath, FileType.YAML, action ->
-                action.addAction(FileAction.EXTRACT_FILE).addAction(FileAction.KEEP_FILE)).setDepth(getDepth()).setVerbose(isVerbose());
 
         this.messageRegistry = new MessageRegistry(this, FusionKey.key(getNamespace(), "default"));
 
@@ -64,20 +63,9 @@ public abstract class FusionCore<S, C> extends FusionApi<S, C> {
 
     @Override
     public @NonNull FusionCore reload() {
-        this.fileManager.reloadFile(this.configPath).setDepth(getDepth()).setVerbose(isVerbose());
+        this.provider.reload();
 
         return this;
-    }
-
-    @Override
-    @NullUnmarked
-    public void compressFile(@NonNull final Path path, @Nullable final Path folder, @NonNull final String content) {
-        this.fileManager.compressFile(path, folder, content);
-    }
-
-    @Override
-    public void compressFolder(@NonNull final Path path, @NonNull final String content) {
-        this.fileManager.compressFolder(path, content);
     }
 
     @Override
@@ -158,38 +146,34 @@ public abstract class FusionCore<S, C> extends FusionApi<S, C> {
         return this.path;
     }
 
-    public @NonNull final CommentedConfigurationNode getFusionConfig() {
-        final Optional<YamlCustomFile> customFile = this.fileManager.getYamlFile(this.configPath);
-
-        if (customFile.isEmpty()) {
-            throw new FusionException("Could not find custom file for " + this.configPath);
-        }
-
-        return customFile.get().getConfiguration();
-    }
-
+    @Override
     public @NonNull final FileManager getFileManager() {
         return this.fileManager;
     }
 
+    @Override
     public @NonNull final String getNumberFormat() {
-        return getFusionConfig().node("settings", "number_format").getString("#,###.##");
+        return this.config.getProperty(RootKeys.number_format);
     }
 
+    @Override
     public @NonNull final String getItemsPlugin() {
-        return getFusionConfig().node("settings", "custom-items-plugin").getString("None");
+        return this.config.getProperty(RootKeys.custom_items_plugin);
     }
 
+    @Override
     public @NonNull final String getRounding() {
-        return getFusionConfig().node("settings", "rounding").getString("half_even");
+        return this.config.getProperty(RootKeys.rounding);
     }
 
+    @Override
     public final boolean isVerbose() {
-        return getFusionConfig().node("settings", "is_verbose").getBoolean(true);
+        return this.config.getProperty(RootKeys.is_verbose);
     }
 
+    @Override
     public final int getDepth() {
-        return getFusionConfig().node("settings", "recursion_depth").getInt(1);
+        return this.config.getProperty(RootKeys.recursion_depth);
     }
 
     public @NonNull final MessageRegistry getMessageRegistry() {

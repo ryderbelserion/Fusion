@@ -4,7 +4,7 @@ plugins {
 }
 
 project.group = "${rootProject.group}.addons"
-project.version = "1.5.0"
+project.version = "1.6.0"
 
 dependencies {
     api(libs.bundles.tinylog)

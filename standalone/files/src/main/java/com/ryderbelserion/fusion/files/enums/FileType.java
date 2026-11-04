@@ -17,10 +17,6 @@ public enum FileType {
      */
     NBT(".nbt"),
     /**
-     * Files with the extension .log
-     */
-    LOG(".log"),
-    /**
      * Files with the extension .png
      */
     PNG(".png");

@@ -2,7 +2,7 @@ package com.ryderbelserion.fusion.config.properties;
 
 import com.ryderbelserion.fusion.config.migration.MigrationService;
 import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.exceptions.FileException;
+import com.ryderbelserion.fusion.files.exceptions.CustomException;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.NullUnmarked;
@@ -105,7 +105,7 @@ public final class PropertyManager {
 
     public CommentedConfigurationNode getConfiguration() {
         if (this.configuration == null) {
-            throw new FileException("Could not find custom file for " + this.path);
+            throw new CustomException("Could not find custom file for " + this.path);
         }
 
         return this.configuration;
@@ -120,7 +120,7 @@ public final class PropertyManager {
             try {
                 Files.createFile(this.path);
             } catch (final IOException exception) {
-                throw new FileException("Failed to create file %s".formatted(this.path), exception);
+                throw new CustomException("Failed to create file %s".formatted(this.path), exception);
             }
         }
 
@@ -128,7 +128,7 @@ public final class PropertyManager {
             try {
                 return this.loader.load();
             } catch (final IOException exception) {
-                throw new FileException("Failed to load file %s".formatted(this.path), exception);
+                throw new CustomException("Failed to load file %s".formatted(this.path), exception);
             }
         }).join();
 
@@ -144,7 +144,7 @@ public final class PropertyManager {
             try {
                 this.loader.save(this.configuration);
             } catch (ConfigurateException exception) {
-                throw new FileException("Failed to save file %s".formatted(this.path), exception);
+                throw new CustomException("Failed to save file %s".formatted(this.path), exception);
             }
         });
     }

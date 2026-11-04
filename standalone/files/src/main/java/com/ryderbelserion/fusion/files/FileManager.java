@@ -2,84 +2,78 @@ package com.ryderbelserion.fusion.files;
 
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
-import com.ryderbelserion.fusion.files.exceptions.FileException;
-import com.ryderbelserion.fusion.files.interfaces.ICustomFile;
-import com.ryderbelserion.fusion.files.interfaces.IFileManager;
-import com.ryderbelserion.fusion.files.types.LogCustomFile;
+import com.ryderbelserion.fusion.files.exceptions.CustomException;
+import com.ryderbelserion.fusion.files.interfaces.AbstractCustomFile;
+import com.ryderbelserion.fusion.files.interfaces.AbstractFileManager;
+import com.ryderbelserion.fusion.files.objects.FileData;
 import com.ryderbelserion.fusion.files.types.YamlCustomFile;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 @NullMarked
-public class FileManager extends IFileManager<FileManager> {
+public class FileManager extends AbstractFileManager<FileManager> {
 
-    private final Map<Path, ICustomFile<?, ?, ?>> files = new HashMap<>();
+    private final Map<Path, AbstractCustomFile<?, ?, ?>> files = new ConcurrentHashMap<>();
 
     private final Path path;
-
-    private boolean isVerbose = false;
-    private int depth = 1;
 
     public FileManager(final Path path) {
         this.path = path;
     }
 
     @Override
-    public FileManager addFolder(final Path folder, final String jarFolder, final FileType fileType, final Consumer<ICustomFile<?, ?, ?>> consumer) {
-        extractFolder(folder.getFileName().toString(), jarFolder, fileType, folder.getParent());
+    public FileManager addFolder(final Path folder, final String jarPath, final FileType fileType, final Consumer<AbstractCustomFile<?, ?, ?>> builder) {
+        extractFolder(folder.getFileName().toString(), jarPath, fileType, folder.getParent());
 
-        for (final Path path : getFilesByPath(folder, fileType.getExtension())) {
-            addFile(path, fileType, consumer);
-        }
+        getFilesByPath(folder, fileType.getExtension()).forEach(entry -> addFile(entry, fileType, builder));
 
         return this;
     }
 
     @Override
-    public FileManager addFile(final Path path, final String jarFolder, final FileType fileType, final Consumer<ICustomFile<?, ?, ?>> consumer) {
+    public FileManager addFile(final Path path, final String jarFolder, final FileType fileType, final Consumer<AbstractCustomFile<?, ?, ?>> builder) {
         if (this.files.containsKey(path)) {
-            final ICustomFile<?, ?, ?> customFile = this.files.get(path);
+            final AbstractCustomFile<?, ?, ?> file = this.files.get(path);
 
-            consumer.accept(customFile);
+            builder.accept(file);
 
-            if (customFile.hasAction(FileAction.RELOAD_FILE)) {
-                customFile.load();
+            if (file.hasAction(FileAction.RELOAD_FILE)) {
+                file.load();
             }
 
             return this;
         }
 
-        ICustomFile<?, ?, ?> customFile = null;
+        AbstractCustomFile<?, ?, ?> customFile = null;
 
         switch (fileType) {
-            case FileType.YAML -> customFile = buildYamlFile(path, jarFolder, consumer::accept);
-            case FileType.LOG -> customFile = buildLogFile(path, consumer::accept);
+            case YAML -> customFile = new YamlCustomFile(this, new FileData(path, fileType));
         }
 
-        if (customFile == null) return this;
+        if (customFile == null) {
+            return this;
+        }
 
-        this.files.putIfAbsent(path, customFile);
+        builder.accept(customFile);
+
+        this.files.putIfAbsent(path, customFile.load());
 
         return this;
     }
 
     @Override
     public FileManager removeFile(final Path path) {
-        final Optional<ICustomFile<?, ?, ?>> variable = getFile(path);
+        final Optional<AbstractCustomFile<?, ?, ?>> variable = getFile(path);
 
         if (variable.isEmpty()) {
             return this;
@@ -96,9 +90,9 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public FileManager purge() {
-        final Map<Path, ICustomFile<?, ?, ?>> files = new HashMap<>(this.files);
+        final Map<Path, AbstractCustomFile<?, ?, ?>> files = new HashMap<>(this.files);
 
-        for (final Map.Entry<Path, ICustomFile<?, ?, ?>> entry : files.entrySet()) {
+        for (final Map.Entry<Path, AbstractCustomFile<?, ?, ?>> entry : files.entrySet()) {
             removeFile(entry.getKey());
         }
 
@@ -106,25 +100,15 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public FileManager addFile(final Path path, final ICustomFile<?, ?, ?> customFile) {
+    public FileManager addFile(final Path path, final AbstractCustomFile<?, ?, ?> customFile) {
         this.files.putIfAbsent(path, customFile);
 
         return this;
     }
 
     @Override
-    public YamlCustomFile buildYamlFile(final Path path, final String jarFolder, final Consumer<YamlCustomFile> consumer) {
-        return new YamlCustomFile(this, jarFolder, path, consumer).load();
-    }
-
-    @Override
-    public LogCustomFile buildLogFile(final Path path, final Consumer<LogCustomFile> consumer) {
-        return new LogCustomFile(this, path, consumer).load();
-    }
-
-    @Override
     public FileManager reloadFile(final Path path) {
-        final Optional<ICustomFile<?, ?, ?>> customFile = getFile(path);
+        final Optional<AbstractCustomFile<?, ?, ?>> customFile = getFile(path);
 
         if (customFile.isEmpty()) return this;
 
@@ -135,7 +119,7 @@ public class FileManager extends IFileManager<FileManager> {
 
     @Override
     public FileManager saveFile(final Path path) {
-        final Optional<ICustomFile<?, ?, ?>> customFile = getFile(path);
+        final Optional<AbstractCustomFile<?, ?, ?>> customFile = getFile(path);
 
         if (customFile.isEmpty()) return this;
 
@@ -145,7 +129,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public Optional<ICustomFile<?, ?, ?>> getFile(final Path path) {
+    public Optional<AbstractCustomFile<?, ?, ?>> getFile(final Path path) {
         return Optional.ofNullable(this.files.get(path));
     }
 
@@ -163,7 +147,7 @@ public class FileManager extends IFileManager<FileManager> {
             try {
                 Files.createDirectory(parent);
             } catch (final IOException exception) {
-                throw new FileException("Failed to create %s".formatted(parent));
+                throw new CustomException("Failed to create %s".formatted(parent));
             }
         }
 
@@ -176,10 +160,10 @@ public class FileManager extends IFileManager<FileManager> {
                 try (final InputStream stream = jarFile.getInputStream(entry)) {
                     Files.copy(stream, output);
                 } catch (final IOException exception) {
-                    throw new FileException("Failed to copy %s to %s".formatted(input, output), exception);
+                    throw new CustomException("Failed to copy %s to %s".formatted(input, output), exception);
                 }
             }, () -> {
-                throw new FileException("Failed to find %s in the jar!".formatted(input));
+                throw new CustomException("Failed to find %s in the jar!".formatted(input));
             });
         } catch (final IOException | URISyntaxException exception) {
             exception.printStackTrace();
@@ -218,40 +202,22 @@ public class FileManager extends IFileManager<FileManager> {
             try {
                 Files.createDirectory(parent);
             } catch (final IOException exception) {
-                throw new FileException("Failed to create %s".formatted(parent));
+                throw new CustomException("Failed to create %s".formatted(parent));
             }
         }
 
         try (final JarFile jarFile = new JarFile(Path.of(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
-            JarEntry target = null;
-
-            for (final JarEntry entry : Collections.list(jarFile.entries())) {
-                final String entryName = entry.getName();
-
-                if (entryName.endsWith(".class") || entryName.startsWith("META-INF") || entryName.equalsIgnoreCase("velocity-plugin.json") || entry.isDirectory()) continue;
-
-                if (!entryName.equalsIgnoreCase(input)) continue;
-
-                target = entry;
-
-                break;
-            }
-
-            if (target == null) {
-                return this;
-            }
-
-            if (Files.exists(output)) {
-                return this;
-            }
-
-            try (final InputStream stream = jarFile.getInputStream(target)) {
-                Files.copy(stream, output);
-            } catch (final IOException exception) {
-                throw new FileException("Failed to copy %s to %s".formatted(input, output), exception);
-            }
+            getEntry(jarFile, test -> !test.getName().equalsIgnoreCase(input)).ifPresentOrElse(entry -> {
+                try (final InputStream stream = jarFile.getInputStream(entry)) {
+                    Files.copy(stream, output);
+                } catch (final IOException exception) {
+                    throw new CustomException("Failed to copy " + entry.getName() + " to " + output + ".", exception);
+                }
+            }, () -> {
+                throw new CustomException("Failed to fetch " + input + " internally.");
+            });
         } catch (final IOException | URISyntaxException exception) {
-            exception.printStackTrace();
+            throw new CustomException("Failed to fetch " + input + " internally.", exception);
         }
 
         return this;
@@ -269,7 +235,7 @@ public class FileManager extends IFileManager<FileManager> {
             try {
                 Files.createDirectories(path);
             } catch (final Exception exception) {
-                throw new FileException("Failed to create %s".formatted(path), exception);
+                throw new CustomException("Failed to create %s".formatted(path), exception);
             }
         }
 
@@ -291,7 +257,7 @@ public class FileManager extends IFileManager<FileManager> {
                     try {
                         Files.createDirectories(parent);
                     } catch (final IOException exception) {
-                        throw new FileException("Failed to create %s".formatted(parent), exception);
+                        throw new CustomException("Failed to create %s".formatted(parent), exception);
                     }
                 }
 
@@ -299,111 +265,15 @@ public class FileManager extends IFileManager<FileManager> {
                     try (final InputStream stream = jar.getInputStream(entry)) {
                         Files.copy(stream, target);
                     } catch (final IOException exception) {
-                        throw new FileException("Failed to copy %s to %s".formatted(target, parent), exception);
+                        throw new CustomException("Failed to copy %s to %s".formatted(target, parent), exception);
                     }
                 }
             });
         } catch (final IOException | URISyntaxException exception) {
-            throw new FileException("Failed to extract folder %s".formatted(path), exception);
+            throw new CustomException("Failed to extract folder %s".formatted(path), exception);
         }
 
         return this;
-    }
-
-    @Override
-    public FileManager compressFolder(final Path path, final String content) {
-        if (!Files.exists(path)) return this;
-        if (!Files.isDirectory(path)) return this;
-
-        final Path target = this.path.resolve(asString(path, content));
-
-        try (final ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(target)); final Stream<Path> values = Files.walk(path)) {
-            final List<Path> entries = values.filter(key -> !Files.isDirectory(key)).toList();
-
-            for (final Path entry : entries) {
-                if (Files.size(entry) <= 0L) continue;
-
-                final ZipEntry zipEntry = new ZipEntry(entry.toString());
-
-                output.putNextEntry(zipEntry);
-
-                Files.copy(entry, output);
-
-                output.closeEntry();
-            }
-        } catch (final IOException exception) {
-            throw new FileException("Failed to compress folder %s".formatted(path), exception);
-        }
-
-        return this;
-    }
-
-    @Override
-    public FileManager compressFile(final Path path, @Nullable final Path folder, final String content) {
-        if (!Files.exists(path)) return this;
-
-        long size;
-
-        try {
-            size = Files.size(path);
-        } catch (final Exception exception) {
-            throw new FileException("Failed to calculate file size for %s".formatted(path), exception);
-        }
-
-        if (size <= 0L) return this;
-
-        final String builder = asString(path, content);
-
-        final Path target = folder == null ? this.path : folder.resolve(builder);
-
-        try (final ZipOutputStream output = new ZipOutputStream(Files.newOutputStream(target))) {
-            final ZipEntry entry = new ZipEntry(path.getFileName().toString());
-
-            output.putNextEntry(entry);
-
-            Files.copy(path, output);
-
-            output.closeEntry();
-        } catch (final Exception exception) {
-            throw new FileException("Failed to compress %s".formatted(path), exception);
-        }
-
-        return this;
-    }
-
-    @Override
-    public FileManager writeFile(final Path path, final String content) {
-        try {
-            Files.writeString(path, content, StandardOpenOption.APPEND);
-        } catch (final IOException exception) {
-            throw new FileException("Failed to write %s to %s".formatted(content, path), exception);
-        }
-
-        return this;
-    }
-
-    @Override
-    public FileManager setDepth(final int depth) {
-        this.depth = depth;
-
-        return this;
-    }
-
-    @Override
-    public FileManager setVerbose(final boolean isVerbose) {
-        this.isVerbose = isVerbose;
-
-        return this;
-    }
-
-    @Override
-    public int getDepth() {
-        return this.depth;
-    }
-
-    @Override
-    public boolean isVerbose() {
-        return this.isVerbose;
     }
 
     @Override
@@ -417,8 +287,8 @@ public class FileManager extends IFileManager<FileManager> {
 
         final List<Path> keys = new ArrayList<>();
 
-        for (final Map.Entry<Path, ICustomFile<?, ?, ?>> file : this.files.entrySet()) {
-            final ICustomFile<?, ?, ?> value = file.getValue();
+        for (final Map.Entry<Path, AbstractCustomFile<?, ?, ?>> file : this.files.entrySet()) {
+            final AbstractCustomFile<?, ?, ?> value = file.getValue();
 
             final Path path = value.getPath();
 
@@ -441,50 +311,7 @@ public class FileManager extends IFileManager<FileManager> {
     }
 
     @Override
-    public final List<String> getFileByNames(final String folder, final Path path, final String extension, final int depth, final boolean removeExtension) {
-        final List<Path> files = getFilesByPath(folder.isEmpty() ? path : path.resolve(folder), List.of(extension), depth);
-
-        final List<String> names = new ArrayList<>();
-
-        for (final Path key : files) {
-            final String fileName = key.getFileName().toString();
-
-            if (!fileName.endsWith(extension)) continue;
-
-            names.add(removeExtension ? fileName.replace(extension, "") : fileName);
-        }
-
-        return names;
-    }
-
-    @Override
-    public final List<Path> getFilesByPath(final Path path, final List<String> extensions, final int depth) {
-        final List<Path> files = new ArrayList<>();
-
-        if (Files.notExists(path) || !Files.isDirectory(path)) return new ArrayList<>();
-
-        try {
-            Files.walkFileTree(path, new HashSet<>(), Math.max(depth, 1), new SimpleFileVisitor<>() {
-                @Override
-                public FileVisitResult visitFile(final Path path, final BasicFileAttributes attributes) {
-                    final String fileName = path.getFileName().toString();
-
-                    extensions.forEach(extension -> {
-                        if (fileName.endsWith(extension)) files.add(path);
-                    });
-
-                    return FileVisitResult.CONTINUE;
-                }
-            });
-        } catch (final IOException exception) {
-            throw new FileException("Failed to get a list of files.", exception);
-        }
-
-        return files;
-    }
-
-    @Override
-    public final Map<Path, ICustomFile<?, ?, ?>> getFiles() {
+    public final Map<Path, AbstractCustomFile<?, ?, ?>> getFiles() {
         return Collections.unmodifiableMap(this.files);
     }
 }

@@ -53,7 +53,7 @@ public class Fusion extends JavaPlugin implements Listener {
                         fileManager.getFile(target).ifPresent(customFile -> this.fusion.log(Level.warn, "<red>Custom File: %s", customFile.getPrettyName())));
 
         fileManager.getYamlFile(path.resolve("config.yml")).ifPresent(customFile -> {
-            final CommentedConfigurationNode node = customFile.getConfiguration();
+            final CommentedConfigurationNode node = customFile.getConfig();
 
             this.fusion.log(Level.warn, "Node: %s, %s",
                     node.node("test").getBoolean(false), node.node("beans").getBoolean(true));
@@ -61,7 +61,7 @@ public class Fusion extends JavaPlugin implements Listener {
 
         fileManager.getFilesByPath(path.resolve("crates"), ".yml").forEach(parent -> {
             fileManager.getYamlFile(parent).ifPresent(customFile -> {
-                final CommentedConfigurationNode configuration = customFile.getConfiguration();
+                final CommentedConfigurationNode configuration = customFile.getConfig();
 
                 this.fusion.log(Level.warn, "Crate Type: %s",
                         configuration.node("Crate", "CrateType").getString("CSGO"));
@@ -69,7 +69,7 @@ public class Fusion extends JavaPlugin implements Listener {
         });
 
         fileManager.getYamlFile(path.resolve("locale").resolve("de-DE.yml")).ifPresent(customFile -> {
-            final CommentedConfigurationNode node = customFile.getConfiguration();
+            final CommentedConfigurationNode node = customFile.getConfig();
 
             this.fusion.log(Level.warn, "Node: %s",
                     node.node("messages", "reload-plugin").getString("{prefix}<yellow>Das Plugin wurde neu geladen."));
@@ -87,7 +87,7 @@ public class Fusion extends JavaPlugin implements Listener {
         ).forEach(input -> fileManager.extractFile(input, path.resolve("examples").resolve("test.yml")));
 
         fileManager.getYamlFile(path.resolve("test.yml")).ifPresent(customFile -> {
-            final CommentedConfigurationNode configuration = customFile.getConfiguration().node("Locations");
+            final CommentedConfigurationNode configuration = customFile.getConfig().node("Locations");
 
             try {
                 configuration.node("1", "World").set(String.class, "world");

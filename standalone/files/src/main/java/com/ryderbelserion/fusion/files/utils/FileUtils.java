@@ -1,6 +1,6 @@
 package com.ryderbelserion.fusion.files.utils;
 
-import com.ryderbelserion.fusion.files.exceptions.FileException;
+import com.ryderbelserion.fusion.files.exceptions.CustomException;
 import org.spongepowered.configurate.BasicConfigurationNode;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -17,7 +17,7 @@ public class FileUtils {
 
             return list != null ? list : defaultValues;
         } catch (SerializationException exception) {
-            throw new FileException(String.format("Failed to serialize %s!", node.path()), exception);
+            throw new CustomException(String.format("Failed to serialize %s!", node.path()), exception);
         }
     }
 
@@ -35,7 +35,7 @@ public class FileUtils {
 
             return list != null ? list : defaultValues;
         } catch (SerializationException exception) {
-            throw new FileException(String.format("Failed to serialize %s!", node.path()), exception);
+            throw new CustomException(String.format("Failed to serialize %s!", node.path()), exception);
         }
     }
 
