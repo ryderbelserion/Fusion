@@ -3,10 +3,7 @@ package com.ryderbelserion.fusion.api;
 import com.ryderbelserion.fusion.api.enums.Level;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.NullMarked;
-import org.jspecify.annotations.NullUnmarked;
-import org.jspecify.annotations.Nullable;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -14,23 +11,6 @@ import java.util.Map;
 
 @NullMarked
 public abstract class FusionApi<S, C> {
-
-    @NullUnmarked
-    public abstract void compressFile(@NonNull final Path path, @Nullable final Path folder, @NonNull final String content);
-
-    public void compressFile(final Path path, final String content) {
-        compressFile(path, null, content);
-    }
-
-    public void compressFile(final Path path, final Path folder) {
-        compressFile(path, folder, "");
-    }
-
-    public void compressFile(final Path path) {
-        compressFile(path, null, "");
-    }
-
-    public abstract void compressFolder(final Path path, final String content);
 
     public abstract void extractFolder(final String input, final String jarFolder, final FileType fileType, final Path path);
 

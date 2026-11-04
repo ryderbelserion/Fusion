@@ -1,30 +1,15 @@
 package com.ryderbelserion.fusion;
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.ryderbelserion.fusion.api.objects.FusionKey;
-import com.ryderbelserion.fusion.commands.SimpleCommand;
-import com.ryderbelserion.fusion.commands.types.items.ItemCommand;
-import com.ryderbelserion.fusion.commands.types.ReloadCommand;
-import com.ryderbelserion.fusion.commands.types.items.SkullCommand;
-import com.ryderbelserion.fusion.config.ConfigManager;
-import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.api.enums.Level;
-import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
-import com.ryderbelserion.fusion.core.api.registry.message.adapter.YamlMessageAdapter;
+import com.ryderbelserion.fusion.files.FileManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
+import com.ryderbelserion.fusion.files.objects.FileData;
 import com.ryderbelserion.fusion.paper.FusionPaper;
-import io.papermc.paper.command.brigadier.CommandSourceStack;
-import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.NonNull;
-import org.spongepowered.configurate.CommentedConfigurationNode;
-import org.spongepowered.configurate.serialize.SerializationException;
 import java.nio.file.Path;
-import java.util.List;
 
 public class Fusion extends JavaPlugin implements Listener {
 
@@ -35,11 +20,9 @@ public class Fusion extends JavaPlugin implements Listener {
         this.fusion = new FusionPaper(this);
         this.fusion.init();
 
-        final FileManager fileManager = this.fusion.getFileManager();
-
         final Path path = getDataPath();
 
-        new ConfigManager(this.fusion, path).init();
+        final FileManager fileManager = this.fusion.getFileManager();
 
         fileManager.addFolder(path.resolve("crates"), FileType.YAML)
                 .addFile(path.resolve("guis").resolve("test.yml"), FileType.YAML, consumer -> consumer.addAction(FileAction.EXTRACT_FROM_FOLDER))
@@ -49,9 +32,14 @@ public class Fusion extends JavaPlugin implements Listener {
                 .extractFile("velocity/config.yml", path.resolve("config.yml"))
                 .addFile(path.resolve("config.yml"), "velocity", FileType.YAML)
                 .addFile(path.resolve("test.yml"), FileType.YAML)
-                .getFilesByPath(path.resolve("crates"), ".yml").forEach(target ->
+                .getFilesByPath(path.resolve("crates"), ".yml", 1).forEach(target ->
                         fileManager.getFile(target).ifPresent(customFile -> this.fusion.log(Level.warn, "<red>Custom File: %s", customFile.getPrettyName())));
 
+        //final Path path = getDataPath();
+
+        //new ConfigManager(this.fusion, path).init();
+
+        /*
         fileManager.getYamlFile(path.resolve("config.yml")).ifPresent(customFile -> {
             final CommentedConfigurationNode node = customFile.getConfiguration();
 
@@ -101,9 +89,9 @@ public class Fusion extends JavaPlugin implements Listener {
             }
         });
 
-        fileManager.saveFile(path.resolve("test.yml"));
+        fileManager.saveFile(path.resolve("test.yml"));*/
 
-        final LifecycleEventManager<Plugin> eventManager = getLifecycleManager();
+        /*final LifecycleEventManager<Plugin> eventManager = getLifecycleManager();
 
         // Register commands.
         eventManager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
@@ -116,7 +104,7 @@ public class Fusion extends JavaPlugin implements Listener {
             ).forEach(type -> root.then(type.literal()));
 
             event.registrar().register(root.build(), "The base command for Fusion!");
-        });
+        });*/
     }
 
     public @NonNull final FusionPaper getFusion() {

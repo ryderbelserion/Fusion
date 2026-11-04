@@ -7,7 +7,7 @@ public class FusionProvider {
     private static FusionApi fusion;
 
     public static FusionApi api() {
-        if (FusionProvider.fusion == null) {
+        if (!isReady()) {
             throw new FusionException("Failed to fetch Fusion API, is it enabled?");
         }
 

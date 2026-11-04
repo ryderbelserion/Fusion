@@ -7,7 +7,6 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.ryderbelserion.fusion.Fusion;
 import com.ryderbelserion.fusion.api.enums.Level;
-import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.api.objects.FusionKey;
 import com.ryderbelserion.fusion.core.api.registry.message.MessageRegistry;
 import com.ryderbelserion.fusion.core.api.registry.message.adapter.interfaces.IMessageAdapter;
@@ -69,7 +68,7 @@ public class ReloadCommand extends PaperCommand {
 
         final FileManager fileManager = paper.getFileManager();
 
-        fileManager.refresh(false).addFile(this.fusion.getDataPath().resolve("guis").resolve("test.yml"), FileType.YAML);
+        //fileManager.refresh(false).addFile(this.fusion.getDataPath().resolve("guis").resolve("test.yml"), FileType.YAML);
     }
 
     @Override

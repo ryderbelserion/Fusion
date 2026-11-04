@@ -23,6 +23,8 @@ listOf(
     "standalone/files" to "files",
     "standalone/core" to "core",
 
+    "standalone/files/config" to "config",
+
     //"hytale" to "hytale",
     "api" to "api"
 ).forEach {
