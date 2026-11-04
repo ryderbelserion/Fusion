@@ -32,19 +32,19 @@ public abstract class AbstractFileManager<I> {
 
     protected final PropertyManager config = this.provider.getConfig();
 
-    public abstract I addFolder(final Path folder, final String jarFolder, final FileType fileType, final Consumer<AbstractCustomFile<?, ?, ?>> consumer);
+    public abstract I addFolder(final Path folder, final String jarFolder, final FileType fileType, final Consumer<AbstractCustomFile<?, ?>> consumer);
 
     public I addFolder(final Path folder, final String jarFolder, final FileType fileType) {
         return addFolder(folder, jarFolder, fileType, consumer -> consumer.addAction(FileAction.EXTRACT_FOLDER));
     }
 
-    public abstract I addFile(final Path path, final String jarFolder, final FileType fileType, final Consumer<AbstractCustomFile<?, ?, ?>> consumer);
+    public abstract I addFile(final Path path, final String jarFolder, final FileType fileType, final Consumer<AbstractCustomFile<?, ?>> consumer);
 
     public I addFile(final Path path, final String jarFolder, final FileType fileType) {
         return addFile(path, jarFolder, fileType, consumer -> consumer.addAction(FileAction.EXTRACT_FILE));
     }
 
-    public I addFolder(final Path folder, final FileType fileType, final Consumer<AbstractCustomFile<?, ?, ?>> consumer) {
+    public I addFolder(final Path folder, final FileType fileType, final Consumer<AbstractCustomFile<?, ?>> consumer) {
         return addFolder(folder, "", fileType, consumer);
     }
 
@@ -52,7 +52,7 @@ public abstract class AbstractFileManager<I> {
         return addFolder(folder, fileType, consumer -> consumer.addAction(FileAction.EXTRACT_FOLDER));
     }
 
-    public I addFile(final Path path, final FileType fileType, final Consumer<AbstractCustomFile<?, ?, ?>> consumer) {
+    public I addFile(final Path path, final FileType fileType, final Consumer<AbstractCustomFile<?, ?>> consumer) {
         return addFile(path, "", fileType, consumer);
     }
 
@@ -60,7 +60,7 @@ public abstract class AbstractFileManager<I> {
         return addFile(path, fileType, consumer -> consumer.addAction(FileAction.EXTRACT_FILE));
     }
 
-    public abstract I addFile(final Path path, final AbstractCustomFile<?, ?, ?> customFile);
+    public abstract I addFile(final Path path, final AbstractCustomFile<?, ?> customFile);
 
     public abstract I removeFile(final Path path);
 
@@ -74,9 +74,9 @@ public abstract class AbstractFileManager<I> {
 
     public abstract boolean hasFile(final Path path);
 
-    public abstract Optional<AbstractCustomFile<?, ?, ?>> getFile(final Path path);
+    public abstract Optional<AbstractCustomFile<?, ?>> getFile(final Path path);
 
-    public abstract Map<Path, AbstractCustomFile<?, ?, ?>> getFiles();
+    public abstract Map<Path, AbstractCustomFile<?, ?>> getFiles();
 
     public Optional<YamlCustomFile> getYamlFile(final Path path) {
         return getFile(path).map(YamlCustomFile.class::cast);

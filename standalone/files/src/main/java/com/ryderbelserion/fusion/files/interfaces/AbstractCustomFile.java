@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public abstract class AbstractCustomFile<T, L, N> {
+public abstract class AbstractCustomFile<L, N> {
 
     protected final List<FileAction> actions = new ArrayList<>();
 
@@ -35,8 +35,6 @@ public abstract class AbstractCustomFile<T, L, N> {
         this.isDirectory = Files.isDirectory(this.path);
         this.jarPath = this.fileData.jarPath();
     }
-
-    public abstract void write(final T value, final Object... args);
 
     public abstract N loadConfig() throws IOException;
 
@@ -73,7 +71,7 @@ public abstract class AbstractCustomFile<T, L, N> {
         }
     }
 
-    public AbstractCustomFile<T, L, N> load() {
+    public AbstractCustomFile<L, N> load() {
         if (this.isDirectory) return this;
 
         final String name = this.path.getFileName().toString();

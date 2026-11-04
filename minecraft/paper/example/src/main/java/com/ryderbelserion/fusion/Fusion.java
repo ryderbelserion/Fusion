@@ -57,29 +57,21 @@ public class Fusion extends JavaPlugin implements Listener {
 
             this.fusion.log(Level.warn, "Node: %s, %s",
                     node.node("test").getBoolean(false), node.node("beans").getBoolean(true));
+            this.fusion.log(Level.warn, "Node: %s, %s", customFile.read("", ""));
         });
 
         fileManager.getFilesByPath(path.resolve("crates"), ".yml").forEach(parent -> {
-            fileManager.getYamlFile(parent).ifPresent(customFile -> {
-                final CommentedConfigurationNode configuration = customFile.getConfig();
-
-                this.fusion.log(Level.warn, "Crate Type: %s",
-                        configuration.node("Crate", "CrateType").getString("CSGO"));
-            });
+            fileManager.getYamlFile(parent).ifPresent(customFile -> this.fusion.log(Level.warn, "Crate Type: %s", customFile.read("CSGO", "Crate", "CrateType")));
         });
 
         fileManager.getYamlFile(path.resolve("locale").resolve("de-DE.yml")).ifPresent(customFile -> {
             final CommentedConfigurationNode node = customFile.getConfig();
 
-            this.fusion.log(Level.warn, "Node: %s",
-                    node.node("messages", "reload-plugin").getString("{prefix}<yellow>Das Plugin wurde neu geladen."));
+            this.fusion.log(Level.warn, "Node: %s", customFile.read("{prefix}<yellow>Das Plugin wurde neu geladen.", "messages", "reload-plugin"));
 
             final MessageRegistry registry = this.fusion.getMessageRegistry();
 
-            registry.addKey(FusionKey.key(this.fusion.getNamespace(), "reload_plugin"),
-                    new YamlMessageAdapter(node,
-                            "{prefix}<yellow>Das Plugin wurde neu geladen. %player_ping%",
-                            "messages", "reload-plugin"));
+            registry.addKey(FusionKey.key(this.fusion.getNamespace(), "reload_plugin"), new YamlMessageAdapter(node, "{prefix}<yellow>Das Plugin wurde neu geladen. %player_ping%", "messages", "reload-plugin"));
         });
 
         List.of(

@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @NullMarked
 public class FileManager extends AbstractFileManager<FileManager> {
 
-    private final Map<Path, AbstractCustomFile<?, ?, ?>> files = new ConcurrentHashMap<>();
+    private final Map<Path, AbstractCustomFile<?, ?>> files = new ConcurrentHashMap<>();
 
     private final Path path;
 
@@ -32,7 +32,7 @@ public class FileManager extends AbstractFileManager<FileManager> {
     }
 
     @Override
-    public FileManager addFolder(final Path folder, final String jarPath, final FileType fileType, final Consumer<AbstractCustomFile<?, ?, ?>> builder) {
+    public FileManager addFolder(final Path folder, final String jarPath, final FileType fileType, final Consumer<AbstractCustomFile<?, ?>> builder) {
         extractFolder(folder.getFileName().toString(), jarPath, fileType, folder.getParent());
 
         getFilesByPath(folder, fileType.getExtension()).forEach(entry -> addFile(entry, fileType, builder));
@@ -41,9 +41,9 @@ public class FileManager extends AbstractFileManager<FileManager> {
     }
 
     @Override
-    public FileManager addFile(final Path path, final String jarFolder, final FileType fileType, final Consumer<AbstractCustomFile<?, ?, ?>> builder) {
+    public FileManager addFile(final Path path, final String jarFolder, final FileType fileType, final Consumer<AbstractCustomFile<?, ?>> builder) {
         if (this.files.containsKey(path)) {
-            final AbstractCustomFile<?, ?, ?> file = this.files.get(path);
+            final AbstractCustomFile<?, ?> file = this.files.get(path);
 
             builder.accept(file);
 
@@ -54,7 +54,7 @@ public class FileManager extends AbstractFileManager<FileManager> {
             return this;
         }
 
-        AbstractCustomFile<?, ?, ?> customFile = null;
+        AbstractCustomFile<?, ?> customFile = null;
 
         switch (fileType) {
             case YAML -> customFile = new YamlCustomFile(this, new FileData(path, fileType));
@@ -73,7 +73,7 @@ public class FileManager extends AbstractFileManager<FileManager> {
 
     @Override
     public FileManager removeFile(final Path path) {
-        final Optional<AbstractCustomFile<?, ?, ?>> variable = getFile(path);
+        final Optional<AbstractCustomFile<?, ?>> variable = getFile(path);
 
         if (variable.isEmpty()) {
             return this;
@@ -90,9 +90,9 @@ public class FileManager extends AbstractFileManager<FileManager> {
 
     @Override
     public FileManager purge() {
-        final Map<Path, AbstractCustomFile<?, ?, ?>> files = new HashMap<>(this.files);
+        final Map<Path, AbstractCustomFile<?, ?>> files = new HashMap<>(this.files);
 
-        for (final Map.Entry<Path, AbstractCustomFile<?, ?, ?>> entry : files.entrySet()) {
+        for (final Map.Entry<Path, AbstractCustomFile<?, ?>> entry : files.entrySet()) {
             removeFile(entry.getKey());
         }
 
@@ -100,7 +100,7 @@ public class FileManager extends AbstractFileManager<FileManager> {
     }
 
     @Override
-    public FileManager addFile(final Path path, final AbstractCustomFile<?, ?, ?> customFile) {
+    public FileManager addFile(final Path path, final AbstractCustomFile<?, ?> customFile) {
         this.files.putIfAbsent(path, customFile);
 
         return this;
@@ -108,7 +108,7 @@ public class FileManager extends AbstractFileManager<FileManager> {
 
     @Override
     public FileManager reloadFile(final Path path) {
-        final Optional<AbstractCustomFile<?, ?, ?>> customFile = getFile(path);
+        final Optional<AbstractCustomFile<?, ?>> customFile = getFile(path);
 
         if (customFile.isEmpty()) return this;
 
@@ -119,7 +119,7 @@ public class FileManager extends AbstractFileManager<FileManager> {
 
     @Override
     public FileManager saveFile(final Path path) {
-        final Optional<AbstractCustomFile<?, ?, ?>> customFile = getFile(path);
+        final Optional<AbstractCustomFile<?, ?>> customFile = getFile(path);
 
         if (customFile.isEmpty()) return this;
 
@@ -129,7 +129,7 @@ public class FileManager extends AbstractFileManager<FileManager> {
     }
 
     @Override
-    public Optional<AbstractCustomFile<?, ?, ?>> getFile(final Path path) {
+    public Optional<AbstractCustomFile<?, ?>> getFile(final Path path) {
         return Optional.ofNullable(this.files.get(path));
     }
 
@@ -287,8 +287,8 @@ public class FileManager extends AbstractFileManager<FileManager> {
 
         final List<Path> keys = new ArrayList<>();
 
-        for (final Map.Entry<Path, AbstractCustomFile<?, ?, ?>> file : this.files.entrySet()) {
-            final AbstractCustomFile<?, ?, ?> value = file.getValue();
+        for (final Map.Entry<Path, AbstractCustomFile<?, ?>> file : this.files.entrySet()) {
+            final AbstractCustomFile<?, ?> value = file.getValue();
 
             final Path path = value.getPath();
 
@@ -311,7 +311,7 @@ public class FileManager extends AbstractFileManager<FileManager> {
     }
 
     @Override
-    public final Map<Path, AbstractCustomFile<?, ?, ?>> getFiles() {
+    public final Map<Path, AbstractCustomFile<?, ?>> getFiles() {
         return Collections.unmodifiableMap(this.files);
     }
 }

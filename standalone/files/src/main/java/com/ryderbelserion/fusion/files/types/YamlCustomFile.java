@@ -10,7 +10,7 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 import java.io.IOException;
 
 @NullMarked
-public class YamlCustomFile extends AbstractConfigurate<Object, YamlConfigurationLoader, CommentedConfigurationNode> {
+public class YamlCustomFile extends AbstractConfigurate<YamlConfigurationLoader, CommentedConfigurationNode> {
 
     public YamlCustomFile(final FileManager fileManager, final FileData fileData) {
         super(fileManager, fileData);
@@ -22,7 +22,7 @@ public class YamlCustomFile extends AbstractConfigurate<Object, YamlConfiguratio
     }
 
     @Override
-    public void write(final Object value, final Object... args) {
+    public <V> void write(final V value, final Object... args) {
         if (this.configuration == null) {
             throw new IllegalStateException("Configuration is null!");
         }
@@ -32,6 +32,21 @@ public class YamlCustomFile extends AbstractConfigurate<Object, YamlConfiguratio
         } catch (final SerializationException exception) {
             exception.printStackTrace();
         }
+    }
+
+    @Override
+    public <V> V read(final V value, final Object... args) {
+        if (this.configuration == null) {
+            throw new IllegalStateException("Configuration is null!");
+        }
+
+        try {
+            return (V) this.configuration.node(args).get(value.getClass(), value);
+        } catch (final SerializationException exception) {
+            exception.printStackTrace();
+        }
+
+        return value;
     }
 
     @Override

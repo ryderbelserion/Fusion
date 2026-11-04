@@ -6,6 +6,9 @@ hytale = "+" # https://hytale.com
 ## Configurate API
 configurate = "4.5.0" # https://github.com/ryderbelserion/Configurate
 
+## Jackson API
+jackson = "3.2.4" # https://github.com/FasterXML/jackson-core
+
 ## Paper API
 paperweight = "2.0.0-beta.24" # https://github.com/PaperMC/paperweight
 adventure = "5.2.0" # https://github.com/KyoriPowered/adventure
@@ -50,6 +53,10 @@ paperweight = { module = "io.papermc.paperweight.userdev:io.papermc.paperweight.
 
 # https://github.com/ryderbelserion/Configurate
 configurate-yaml = { group = "org.spongepowered", name = "configurate-yaml-api", version.ref = "configurate" }
+
+# https://github.com/FasterXML/jackson-core
+jackson-databind = { module = "tools.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson = { module = "tools.jackson.core:jackson-core", version.ref = "jackson" }
 
 # https://minecraft.net/
 brigadier = { module = "com.mojang:brigadier", version.ref = "brigadier" }
@@ -137,4 +144,9 @@ tinylog = [
     "tinylog-log4j",
     "tinylog-impl",
     "tinylog-api"
+]
+
+jackson = [
+    "jackson-databind",
+    "jackson"
 ]
