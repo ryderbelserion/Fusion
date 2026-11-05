@@ -52,6 +52,7 @@ fix-javadoc = { module = "com.jeff-media.fix-javadoc-plugin:com.jeff-media.fix-j
 paperweight = { module = "io.papermc.paperweight.userdev:io.papermc.paperweight.userdev.gradle.plugin", version.ref = "paperweight" }
 
 # https://github.com/ryderbelserion/Configurate
+configurate-jackson = { group = "org.spongepowered", name = "configurate-jackson-api", version.ref = "configurate" }
 configurate-yaml = { group = "org.spongepowered", name = "configurate-yaml-api", version.ref = "configurate" }
 
 # https://github.com/FasterXML/jackson-core

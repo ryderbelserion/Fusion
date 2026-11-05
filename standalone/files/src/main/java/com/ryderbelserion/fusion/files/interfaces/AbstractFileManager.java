@@ -4,6 +4,7 @@ import com.ryderbelserion.fusion.config.properties.PropertyManager;
 import com.ryderbelserion.fusion.files.enums.FileAction;
 import com.ryderbelserion.fusion.files.enums.FileType;
 import com.ryderbelserion.fusion.files.exceptions.CustomException;
+import com.ryderbelserion.fusion.files.types.JsonCustomFile;
 import com.ryderbelserion.fusion.files.types.YamlCustomFile;
 import com.ryderbelserion.fusion.impl.FusionConfig;
 import com.ryderbelserion.fusion.impl.keys.RootKeys;
@@ -77,6 +78,10 @@ public abstract class AbstractFileManager<I> {
     public abstract Optional<AbstractCustomFile<?, ?>> getFile(final Path path);
 
     public abstract Map<Path, AbstractCustomFile<?, ?>> getFiles();
+
+    public Optional<JsonCustomFile> getJsonFile(final Path path) {
+        return getFile(path).map(JsonCustomFile.class::cast);
+    }
 
     public Optional<YamlCustomFile> getYamlFile(final Path path) {
         return getFile(path).map(YamlCustomFile.class::cast);

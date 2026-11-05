@@ -6,6 +6,7 @@ import com.ryderbelserion.fusion.files.exceptions.CustomException;
 import com.ryderbelserion.fusion.files.interfaces.AbstractCustomFile;
 import com.ryderbelserion.fusion.files.interfaces.AbstractFileManager;
 import com.ryderbelserion.fusion.files.objects.FileData;
+import com.ryderbelserion.fusion.files.types.JsonCustomFile;
 import com.ryderbelserion.fusion.files.types.YamlCustomFile;
 import org.jspecify.annotations.NullMarked;
 import java.io.IOException;
@@ -58,6 +59,7 @@ public class FileManager extends AbstractFileManager<FileManager> {
 
         switch (fileType) {
             case YAML -> customFile = new YamlCustomFile(this, new FileData(path, fileType));
+            case JSON -> customFile = new JsonCustomFile(this, new FileData(path, fileType));
         }
 
         if (customFile == null) {

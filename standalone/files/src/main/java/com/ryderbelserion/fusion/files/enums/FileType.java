@@ -13,6 +13,10 @@ public enum FileType {
      */
     YAML(".yml"),
     /**
+     * Files that end with .json
+     */
+    JSON(".json"),
+    /**
      * Files that end with .nbt, used for structure files
      */
     NBT(".nbt"),
