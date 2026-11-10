@@ -75,16 +75,16 @@ public abstract class AbstractFileManager<I> {
 
     public abstract boolean hasFile(final Path path);
 
-    public abstract Optional<AbstractCustomFile<?, ?>> getFile(final Path path);
+    public abstract <V extends AbstractCustomFile<?, ?>> Optional<V> getFile(final Path path);
 
     public abstract Map<Path, AbstractCustomFile<?, ?>> getFiles();
 
     public Optional<JsonCustomFile> getJsonFile(final Path path) {
-        return getFile(path).map(JsonCustomFile.class::cast);
+        return getFile(path);
     }
 
     public Optional<YamlCustomFile> getYamlFile(final Path path) {
-        return getFile(path).map(YamlCustomFile.class::cast);
+        return getFile(path);
     }
 
     public abstract Optional<JarEntry> getEntry(final JarFile jarFile, final Predicate<? super JarEntry> predicate);

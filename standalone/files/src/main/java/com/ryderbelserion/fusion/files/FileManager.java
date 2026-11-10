@@ -131,8 +131,8 @@ public class FileManager extends AbstractFileManager<FileManager> {
     }
 
     @Override
-    public Optional<AbstractCustomFile<?, ?>> getFile(final Path path) {
-        return Optional.ofNullable(this.files.get(path));
+    public <V extends AbstractCustomFile<?, ?>> Optional<V> getFile(final Path path) {
+        return Optional.ofNullable((V) this.files.get(path));
     }
 
     @Override

@@ -48,20 +48,19 @@ public class Fusion extends JavaPlugin implements Listener {
                 .extractFolder("icons", "velocity", FileType.PNG, path)
                 .extractFile("velocity/config.yml", path.resolve("config.yml"))
                 .addFile(path.resolve("config.yml"), "velocity", FileType.YAML)
-                .addFile(path.resolve("test.yml"), FileType.YAML)
-                .getFilesByPath(path.resolve("crates"), ".yml").forEach(target ->
-                        fileManager.getFile(target).ifPresent(customFile -> this.fusion.log(Level.warn, "<red>Custom File: %s", customFile.getPrettyName())));
+                .addFile(path.resolve("test.yml"), FileType.YAML);
 
         fileManager.getYamlFile(path.resolve("config.yml")).ifPresent(customFile -> {
             final CommentedConfigurationNode node = customFile.getConfig();
 
-            this.fusion.log(Level.warn, "Node: %s, %s",
-                    node.node("test").getBoolean(false), node.node("beans").getBoolean(true));
-            this.fusion.log(Level.warn, "Node: %s, %s", customFile.read("", ""));
+            this.fusion.log(Level.warn, "Node: %s, %s", node.node("test").getBoolean(false), node.node("beans").getBoolean(true));
         });
 
         fileManager.getFilesByPath(path.resolve("crates"), ".yml").forEach(parent -> {
-            fileManager.getYamlFile(parent).ifPresent(customFile -> this.fusion.log(Level.warn, "Crate Type: %s", customFile.read("CSGO", "Crate", "CrateType")));
+            fileManager.getYamlFile(parent).ifPresent(customFile -> {
+                this.fusion.log(Level.warn, "Crate Type: %s", customFile.read("CSGO", "Crate", "CrateType"));
+                this.fusion.log(Level.warn, "Custom File: %s", customFile.getPrettyName());
+            });
         });
 
         fileManager.getYamlFile(path.resolve("locale").resolve("de-DE.yml")).ifPresent(customFile -> {
