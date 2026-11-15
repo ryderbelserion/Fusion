@@ -202,14 +202,14 @@ public class FileManager extends AbstractFileManager<FileManager> {
 
         if (Files.notExists(parent)) {
             try {
-                Files.createDirectory(parent);
+                Files.createDirectories(parent);
             } catch (final IOException exception) {
                 throw new CustomException("Failed to create %s".formatted(parent));
             }
         }
 
         try (final JarFile jarFile = new JarFile(Path.of(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile())) {
-            getEntry(jarFile, test -> !test.getName().equalsIgnoreCase(input)).ifPresentOrElse(entry -> {
+            getEntry(jarFile, value -> value.getName().equalsIgnoreCase(input)).ifPresentOrElse(entry -> {
                 try (final InputStream stream = jarFile.getInputStream(entry)) {
                     Files.copy(stream, output);
                 } catch (final IOException exception) {
