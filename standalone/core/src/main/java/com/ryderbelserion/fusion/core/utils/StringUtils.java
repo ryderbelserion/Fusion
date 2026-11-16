@@ -22,6 +22,10 @@ public class StringUtils {
 
     private static final FusionCore fusion = (FusionCore) FusionProvider.api();
 
+    public static List<String> getStringList(final CommentedConfigurationNode node, final List<String> defaultValues) {
+        return FileUtils.getStringList(node, defaultValues);
+    }
+
     public static List<String> getStringList(final CommentedConfigurationNode node, final String defaultValue) {
         return FileUtils.getStringList(node, List.of(defaultValue));
     }
