@@ -71,8 +71,8 @@ public abstract class AbstractCustomFile<L, N> {
         }
     }
 
-    public AbstractCustomFile<L, N> load() {
-        if (this.isDirectory) return this;
+    public <C> C load() {
+        if (this.isDirectory) return (C) this;
 
         final String name = this.path.getFileName().toString();
 
@@ -108,7 +108,7 @@ public abstract class AbstractCustomFile<L, N> {
 
         this.actions.remove(FileAction.RELOAD_FILE);
 
-        return this;
+        return (C) this;
     }
 
     public void save() {
