@@ -79,6 +79,10 @@ public abstract class AbstractFileManager<I> {
 
     public abstract Map<Path, AbstractCustomFile<?, ?>> getFiles();
 
+    public abstract YamlCustomFile buildYamlFile(final Path path);
+
+    public abstract JsonCustomFile buildJsonFile(final Path path);
+
     public Optional<JsonCustomFile> getJsonFile(final Path path) {
         return getFile(path);
     }

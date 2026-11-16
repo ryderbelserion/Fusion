@@ -316,4 +316,14 @@ public class FileManager extends AbstractFileManager<FileManager> {
     public final Map<Path, AbstractCustomFile<?, ?>> getFiles() {
         return Collections.unmodifiableMap(this.files);
     }
+
+    @Override
+    public final YamlCustomFile buildYamlFile(final Path path) {
+        return new YamlCustomFile(this, new FileData(path, FileType.YAML));
+    }
+
+    @Override
+    public final JsonCustomFile buildJsonFile(final Path path) {
+        return new JsonCustomFile(this, new FileData(path, FileType.JSON));
+    }
 }
