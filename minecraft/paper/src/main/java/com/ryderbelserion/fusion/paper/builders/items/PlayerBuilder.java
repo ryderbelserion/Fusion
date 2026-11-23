@@ -7,7 +7,6 @@ import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.jspecify.annotations.NullMarked;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @NullMarked
@@ -22,17 +21,23 @@ public final class PlayerBuilder {
         this.name = name;
     }
 
-    public Optional<OfflinePlayer> getOfflinePlayer() {
-        if (this.name.isEmpty()) return Optional.empty();
+    public <T> Optional<T> getTarget() {
+        if (this.name.isBlank()) {
+            return Optional.empty();
+        }
 
-        final CompletableFuture<UUID> future = CompletableFuture.supplyAsync(() -> this.server.getOfflinePlayer(this.name)).thenApply(OfflinePlayer::getUniqueId);
+        final OfflinePlayer target = CompletableFuture.supplyAsync(() -> this.server.getOfflinePlayer(this.name)).join();
 
-        return Optional.of(CompletableFuture.supplyAsync((() -> this.server.getOfflinePlayer(future.join()))).join());
-    }
+        if (target.isOnline()) {
+            final Player player = target.getPlayer();
 
-    public Optional<Player> getPlayer() {
-        if (this.name.isEmpty()) return Optional.empty();
+            if (player == null) {
+                return Optional.empty();
+            }
 
-        return Optional.ofNullable(this.server.getPlayerExact(this.name));
+            return Optional.of((T) player);
+        }
+
+        return Optional.of((T) target);
     }
 }
