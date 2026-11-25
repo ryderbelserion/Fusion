@@ -40,4 +40,8 @@ public final class PlayerBuilder {
 
         return Optional.of((T) target);
     }
+
+    public String getName() {
+        return this.name;
+    }
 }
