@@ -6,7 +6,6 @@ plugins {
 project.group = "${rootProject.group}.files"
 
 dependencies {
-    api(libs.configurate.jackson)
     api(libs.configurate.yaml)
     api(libs.jspecify)
 }
